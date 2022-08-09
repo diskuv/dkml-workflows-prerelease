@@ -71,6 +71,7 @@ on:
             fi
           }
 
+    # WARNING: The inputs.*.default seem to do nothing!
     inputs:
       fdopen-opamexe-bootstrap:
         type: boolean
@@ -878,8 +879,19 @@ jobs:
 
       # dkml-base-compiler
 
-      - name: Checkout dkml-base-compiler (dkml-base-compiler specified; no ocaml-compiler specified)
-        if: env.DKML_BASE_COMPILER != '@repository@' && inputs.ocaml-compiler == ''
+      # Until https://github.com/ocaml/opam-repository/pull/21704 resolved we can't go past the
+      # commit to remove 32-bit option. After resolved, collapse `env.DKML_BASE_COMPILER ==,!= ''`
+      # into one
+      - name: Checkout dkml-base-compiler (dkml-base-compiler specified but empty; no ocaml-compiler specified)
+        if: env.DKML_BASE_COMPILER != '@repository@' && env.DKML_BASE_COMPILER == '' && inputs.ocaml-compiler == ''
+        uses: actions/checkout@v3
+        with:
+          repository: diskuv/dkml-compiler
+          path: .ci/sd4/g/dkml-base-compiler
+          ref: 4.12.1-v0.4.1-prerel6
+
+      - name: Checkout dkml-base-compiler (dkml-base-compiler specified non-empty; no ocaml-compiler specified)
+        if: env.DKML_BASE_COMPILER != '@repository@' && env.DKML_BASE_COMPILER != '' && inputs.ocaml-compiler == ''
         uses: actions/checkout@v3
         with:
           repository: diskuv/dkml-compiler
