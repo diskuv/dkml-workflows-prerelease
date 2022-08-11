@@ -886,6 +886,7 @@ jobs:
       # because of caching
       - name: Cache Git checkouts of Opam pins by OS
         uses: actions/cache@v3
+        id: cache-sd4-git
         with:
           path: .ci/sd4/g
           key:
@@ -897,7 +898,7 @@ jobs:
       # commit to remove 32-bit option. After resolved, collapse `env.DKML_BASE_COMPILER ==,!= ''`
       # into one
       - name: Checkout dkml-base-compiler (dkml-base-compiler specified but empty; no ocaml-compiler specified)
-        if: env.DKML_BASE_COMPILER != '@repository@' && env.DKML_BASE_COMPILER == '' && inputs.ocaml-compiler == ''
+        if: steps.cache-sd4-git.outputs.cache-hit != 'true' && env.DKML_BASE_COMPILER != '@repository@' && env.DKML_BASE_COMPILER == '' && inputs.ocaml-compiler == ''
         uses: actions/checkout@v3
         with:
           repository: diskuv/dkml-compiler
@@ -905,7 +906,7 @@ jobs:
           ref: 4.12.1-v0.4.1-prerel6
 
       - name: Checkout dkml-base-compiler (dkml-base-compiler specified non-empty; no ocaml-compiler specified)
-        if: env.DKML_BASE_COMPILER != '@repository@' && env.DKML_BASE_COMPILER != '' && inputs.ocaml-compiler == ''
+        if: steps.cache-sd4-git.outputs.cache-hit != 'true' && env.DKML_BASE_COMPILER != '@repository@' && env.DKML_BASE_COMPILER != '' && inputs.ocaml-compiler == ''
         uses: actions/checkout@v3
         with:
           repository: diskuv/dkml-compiler
@@ -924,7 +925,7 @@ jobs:
           esac
 
       - name: Checkout dkml-base-compiler (ocaml-compiler specified)
-        if: inputs.ocaml-compiler != ''
+        if: steps.cache-sd4-git.outputs.cache-hit != 'true' && inputs.ocaml-compiler != ''
         uses: actions/checkout@v3
         with:
           repository: diskuv/dkml-compiler
@@ -932,13 +933,13 @@ jobs:
           ref: ${{ inputs.ocaml-compiler }}-v${{ env.DKML_VERSION }}
 
       - name: Pin dkml-base-compiler to checkout instead of Opam repository (ocaml-compiler or dkml-base-compiler specified)
-        if: env.DKML_BASE_COMPILER != '@repository@' || inputs.ocaml-compiler != ''
+        if: (steps.cache-sd4-opamroot.outputs.cache-hit != 'true' || steps.cache-sd4-git.outputs.cache-hit != 'true') && env.DKML_BASE_COMPILER != '@repository@' || inputs.ocaml-compiler != ''
         run: opamrun pin add --yes --no-action dkml-base-compiler .ci/sd4/g/dkml-base-compiler
 
       # conf-dkml-cross-toolchain
 
       - name: Checkout conf-dkml-cross-toolchain
-        if: env.CONF_DKML_CROSS_TOOLCHAIN != '@repository@'
+        if: steps.cache-sd4-git.outputs.cache-hit != 'true' && env.CONF_DKML_CROSS_TOOLCHAIN != '@repository@'
         uses: actions/checkout@v3
         with:
           repository: diskuv/conf-dkml-cross-toolchain
@@ -946,7 +947,7 @@ jobs:
           ref: ${{ env.CONF_DKML_CROSS_TOOLCHAIN }} # empty is no `ref`, which is default branch
 
       - name: Pin conf-dkml-cross-toolchain to checkout instead of Opam repository
-        if: env.CONF_DKML_CROSS_TOOLCHAIN != '@repository@'
+        if: (steps.cache-sd4-opamroot.outputs.cache-hit != 'true' || steps.cache-sd4-git.outputs.cache-hit != 'true') && env.CONF_DKML_CROSS_TOOLCHAIN != '@repository@'
         run: opamrun pin add --yes --no-action conf-dkml-cross-toolchain .ci/sd4/g/conf-dkml-cross-toolchain
 
       # patches necessary for Windows in diskuv-opam-repository
@@ -980,6 +981,7 @@ jobs:
       # - ppx_expect; only patch is for v0.14.1. Need to upstream fix the problem.
       # - base; patches for v0.14.1/2/3. Need to upstream fix the problem.
       - name: Pins for packages in diskuv-opam-repository
+        if: steps.cache-sd4-opamroot.outputs.cache-hit != 'true'
         run: |
           opamrun pin add --yes --no-action -k version base ${{ env.PIN_BASE }}
           opamrun pin add --yes --no-action -k version bigstringaf ${{ env.PIN_BIGSTRINGAF }}
@@ -1006,11 +1008,11 @@ jobs:
           key: ${{ inputs.cache-prefix }}_${{ matrix.abi-pattern }}-sd4-vsenv-${{ hashFiles('cachekey.vsstudio') }}
 
       - name: Checkout dkml-runtime-distribution (Windows)
-        if: startsWith(matrix.dkml-host-abi, 'windows')
+        if: steps.cache-sd4-git.outputs.cache-hit != 'true' && startsWith(matrix.dkml-host-abi, 'windows')
         uses: actions/checkout@v3
         with:
           repository: diskuv/dkml-runtime-distribution
-          path: .ci/sd4/drd
+          path: .ci/sd4/g/dkml-runtime-distribution
           ref: 1a3ec82dd851751a95e6a4797387a8163c51520e
 
       - name: Diagnose Visual Studio environment variables (Windows)
@@ -1025,7 +1027,7 @@ jobs:
             dir "C:\Program Files (x86)\Windows Kits\10\Extension SDKs\WindowsDesktop"
           }
 
-          $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\drd\src\windows"
+          $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
           Import-Module Machine
 
           $allinstances = Get-VSSetupInstance
@@ -1036,7 +1038,7 @@ jobs:
         shell: pwsh
         run: |
           if (!(Test-Path -Path ${env:GITHUB_WORKSPACE}/.ci/sd4/vsenv)) {
-            $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\drd\src\windows"
+            $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
             Import-Module Machine
 
             $CompatibleVisualStudios = Get-CompatibleVisualStudios -ErrorIfNotFound
