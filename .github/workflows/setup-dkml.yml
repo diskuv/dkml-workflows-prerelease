@@ -1003,6 +1003,8 @@ jobs:
 
       - name: Cache Visual Studio environment variables by (host,target)
         uses: actions/cache@v3
+        if: startsWith(matrix.dkml-host-abi, 'windows')
+        id: cache-sd4-vsenv
         with:
           path: .ci/sd4/vsenv
           key: ${{ inputs.cache-prefix }}_${{ matrix.abi-pattern }}-sd4-vsenv-${{ hashFiles('cachekey.vsstudio') }}
@@ -1034,7 +1036,7 @@ jobs:
           $allinstances | ConvertTo-Json -Depth 5
 
       - name: Locate Visual Studio (Windows)
-        if: startsWith(matrix.dkml-host-abi, 'windows') && matrix.vsstudio-dir == ''
+        if: startsWith(matrix.dkml-host-abi, 'windows') && steps.cache-sd4-vsenv.outputs.cache-hit != 'true' && matrix.vsstudio-dir == ''
         shell: pwsh
         run: |
           if (!(Test-Path -Path ${env:GITHUB_WORKSPACE}/.ci/sd4/vsenv)) {
@@ -1055,7 +1057,7 @@ jobs:
           }
 
       - name: Link to hardcoded Visual Studio (Windows)
-        if: startsWith(matrix.dkml-host-abi, 'windows') && matrix.vsstudio-dir != ''
+        if: startsWith(matrix.dkml-host-abi, 'windows') && steps.cache-sd4-vsenv.outputs.cache-hit != 'true' && matrix.vsstudio-dir != ''
         shell: pwsh
         run: |
           echo "VS_DIR=${{ matrix.vsstudio-dir }}" > ${env:GITHUB_WORKSPACE}/.ci/sd4/vsenv
@@ -1133,7 +1135,7 @@ jobs:
           tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv >&2
 
       - name: Use Visual Studio in dkml-* Opam packages (Windows)
-        if: startsWith(matrix.dkml-host-abi, 'windows')
+        if: (steps.cache-sd4-vsenv.outputs.cache-hit != 'true' || steps.cache-sd4-opamroot.outputs.cache-hit != 'true') && startsWith(matrix.dkml-host-abi, 'windows')
         run: |
 
           # Make the standard input work as an OCaml string.
@@ -1193,6 +1195,7 @@ jobs:
           opamrun exec -- sh -c 'echo $VCToolsRedistDir'
 
       - name: Install OCaml compiler
+        if: (steps.cache-sd4-bs.outputs.cache-hit != 'true' || steps.cache-sd4-git.outputs.cache-hit != 'true' || steps.cache-sd4-vsenv.outputs.cache-hit != 'true' || steps.cache-sd4-opamroot.outputs.cache-hit != 'true')
         run: |
           #!/bin/sh
           set -eufx
