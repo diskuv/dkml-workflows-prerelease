@@ -597,7 +597,7 @@ jobs:
             ${{ matrix.opam-root }}/.ci.root-init
             ${{ matrix.opam-root }}/.ci.repo-init
           key:
-            ${{ inputs.cache-prefix }}_${{ matrix.abi-pattern }}-sd4-opamroot-${{ hashFiles('cachekey.opam.binaries') }}-${{ hashFiles('cachekey.github.inputs') }}
+            c2_${{ inputs.cache-prefix }}_${{ matrix.abi-pattern }}-sd4-opamroot-${{ hashFiles('cachekey.opam.binaries') }}-${{ hashFiles('cachekey.github.inputs') }}
 
       - name: Write and Distribute Opam scripts
         env:
@@ -1203,6 +1203,21 @@ jobs:
           opamrun upgrade --yes dkml-base-compiler conf-dkml-cross-toolchain ${{ matrix.ocaml-options }}
 
       # Bundle
+
+      #   During cache read (the "Cache Opam root by (host,target)" step) we get:
+      #      Cache Size: ~212 MB (222698916 B)
+      #      C:\Windows\System32\tar.exe -z -xf D:/a/_temp/9b656ed6-e727-4499-b4f8-b34d5979d42b/cache.tgz -P -C D:/a/dkml-workflows-regular-example/dkml-workflows-regular-example
+      #      ../../.opam/download-cache/md5/65/65e6dc9b305ccbed1267275fe180f538: Can't create '\\\\?\\D:\\a\\dkml-workflows-regular-example\\dkml-workflows-regular-example\\..\\..\\.opam\\download-cache\\md5\\65\\65e6dc9b305ccbed1267275fe180f538'
+      #      ../../.opam/download-cache/md5/63/63b2ecad76cf56102074f3203fc8c0be: Can't create '\\\\?\\D:\\a\\dkml-workflows-regular-example\\dkml-workflows-regular-example\\..\\..\\.opam\\download-cache\\md5\\63\\63b2ecad76cf56102074f3203fc8c0be'
+      #      tar.exe: Error exit delayed from previous errors.
+      #      Warning: Failed to restore: Tar failed with error: The process 'C:\Windows\System32\tar.exe' failed with exit code 1
+      #      Cache not found for input keys: v1_win32-windows_x86-sd4-opamroot-f674af417c46862703911bc9aee57c19d6c436776c657533610dc233fae8e8af-5850674459249f5d9ea150785baa5177201737ce2c7d59834aa7457c06c929e7
+      #   So get rid of Opam's md5 download cache.
+      - name: Remove problematic files from Opam download cache
+        if: startsWith(matrix.dkml-host-abi, 'windows')
+        run: |
+          set -x
+          rm -rf '${{ matrix.opam-root }}/download-cache/md5'
 
       - name: Distribute source code, Opam environment, and Opam root
         run: |
