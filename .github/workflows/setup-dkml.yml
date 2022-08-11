@@ -587,6 +587,7 @@ jobs:
 
       - name: Cache Opam root by (host,target)
         uses: actions/cache@v3
+        id: cache-sd4-opamroot
         with:
           path: |
             ${{ matrix.opam-root }}/config
@@ -796,6 +797,7 @@ jobs:
           tar rvf .ci/sd4/dist/env-opam.tar .ci/sd4/opamrun
 
       - name: Initialize Opam root
+        if: steps.cache-sd4-opamroot.outputs.cache-hit != 'true'
         env:
           ISWINDOWS: ${{ startsWith(matrix.dkml-host-abi, 'windows') }}
         # Complicated Opam sequence is because:
@@ -829,6 +831,7 @@ jobs:
       # Build OCaml
 
       - name: Setup Opam repositories
+        if: steps.cache-sd4-opamroot.outputs.cache-hit != 'true'
         # `opam repository` operations need the Opam switches present to perform
         # updates, so this step comes after the Opam switch cache load but before the
         # initial Opam switch creation.
@@ -855,6 +858,7 @@ jobs:
       # cached except for the compiler (confer docs for setup-ocaml GitHub
       # Action) which is the 'dkml' switch
       - name: Create Opam switch
+        if: steps.cache-sd4-opamroot.outputs.cache-hit != 'true'
         run: |
           #!/bin/sh
           set -eufx
