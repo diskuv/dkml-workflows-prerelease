@@ -844,7 +844,7 @@ jobs:
       # Create, or recreate, the Opam switch. The Opam switch should not be
       # cached except for the compiler (confer docs for setup-ocaml GitHub
       # Action) which is the 'dkml' switch
-      - name: Create Opam switch (TODO - missing fdopen repository) (TODO - missing 1000+ dkml pins)
+      - name: Create Opam switch
         run: |
           #!/bin/sh
           set -eufx
@@ -982,11 +982,6 @@ jobs:
           opamrun pin add --yes --no-action -k version ppx_expect ${{ env.PIN_PPX_EXPECT }}
           opamrun pin add --yes --no-action -k version ptime ${{ env.PIN_PTIME }}
           opamrun pin add --yes --no-action -k version time_now ${{ env.PIN_TIME_NOW }}
-
-      - name: Pins for package patches not yet upstreamed and not part of diskuv-opam-repository
-        run: |
-          # crunch has a bug on Windows that has not been upstreamed yet
-          opamrun pin add --yes --no-action crunch 'https://github.com/jonahbeckford/ocaml-crunch.git#feature-windowsopen'
 
       # Setup C compiler
 
