@@ -1190,9 +1190,28 @@ jobs:
           #!/bin/sh
           set -eufx
 
-          tar cCfz $OPAMROOT .ci/sd4/dist/opamroot.tar.gz --exclude ./dkml/.opam-switch/build --exclude ./log .
+          create_tar() {
+            create_tar_DIR=$1
+            shift
+            create_tar_FILE=$1
+            shift
+            case "${{ matrix.dkml-host-abi }}" in
+              linux_*|windows_*)
+                # GNU tar (Windows uses MSYS2 GNU tar) has the [-H format] option
+                # where the [posix] format will store fractional second precision, which
+                # is needed by Opam to see if any files have been modified.
+                # Confer: https://unix.stackexchange.com/questions/397130/tar-how-to-preserve-timestamps-down-to-more-than-a-second-of-precision
+                # and: https://www.freebsd.org/cgi/man.cgi?tar(5)
+                tar cCfHz "$create_tar_DIR" "$create_tar_FILE" posix "$@"
+                ;;
+              *)
+                tar cCfz "$create_tar_DIR" "$create_tar_FILE" "$@"
+            esac
+          }
 
-          tar cCfz .ci/sd4/g .ci/sd4/dist/sources.tar.gz .
+          create_tar $OPAMROOT .ci/sd4/dist/opamroot.tar.gz --exclude ./dkml/.opam-switch/build --exclude ./log .
+
+          create_tar .ci/sd4/g .ci/sd4/dist/sources.tar.gz .
 
           # Capture whichever opam.exe we have been using
           install -d .ci/sd4/opamexe
