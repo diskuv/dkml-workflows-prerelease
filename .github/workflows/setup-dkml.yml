@@ -408,6 +408,7 @@ jobs:
 
       - name: Cache Opam bootstrap by OS
         uses: actions/cache@v3
+        id: cache-sd4-bs
         with:
           path: .ci/sd4/bs
           key:
@@ -415,7 +416,7 @@ jobs:
 
       #   Bootstrap from historical release
       - name: Bootstrap Opam from fdopen (Windows)
-        if: inputs.fdopen-opamexe-bootstrap && startsWith(matrix.dkml-host-abi, 'windows')
+        if: steps.cache-sd4-bs.outputs.cache-hit != 'true' && inputs.fdopen-opamexe-bootstrap && startsWith(matrix.dkml-host-abi, 'windows')
         run: |
           #!/bin/sh
           set -eufx
@@ -434,7 +435,7 @@ jobs:
           ldd "$GITHUB_WORKSPACE"/.ci/sd4/bs/bin/opam.exe
           ldd "$GITHUB_WORKSPACE"/.ci/sd4/bs/bin/opam-installer.exe
       - name: Bootstrap Opam from historical release (non-Windows; Windows non-fdopen)
-        if: "!(inputs.fdopen-opamexe-bootstrap && startsWith(matrix.dkml-host-abi, 'windows')) && matrix.bootstrap-opam-version != 'os'"
+        if: "steps.cache-sd4-bs.outputs.cache-hit != 'true' && !(inputs.fdopen-opamexe-bootstrap && startsWith(matrix.dkml-host-abi, 'windows')) && matrix.bootstrap-opam-version != 'os'"
         env:
           VER: ${{ matrix.bootstrap-opam-version }}
         run: |
@@ -459,7 +460,7 @@ jobs:
         if: startsWith(matrix.dkml-host-abi, 'darwin') && matrix.bootstrap-opam-version == 'os'
         run: brew install gpatch && brew install opam
       - name: Bootstrap Opam from GitHub ocaml/opam release (Linux x86_64)
-        if: matrix.dkml-host-abi == 'linux_x86_64' && matrix.bootstrap-opam-version == 'os'
+        if: steps.cache-sd4-bs.outputs.cache-hit != 'true' && matrix.dkml-host-abi == 'linux_x86_64' && matrix.bootstrap-opam-version == 'os'
         run: |
           #!/bin/sh
           set -eufx
@@ -479,7 +480,7 @@ jobs:
             fi
           fi
       - name: Bootstrap Opam from GitHub ocaml/opam release (Linux x86)
-        if: matrix.dkml-host-abi == 'linux_x86' && matrix.bootstrap-opam-version == 'os'
+        if: steps.cache-sd4-bs.outputs.cache-hit != 'true' && matrix.dkml-host-abi == 'linux_x86' && matrix.bootstrap-opam-version == 'os'
         run: |
           #!/bin/sh
           set -eufx
@@ -511,7 +512,7 @@ jobs:
           tar cf .ci/sd4/dist/env-opam.tar -T /dev/null
 
       # ------
-      # Docker
+      # BEGIN Docker (ManyLinux)
       #   We use buildx which can cache into GitHub Actions Cache (type=gha)
 
       - name: Set up Docker Buildx (ManyLinux)
@@ -536,7 +537,7 @@ jobs:
           cache-from: type=gha,scope=${{ github.workflow }}
           cache-to: type=gha,mode=max,scope=${{ github.workflow }}
 
-      - name: Get dockcross binary and Opam prerequisites (ManyLinux)
+      - name: Get dockcross binary (ManyLinux)
         if: matrix.dockcross_image != ''
         run: |
           install -d .ci/sd4
@@ -546,19 +547,22 @@ jobs:
           # Bundle for consumers of setup-dkml.yml
           tar rvf .ci/sd4/dist/env-opam.tar .ci/sd4/dockcross
 
+      - name: Get Opam prerequisites (ManyLinux)
+        if: steps.cache-sd4-bs.outputs.cache-hit != 'true' && matrix.dockcross_image != ''
+        run: |
           # rsync needs to be available, even after Docker container disappears
           if [ ! -e .ci/sd4/bs/bin/rsync ]; then
             install -d .ci/sd4/bs/bin
-            .ci/sd4/dockcross --args "${{ matrix.dockcross_run_extra_args }}" sh -xc 'sudo yum install -y rsync && install -v $(command -v rsync) .ci/sd4/bs/bin'
+            .ci/sd4/dockcross --args "${{ matrix.dockcross_run_extra_args }}" sh -xc '
+              sudo yum install -y rsync &&
+              install -v $(command -v rsync) .ci/sd4/bs/bin'
           fi
 
-          # Bundle for consumers of setup-dkml.yml
-          tar rvf .ci/sd4/dist/env-opam.tar .ci/sd4/bs/bin/rsync
-
+      # END Docker (ManyLinux)
       # ------
 
       - name: Get Opam prerequisites (Linux Docker)
-        if: matrix.docker_runner != ''
+        if: steps.cache-sd4-bs.outputs.cache-hit != 'true' && matrix.docker_runner != ''
         run: |
           # rsync needs to be available, even after Docker container disappears
           if [ ! -e .ci/sd4/bs/bin/rsync.deps ]; then
@@ -572,6 +576,12 @@ jobs:
             '
             touch .ci/sd4/bs/bin/rsync.deps
           fi
+
+      - name: Bundle Opam prerequisites (ManyLinux or Linux Docker)
+        if: matrix.docker_runner != '' || matrix.dockcross_image != ''
+        run: |
+          # Bundle for consumers of setup-dkml.yml
+          tar rvf .ci/sd4/dist/env-opam.tar .ci/sd4/bs/bin/rsync
 
       # Setup Opam
 
