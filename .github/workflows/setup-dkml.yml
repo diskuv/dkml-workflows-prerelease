@@ -933,7 +933,7 @@ jobs:
           ref: ${{ inputs.ocaml-compiler }}-v${{ env.DKML_VERSION }}
 
       - name: Pin dkml-base-compiler to checkout instead of Opam repository (ocaml-compiler or dkml-base-compiler specified)
-        if: (steps.cache-sd4-opamroot.outputs.cache-hit != 'true' || steps.cache-sd4-git.outputs.cache-hit != 'true') && env.DKML_BASE_COMPILER != '@repository@' || inputs.ocaml-compiler != ''
+        if: "!(steps.cache-sd4-opamroot.outputs.cache-hit == 'true' && steps.cache-sd4-git.outputs.cache-hit == 'true') && (env.DKML_BASE_COMPILER != '@repository@' || inputs.ocaml-compiler != '')"
         run: opamrun pin add --yes --no-action dkml-base-compiler .ci/sd4/g/dkml-base-compiler
 
       # conf-dkml-cross-toolchain
@@ -947,7 +947,7 @@ jobs:
           ref: ${{ env.CONF_DKML_CROSS_TOOLCHAIN }} # empty is no `ref`, which is default branch
 
       - name: Pin conf-dkml-cross-toolchain to checkout instead of Opam repository
-        if: (steps.cache-sd4-opamroot.outputs.cache-hit != 'true' || steps.cache-sd4-git.outputs.cache-hit != 'true') && env.CONF_DKML_CROSS_TOOLCHAIN != '@repository@'
+        if: "!(steps.cache-sd4-opamroot.outputs.cache-hit == 'true' && steps.cache-sd4-git.outputs.cache-hit == 'true') && env.CONF_DKML_CROSS_TOOLCHAIN != '@repository@'"
         run: opamrun pin add --yes --no-action conf-dkml-cross-toolchain .ci/sd4/g/conf-dkml-cross-toolchain
 
       # patches necessary for Windows in diskuv-opam-repository
@@ -1135,7 +1135,7 @@ jobs:
           tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv >&2
 
       - name: Use Visual Studio in dkml-* Opam packages (Windows)
-        if: (steps.cache-sd4-vsenv.outputs.cache-hit != 'true' || steps.cache-sd4-opamroot.outputs.cache-hit != 'true') && startsWith(matrix.dkml-host-abi, 'windows')
+        if: "!(steps.cache-sd4-vsenv.outputs.cache-hit == 'true' && steps.cache-sd4-opamroot.outputs.cache-hit == 'true') && startsWith(matrix.dkml-host-abi, 'windows')"
         run: |
 
           # Make the standard input work as an OCaml string.
@@ -1195,7 +1195,7 @@ jobs:
           opamrun exec -- sh -c 'echo $VCToolsRedistDir'
 
       - name: Install OCaml compiler
-        if: (steps.cache-sd4-bs.outputs.cache-hit != 'true' || steps.cache-sd4-git.outputs.cache-hit != 'true' || steps.cache-sd4-vsenv.outputs.cache-hit != 'true' || steps.cache-sd4-opamroot.outputs.cache-hit != 'true')
+        if: "!(steps.cache-sd4-bs.outputs.cache-hit == 'true' && steps.cache-sd4-git.outputs.cache-hit == 'true' && steps.cache-sd4-opamroot.outputs.cache-hit == 'true' && (!startsWith(matrix.dkml-host-abi, 'windows') || steps.cache-sd4-vsenv.outputs.cache-hit == 'true'))"
         run: |
           #!/bin/sh
           set -eufx
