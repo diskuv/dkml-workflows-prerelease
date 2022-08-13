@@ -22,7 +22,7 @@ env:
   PIN_PTIME: "0.8.6-msvcsupport"
   PIN_TIME_NOW: "v0.14.0"
 
-  DKML_VERSION: "0.4.0"
+  DKML_VERSION: "1.0.0"
 
 on:
   workflow_call:
@@ -402,6 +402,7 @@ jobs:
             echo 'inputs.diskuv-opam-repository=${{ inputs.diskuv-opam-repository }}'
             echo 'inputs.dkml-compiler=${{ inputs.dkml-compiler }}'
             echo 'inputs.conf-dkml-cross-toolchain=${{ inputs.conf-dkml-cross-toolchain }}'
+            echo 'env.DKML_VERSION=${{ env.DKML_VERSION }}'
           } | tee cachekey.github.inputs
 
       # Bootstrapping Opam
