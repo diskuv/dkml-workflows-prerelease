@@ -38,7 +38,7 @@ on:
             shift
 
             case "$import_HOST_TARGET_ABIS" in
-              win32*)         import_OPAMROOT="D:/a/.opam" ;;
+              win32*)         import_OPAMROOT="D:/.opam" ;;
               macos*)         import_OPAMROOT="/Users/runner/.opam" ;;
               manylinux2014*) import_OPAMROOT=".ci/opamroot" ;;
               *)
@@ -176,7 +176,7 @@ jobs:
             bootstrap-opam-version: "2.2.0-dkml20220801T155940Z"
             opam-abi: windows_x86
             dkml-host-abi: windows_x86
-            opam-root: D:/a/.opam
+            opam-root: D:/.opam
             vsstudio-hostarch: x64
             vsstudio-arch: x86
             ocaml-options: ocaml-option-32bit
@@ -189,7 +189,7 @@ jobs:
             bootstrap-opam-version: "2.2.0-dkml20220801T155940Z"
             opam-abi: windows_x86_64
             dkml-host-abi: windows_x86_64
-            opam-root: D:/a/.opam
+            opam-root: D:/.opam
             vsstudio-hostarch: x64
             vsstudio-arch: x64
           # Unnecessary to use VS 14.16, but it serves as a good template for
@@ -203,7 +203,7 @@ jobs:
           #   bootstrap-opam-version: "2.2.0-dkml20220801T155940Z"
           #   opam-abi: windows_x86_64
           #   dkml-host-abi: windows_x86_64
-          #   opam-root: D:/a/.opam
+          #   opam-root: D:/.opam
           #   vsstudio-hostarch: x64
           #   vsstudio-arch: x64
           #   vsstudio-dir: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
@@ -228,7 +228,7 @@ jobs:
           #   bootstrap-opam-version: "2.2.0-dkml20220801T155940Z"
           #   opam-abi: windows_x86_64
           #   dkml-host-abi: windows_x86_64
-          #   opam-root: D:/a/.opam
+          #   opam-root: D:/.opam
           #   vsstudio-hostarch: x64
           #   vsstudio-arch: x64
           #   vsstudio-dir: 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise'
