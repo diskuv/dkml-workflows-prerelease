@@ -111,4 +111,8 @@ opam option setenv # print
 
 # --> Build installer for Windows
 win32_build_compiler_cmd=$(cygpath -aw "$HERE"/../win32_build_compiler.cmd)
-VSCMD_SKIP_SENDTELEMETRY=1 MSYSTEM=CLANG64 MSYSTEM_CARCH=x86_64 MSYSTEM_CHOST=x86_64-w64-mingw32 MSYSTEM_PREFIX=/clang64 "$win32_build_compiler_cmd"
+VSCMD_SKIP_SENDTELEMETRY=1 \
+    MSYSTEM=CLANG64 \
+    MSYSTEM_CARCH=x86_64 MSYSTEM_CHOST=x86_64-w64-mingw32 MSYSTEM_PREFIX=/clang64 \
+    MINGW_CHOST=x86_64-w64-mingw32 MINGW_PREFIX=/clang64 MINGW_PACKAGE_PREFIX=mingw-w64-clang-x86_64 \
+    "$win32_build_compiler_cmd"
