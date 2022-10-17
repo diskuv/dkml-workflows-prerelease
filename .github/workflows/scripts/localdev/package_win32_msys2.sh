@@ -88,7 +88,7 @@ PATH="$PWD/.ci/sd4/bs/bin:$PATH" opam pin add --yes --no-action dkml-component-o
 PATH="$PWD/.ci/sd4/bs/bin:$PATH" opam pin add --yes --no-action dkml-component-ocamlcompiler "git://github.com/diskuv/dkml-component-ocamlcompiler.git#${DKML_COMPONENT_OCAMLCOMPILER:-main}"
 PATH="$PWD/.ci/sd4/bs/bin:$PATH" opam pin add --yes --no-action dkml-install "git://github.com/diskuv/dkml-install-api.git#${DKML_INSTALL:-main}"
 PATH="$PWD/.ci/sd4/bs/bin:$PATH" opam pin add --yes --no-action dkml-install-runner "git://github.com/diskuv/dkml-install-api.git#${DKML_INSTALL_RUNNER:-main}"
-PATH="$PWD/.ci/sd4/bs/bin:$PATH" opam pin add --yes --no-action dkml-base-compiler "git://github.com/diskuv/dkml-compiler.git#${DKML_BASE_COMPILER:-main}"
+PATH="$PWD/.ci/sd4/bs/bin:$PATH" opam pin add --yes --no-action dkml-base-compiler "git://github.com/diskuv/dkml-compiler.git#${DKML_COMPILER:-main}"
 PATH="$PWD/.ci/sd4/bs/bin:$PATH" opam pin add --yes --no-action conf-dkml-cross-toolchain "git://github.com/diskuv/dkml-compiler.git#${CONF_DKML_CROSS_TOOLCHAIN:-main}"
 
 # --> Pin ocamlfind

@@ -1,0 +1,30 @@
+(rule
+ (deps
+  (glob_files tmpl/*.yml))
+ (target tmpl.ml)
+ (action
+  (run ocaml-crunch -m plain -o %{target} tmpl/)))
+
+(rule
+ (deps
+  (glob_files scripts/*.sh)
+  (glob_files scripts/*.ps1)
+  (glob_files scripts/*.awk)
+  (glob_files scripts/*.cmd))
+ (target scripts.ml)
+ (action
+  (run ocaml-crunch -m plain -o %{target} scripts/)))
+
+(library
+ (name workflow_content)
+ (modules tmpl scripts))
+
+(library
+ (name workflow_arg)
+ (modules arg_common))
+
+(executables
+ (names gh_setup_dkml_yml gl_setup_dkml_yml)
+ (public_names gh-setup-dkml-yml.exe gl-setup-dkml-yml.exe)
+ (modules gh_setup_dkml_yml gl_setup_dkml_yml)
+ (libraries jingoo workflow_arg workflow_content workflow_logic))

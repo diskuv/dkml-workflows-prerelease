@@ -1,0 +1,18 @@
+(rule
+ (target setup-dkml.gen.gitlab-ci.yml)
+ (action
+  (setenv
+   OCAMLRUNPARAM
+   b
+   (run
+    %{bin:gl-setup-dkml-yml.exe}
+    ; Until https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues/602 closed.
+    ; Also https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues/196
+    --exclude-macos
+    --output-file
+    %{target}))))
+
+(rule
+ (alias runtest)
+ (action
+  (diff setup-dkml.gitlab-ci.yml setup-dkml.gen.gitlab-ci.yml)))

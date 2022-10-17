@@ -21,12 +21,11 @@ export DKML_COMPONENT_OCAMLRUN=
 export DKML_COMPONENT_OCAMLCOMPILER=
 export DKML_INSTALL=
 export DKML_INSTALL_RUNNER=
-export DKML_BASE_COMPILER=
+export DKML_COMPILER=
 export TEMP_OCAML=
 export TEMP_OCAML_CONFIG=
 export DISKUV_OPAM_REPOSITORY=
 export CONF_DKML_CROSS_TOOLCHAIN=
-export DKML_OPTION_32BIT=
 export OPAM_ROOT_CACHE_NUMBER=8
 export OPAMROOT="$ci_drive/.opam-root-cached-$OPAM_ROOT_CACHE_NUMBER"
 if [ -e "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise" ]; then

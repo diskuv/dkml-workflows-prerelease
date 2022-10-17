@@ -1,9 +1,35 @@
 # dkml-workflows
 
-GitHub Action workflows used by and with Diskuv OCaml (DKML) tooling. DKML helps you
+GitLab CI/CD and GitHub Action workflows used by and with Diskuv OCaml (DKML) tooling. DKML helps you
 distribute native OCaml applications on the most common operating systems.
 
-## setup-dkml: Auto-generating GitHub releases for OCaml native executables
+Table of Contents:
+- [dkml-workflows](#dkml-workflows)
+  - [setup-dkml: Auto-generating GitHub and GitLab releases for OCaml native executables](#setup-dkml-auto-generating-github-and-gitlab-releases-for-ocaml-native-executables)
+    - [GitLab](#gitlab)
+    - [GitHub](#github)
+      - [Job 1: Define the `setup-dkml` workflow](#job-1-define-the-setup-dkml-workflow)
+      - [Job 2: Define a matrix build workflow](#job-2-define-a-matrix-build-workflow)
+      - [Job 3: Define a release workflow](#job-3-define-a-release-workflow)
+      - [Distributing your executable](#distributing-your-executable)
+        - [Distributing your Windows executables](#distributing-your-windows-executables)
+    - [Advanced Usage](#advanced-usage)
+      - [Job Inputs](#job-inputs)
+        - [CACHE_PREFIX](#cache_prefix)
+        - [FDOPEN_OPAMEXE_BOOTSTRAP](#fdopen_opamexe_bootstrap)
+      - [Matrix Variables](#matrix-variables)
+        - [gl_image](#gl_image)
+        - [gl_tags](#gl_tags)
+        - [gh_os](#gh_os)
+        - [bootstrap_opam_version](#bootstrap_opam_version)
+        - [opam_root](#opam_root)
+        - [vsstudio_hostarch](#vsstudio_hostarch)
+        - [vsstudio_arch](#vsstudio_arch)
+        - [vsstudio_<others>](#vsstudio_others)
+        - [ocaml_options:](#ocaml_options)
+  - [Sponsor](#sponsor)
+
+## setup-dkml: Auto-generating GitHub and GitLab releases for OCaml native executables
 
 With setup-dkml you can build and automatically create releases of OCaml native executables.
 In contrast to the conventional [setup-ocaml](https://github.com/marketplace/actions/set-up-ocaml) GitHub Action:
@@ -53,14 +79,24 @@ You can follow the three sections on this page, or you can copy one of the examp
 For news about Diskuv OCaml,
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/diskuv.svg?style=social&label=Follow%20%40diskuv)](https://twitter.com/diskuv) on Twitter.
 
-### Job 1: Define the `setup-dkml` workflow
+### GitLab
+
+> macOS runners are not available in the GitLab CI/CD shared fleet unless
+> you apply and are approved at
+> https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues/new . More details are
+> available at https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/blob/main/README.md
+
+
+### GitHub
+
+#### Job 1: Define the `setup-dkml` workflow
 
 Add the `setup-dkml` child workflow to your own GitHub Actions `.yml` file:
 
 ```yaml
 jobs:
   setup-dkml:
-    uses: 'diskuv/dkml-workflows/.github/workflows/setup-dkml.yml@v0'
+    uses: 'diskuv/dkml-workflows/.github/workflows/setup-dkml.yml@v1'
     permissions:
       #   By explicitly setting at least one permission, all other permissions
       #   are set to none. setup-dkml.yml does not need access to your code!
@@ -82,7 +118,7 @@ Only OCaml `ocaml-compiler: 4.12.1` is supported today.
 > [ "make" "download-assets-from-last-github-release" ] {!ocaml-ci}
 > ```
 
-### Job 2: Define a matrix build workflow
+#### Job 2: Define a matrix build workflow
 
 You can copy and paste the following:
 
@@ -100,38 +136,38 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: windows-2019
-            abi-pattern: win32-windows_x86
-            dkml-host-abi: windows_x86
-            opam-root: D:/.opam
+          - gh_os: windows-2019
+            abi_pattern: win32-windows_x86
+            dkml_host_abi: windows_x86
+            opam_root: D:/.opam
             default_shell: msys2 {0}
             msys2_system: MINGW32
             msys2_packages: mingw-w64-i686-pkg-config
-          - os: windows-2019
-            abi-pattern: win32-windows_x86_64
-            dkml-host-abi: windows_x86_64
-            opam-root: D:/.opam
+          - gh_os: windows-2019
+            abi_pattern: win32-windows_x86_64
+            dkml_host_abi: windows_x86_64
+            opam_root: D:/.opam
             default_shell: msys2 {0}
             msys2_system: CLANG64
             msys2_packages: mingw-w64-clang-x86_64-pkg-config
-          - os: macos-latest
-            abi-pattern: macos-darwin_all
-            dkml-host-abi: darwin_x86_64
-            opam-root: /Users/runner/.opam
+          - gh_os: macos-latest
+            abi_pattern: macos-darwin_all
+            dkml_host_abi: darwin_x86_64
+            opam_root: /Users/runner/.opam
             default_shell: sh
-          - os: ubuntu-latest
-            abi-pattern: manylinux2014-linux_x86
-            dkml-host-abi: linux_x86
-            opam-root: .ci/opamroot
+          - gh_os: ubuntu-latest
+            abi_pattern: manylinux2014-linux_x86
+            dkml_host_abi: linux_x86
+            opam_root: .ci/opamroot
             default_shell: sh
-          - os: ubuntu-latest
-            abi-pattern: manylinux2014-linux_x86_64
-            dkml-host-abi: linux_x86_64
-            opam-root: .ci/opamroot
+          - gh_os: ubuntu-latest
+            abi_pattern: manylinux2014-linux_x86_64
+            dkml_host_abi: linux_x86_64
+            opam_root: .ci/opamroot
             default_shell: sh
 
-    runs-on: ${{ matrix.os }}
-    name: build-${{ matrix.abi-pattern }}
+    runs-on: ${{ matrix.gh_os }}
+    name: build-${{ matrix.abi_pattern }}
 
     # Use a Unix shell by default, even on Windows
     defaults:
@@ -144,7 +180,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install MSYS2 to provide Unix shell (Windows only)
-        if: startsWith(matrix.dkml-host-abi, 'windows')
+        if: startsWith(matrix.dkml_host_abi, 'windows')
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{ matrix.msys2_system }}
@@ -168,13 +204,13 @@ jobs:
       - name: Import build environments from setup-dkml
         run: |
           ${{ needs.setup-dkml.outputs.import_func }}
-          import ${{ matrix.abi-pattern }}
+          import ${{ matrix.abi_pattern }}
 
       - name: Cache Opam downloads by host
         uses: actions/cache@v3
         with:
-          path: ${{ matrix.opam-root }}/download-cache
-          key: ${{ matrix.dkml-host-abi }}
+          path: ${{ matrix.opam_root }}/download-cache
+          key: ${{ matrix.dkml_host_abi }}
 
       # >>>>>>>>>>>>>
       # You can customize the next two steps!
@@ -189,17 +225,17 @@ jobs:
 
           # Package up whatever you built
           mkdir dist
-          tar cvfCz dist/${{ matrix.abi-pattern }}.tar.gz _build/install/default .
+          tar cvfCz dist/${{ matrix.abi_pattern }}.tar.gz _build/install/default .
 
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.abi-pattern }}
-          path: dist/${{ matrix.abi-pattern }}.tar.gz
+          name: ${{ matrix.abi_pattern }}
+          path: dist/${{ matrix.abi_pattern }}.tar.gz
 ```
 
 The second last GitHub step ("Use opamrun to build your executable") should be custom to your application.
 
-### Job 3: Define a release workflow
+#### Job 3: Define a release workflow
 
 You can copy and paste the following:
 
@@ -241,9 +277,9 @@ jobs:
             dist/*
 ```
 
-### Distributing your executable
+#### Distributing your executable
 
-#### Distributing your Windows executables
+##### Distributing your Windows executables
 
 Since your executable has been compiled with the Microsoft Visual Studio
 Compiler (MSVC), your executable will require that the Visual Studio
@@ -309,6 +345,102 @@ the `VCToolsRedistDir` environment variable. The `VCToolsRedistDir` environment
 variable will also be available to use as
 `opamrun exec -- sh -c 'echo $VCToolsRedistDir'`
 
+### Advanced Usage
+
+#### Job Inputs
+
+##### CACHE_PREFIX
+
+The prefix of the cache keys.
+
+##### FDOPEN_OPAMEXE_BOOTSTRAP
+
+Boolean.
+
+Use opam.exe from fdopen on Windows. Typically only used when bootstrapping Opam for the first time. May be needed to solve '\"create_process\" failed on sleep: Bad file descriptor' which may need https://github.com/ocaml/opam/commit/417b97d8cfada35682a0f4107eb2e4f9e24fba91
+
+#### Matrix Variables
+
+##### gl_image
+
+The GitLab virtual machine image for macOS. Examples: `macos-11-xcode-12`.
+
+Linux always uses a [Docker-in-Docker image](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker).
+
+##### gl_tags
+
+GitLab CI/CD uses tags like
+`[shared-windows, windows, windows-1809]` to specify the type of runner machine to use
+
+##### gh_os
+
+The GitHub Actions operating system.
+
+##### bootstrap_opam_version
+
+We need an old working Opam; see BOOTSTRAPPING.md of dkml-installer repository.
+We use https://github.com/diskuv/dkml-installer-ocaml/releases
+to get an old one; you specify its version number here.
+
+Special value of 'os' means use the OS's package manager
+(yum/apt/brew).
+
+##### opam_root
+
+OPAMROOT must be a subdirectory of GITHUB_WORKSPACE if running in
+dockcross so that the Opam root (and switch) is visible in both the
+parent and Docker context. Always specify this form as a relative
+path under GITHUB_WORKSPACE.
+
+When not using dockcross, it should be an absolute path to a
+directory with a short length to minimize the 260 character
+limit on Windows (macOS/XCode also has some small limit).
+
+CAUTION: The opam_root MUST be in sync with outputs.import_func!
+
+##### vsstudio_hostarch
+
+Only needed if `gh_os: windows-*`. The ARCH in
+`vsdevcmd.bat -host_arch=ARCH`. Example: x64.
+
+If you have a 64-bit Intel machine you should not use x86 because
+_WIN64 will be defined (see https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-170)
+which is based on the host machine architecture (unless you explicitly
+cross-compile with different ARCHs; that is, -host_arch=x64 -arch=x75).
+Confer: https://docs.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170#use-the-developer-tools-in-an-existing-command-window
+
+If you see ppx problems with missing _BitScanForward64 then
+https://github.com/janestreet/base/blob/8993e35ba2e83e5020b2deb548253ef1e4a699d4/src/int_math_stubs.c#L25-L32
+has been compiled with the wrong host architecture.
+
+##### vsstudio_arch
+
+Only needed if `gh_os: windows-*`. The ARCH in
+`vsdevcmd.bat -arch=ARCH`. Example: x86.
+Confer: https://docs.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170#use-the-developer-tools-in-an-existing-command-window
+
+##### vsstudio_<others>
+
+Hardcodes details about Visual Studio rather than let DKML discover
+a compatible Visual Studio installation.
+
+Example:
+  vsstudio_dir: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
+  vsstudio_vcvarsver: '14.16'
+  vsstudio_winsdkver: '10.0.18362.0'
+  vsstudio_msvspreference: 'VS16.5'
+  vsstudio_cmakegenerator: 'Visual Studio 16 2019'
+
+##### ocaml_options:
+
+Space separated list of `ocaml-option-*` packages.
+
+Use 32-bit installers when possible for maximum portability of
+OCaml bytecode. Linux has difficulty with 32-bit (needs gcc-multilib, etc.)
+macos is only the major platform without 32-bit.
+
+You don't need to include `ocaml-option-32bit` because it is auto
+chosen when the target ABI ends with x86. 
 ## Sponsor
 
 <a href="https://ocaml-sf.org">
