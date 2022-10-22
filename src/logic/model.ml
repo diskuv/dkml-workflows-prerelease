@@ -79,7 +79,6 @@ let matrix =
          https://github.com/actions/virtual-environments/blob/main/images/win/Windows2019-Readme.md
        ------------
 
-
        Windows needs to have a short OPAMROOT to minimize risk of exceeding 260 character
        limit.
 
@@ -90,7 +89,7 @@ let matrix =
       ("abi_pattern", Jg_types.Tstr {|win32-windows_x86|});
       ("gh_os", Jg_types.Tstr {|windows-2019|} (* 2019 has Visual Studio 2019 *));
       ("gl_tags", gl_windows_tags_as_string);
-      ("default_shell", Jg_types.Tstr {|msys2 {0}|});
+      ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|});
       ("msys2_system", Jg_types.Tstr {|MINGW32|});
       ("msys2_packages", Jg_types.Tstr {|mingw-w64-i686-pkg-config|});
       ("exe_ext", Jg_types.Tstr {|.exe|});
@@ -107,7 +106,7 @@ let matrix =
       ("abi_pattern", Jg_types.Tstr {|win32-windows_x86_64|});
       ("gh_os", Jg_types.Tstr {|windows-2019|} (* 2019 has Visual Studio 2019 *));
       ("gl_tags", gl_windows_tags_as_string);
-      ("default_shell", Jg_types.Tstr {|msys2 {0}|});
+      ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|});
       ("msys2_system", Jg_types.Tstr {|CLANG64|});
       ("msys2_packages", Jg_types.Tstr {|mingw-w64-clang-x86_64-pkg-config|});
       ("exe_ext", Jg_types.Tstr {|.exe|});
@@ -124,7 +123,7 @@ let matrix =
        ;[("gh_os", Jg_types.Tstr "windows-2019"   (* 2019 has Visual Studio 2019 *))
          ; ("gl_tags", gl_windows_tags)
          ; ("abi_pattern", Jg_types.Tstr {|win32_1416-windows_64|} (* VS2017 compiler available to VS2019 *))
-         ; ("default_shell", Jg_types.Tstr {|msys2 {0}|})
+         ; ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|})
          ; ("msys2_system", Jg_types.Tstr {|CLANG64|})
          ; ("msys2_packages", Jg_types.Tstr {|mingw-w64-clang-x86_64-pkg-config|})
          ; ("exe_ext", Jg_types.Tstr {|.exe|})
@@ -154,7 +153,7 @@ let matrix =
         ;[("gh_os", Jg_types.Tstr "windows-2022")
           ; ("gl_tags", gl_windows_tags)
           ; ("abi_pattern", Jg_types.Tstr {|win32_2022-windows_x86_64|})
-          ; ("default_shell", Jg_types.Tstr {|msys2 {0}|})
+          ; ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|})
           ; ("msys2_system", Jg_types.Tstr {|CLANG64|})
           ; ("msys2_packages", Jg_types.Tstr {|mingw-w64-clang-x86_64-pkg-config|})
           ; ("exe_ext", Jg_types.Tstr {|.exe|})
@@ -177,7 +176,7 @@ let matrix =
       ("gh_os", Jg_types.Tstr "macos-latest");
       ("gl_tags", gl_macos_tags_as_string);
       ("gl_image", Jg_types.Tstr "macos-11-xcode-12");
-      ("default_shell", Jg_types.Tstr {|sh|});
+      ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|darwin_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|/Users/runner/.opam|});
@@ -228,7 +227,7 @@ let matrix =
       ("abi_pattern", Jg_types.Tstr {|manylinux2014-linux_x86|});
       ("gh_os", Jg_types.Tstr "ubuntu-latest");
       ("comment", Jg_types.Tstr {|(CentOS 7, etc.)|});
-      ("default_shell", Jg_types.Tstr {|sh|});
+      ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86|});
       ("gh_opam_root", Jg_types.Tstr {|.ci/opamroot|});
@@ -241,7 +240,7 @@ let matrix =
     (* ("gh_os", ubuntu-latest
         ; ("abi_pattern", Jg_types.Tstr {|manylinux_2_24-linux_x86|})
         ; ("comment", Jg_types.Tstr {|(glibc>=2.24, Debian 9, etc.)|})
-        ; ("default_shell", Jg_types.Tstr {|sh|})
+        ; ("gh_unix_shell", Jg_types.Tstr {|sh|})
         ; ("bootstrap_opam_version", bootstrap_opam_version)
         ; ("dkml_host_abi", Jg_types.Tstr {|linux_x86|})
         ; ("gh_opam_root", Jg_types.Tstr {|.ci/opamroot|})
@@ -253,7 +252,7 @@ let matrix =
       ("abi_pattern", Jg_types.Tstr {|manylinux2014-linux_x86_64|});
       ("gh_os", Jg_types.Tstr "ubuntu-latest");
       ("comment", Jg_types.Tstr {|(CentOS 7, etc.)|});
-      ("default_shell", Jg_types.Tstr {|sh|});
+      ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|.ci/opamroot|});
@@ -289,41 +288,145 @@ module Aggregate = struct
   let dkml_host_abi_opt t = t.dkml_host_abi_opt
 
   let dump t =
-    match t.dkml_host_os_opt with
-    | None -> []
-    | Some dkml_host_os -> [ ("dkml_host_os", dkml_host_os) ]
+    match (t.dkml_host_os_opt, t.dkml_host_abi_opt) with
+    | Some dkml_host_os, Some dkml_host_abi ->
+        [
+          ("dkml_host_abi", Jg_types.Tstr dkml_host_abi);
+          ("dkml_host_os", dkml_host_os);
+        ]
+    | _ ->
+        failwith
+          "Expected dkml_host_abi would be found and dkml_host_os would be \
+           derived"
 end
 
-let full_matrix ~filter_dkml_host_abi ~rewrite_name_value =
-  Jg_types.Tlist
-    (List.filter_map
-       (fun matrix_item ->
-         let aggregate = Aggregate.create () in
-         let vars =
-           Jg_types.Tlist
-             (List.filter_map
-                (fun (name, value) ->
-                  (* capture aggregates *)
-                  Aggregate.capture ~name ~value aggregate;
-                  (* make name value pair unless ~rewrite_name_value is None *)
-                  match rewrite_name_value ~name ~value () with
-                  | None -> None
-                  | Some (name', value') ->
-                      Some
-                        (Jg_types.Tobj
-                           [ ("name", Jg_types.Tstr name'); ("value", value') ]))
-                matrix_item)
-         in
-         match Aggregate.dkml_host_abi_opt aggregate with
-         | Some dkml_host_abi ->
-             if filter_dkml_host_abi dkml_host_abi then
-               Some
-                 (Jg_types.Tobj ([ ("vars", vars) ] @ Aggregate.dump aggregate))
-             else None
-         | None -> None)
-       matrix)
+(**
+
+  {v
+    { vars: [
+        { name: "abi_pattern", value: 'win32-windows_x86' },
+        { name: "gl_tags", value: '[shared-windows, windows, windows-1809]' },
+        { name: "gh_unix_shell", value: 'msys2 {0}' },
+        { name: "msys2_system", value: 'MINGW32' },
+        { name: "msys2_packages", value: 'mingw-w64-i686-pkg-config' },
+        { name: "exe_ext", value: '.exe' },
+        { name: "bootstrap_opam_version", value: '2.2.0-dkml20220801T155940Z' },
+        { name: "opam_abi", value: 'windows_x86' },
+        { name: "dkml_host_abi", value: 'windows_x86' },
+        { name: "opam_root", value: '${CI_PROJECT_DIR}/.opam' },
+        { name: "vsstudio_hostarch", value: 'x64' },
+        { name: "vsstudio_arch", value: 'x86' },
+        { name: "ocaml_options", value: 'ocaml-option-32bit' },
+        ...
+      ],
+      dkml_host_abi: "windows_x86",
+      dkml_host_os: "windows"
+  v}
+*)
+let full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value =
+  List.filter_map
+    (fun matrix_item ->
+      let aggregate = Aggregate.create () in
+      let vars =
+        Jg_types.Tlist
+          (List.filter_map
+             (fun (name, value) ->
+               (* capture aggregates *)
+               Aggregate.capture ~name ~value aggregate;
+               (* make name value pair unless ~rewrite_name_value is None *)
+               match rewrite_name_value ~name ~value () with
+               | None -> None
+               | Some (name', value') ->
+                   Some
+                     (Jg_types.Tobj
+                        [ ("name", Jg_types.Tstr name'); ("value", value') ]))
+             matrix_item)
+      in
+      match Aggregate.dkml_host_abi_opt aggregate with
+      | Some dkml_host_abi ->
+          if filter_dkml_host_abi dkml_host_abi then
+            Some (Jg_types.Tobj ([ ("vars", vars) ] @ Aggregate.dump aggregate))
+          else None
+      | None -> None)
+    matrix
+
+(**
+
+  {v
+    windows_x86: {
+      abi_pattern: 'win32-windows_x86',
+      gl_tags: '[shared-windows, windows, windows-1809]',
+      gh_unix_shell: 'msys2 {0}',
+      msys2_system: 'MINGW32',
+      msys2_packages: 'mingw-w64-i686-pkg-config',
+      exe_ext: '.exe',
+      bootstrap_opam_version: '2.2.0-dkml20220801T155940Z',
+      opam_abi: 'windows_x86',
+      dkml_host_abi: 'windows_x86',
+      opam_root: '${CI_PROJECT_DIR}/.opam',
+      vsstudio_hostarch: 'x64',
+      vsstudio_arch: 'x86',
+      ocaml_options: 'ocaml-option-32bit' }
+  v}
+*)
+let vars_as_object ~filter_dkml_host_abi ~rewrite_name_value =
+  let matrix = full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value in
+  let vars =
+    List.map
+      (function
+        | Jg_types.Tobj
+            [
+              ("vars", Jg_types.Tlist vars);
+              ("dkml_host_abi", Jg_types.Tstr dkml_host_abi);
+              ("dkml_host_os", Jg_types.Tstr dkml_host_os);
+            ] ->
+            ( dkml_host_abi,
+              Jg_types.Tobj
+                [
+                  ("name", Jg_types.Tstr "dkml_host_os");
+                  ("value", Jg_types.Tstr dkml_host_os);
+                ]
+              :: vars )
+        | _ ->
+            failwith
+              "Expecting [('vars', Tlist varlist); ...] where vars is the \
+               first item")
+      matrix
+  in
+  let f_vars_to_obj = function
+    | Jg_types.Tobj [ ("name", Jg_types.Tstr name'); ("value", value') ] ->
+        (name', value')
+    | v ->
+        let msg =
+          Format.asprintf
+            "Expecting vars is a list of [('name', varlist); ('value', \
+             value)]. Instead a list item was:@ %a"
+            Jg_types.pp_tvalue v
+        in
+        prerr_endline ("FATAL: " ^ msg);
+        failwith msg
+  in
+  match matrix with
+  | _ ->
+      Jg_types.Tobj
+        (List.map
+           (fun (dkml_host_abi, vars) ->
+             (dkml_host_abi, Jg_types.Tobj (List.map f_vars_to_obj vars)))
+           vars)
 
 let model ~filter_dkml_host_abi ~read_script =
+  let gh_rewrite_name_value ~name ~value () =
+    match (name, String.is_prefix ~affix:"gl" name) with
+    | _, true -> None
+    | "gh_opam_root", _ -> Some ("opam_root", value)
+    | _ -> Some (name, value)
+  in
+  let gl_rewrite_name_value ~name ~value () =
+    match (name, String.is_prefix ~affix:"gh" name) with
+    | _, true -> None
+    | "gl_opam_root", _ -> Some ("opam_root", value)
+    | _ -> Some (name, value)
+  in
   [
     ( "global_env_vars",
       Jg_types.Tlist
@@ -333,19 +436,19 @@ let model ~filter_dkml_host_abi ~read_script =
                [ ("name", Jg_types.Tstr name); ("value", Jg_types.Tstr value) ])
            global_env_vars) );
     ( "gh_matrix",
-      full_matrix ~filter_dkml_host_abi
-        ~rewrite_name_value:(fun ~name ~value () ->
-          match (name, String.is_prefix ~affix:"gl" name) with
-          | _, true -> None
-          | "gh_opam_root", _ -> Some ("opam_root", value)
-          | _ -> Some (name, value)) );
+      Jg_types.Tlist
+        (full_matrix_as_list ~filter_dkml_host_abi
+           ~rewrite_name_value:gh_rewrite_name_value) );
+    ( "gh_vars",
+      vars_as_object ~filter_dkml_host_abi
+        ~rewrite_name_value:gh_rewrite_name_value );
     ( "gl_matrix",
-      full_matrix ~filter_dkml_host_abi
-        ~rewrite_name_value:(fun ~name ~value () ->
-          match (name, String.is_prefix ~affix:"gh" name) with
-          | _, true -> None
-          | "gl_opam_root", _ -> Some ("opam_root", value)
-          | _ -> Some (name, value)) );
+      Jg_types.Tlist
+        (full_matrix_as_list ~filter_dkml_host_abi
+           ~rewrite_name_value:gl_rewrite_name_value) );
+    ( "gl_vars",
+      vars_as_object ~filter_dkml_host_abi
+        ~rewrite_name_value:gl_rewrite_name_value );
     ("required_msys2_packages", required_msys2_packages);
   ]
   @ Scripts.to_vars read_script

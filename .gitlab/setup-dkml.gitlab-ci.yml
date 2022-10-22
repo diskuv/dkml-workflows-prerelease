@@ -64,7 +64,6 @@ build_win32:
       # autogen from gl_matrix. only windows
       { abi_pattern: 'win32-windows_x86',
         gl_tags: '[shared-windows, windows, windows-1809]',
-        default_shell: 'msys2 {0}',
         msys2_system: 'MINGW32',
         msys2_packages: 'mingw-w64-i686-pkg-config',
         exe_ext: '.exe',
@@ -78,7 +77,6 @@ build_win32:
         
       { abi_pattern: 'win32-windows_x86_64',
         gl_tags: '[shared-windows, windows, windows-1809]',
-        default_shell: 'msys2 {0}',
         msys2_system: 'CLANG64',
         msys2_packages: 'mingw-w64-clang-x86_64-pkg-config',
         exe_ext: '.exe',
@@ -281,9 +279,6 @@ build_win32:
       ------
       Inputs
       ------
-      DKML_COMPILER=${DKML_COMPILER:-}
-      OCAML_COMPILER=${OCAML_COMPILER:-}
-      CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
       VERBOSE=${VERBOSE:-}
       .
       ------
@@ -1432,9 +1427,6 @@ build_macos:
       ------
       Inputs
       ------
-      DKML_COMPILER=${DKML_COMPILER:-}
-      OCAML_COMPILER=${OCAML_COMPILER:-}
-      CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
       VERBOSE=${VERBOSE:-}
       .
       ------
@@ -2287,7 +2279,6 @@ build_linux:
       # autogen from gl_matrix. only linux
       { abi_pattern: 'manylinux2014-linux_x86' ,
         comment: '(CentOS 7, etc.)' ,
-        default_shell: 'sh' ,
         bootstrap_opam_version: '2.2.0-dkml20220801T155940Z' ,
         dkml_host_abi: 'linux_x86' ,
         opam_root: '.ci/opamroot' ,
@@ -2297,7 +2288,6 @@ build_linux:
         
       { abi_pattern: 'manylinux2014-linux_x86_64' ,
         comment: '(CentOS 7, etc.)' ,
-        default_shell: 'sh' ,
         bootstrap_opam_version: '2.2.0-dkml20220801T155940Z' ,
         dkml_host_abi: 'linux_x86_64' ,
         opam_root: '.ci/opamroot' ,
@@ -2472,9 +2462,6 @@ build_linux:
       ------
       Inputs
       ------
-      DKML_COMPILER=${DKML_COMPILER:-}
-      OCAML_COMPILER=${OCAML_COMPILER:-}
-      CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
       VERBOSE=${VERBOSE:-}
       .
       ------

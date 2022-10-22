@@ -6,6 +6,7 @@ distribute native OCaml applications on the most common operating systems.
 Table of Contents:
 - [dkml-workflows](#dkml-workflows)
   - [setup-dkml: Auto-generating GitHub and GitLab releases for OCaml native executables](#setup-dkml-auto-generating-github-and-gitlab-releases-for-ocaml-native-executables)
+    - [Steps for both GitLab and GitHub](#steps-for-both-gitlab-and-github)
     - [GitLab](#gitlab)
     - [GitHub](#github)
       - [Job 1: Define the `setup-dkml` workflow](#job-1-define-the-setup-dkml-workflow)
@@ -79,6 +80,53 @@ You can follow the three sections on this page, or you can copy one of the examp
 For news about Diskuv OCaml,
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/diskuv.svg?style=social&label=Follow%20%40diskuv)](https://twitter.com/diskuv) on Twitter.
 
+### Steps for both GitLab and GitHub
+
+FIRST, add a dependency to `dkml-workflows` in your project.
+
+- For projects using `dune-project`:
+  1. Add the following to `dune-project`:
+     ```scheme
+     (package
+       ; ...
+       (dkml-workflows
+         (and
+          (>= 1.0.0)
+          :build))
+       ...
+     )
+     ```
+  2. Then do `dune build *.opam`
+- For projects not using `dune-project`:
+  1. Add the following to your `<project>.opam`:
+     ```
+     # ...
+     depends: [
+       "ocaml"
+       "dune" {>= "2.9"}
+       "dkml-workflows" {>= "1.0.0" & build}
+     ]
+     # ...
+     ```
+
+SECOND, update your Opam switch with the new `dkml-workflows` dependency:
+
+```
+opam install . --deps-only
+```
+
+THIRD, generate scaffolding files:
+
+```
+opam exec -- generate-setup-dkml-scaffold.exe
+```
+
+FOURTH, add the scaffolding files to your source control. Assuming you use git, it would be:
+
+```
+git add ci/setup-dkml
+```
+
 ### GitLab
 
 > macOS runners are not available in the GitLab CI/CD shared fleet unless
@@ -88,6 +136,10 @@ For news about Diskuv OCaml,
 
 
 ### GitHub
+
+
+
+
 
 #### Job 1: Define the `setup-dkml` workflow
 
@@ -140,31 +192,31 @@ jobs:
             abi_pattern: win32-windows_x86
             dkml_host_abi: windows_x86
             opam_root: D:/.opam
-            default_shell: msys2 {0}
+            gh_unix_shell: msys2 {0}
             msys2_system: MINGW32
             msys2_packages: mingw-w64-i686-pkg-config
           - gh_os: windows-2019
             abi_pattern: win32-windows_x86_64
             dkml_host_abi: windows_x86_64
             opam_root: D:/.opam
-            default_shell: msys2 {0}
+            gh_unix_shell: msys2 {0}
             msys2_system: CLANG64
             msys2_packages: mingw-w64-clang-x86_64-pkg-config
           - gh_os: macos-latest
             abi_pattern: macos-darwin_all
             dkml_host_abi: darwin_x86_64
             opam_root: /Users/runner/.opam
-            default_shell: sh
+            gh_unix_shell: sh
           - gh_os: ubuntu-latest
             abi_pattern: manylinux2014-linux_x86
             dkml_host_abi: linux_x86
             opam_root: .ci/opamroot
-            default_shell: sh
+            gh_unix_shell: sh
           - gh_os: ubuntu-latest
             abi_pattern: manylinux2014-linux_x86_64
             dkml_host_abi: linux_x86_64
             opam_root: .ci/opamroot
-            default_shell: sh
+            gh_unix_shell: sh
 
     runs-on: ${{ matrix.gh_os }}
     name: build-${{ matrix.abi_pattern }}
@@ -172,7 +224,7 @@ jobs:
     # Use a Unix shell by default, even on Windows
     defaults:
       run:
-        shell: ${{ matrix.default_shell }}
+        shell: ${{ matrix.gh_unix_shell }}
 
     steps:
       # Checkout your source code however you'd like. Typically it is:
@@ -440,7 +492,7 @@ OCaml bytecode. Linux has difficulty with 32-bit (needs gcc-multilib, etc.)
 macos is only the major platform without 32-bit.
 
 You don't need to include `ocaml-option-32bit` because it is auto
-chosen when the target ABI ends with x86. 
+chosen when the target ABI ends with x86.
 ## Sponsor
 
 <a href="https://ocaml-sf.org">
