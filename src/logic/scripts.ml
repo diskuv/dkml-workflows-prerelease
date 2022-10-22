@@ -6,7 +6,7 @@ let indent ~pad s =
   |> List.mapi (fun i s' -> if i > 0 then pad ^ s' else s')
   |> String.concat ~sep:"\n"
 
-let variations = [ ("gh_", "          "); ("gl_", "      ") ]
+let variations = [ ("gh_", "        "); ("gl_", "      ") ]
 
 (* literally from https://erratique.ch/software/uutf/doc/Uutf/index.html#examples *)
 let recode ?nln ?encoding out_encoding

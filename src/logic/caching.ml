@@ -45,7 +45,7 @@ let cachekey_ci_inputs ~input ~matrix:_ =
 let gh_cachekeys read_script =
   let join = String.concat ~sep:"-" in
   let input s = Printf.sprintf "${{ inputs.%s }}" s in
-  let matrix s = Printf.sprintf "${{ matrix.%s }}" s in
+  let matrix s = Printf.sprintf "${{ steps.full_matrix_vars.outputs.%s }}" s in
   [
     ( "gh_cachekey_opambin",
       Jg_types.Tstr (join (cachekey_opambin ~read_script ~input ~matrix)) );

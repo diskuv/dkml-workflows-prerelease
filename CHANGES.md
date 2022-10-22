@@ -23,6 +23,8 @@ Breaking changes:
 - Matrix variables have been renamed to allow the same variable names between GitHub Actions and
   GitLab CI/CD (the latter does not support dashes in variable names).
 
+- The shell matrix variable `default_shell` has been renamed `gh_unix_shell`
+
 - The operating system matrix variable has been reorganized to distingush GitHub
   from GitLab:
 
