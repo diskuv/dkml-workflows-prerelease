@@ -83,6 +83,7 @@ Generated Constants
 -------------------
 DKML_VERSION=$DKML_VERSION
 DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG
+DEFAULT_DKML_COMPILER=$DEFAULT_DKML_COMPILER
 .
 ------
 Matrix
@@ -647,21 +648,15 @@ section_end switch-create
 do_pins() {
     # dkml-base-compiler
 
-    #   Until https://github.com/ocaml/opam-repository/pull/21704 resolved we can't go past the
-    #   commit to remove 32-bit option. After resolved, collapse `env.DKML_COMPILER ==,!= ''`
-    #   into one. Add use '-z' and '-n' shell tests once you do.
-
-    if [ "${DKML_COMPILER:-}" != '@repository@' ] && [ "${DKML_COMPILER:-}" = '' ] && [ "${OCAML_COMPILER:-}" = '' ]; then
-        section_begin checkout-dkml-base-compiler 'Pin dkml-base-compiler (dkml-base-compiler specified but empty; no OCAML_COMPILER specified)'
-        opamrun pin add --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#4.12.1-v0.4.1-prerel6"
+    if [ "${DKML_COMPILER:-}" != '@repository@' ] && [ -z "${DKML_COMPILER:-}" ] && [ -z "${OCAML_COMPILER:-}" ]; then
+        section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler to default ${DEFAULT_DKML_COMPILER} (neither dkml-base-compiler nor OCAML_COMPILER specified)"
+        opamrun pin add --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DEFAULT_DKML_COMPILER}"
         section_end checkout-dkml-base-compiler
-    fi
-    if [ "${DKML_COMPILER:-}" != '@repository@' ] && [ "${DKML_COMPILER:-}" != '' ] && [ "${OCAML_COMPILER:-}" = '' ]; then
-        section_begin checkout-dkml-base-compiler 'Pin dkml-base-compiler (dkml-base-compiler specified non-empty; no OCAML_COMPILER specified)'
-        opamrun pin add --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DKML_COMPILER:-main}"
+    elif [ "${DKML_COMPILER:-}" != '@repository@' ] && [ -n "${DKML_COMPILER:-}" ] && [ -z "${OCAML_COMPILER:-}" ]; then
+        section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler to $DKML_COMPILER (dkml-base-compiler specified; no OCAML_COMPILER specified)"
+        opamrun pin add --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DKML_COMPILER}"
         section_end checkout-dkml-base-compiler
-    fi
-    if [ -n "${OCAML_COMPILER:-}" ]; then
+    elif [ -n "${OCAML_COMPILER:-}" ]; then
         # Validate OCAML_COMPILER (OCAML_COMPILER specified)
         case "${OCAML_COMPILER:-}" in
         4.12.1) true ;;

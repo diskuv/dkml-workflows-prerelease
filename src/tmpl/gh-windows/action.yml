@@ -245,6 +245,7 @@ runs:
         FDOPEN_OPAMEXE_BOOTSTRAP:         "{% raw -%}${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}{%- endraw %}"
         CONF_DKML_CROSS_TOOLCHAIN:        "{% raw -%}${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}{%- endraw %}"
         DISKUV_OPAM_REPOSITORY:           "{% raw -%}${{ inputs.DISKUV_OPAM_REPOSITORY }}{%- endraw %}"
+        DKML_COMPILER:                    "{% raw -%}${{ inputs.DKML_COMPILER }}{%- endraw %}"
         OCAML_COMPILER:                   "{% raw -%}${{ inputs.OCAML_COMPILER }}{%- endraw %}"
         VERBOSE:                          "{% raw -%}${{ inputs.VERBOSE }}{%- endraw %}"
 

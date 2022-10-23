@@ -3,7 +3,7 @@ open Jingoo
 
 let global_env_vars =
   [
-    ("DEFAULT_OCAML_VERSION", "4.12.1");
+    ("DEFAULT_DKML_COMPILER", "4.12.1-v1.0.2");
     ("PIN_BASE", "v0.14.3");
     ("PIN_BIGSTRINGAF", "0.8.0");
     ("PIN_CORE_KERNEL", "v0.14.2");

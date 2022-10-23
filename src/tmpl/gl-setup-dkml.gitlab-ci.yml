@@ -1,4 +1,17 @@
-# setup-dkml. Short form: sd4
+# setup-dkml
+#   Short form: sd4
+
+variables:
+  # input variables which can be overridden with an include. Confer: https://docs.gitlab.com/ee/ci/variables/#pass-an-environment-variable-to-another-job
+  FDOPEN_OPAMEXE_BOOTSTRAP: "false"
+  CACHE_PREFIX: "v1"
+  OCAML_COMPILER: ""
+  DKML_COMPILER: "" # "@repository@" = Opam ; "" = latest from default branch ("main") of git clone
+  CONF_DKML_CROSS_TOOLCHAIN: "@repository@" # "@repository@" = Opam ; "" = latest from default branch of git clone
+  DISKUV_OPAM_REPOSITORY: "" # DEFAULT_DISKUV_OPAM_REPOSITORY_TAG is used as default for empty strings
+  VERBOSE: "false"
+
+  # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}  {{ var.name }}: {{ squot }}{{ var.value }}{{ squot }}{% endfor %}
 
 .build:
   stage: build
@@ -8,17 +21,6 @@
     paths:
       - dist
     expire_in: "1 days"
-  variables:
-    # input variables which can be overridden with an include. Confer: https://docs.gitlab.com/ee/ci/variables/#pass-an-environment-variable-to-another-job
-    FDOPEN_OPAMEXE_BOOTSTRAP: "false"
-    CACHE_PREFIX: "v1"
-    OCAML_COMPILER: ""
-    DKML_COMPILER: "" # "@repository@" = Opam ; "" = latest from default branch of git clone
-    CONF_DKML_CROSS_TOOLCHAIN: "@repository@" # "@repository@" = Opam ; "" = latest from default branch of git clone
-    DISKUV_OPAM_REPOSITORY: "" # DEFAULT_DISKUV_OPAM_REPOSITORY_TAG is used as default for empty strings
-    VERBOSE: "false"
-
-    # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}    {{ var.name }}: {{ squot }}{{ var.value }}{{ squot }}{% endfor %}
 
   # Only 4 caches allowed in GitLab CI
   cache:

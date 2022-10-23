@@ -318,6 +318,7 @@ runs:
         -------------------
         DKML_VERSION=$DKML_VERSION
         DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG
+        DEFAULT_DKML_COMPILER=$DEFAULT_DKML_COMPILER
         .
         ------
         Matrix
@@ -882,21 +883,15 @@ runs:
         do_pins() {
             # dkml-base-compiler
         
-            #   Until https://github.com/ocaml/opam-repository/pull/21704 resolved we can't go past the
-            #   commit to remove 32-bit option. After resolved, collapse `env.DKML_COMPILER ==,!= ''`
-            #   into one. Add use '-z' and '-n' shell tests once you do.
-        
-            if [ "${DKML_COMPILER:-}" != '@repository@' ] && [ "${DKML_COMPILER:-}" = '' ] && [ "${OCAML_COMPILER:-}" = '' ]; then
-                section_begin checkout-dkml-base-compiler 'Pin dkml-base-compiler (dkml-base-compiler specified but empty; no OCAML_COMPILER specified)'
-                opamrun pin add --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#4.12.1-v0.4.1-prerel6"
+            if [ "${DKML_COMPILER:-}" != '@repository@' ] && [ -z "${DKML_COMPILER:-}" ] && [ -z "${OCAML_COMPILER:-}" ]; then
+                section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler to default ${DEFAULT_DKML_COMPILER} (neither dkml-base-compiler nor OCAML_COMPILER specified)"
+                opamrun pin add --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DEFAULT_DKML_COMPILER}"
                 section_end checkout-dkml-base-compiler
-            fi
-            if [ "${DKML_COMPILER:-}" != '@repository@' ] && [ "${DKML_COMPILER:-}" != '' ] && [ "${OCAML_COMPILER:-}" = '' ]; then
-                section_begin checkout-dkml-base-compiler 'Pin dkml-base-compiler (dkml-base-compiler specified non-empty; no OCAML_COMPILER specified)'
-                opamrun pin add --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DKML_COMPILER:-main}"
+            elif [ "${DKML_COMPILER:-}" != '@repository@' ] && [ -n "${DKML_COMPILER:-}" ] && [ -z "${OCAML_COMPILER:-}" ]; then
+                section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler to $DKML_COMPILER (dkml-base-compiler specified; no OCAML_COMPILER specified)"
+                opamrun pin add --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DKML_COMPILER}"
                 section_end checkout-dkml-base-compiler
-            fi
-            if [ -n "${OCAML_COMPILER:-}" ]; then
+            elif [ -n "${OCAML_COMPILER:-}" ]; then
                 # Validate OCAML_COMPILER (OCAML_COMPILER specified)
                 case "${OCAML_COMPILER:-}" in
                 4.12.1) true ;;
@@ -1054,7 +1049,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '1-1d3858-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > cachekey.opam.binaries
+        echo '1-52f582-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > cachekey.opam.binaries
         echo '1-${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > cachekey.vsstudio
         echo '1-${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > cachekey.ci.inputs
 
@@ -1113,11 +1108,12 @@ runs:
         FDOPEN_OPAMEXE_BOOTSTRAP:         "${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}"
         CONF_DKML_CROSS_TOOLCHAIN:        "${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}"
         DISKUV_OPAM_REPOSITORY:           "${{ inputs.DISKUV_OPAM_REPOSITORY }}"
+        DKML_COMPILER:                    "${{ inputs.DKML_COMPILER }}"
         OCAML_COMPILER:                   "${{ inputs.OCAML_COMPILER }}"
         VERBOSE:                          "${{ inputs.VERBOSE }}"
 
         # autogen from global_env_vars.
-        DEFAULT_OCAML_VERSION: '4.12.1'
+        DEFAULT_DKML_COMPILER: '4.12.1-v1.0.2'
         PIN_BASE: 'v0.14.3'
         PIN_BIGSTRINGAF: '0.8.0'
         PIN_CORE_KERNEL: 'v0.14.2'
