@@ -2,7 +2,7 @@ open Jingoo
 
 let tmpl =
   Workflow_content.Tmpl_common.get_template_file
-    ~tmpl_file:"gl-setup-dkml.gitlab-ci.yml"
+    ~tmpl_file:"gl/setup-dkml.gitlab-ci.yml"
 
 let env = { Jg_types.std_env with autoescape = false }
 

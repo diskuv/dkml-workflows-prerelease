@@ -82,9 +82,9 @@ else {
   If ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) { Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2022-09-04/msys2-base-x86_64-20220904.sfx.exe" -outfile "msys64\var\cache\msys2.exe" }
 
   Write-Host "Extract the archive ..."
-  msys64\var\cache\msys2.exe -y # Extract to .\msys64
+  msys64\var\cache\msys2.exe -y # Extract to msys64
   Remove-Item msys64\var\cache\msys2.exe # Delete the archive again
-      ((Get-Content -path msys64\etc\post-install\07-pacman-key.post -Raw) -replace '--refresh-keys', '--version') | Set-Content -Path msys64\etc\post-install\07-pacman-key.post
+  ((Get-Content -path msys64\etc\post-install\07-pacman-key.post -Raw) -replace '--refresh-keys', '--version') | Set-Content -Path msys64\etc\post-install\07-pacman-key.post
   msys64\usr\bin\bash -lc "sed -i 's/^CheckSpace/#CheckSpace/g' /etc/pacman.conf"
 
   Write-Host "Run for the first time ..."
@@ -110,28 +110,27 @@ Write-Host "Writing scripts ..."
 
 # POSIX and AWK scripts
 
+If ( !(Test-Path -Path.ci\sd4 ) ) { New-Item .ci\sd4 -ItemType Directory | Out-Null }
 
 $Content = @'
 {{ pc_common_values_script }}
 '@
-Set-Content -Path "common-values.sh" -Encoding Unicode -Value $Content
-msys64\usr\bin\bash -lc 'dos2unix common-values.sh'
+Set-Content -Path ".ci\sd4\common-values.sh" -Encoding Unicode -Value $Content
+msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/common-values.sh'
 
 
 $Content = @'
 {{ pc_checkout_code_script }}
 '@
-Set-Content -Path "run-checkout-code.sh" -Encoding Unicode -Value $Content
-msys64\usr\bin\bash -lc 'dos2unix run-checkout-code.sh'
+Set-Content -Path ".ci\sd4\run-checkout-code.sh" -Encoding Unicode -Value $Content
+msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/run-checkout-code.sh'
 
 
 $Content = @'
 {{ pc_setup_dkml_script }}
 '@
-Set-Content -Path "run-setup-dkml.sh" -Encoding Unicode -Value $Content
-msys64\usr\bin\bash -lc 'dos2unix run-setup-dkml.sh'
-
-If ( !(Test-Path -Path.ci\sd4 ) ) { New-Item .ci\sd4 -ItemType Directory | Out-Null }
+Set-Content -Path ".ci\sd4\run-setup-dkml.sh" -Encoding Unicode -Value $Content
+msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/run-setup-dkml.sh'
 
 $Content = @'
 {{ pc_msvcenv_awk }}
@@ -152,7 +151,7 @@ msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/msvcpath.awk'
 $Content = @'
 {{ pc_config_vsstudio_ps1 }}
 '@
-Set-Content -Path "config-vsstudio.ps1" -Encoding Unicode -Value $Content
+Set-Content -Path ".ci\sd4\config-vsstudio.ps1" -Encoding Unicode -Value $Content
 
 
 $Content = @'
@@ -162,9 +161,9 @@ REM * We can't use `bash -lc` directly to query for all MSVC environment variabl
 REM   because it stomps over the PATH. So we are inside a Batch script to do the query.
 msys64\usr\bin\bash -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .ci/sd4/msvcenv"
 '@
-Set-Content -Path "get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
+Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
 
-msys64\usr\bin\bash -lc "sh run-checkout-code.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
+msys64\usr\bin\bash -lc "sh .ci/sd4/run-checkout-code.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
 
 # Diagnose Visual Studio environment variables (Windows)
 # This wastes time and has lots of rows! Only run if "VERBOSE" GitHub input key.
@@ -183,17 +182,32 @@ If ( "${env:VERBOSE}" -eq "true" ) {
   $allinstances = Get-VSSetupInstance
   $allinstances | ConvertTo-Json -Depth 5
 }
-.\config-vsstudio.ps1
+.ci\sd4\config-vsstudio.ps1
 msys64\usr\bin\bash -lc "dos2unix .ci/sd4/vsenv.sh"
 Get-Content .ci/sd4/vsenv.sh
 
 # Capture Visual Studio compiler environment
-msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c get-msvcpath-into-msys2.cmd"
+msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c .ci/sd4/get-msvcpath-into-msys2.cmd"
 msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"    
 msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
-msys64\usr\bin\bash -lc "sh run-setup-dkml.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
+msys64\usr\bin\bash -lc "sh .ci/sd4/run-setup-dkml.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
 
 ########################### script ###############################
 
-Write-Host "Finished setup. Use opamrun to continue your testing."
+Write-Host @"
+Finished setup.
+
+To continue your testing, run in PowerShell:
+  \$env:CHERE_INVOKING = "yes"
+  \$env:MSYSTEM = "$env:msys2_system"
+  \$env:dkml_host_abi = "$env:dkml_host_abi"
+  \$env:abi_pattern = "$env:abi_pattern"
+  \$env:opam_root = "$env:opam_root"
+  \$env:exe_ext = "${env:exe_ext}"
+  \$env:PC_PROJECT_DIR = $PWD
+
+  msys64\usr\bin\bash -lc 'PATH="\$PWD/.ci/sd4/opamrun:\$PATH"; opamrun install XYZ.opam'
+
+Use can you any opam-like command you want.
+"@

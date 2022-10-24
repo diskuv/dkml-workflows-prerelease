@@ -23,7 +23,7 @@ shift
 # ------------------------ Functions ------------------------
 
 # shellcheck source=./common-values.sh
-. ./common-values.sh
+. .ci/sd4/common-values.sh
 
 # Disable automatic garbage collection
 git_disable_gc() {

@@ -53,7 +53,7 @@ build_win32:
   variables:
     # https://patchwork.kernel.org/project/qemu-devel/patch/20211215073402.144286-17-thuth@redhat.com/
     CHERE_INVOKING: "yes" # Preserve the current working directory
-    MSYSTEM: '{% raw %}${{ matrix.msys2_system }}{% endraw %}' # Start a 64 bit environment if CLANG64, etc.
+    MSYSTEM: '{% raw %}${msys2_system}{% endraw %}' # Start a 64 bit environment if CLANG64, etc.
   image: $gl_image
   tags: [shared-windows, windows, windows-1809]
   extends: .build
@@ -105,28 +105,29 @@ build_win32:
 
     # POSIX and AWK scripts
 
+    - If ( !(Test-Path -Path .ci\sd4 ) ) { New-Item .ci\sd4 -ItemType Directory | Out-Null }
+
     - |
       $Content = @'
       {{ gl_common_values_script }}
       '@
-      Set-Content -Path "common-values.sh" -Encoding Unicode -Value $Content
-    - msys64\usr\bin\bash -lc 'dos2unix common-values.sh'
+      Set-Content -Path ".ci\sd4\common-values.sh" -Encoding Unicode -Value $Content
+    - msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/common-values.sh'
 
     - |
       $Content = @'
       {{ gl_checkout_code_script }}
       '@
-      Set-Content -Path "run-checkout-code.sh" -Encoding Unicode -Value $Content
-    - msys64\usr\bin\bash -lc 'dos2unix run-checkout-code.sh'
+      Set-Content -Path ".ci\sd4\run-checkout-code.sh" -Encoding Unicode -Value $Content
+    - msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/run-checkout-code.sh'
 
     - |
       $Content = @'
       {{ gl_setup_dkml_script }}
       '@
-      Set-Content -Path "run-setup-dkml.sh" -Encoding Unicode -Value $Content
-    - msys64\usr\bin\bash -lc 'dos2unix run-setup-dkml.sh'
+      Set-Content -Path ".ci\sd4\run-setup-dkml.sh" -Encoding Unicode -Value $Content
+    - msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/run-setup-dkml.sh'
 
-    - If ( !(Test-Path -Path.ci\sd4 ) ) { New-Item .ci\sd4 -ItemType Directory | Out-Null }
     - |
       $Content = @'
       {{ gl_msvcenv_awk }}
@@ -147,7 +148,7 @@ build_win32:
       $Content = @'
       {{ gl_config_vsstudio_ps1 }}
       '@
-      Set-Content -Path "config-vsstudio.ps1" -Encoding Unicode -Value $Content
+      Set-Content -Path ".ci\sd4\config-vsstudio.ps1" -Encoding Unicode -Value $Content
 
     - |
       $Content = @'
@@ -157,9 +158,9 @@ build_win32:
       REM   because it stomps over the PATH. So we are inside a Batch script to do the query.
       msys64\usr\bin\bash -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .ci/sd4/msvcenv"
       '@
-      Set-Content -Path "get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
+      Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
 
-    - msys64\usr\bin\bash -lc "sh run-checkout-code.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
+    - msys64\usr\bin\bash -lc "sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
 
       # Diagnose Visual Studio environment variables (Windows)
       # This wastes time and has lots of rows! Only run if "VERBOSE" GitHub input key.
@@ -178,16 +179,16 @@ build_win32:
           $allinstances = Get-VSSetupInstance
           $allinstances | ConvertTo-Json -Depth 5
       }
-    - .\config-vsstudio.ps1
+    - .ci\sd4\config-vsstudio.ps1
     - msys64\usr\bin\bash -lc "dos2unix .ci/sd4/vsenv.sh"
     - Get-Content .ci/sd4/vsenv.sh
 
       # Capture Visual Studio compiler environment
-    - msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c get-msvcpath-into-msys2.cmd"
+    - msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c '.ci\sd4\get-msvcpath-into-msys2.cmd'"
     - msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"    
     - msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
-    - msys64\usr\bin\bash -lc "sh run-setup-dkml.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
+    - msys64\usr\bin\bash -lc "sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
   script:
     - 'Write-Host "Override the .gitlab-ci.yml configuration ...`n  build_win32:`n    script:`nto configure your Windows build."'
 
@@ -203,20 +204,22 @@ build_macos:
   before_script:
     - echo "Writing scripts ..."
     - |
-      cat > common-values.sh <<'end_of_script'
+      install -d .ci/sd4
+
+      cat > .ci/sd4/common-values.sh <<'end_of_script'
       {{ gl_common_values_script }}
       end_of_script
 
-      cat > run-checkout-code.sh <<'end_of_script'
+      cat > .ci/sd4/run-checkout-code.sh <<'end_of_script'
       {{ gl_checkout_code_script }}
       end_of_script
 
-      cat > run-setup-dkml.sh <<'end_of_script'
+      cat > .ci/sd4/run-setup-dkml.sh <<'end_of_script'
       {{ gl_setup_dkml_script }}
       end_of_script
 
-    - 'sh run-checkout-code.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
-    - 'sh run-setup-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+    - 'sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+    - 'sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
   script:
     - 'printf "Override the .gitlab-ci.yml configuration ...\n  build_macos:\n    script:\nto configure your macOS build.\n"'
 
@@ -261,19 +264,21 @@ build_linux:
     - apk add tar bash git
     - echo "Writing scripts ..."
     - |
-      cat > common-values.sh <<'end_of_script'
+      install -d .ci/sd4
+
+      cat > .ci/sd4/common-values.sh <<'end_of_script'
       {{ gl_common_values_script }}
       end_of_script
 
-      cat > run-checkout-code.sh <<'end_of_script'
+      cat > .ci/sd4/run-checkout-code.sh <<'end_of_script'
       {{ gl_checkout_code_script }}
       end_of_script
 
-      cat > run-setup-dkml.sh <<'end_of_script'
+      cat > .ci/sd4/run-setup-dkml.sh <<'end_of_script'
       {{ gl_setup_dkml_script }}
       end_of_script
 
-    - 'sh run-checkout-code.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
-    - 'sh run-setup-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+    - 'sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+    - 'sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
   script:
     - 'printf "Override the .gitlab-ci.yml configuration ...\n  build_linux:\n    script:\nto configure your Linux build.\n"'

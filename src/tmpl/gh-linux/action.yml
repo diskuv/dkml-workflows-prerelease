@@ -63,6 +63,7 @@ runs:
         add opam_root "$opam_root"
         add exe_ext "${exe_ext:-}"
         add bootstrap_opam_version "${bootstrap_opam_version:-}"
+        add ocaml_options "${ocaml_options:-}"
 
         add dockcross_image "${dockcross_image:-}"
         add dockcross_run_extra_args "${dockcross_run_extra_args:-}"
@@ -75,15 +76,17 @@ runs:
     - name: Write POSIX shell and AWK scripts
       shell: bash
       run: |
-        cat > common-values.sh <<'end_of_script'
+        install -d .ci/sd4
+
+        cat > .ci/sd4/common-values.sh <<'end_of_script'
         {{ gh_common_values_script }}
         end_of_script
 
-        cat > run-checkout-code.sh <<'end_of_script'
+        cat > .ci/sd4/run-checkout-code.sh <<'end_of_script'
         {{ gh_checkout_code_script }}
         end_of_script
 
-        cat > run-setup-dkml.sh <<'end_of_script'
+        cat > .ci/sd4/run-setup-dkml.sh <<'end_of_script'
         {{ gh_setup_dkml_script }}
         end_of_script
 
@@ -94,9 +97,9 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '{{ gh_cachekey_opambin }}' > cachekey.opam.binaries
-        echo '{{ gh_cachekey_vsstudio }}' > cachekey.vsstudio
-        echo '{{ gh_cachekey_ci_inputs }}' > cachekey.ci.inputs
+        echo '{{ gh_cachekey_opambin }}' > .ci/sd4/cachekey.opam.binaries
+        echo '{{ gh_cachekey_vsstudio }}' > .ci/sd4/cachekey.vsstudio
+        echo '{{ gh_cachekey_ci_inputs }}' > .ci/sd4/cachekey.ci.inputs
 
     # Bootstrapping Opam
 
@@ -106,7 +109,7 @@ runs:
       with:
         path: .ci/sd4/bs
         key:
-          "{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('cachekey.opam.binaries') }}{%- endraw %}"
+          "{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}{%- endraw %}"
 
     # ------
     # BEGIN Docker (ManyLinux)
@@ -150,7 +153,7 @@ runs:
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/.ci.root-init
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/.ci.repo-init
         key:
-          c2_{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}{%- endraw %}
+          c2_{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}{%- endraw %}
 
     # The action/checkout steps used for pinning will re-use existing Git objects
     # because of caching
@@ -160,7 +163,7 @@ runs:
       with:
         path: .ci/sd4/g
         key:
-          "{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('cachekey.ci.inputs') }}{%- endraw %}"
+          "{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('.ci/sd4/cachekey.ci.inputs') }}{%- endraw %}"
 
     # Checkout code
 
@@ -169,7 +172,7 @@ runs:
       env:
         # Push down inputs variables for GitHub/GitLab portable scripts
         VERBOSE:          "{% raw -%}${{ inputs.VERBOSE }}{%- endraw %}"
-      run: 'sh run-checkout-code.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"'
+      run: 'sh .ci/sd4/run-checkout-code.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"'
 
     # Setup C compiler
 
@@ -189,7 +192,7 @@ runs:
 
         # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}        {{ var.name }}: {{ squot }}{{ var.value }}{{ squot }}{% endfor %}
       run: |
-        sh run-setup-dkml.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"
+        sh .ci/sd4/run-setup-dkml.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"
 
         # Expose opamrun to remaining GitHub Action steps
         opamrunabs="$GITHUB_WORKSPACE/.ci/sd4/opamrun"

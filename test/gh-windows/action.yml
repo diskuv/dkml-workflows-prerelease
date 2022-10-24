@@ -105,6 +105,7 @@ runs:
         add opam_root "$opam_root"
         add exe_ext "${exe_ext:-}"
         add bootstrap_opam_version "${bootstrap_opam_version:-}"
+        add ocaml_options "${ocaml_options:-}"
 
         add msys2_system "${msys2_system:-}"
         add msys2_packages "${msys2_packages:-}"
@@ -141,7 +142,9 @@ runs:
     - name: Write POSIX shell and AWK scripts
       shell: bash
       run: |
-        cat > common-values.sh <<'end_of_script'
+        install -d .ci/sd4
+
+        cat > .ci/sd4/common-values.sh <<'end_of_script'
         #!/bin/sh
         
         # ------------------------ Log Formatting ------------------------
@@ -194,7 +197,7 @@ runs:
         
         end_of_script
 
-        cat > run-checkout-code.sh <<'end_of_script'
+        cat > .ci/sd4/run-checkout-code.sh <<'end_of_script'
         #!/bin/sh
         
         # ================
@@ -220,7 +223,7 @@ runs:
         # ------------------------ Functions ------------------------
         
         # shellcheck source=./common-values.sh
-        . ./common-values.sh
+        . .ci/sd4/common-values.sh
         
         # Disable automatic garbage collection
         git_disable_gc() {
@@ -298,7 +301,7 @@ runs:
         
         end_of_script
 
-        cat > run-setup-dkml.sh <<'end_of_script'
+        cat > .ci/sd4/run-setup-dkml.sh <<'end_of_script'
         #!/bin/sh
         set -euf
         
@@ -321,7 +324,7 @@ runs:
         # ------------------------ Functions ------------------------
         
         # shellcheck source=./common-values.sh
-        . ./common-values.sh
+        . .ci/sd4/common-values.sh
         
         if [ "${VERBOSE:-}" = "true" ]; then
             do_tar_rf() {
@@ -804,12 +807,13 @@ runs:
         # Add MSVC compiler environment if available
         if [ -e "\$${setup_WORKSPACE_VARNAME}/.ci/sd4/msvcenv" ]; then
             _oldpath="\$PATH"
+            # shellcheck disable=SC1091
             . "\$${setup_WORKSPACE_VARNAME}/.ci/sd4/msvcenv"
             PATH="\$PATH:\$_oldpath"
         
             # MSVC (link.exe) needs a TMP as well.
             # Confer: https://docs.microsoft.com/en-us/cpp/build/reference/linking?view=msvc-170#link-environment-variables
-            if [ -z "${TMP:-}" ]; then
+            if [ -z "\${TMP:-}" ]; then
                 # GitHub Actions as of 2022-10 does not set TMP. GitLab CI/CD does.
                 TMP="\$RUNNER_TEMP"
             fi
@@ -820,7 +824,7 @@ runs:
         fi
         
         # Windows
-        if [ -n "${COMSPEC:-}" ]; then
+        if [ -n "\${COMSPEC:-}" ]; then
             # We must place MSYS2 in front of path so that MSYS2
             # tar.exe is used instead of Windows tar.exe.
             PATH="/usr/bin:\$PATH"
@@ -1106,6 +1110,14 @@ runs:
         }
         do_install_compiler
         
+        do_summary() {
+            section_begin summary "Summary"
+            opamrun var
+            opamrun exec -- ocamlc -config
+            section_end summary
+        }
+        do_summary
+        
         end_of_script
 
         install -d .ci/sd4
@@ -1197,7 +1209,7 @@ runs:
         }
         
         '@
-        Set-Content -Path "config-vsstudio.ps1" -Encoding Unicode -Value $Content
+        Set-Content -Path ".ci\sd4\config-vsstudio.ps1" -Encoding Unicode -Value $Content
 
         $Content = @'
         @ECHO OFF
@@ -1230,7 +1242,7 @@ runs:
         REM (For some reason no shell commands can happen after the last msys2 -c in GitHub Actions
         REM so split into multiple steps!
         '@
-        Set-Content -Path "get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
+        Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
 
     - name: Prepare cache keys
       # An undocumented bug with GitHub Actions is that a space in the key
@@ -1239,9 +1251,9 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '1-52f582-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > cachekey.opam.binaries
-        echo '1-${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > cachekey.vsstudio
-        echo '1-${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > cachekey.ci.inputs
+        echo '1-507384-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '1-${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
+        echo '1-${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
     # Bootstrapping Opam
 
@@ -1251,7 +1263,7 @@ runs:
       with:
         path: .ci/sd4/bs
         key:
-          "${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('cachekey.opam.binaries') }}"
+          "${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}"
 
     - name: Cache Opam root by (host,target)
       uses: actions/cache@v3
@@ -1265,7 +1277,7 @@ runs:
           ${{ steps.full_matrix_vars.outputs.opam_root }}/.ci.root-init
           ${{ steps.full_matrix_vars.outputs.opam_root }}/.ci.repo-init
         key:
-          c2_${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}
+          c2_${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}
 
     # The action/checkout steps used for pinning will re-use existing Git objects
     # because of caching
@@ -1275,7 +1287,7 @@ runs:
       with:
         path: .ci/sd4/g
         key:
-          "${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('cachekey.ci.inputs') }}"
+          "${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('.ci/sd4/cachekey.ci.inputs') }}"
 
     # Checkout code
 
@@ -1284,7 +1296,7 @@ runs:
       env:
         # Push down inputs variables for GitHub/GitLab portable scripts
         VERBOSE:          "${{ inputs.VERBOSE }}"
-      run: 'sh run-checkout-code.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"'
+      run: 'sh .ci/sd4/run-checkout-code.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"'
 
     # Setup C compiler
 
@@ -1298,7 +1310,7 @@ runs:
     - name: Configure Visual Studio (Windows)
       shell: pwsh
       run: |
-        .\config-vsstudio.ps1
+        .ci\sd4\config-vsstudio.ps1
 
     - name: Export Visual Studio location and type (Windows)
       shell: pwsh
@@ -1309,7 +1321,7 @@ runs:
     - name: Capture Visual Studio compiler environment (1/2) (Windows)
       shell: cmd
       run: |
-        call get-msvcpath-into-msys2.cmd
+        call .ci\sd4\get-msvcpath-into-msys2.cmd
 
     - name: Capture Visual Studio compiler environment (2/2) (Windows)
       shell: msys2 {0}
@@ -1351,7 +1363,7 @@ runs:
         PIN_PTIME: '0.8.6-msvcsupport'
         PIN_TIME_NOW: 'v0.14.0'
       run: |
-        sh run-setup-dkml.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"
+        sh .ci/sd4/run-setup-dkml.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"
 
         #   During cache read (the "Cache Opam root by (host,target)" step) we get:
         #      Cache Size: ~212 MB (222698916 B)

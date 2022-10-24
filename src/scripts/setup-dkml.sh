@@ -20,7 +20,7 @@ shift
 # ------------------------ Functions ------------------------
 
 # shellcheck source=./common-values.sh
-. ./common-values.sh
+. .ci/sd4/common-values.sh
 
 if [ "${VERBOSE:-}" = "true" ]; then
     do_tar_rf() {
@@ -503,12 +503,13 @@ set -euf
 # Add MSVC compiler environment if available
 if [ -e "\$${setup_WORKSPACE_VARNAME}/.ci/sd4/msvcenv" ]; then
     _oldpath="\$PATH"
+    # shellcheck disable=SC1091
     . "\$${setup_WORKSPACE_VARNAME}/.ci/sd4/msvcenv"
     PATH="\$PATH:\$_oldpath"
 
     # MSVC (link.exe) needs a TMP as well.
     # Confer: https://docs.microsoft.com/en-us/cpp/build/reference/linking?view=msvc-170#link-environment-variables
-    if [ -z "${TMP:-}" ]; then
+    if [ -z "\${TMP:-}" ]; then
         # GitHub Actions as of 2022-10 does not set TMP. GitLab CI/CD does.
         TMP="\$RUNNER_TEMP"
     fi
@@ -519,7 +520,7 @@ if [ -e "\$${setup_WORKSPACE_VARNAME}/.ci/sd4/msvcenv" ]; then
 fi
 
 # Windows
-if [ -n "${COMSPEC:-}" ]; then
+if [ -n "\${COMSPEC:-}" ]; then
     # We must place MSYS2 in front of path so that MSYS2
     # tar.exe is used instead of Windows tar.exe.
     PATH="/usr/bin:\$PATH"
@@ -804,3 +805,11 @@ do_install_compiler() {
     section_end install-compiler
 }
 do_install_compiler
+
+do_summary() {
+    section_begin summary "Summary"
+    opamrun var
+    opamrun exec -- ocamlc -config
+    section_end summary
+}
+do_summary

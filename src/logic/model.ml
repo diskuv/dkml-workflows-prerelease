@@ -97,8 +97,8 @@ let matrix =
       ("opam_abi", Jg_types.Tstr {|windows_x86|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
-      ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|});
-      ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.opam|});
+      ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
+      ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|});
       ("vsstudio_hostarch", Jg_types.Tstr {|x64|});
       ("vsstudio_arch", Jg_types.Tstr {|x86|});
       ("ocaml_options", Jg_types.Tstr {|ocaml-option-32bit|});
@@ -115,8 +115,8 @@ let matrix =
       ("opam_abi", Jg_types.Tstr {|windows_x86_64|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
-      ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|});
-      ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.opam|});
+      ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
+      ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|});
       ("vsstudio_hostarch", Jg_types.Tstr {|x64|});
       ("vsstudio_arch", Jg_types.Tstr {|x64|});
     ]
@@ -133,8 +133,8 @@ let matrix =
          ; ("opam_abi", Jg_types.Tstr {|windows_x86_64|})
          ; ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|})
          ; ("gh_opam_root", Jg_types.Tstr {|D:/.opam|})
-         ; ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|})
-         ; ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.opam|})
+         ; ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|})
+         ; ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|})
          ; ("vsstudio_hostarch", Jg_types.Tstr {|x64|})
          ; ("vsstudio_arch", Jg_types.Tstr {|x64|})
          ; ("vsstudio_dir", Jg_types.Tstr {|'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'|})
@@ -164,8 +164,8 @@ let matrix =
           ; ("opam_abi", Jg_types.Tstr {|windows_x86_64|})
           ; ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|})
           ; ("gh_opam_root", Jg_types.Tstr {|D:/.opam|})
-          ; ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|})
-          ; ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.opam|})
+          ; ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|})
+          ; ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|})
           ; ("vsstudio_hostarch", Jg_types.Tstr {|x64|})
           ; ("vsstudio_arch", Jg_types.Tstr {|x64|})
           ; ("vsstudio_dir", Jg_types.Tstr {|'C:\Program Files\Microsoft Visual Studio\2022\Enterprise'|})
@@ -184,8 +184,8 @@ let matrix =
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|darwin_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|/Users/runner/.opam|});
-      ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|});
-      ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.opam|});
+      ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
+      ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.ci/o|});
     ]
     (* --- NOT APPLICABLE: BUG FIXED ---
        OCaml 4.12.1 can't compile on manylinux2014 x86 (32-bit). It gives:
@@ -235,9 +235,9 @@ let matrix =
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86|});
-      ("gh_opam_root", Jg_types.Tstr {|.ci/opamroot|});
-      ("gl_opam_root", Jg_types.Tstr {|.ci/opamroot|});
-      ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.opam|});
+      ("gh_opam_root", Jg_types.Tstr {|.ci/o|});
+      ("gl_opam_root", Jg_types.Tstr {|.ci/o|});
+      ("pc_opam_root", Jg_types.Tstr {|.ci/o|});
       ("in_docker", Jg_types.Tstr {|true|});
       ("dockcross_image", Jg_types.Tstr {|dockcross/manylinux2014-x86|})
       (* Gets rid of: WARNING: The requested image's platform (linux/386) does not match the detected host platform (linux/amd64) and no specific platform was requested *);
@@ -249,9 +249,9 @@ let matrix =
         ; ("gh_unix_shell", Jg_types.Tstr {|sh|})
         ; ("bootstrap_opam_version", bootstrap_opam_version)
         ; ("dkml_host_abi", Jg_types.Tstr {|linux_x86|})
-        ; ("gh_opam_root", Jg_types.Tstr {|.ci/opamroot|})
-        ; ("gl_opam_root", Jg_types.Tstr {|.ci/opamroot|})
-        ; ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.opam|})
+        ; ("gh_opam_root", Jg_types.Tstr {|.ci/o|})
+        ; ("gl_opam_root", Jg_types.Tstr {|.ci/o|})
+        ; ("pc_opam_root", Jg_types.Tstr {|.ci/o|})
         ; ("docker_runner", Jg_types.Tstr {|docker run --platform linux/386 --rm -v $GITHUB_WORKSPACE:/work --workdir=/work quay.io/pypa/manylinux_2_24_i686 linux32|})
         ; ("in_docker", Jg_types.Tstr {|true|})
           ] *);
@@ -262,9 +262,9 @@ let matrix =
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86_64|});
-      ("gh_opam_root", Jg_types.Tstr {|.ci/opamroot|});
-      ("gl_opam_root", Jg_types.Tstr {|.ci/opamroot|});
-      ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.opam|});
+      ("gh_opam_root", Jg_types.Tstr {|.ci/o|});
+      ("gl_opam_root", Jg_types.Tstr {|.ci/o|});
+      ("pc_opam_root", Jg_types.Tstr {|.ci/o|});
       ("dockcross_image", Jg_types.Tstr {|dockcross/manylinux2014-x64|});
       ("in_docker", Jg_types.Tstr {|true|});
     ];
@@ -321,7 +321,7 @@ end
         { name: "bootstrap_opam_version", value: '2.2.0-dkml20220801T155940Z' },
         { name: "opam_abi", value: 'windows_x86' },
         { name: "dkml_host_abi", value: 'windows_x86' },
-        { name: "opam_root", value: '${CI_PROJECT_DIR}/.opam' },
+        { name: "opam_root", value: '${CI_PROJECT_DIR}/.ci/o' },
         { name: "vsstudio_hostarch", value: 'x64' },
         { name: "vsstudio_arch", value: 'x86' },
         { name: "ocaml_options", value: 'ocaml-option-32bit' },
@@ -371,7 +371,7 @@ let full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value =
       bootstrap_opam_version: '2.2.0-dkml20220801T155940Z',
       opam_abi: 'windows_x86',
       dkml_host_abi: 'windows_x86',
-      opam_root: '${CI_PROJECT_DIR}/.opam',
+      opam_root: '${CI_PROJECT_DIR}/.ci/o',
       vsstudio_hostarch: 'x64',
       vsstudio_arch: 'x86',
       ocaml_options: 'ocaml-option-32bit' }

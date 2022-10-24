@@ -76,6 +76,7 @@ runs:
         add opam_root "$opam_root"
         add exe_ext "${exe_ext:-}"
         add bootstrap_opam_version "${bootstrap_opam_version:-}"
+        add ocaml_options "${ocaml_options:-}"
 
         add msys2_system "${msys2_system:-}"
         add msys2_packages "${msys2_packages:-}"
@@ -105,15 +106,17 @@ runs:
     - name: Write POSIX shell and AWK scripts
       shell: bash
       run: |
-        cat > common-values.sh <<'end_of_script'
+        install -d .ci/sd4
+
+        cat > .ci/sd4/common-values.sh <<'end_of_script'
         {{ gh_common_values_script }}
         end_of_script
 
-        cat > run-checkout-code.sh <<'end_of_script'
+        cat > .ci/sd4/run-checkout-code.sh <<'end_of_script'
         {{ gh_checkout_code_script }}
         end_of_script
 
-        cat > run-setup-dkml.sh <<'end_of_script'
+        cat > .ci/sd4/run-setup-dkml.sh <<'end_of_script'
         {{ gh_setup_dkml_script }}
         end_of_script
 
@@ -133,7 +136,7 @@ runs:
         $Content = @'
         {{ gh_config_vsstudio_ps1 }}
         '@
-        Set-Content -Path "config-vsstudio.ps1" -Encoding Unicode -Value $Content
+        Set-Content -Path ".ci\sd4\config-vsstudio.ps1" -Encoding Unicode -Value $Content
 
         $Content = @'
         {{ gh_get_msvcpath_cmd }}
@@ -145,7 +148,7 @@ runs:
         REM (For some reason no shell commands can happen after the last msys2 -c in GitHub Actions
         REM so split into multiple steps!
         '@
-        Set-Content -Path "get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
+        Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
 
     - name: Prepare cache keys
       # An undocumented bug with GitHub Actions is that a space in the key
@@ -154,9 +157,9 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '{{ gh_cachekey_opambin }}' > cachekey.opam.binaries
-        echo '{{ gh_cachekey_vsstudio }}' > cachekey.vsstudio
-        echo '{{ gh_cachekey_ci_inputs }}' > cachekey.ci.inputs
+        echo '{{ gh_cachekey_opambin }}' > .ci/sd4/cachekey.opam.binaries
+        echo '{{ gh_cachekey_vsstudio }}' > .ci/sd4/cachekey.vsstudio
+        echo '{{ gh_cachekey_ci_inputs }}' > .ci/sd4/cachekey.ci.inputs
 
     # Bootstrapping Opam
 
@@ -166,7 +169,7 @@ runs:
       with:
         path: .ci/sd4/bs
         key:
-          "{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('cachekey.opam.binaries') }}{%- endraw %}"
+          "{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}{%- endraw %}"
 
     - name: Cache Opam root by (host,target)
       uses: actions/cache@v3
@@ -180,7 +183,7 @@ runs:
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/.ci.root-init
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/.ci.repo-init
         key:
-          c2_{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}{%- endraw %}
+          c2_{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}{%- endraw %}
 
     # The action/checkout steps used for pinning will re-use existing Git objects
     # because of caching
@@ -190,7 +193,7 @@ runs:
       with:
         path: .ci/sd4/g
         key:
-          "{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('cachekey.ci.inputs') }}{%- endraw %}"
+          "{% raw -%}${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('.ci/sd4/cachekey.ci.inputs') }}{%- endraw %}"
 
     # Checkout code
 
@@ -199,7 +202,7 @@ runs:
       env:
         # Push down inputs variables for GitHub/GitLab portable scripts
         VERBOSE:          "{% raw -%}${{ inputs.VERBOSE }}{%- endraw %}"
-      run: 'sh run-checkout-code.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"'
+      run: 'sh .ci/sd4/run-checkout-code.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"'
 
     # Setup C compiler
 
@@ -213,7 +216,7 @@ runs:
     - name: Configure Visual Studio (Windows)
       shell: pwsh
       run: |
-        .\config-vsstudio.ps1
+        .ci\sd4\config-vsstudio.ps1
 
     - name: Export Visual Studio location and type (Windows)
       shell: pwsh
@@ -224,7 +227,7 @@ runs:
     - name: Capture Visual Studio compiler environment (1/2) (Windows)
       shell: cmd
       run: |
-        call get-msvcpath-into-msys2.cmd
+        call .ci\sd4\get-msvcpath-into-msys2.cmd
 
     - name: Capture Visual Studio compiler environment (2/2) (Windows)
       shell: msys2 {0}
@@ -251,7 +254,7 @@ runs:
 
         # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}        {{ var.name }}: {{ squot }}{{ var.value }}{{ squot }}{% endfor %}
       run: |
-        sh run-setup-dkml.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"
+        sh .ci/sd4/run-setup-dkml.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"
 
         #   During cache read (the "Cache Opam root by (host,target)" step) we get:
         #      Cache Size: ~212 MB (222698916 B)
