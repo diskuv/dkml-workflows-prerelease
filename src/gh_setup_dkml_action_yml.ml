@@ -4,14 +4,7 @@ let env = { Jg_types.std_env with autoescape = false }
 
 let action ~output_file ~tmpl_file =
   (* Generate *)
-  let tmpl =
-    match Workflow_content.Tmpl.read tmpl_file with
-    | None ->
-        failwith
-          (Printf.sprintf
-             "There is no template file %s in Workflow_content.Tmpl" tmpl_file)
-    | Some v -> v
-  in
+  let tmpl = Workflow_content.Tmpl_common.get_template_file ~tmpl_file in
   let models =
     Workflow_logic.Model.model
       ~filter_dkml_host_abi:(fun _s -> true)

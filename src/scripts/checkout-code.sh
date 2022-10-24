@@ -48,7 +48,7 @@ git_checkout() {
         git -C ".ci/sd4/g/$git_checkout_NAME" fetch --no-tags --progress --no-recurse-submodules --depth=1 origin "+${git_checkout_REF}:refs/tags/v0.0"
     else
         install -d ".ci/sd4/g/$git_checkout_NAME"
-        git -C ".ci/sd4/g/$git_checkout_NAME" init
+        git -C ".ci/sd4/g/$git_checkout_NAME" -c init.defaultBranch=main init
         git_disable_gc "$git_checkout_NAME"
         git -C ".ci/sd4/g/$git_checkout_NAME" remote add origin "$git_checkout_URL"
         git -C ".ci/sd4/g/$git_checkout_NAME" fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin "+${git_checkout_REF}:refs/tags/v0.0"

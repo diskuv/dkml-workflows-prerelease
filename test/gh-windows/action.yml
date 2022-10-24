@@ -245,7 +245,7 @@ runs:
                 git -C ".ci/sd4/g/$git_checkout_NAME" fetch --no-tags --progress --no-recurse-submodules --depth=1 origin "+${git_checkout_REF}:refs/tags/v0.0"
             else
                 install -d ".ci/sd4/g/$git_checkout_NAME"
-                git -C ".ci/sd4/g/$git_checkout_NAME" init
+                git -C ".ci/sd4/g/$git_checkout_NAME" -c init.defaultBranch=main init
                 git_disable_gc "$git_checkout_NAME"
                 git -C ".ci/sd4/g/$git_checkout_NAME" remote add origin "$git_checkout_URL"
                 git -C ".ci/sd4/g/$git_checkout_NAME" fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin "+${git_checkout_REF}:refs/tags/v0.0"
@@ -1155,7 +1155,7 @@ runs:
         
         # Make export expression [SN]NAME=[SV]VALUE[EV]
         # where [SN] is start name and [SV] and [EV] are start and end value
-        if ("${env:GITLAB_CI}" -eq "true") {
+        if (("${env:GITLAB_CI}" -eq "true") -or ("${env:PC_CI}" -eq "true")) {
             # Executed immediately in POSIX shell, so must be a real POSIX shell variable declaration
             $ExportSN = "export "
             $ExportSV = "'"
@@ -1170,7 +1170,7 @@ runs:
         }
         
         # Locate Visual Studio (Windows)
-        if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv))) {
+        if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv${ExportExt}))) {
             $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
             Import-Module Machine
         
@@ -1200,7 +1200,7 @@ runs:
         Set-Content -Path "config-vsstudio.ps1" -Encoding Unicode -Value $Content
 
         $Content = @'
-        REM @ECHO OFF
+        @ECHO OFF
         
         REM The OCaml dkml-base-compiler will compile fine but any other
         REM packages (ocamlbuild, etc.) which

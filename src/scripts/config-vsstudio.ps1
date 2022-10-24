@@ -17,7 +17,7 @@ if ( "${env:VERBOSE}" -eq "true" ) {
 
 # Make export expression [SN]NAME=[SV]VALUE[EV]
 # where [SN] is start name and [SV] and [EV] are start and end value
-if ("${env:GITLAB_CI}" -eq "true") {
+if (("${env:GITLAB_CI}" -eq "true") -or ("${env:PC_CI}" -eq "true")) {
     # Executed immediately in POSIX shell, so must be a real POSIX shell variable declaration
     $ExportSN = "export "
     $ExportSV = "'"
@@ -32,7 +32,7 @@ if ("${env:GITLAB_CI}" -eq "true") {
 }
 
 # Locate Visual Studio (Windows)
-if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv))) {
+if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv${ExportExt}))) {
     $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
     Import-Module Machine
 

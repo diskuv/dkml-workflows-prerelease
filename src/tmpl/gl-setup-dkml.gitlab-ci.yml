@@ -53,7 +53,7 @@ build_win32:
   variables:
     # https://patchwork.kernel.org/project/qemu-devel/patch/20211215073402.144286-17-thuth@redhat.com/
     CHERE_INVOKING: "yes" # Preserve the current working directory
-    MSYSTEM: "CLANG64" # Start a 64 bit CLANG64 environment
+    MSYSTEM: '{% raw %}${{ matrix.msys2_system }}{% endraw %}' # Start a 64 bit environment if CLANG64, etc.
   image: $gl_image
   tags: [shared-windows, windows, windows-1809]
   extends: .build

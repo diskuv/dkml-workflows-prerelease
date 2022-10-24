@@ -98,6 +98,7 @@ let matrix =
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
       ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|});
+      ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.opam|});
       ("vsstudio_hostarch", Jg_types.Tstr {|x64|});
       ("vsstudio_arch", Jg_types.Tstr {|x86|});
       ("ocaml_options", Jg_types.Tstr {|ocaml-option-32bit|});
@@ -115,6 +116,7 @@ let matrix =
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
       ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|});
+      ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.opam|});
       ("vsstudio_hostarch", Jg_types.Tstr {|x64|});
       ("vsstudio_arch", Jg_types.Tstr {|x64|});
     ]
@@ -132,6 +134,7 @@ let matrix =
          ; ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|})
          ; ("gh_opam_root", Jg_types.Tstr {|D:/.opam|})
          ; ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|})
+         ; ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.opam|})
          ; ("vsstudio_hostarch", Jg_types.Tstr {|x64|})
          ; ("vsstudio_arch", Jg_types.Tstr {|x64|})
          ; ("vsstudio_dir", Jg_types.Tstr {|'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'|})
@@ -162,6 +165,7 @@ let matrix =
           ; ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|})
           ; ("gh_opam_root", Jg_types.Tstr {|D:/.opam|})
           ; ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|})
+          ; ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.opam|})
           ; ("vsstudio_hostarch", Jg_types.Tstr {|x64|})
           ; ("vsstudio_arch", Jg_types.Tstr {|x64|})
           ; ("vsstudio_dir", Jg_types.Tstr {|'C:\Program Files\Microsoft Visual Studio\2022\Enterprise'|})
@@ -181,6 +185,7 @@ let matrix =
       ("dkml_host_abi", Jg_types.Tstr {|darwin_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|/Users/runner/.opam|});
       ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.opam|});
+      ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.opam|});
     ]
     (* --- NOT APPLICABLE: BUG FIXED ---
        OCaml 4.12.1 can't compile on manylinux2014 x86 (32-bit). It gives:
@@ -232,6 +237,7 @@ let matrix =
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86|});
       ("gh_opam_root", Jg_types.Tstr {|.ci/opamroot|});
       ("gl_opam_root", Jg_types.Tstr {|.ci/opamroot|});
+      ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.opam|});
       ("in_docker", Jg_types.Tstr {|true|});
       ("dockcross_image", Jg_types.Tstr {|dockcross/manylinux2014-x86|})
       (* Gets rid of: WARNING: The requested image's platform (linux/386) does not match the detected host platform (linux/amd64) and no specific platform was requested *);
@@ -245,6 +251,7 @@ let matrix =
         ; ("dkml_host_abi", Jg_types.Tstr {|linux_x86|})
         ; ("gh_opam_root", Jg_types.Tstr {|.ci/opamroot|})
         ; ("gl_opam_root", Jg_types.Tstr {|.ci/opamroot|})
+        ; ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.opam|})
         ; ("docker_runner", Jg_types.Tstr {|docker run --platform linux/386 --rm -v $GITHUB_WORKSPACE:/work --workdir=/work quay.io/pypa/manylinux_2_24_i686 linux32|})
         ; ("in_docker", Jg_types.Tstr {|true|})
           ] *);
@@ -257,6 +264,7 @@ let matrix =
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|.ci/opamroot|});
       ("gl_opam_root", Jg_types.Tstr {|.ci/opamroot|});
+      ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.opam|});
       ("dockcross_image", Jg_types.Tstr {|dockcross/manylinux2014-x64|});
       ("in_docker", Jg_types.Tstr {|true|});
     ];
@@ -416,15 +424,33 @@ let vars_as_object ~filter_dkml_host_abi ~rewrite_name_value =
 
 let model ~filter_dkml_host_abi ~read_script =
   let gh_rewrite_name_value ~name ~value () =
-    match (name, String.is_prefix ~affix:"gl" name) with
+    match
+      ( name,
+        String.is_prefix ~affix:"gl" name || String.is_prefix ~affix:"pc" name
+      )
+    with
     | _, true -> None
     | "gh_opam_root", _ -> Some ("opam_root", value)
     | _ -> Some (name, value)
   in
   let gl_rewrite_name_value ~name ~value () =
-    match (name, String.is_prefix ~affix:"gh" name) with
+    match
+      ( name,
+        String.is_prefix ~affix:"gh" name || String.is_prefix ~affix:"pc" name
+      )
+    with
     | _, true -> None
     | "gl_opam_root", _ -> Some ("opam_root", value)
+    | _ -> Some (name, value)
+  in
+  let pc_rewrite_name_value ~name ~value () =
+    match
+      ( name,
+        String.is_prefix ~affix:"gh" name || String.is_prefix ~affix:"gl" name
+      )
+    with
+    | _, true -> None
+    | "pc_opam_root", _ -> Some ("opam_root", value)
     | _ -> Some (name, value)
   in
   [
@@ -449,6 +475,13 @@ let model ~filter_dkml_host_abi ~read_script =
     ( "gl_vars",
       vars_as_object ~filter_dkml_host_abi
         ~rewrite_name_value:gl_rewrite_name_value );
+    ( "pc_matrix",
+      Jg_types.Tlist
+        (full_matrix_as_list ~filter_dkml_host_abi
+           ~rewrite_name_value:pc_rewrite_name_value) );
+    ( "pc_vars",
+      vars_as_object ~filter_dkml_host_abi
+        ~rewrite_name_value:pc_rewrite_name_value );
     ("required_msys2_packages", required_msys2_packages);
   ]
   @ Scripts.to_vars read_script

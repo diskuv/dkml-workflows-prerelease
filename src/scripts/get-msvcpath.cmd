@@ -1,4 +1,4 @@
-REM @ECHO OFF
+@ECHO OFF
 
 REM The OCaml dkml-base-compiler will compile fine but any other
 REM packages (ocamlbuild, etc.) which

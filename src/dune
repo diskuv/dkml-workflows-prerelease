@@ -1,6 +1,7 @@
 (rule
  (deps
   (glob_files tmpl/*.yml)
+  (glob_files tmpl/pc/*.ps1)
   (glob_files tmpl/gh-darwin/*.yml)
   (glob_files tmpl/gh-linux/*.yml)
   (glob_files tmpl/gh-windows/*.yml))
@@ -20,14 +21,15 @@
 
 (library
  (name workflow_content)
- (modules tmpl scripts))
+ (modules tmpl scripts tmpl_common)
+ (libraries astring))
 
 (library
  (name workflow_arg)
  (modules arg_common))
 
 (executables
- (names gh_setup_dkml_action_yml gl_setup_dkml_yml)
- (public_names gh-setup-dkml-action-yml.exe gl-setup-dkml-yml.exe)
- (modules gh_setup_dkml_action_yml gl_setup_dkml_yml)
+ (names gh_setup_dkml_action_yml gl_setup_dkml_yml pc_setup_dkml)
+ (public_names gh-setup-dkml-action-yml.exe gl-setup-dkml-yml.exe pc-setup-dkml.exe)
+ (modules gh_setup_dkml_action_yml gl_setup_dkml_yml pc_setup_dkml)
  (libraries jingoo workflow_arg workflow_content workflow_logic))
