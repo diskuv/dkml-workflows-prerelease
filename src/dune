@@ -36,3 +36,9 @@
   pc-setup-dkml.exe)
  (modules gh_setup_dkml_action_yml gl_setup_dkml_yml pc_setup_dkml)
  (libraries jingoo workflow_arg workflow_content workflow_logic))
+
+(executable
+ (name setup_dkml_scaffold)
+ (public_name generate-setup-dkml-scaffold.exe)
+ (modules setup_dkml_scaffold)
+ (libraries bos uutf))

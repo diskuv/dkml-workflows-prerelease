@@ -1,62 +1,65 @@
 # dkml-workflows
 
-GitLab CI/CD and GitHub Action workflows used by and with Diskuv OCaml (DKML) tooling. DKML helps you
-distribute native OCaml applications on the most common operating systems.
+GitLab CI/CD, GitHub Actions and desktop scripts to setup Diskuv OCaml
+(DKML) compilers. DKML helps you distribute native OCaml applications on the
+most common operating systems.
 
 Table of Contents:
 - [dkml-workflows](#dkml-workflows)
-  - [setup-dkml: Auto-generating GitHub and GitLab releases for OCaml native executables](#setup-dkml-auto-generating-github-and-gitlab-releases-for-ocaml-native-executables)
-    - [Steps for both GitLab and GitHub](#steps-for-both-gitlab-and-github)
-    - [GitLab](#gitlab)
-    - [GitHub](#github)
-      - [Job 1: Define the `setup-dkml` workflow](#job-1-define-the-setup-dkml-workflow)
-      - [Job 2: Define a matrix build workflow](#job-2-define-a-matrix-build-workflow)
-      - [Job 3: Define a release workflow](#job-3-define-a-release-workflow)
-      - [Distributing your executable](#distributing-your-executable)
-        - [Distributing your Windows executables](#distributing-your-windows-executables)
-    - [Advanced Usage](#advanced-usage)
-      - [Job Inputs](#job-inputs)
-        - [CACHE_PREFIX](#cache_prefix)
-        - [FDOPEN_OPAMEXE_BOOTSTRAP](#fdopen_opamexe_bootstrap)
-      - [Matrix Variables](#matrix-variables)
-        - [gl_image](#gl_image)
-        - [gl_tags](#gl_tags)
-        - [gh_os](#gh_os)
-        - [bootstrap_opam_version](#bootstrap_opam_version)
-        - [opam_root](#opam_root)
-        - [vsstudio_hostarch](#vsstudio_hostarch)
-        - [vsstudio_arch](#vsstudio_arch)
-        - [vsstudio_<others>](#vsstudio_others)
-        - [ocaml_options:](#ocaml_options)
+  - [Configure your project](#configure-your-project)
+  - [Using GitLab CI/CD backend](#using-gitlab-cicd-backend)
+  - [Using the GitHub Actions backend](#using-the-github-actions-backend)
+    - [Job 1: Define the `setup-dkml` workflow](#job-1-define-the-setup-dkml-workflow)
+    - [Job 2: Define a matrix build workflow](#job-2-define-a-matrix-build-workflow)
+    - [Job 3: Define a release workflow](#job-3-define-a-release-workflow)
+  - [Using Personal Computer Backend](#using-personal-computer-backend)
+  - [Distributing your executable](#distributing-your-executable)
+    - [Distributing your Windows executables](#distributing-your-windows-executables)
+  - [Advanced Usage](#advanced-usage)
+    - [Job Inputs](#job-inputs)
+      - [CACHE_PREFIX](#cache_prefix)
+      - [FDOPEN_OPAMEXE_BOOTSTRAP](#fdopen_opamexe_bootstrap)
+    - [Matrix Variables](#matrix-variables)
+      - [gl_image](#gl_image)
+      - [gl_tags](#gl_tags)
+      - [gh_os](#gh_os)
+      - [bootstrap_opam_version](#bootstrap_opam_version)
+      - [opam_root](#opam_root)
+      - [vsstudio_hostarch](#vsstudio_hostarch)
+      - [vsstudio_arch](#vsstudio_arch)
+      - [vsstudio_(others)](#vsstudio_others)
+      - [ocaml_options:](#ocaml_options)
   - [Sponsor](#sponsor)
 
-## setup-dkml: Auto-generating GitHub and GitLab releases for OCaml native executables
+This project gives you "`setup-dkml`" scripts to build and automatically create
+releases of OCaml native executables.
 
-With setup-dkml you can build and automatically create releases of OCaml native executables.
 In contrast to the conventional [setup-ocaml](https://github.com/marketplace/actions/set-up-ocaml) GitHub Action:
 
-| `setup-dkml`                         | `setup-ocaml`          | Consequence                                                                                                                                                                                                                                                                                                |
-| ------------------------------------ | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dkml-base-compiler                   | ocaml-base-compiler    | `setup-dkml` **only supports 4.12.1 today**. `setup-ocaml` supports all versions and variants of OCaml                                                                                                                                                                                                     |
-| GitHub child workflow                | GitHub Action          | `setup-dkml` is more complex to configure, and takes longer to run                                                                                                                                                                                                                                         |
-| MSVC + MSYS2                         | GCC + Cygwin           | On Windows `setup-dkml` can let your native code use ordinary Windows libraries without ABI conflicts. You can also distribute your executables without the license headache of redistributing or statically linking `libgcc_s_seh` and `libstdc++`                                                        |
-| dkml-base-compiler                   | ocaml-base-compiler    | On macOS, `setup-dkml` cross-compiles to ARM64 with `dune -x darwin_arm64`                                                                                                                                                                                                                                 |
-| CentOS 7 and Linux distros from 2014 | Latest Ubuntu          | On Linux, `setup-dkml` builds with an old GLIBC. `setup-dkml` dynamically linked Linux executables will be highly portable as GLIBC compatibility issues should be rare, and compatible with the unmodified LGPL license used by common OCaml dependencies like [GNU MP](https://gmplib.org/manual/Copying) |
-| 0 yrs                                | 4 yrs                  | `setup-ocaml` is officially supported and well-tested.                                                                                                                                                                                                                                                     |
-| Some pinned packages                 | No packages pinned     | `setup-dkml`, for some packages, must pin the version so that cross-platform patches (especially for Windows) are available. With `setup-ocaml` you are free to use any version of any package                                                                                                             |
-| diskuv/diskuv-opam-repository        | fdopen/opam-repository | Custom patches for Windows are sometimes needed. `setup-dkml` uses a much smaller set of patches. `setup-ocaml` uses a large but deprecated set of patches.                                                                                                                                                |
+| `setup-dkml`                         | `setup-ocaml`             | Consequence                                                                                                                                                                                                                                                                                                 |
+| ------------------------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| dkml-base-compiler                   | ocaml-base-compiler       | `setup-dkml` **only supports 4.12.1 today**. `setup-ocaml` supports all versions and variants of OCaml                                                                                                                                                                                                      |
+| GitHub Local Action                  | GitHub Marketplace Action | `setup-dkml` uses Dune and Opam to distribute the GitHub build logic, while `setup-ocaml` is distributed through GitHub Marketplace which is easier to use                                                                                                                                                  |
+| GitLab CI/CD Local Include           | *not supported*           | `setup-dkml` supports GitLab CI/CD                                                                                                                                                                                                                                                                          |
+| Personal Computer Scripts | *not supported* | `setup-dkml` can generates scripts (only Windows today) to simulate CI on your personal computer for troubleshooting | 
+| MSVC + MSYS2                         | GCC + Cygwin              | On Windows `setup-dkml` can let your native code use ordinary Windows libraries without ABI conflicts. You can also distribute your executables without the license headache of redistributing or statically linking `libgcc_s_seh` and `libstdc++`                                                         |
+| dkml-base-compiler                   | ocaml-base-compiler       | On macOS, `setup-dkml` cross-compiles to ARM64 with `dune -x darwin_arm64`                                                                                                                                                                                                                                  |
+| CentOS 7 and Linux distros from 2014 | Latest Ubuntu             | On Linux, `setup-dkml` builds with an old GLIBC. `setup-dkml` dynamically linked Linux executables will be highly portable as GLIBC compatibility issues should be rare, and compatible with the unmodified LGPL license used by common OCaml dependencies like [GNU MP](https://gmplib.org/manual/Copying) |
+| 0 yrs                                | 4 yrs                     | `setup-ocaml` is officially supported and well-tested.                                                                                                                                                                                                                                                      |
+| Some pinned packages                 | No packages pinned        | `setup-dkml`, for some packages, must pin the version so that cross-platform patches (especially for Windows) are available. With `setup-ocaml` you are free to use any version of any package                                                                                                              |
+| diskuv/diskuv-opam-repository        | fdopen/opam-repository    | Custom patches for Windows are sometimes needed. `setup-dkml` uses a much smaller set of patches. `setup-ocaml` uses a large but deprecated set of patches.                                                                                                                                                 |
 
 > Put simply, use `setup-dkml` when you are distributing executables or libraries to the public. Use `setup-ocaml` for all other needs.
 
 `setup-dkml` will setup the following OCaml build environments for you:
 
-| ABIs                       | Native `ocamlopt` compiler supports building executables for the following operating systems:                                            |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| win32-windows_x86          | 32-bit Windows [1] for Intel/AMD CPUs                                                                                                    |
-| win32-windows_x86_64       | 64-bit Windows [1] for Intel/AMD CPUs                                                                                                    |
-| macos-darwin_all           | 64-bit macOS for Intel and Apple Silicon CPUs. Using `dune -x darwin_arm64` will cross-compile [2] to both; otherwise defaults to Intel. |
-| manylinux2014-linux_x86    | 32-bit Linux: CentOS 7, CentOS 8, Fedora 32+, Mageia 8+, openSUSE 15.3+, Photon OS 4.0+ (3.0+ with updates), Ubuntu 20.04+               |
-| manylinux2014-linux_x86_64 | 64-bit Linux: CentOS 7, CentOS 8, Fedora 32+, Mageia 8+, openSUSE 15.3+, Photon OS 4.0+ (3.0+ with updates), Ubuntu 20.04+               |
+| ABIs                         | Native `ocamlopt` compiler supports building executables for the following operating systems:                                            |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `win32-windows_x86`          | 32-bit Windows [1] for Intel/AMD CPUs                                                                                                    |
+| `win32-windows_x86_64`       | 64-bit Windows [1] for Intel/AMD CPUs                                                                                                    |
+| `macos-darwin_all`           | 64-bit macOS for Intel and Apple Silicon CPUs. Using `dune -x darwin_arm64` will cross-compile [2] to both; otherwise defaults to Intel. |
+| `manylinux2014-linux_x86`    | 32-bit Linux: CentOS 7, CentOS 8, Fedora 32+, Mageia 8+, openSUSE 15.3+, Photon OS 4.0+ (3.0+ with updates), Ubuntu 20.04+               |
+| `manylinux2014-linux_x86_64` | 64-bit Linux: CentOS 7, CentOS 8, Fedora 32+, Mageia 8+, openSUSE 15.3+, Photon OS 4.0+ (3.0+ with updates), Ubuntu 20.04+               |
 
 > **[1]** See [Distributing your Windows executables](#distributing-your-windows-executables) for further details
 
@@ -64,13 +67,7 @@ In contrast to the conventional [setup-ocaml](https://github.com/marketplace/act
 > [opam monorepo](https://github.com/ocamllabs/opam-monorepo#readme) makes it easy to do exactly that.
 > Alternatively you can directly use [findlib toolchains](http://projects.camlcity.org/projects/dl/findlib-1.9.3/doc/ref-html/r865.html).
 
-You will need three sections in your GitHub Actions `.yml` file to build your executables:
-
-1. A `setup-dkml` workflow to create the above build environments
-2. A "matrix build" workflow to build your OCaml native executables on each
-3. A "release" workflow to assemble all of your native executables into a single release
-
-You can follow the three sections on this page, or you can copy one of the examples:
+You can follow the sections on this page, or you can copy one of the examples:
 
 | Example                                                                                      | Who For                                                                                                                                         |
 | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -80,7 +77,7 @@ You can follow the three sections on this page, or you can copy one of the examp
 For news about Diskuv OCaml,
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/diskuv.svg?style=social&label=Follow%20%40diskuv)](https://twitter.com/diskuv) on Twitter.
 
-### Steps for both GitLab and GitHub
+## Configure your project
 
 FIRST, add a dependency to `dkml-workflows` in your project.
 
@@ -115,33 +112,115 @@ SECOND, update your Opam switch with the new `dkml-workflows` dependency:
 opam install . --deps-only
 ```
 
-THIRD, generate scaffolding files:
+THIRD, create or edit your `.gitattributes` in your project root directory
+so that Windows scripts are encoded correctly. `.gitattributes` should contain
+at least the following:
+
+```properties
+# Set the default behavior, in case people don't have core.autocrlf set.
+# This is critical for Windows and UNIX interoperability.
+* text=auto
+
+# Declare files that will always have LF line endings on checkout.
+.gitattributes text eol=lf
+
+# https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-7.1
+# > Creating PowerShell scripts on a Unix-like platform or using a cross-platform editor on Windows, such as Visual Studio Code,
+# >   results in a file encoded using UTF8NoBOM. These files work fine on PowerShell Core, but may break in Windows PowerShell if
+# >   the file contains non-Ascii characters.
+# > In general, Windows PowerShell uses the Unicode UTF-16LE encoding by default.
+# > Using any Unicode encoding, except UTF7, always creates a BOM.
+#
+# Hint: If a file is causing you problems (ex. `fatal: BOM is required in ... if encoded as UTF-16`) use
+#       "View > Change File Encoding > Save with Encoding > UTF-16LE" in Visual Studio Code to save the file correctly.
+*.ps1 text working-tree-encoding=UTF-16 eol=CRLF
+```
+
+FOURTH, generate scaffolding files:
 
 ```
 opam exec -- generate-setup-dkml-scaffold.exe
 ```
 
-FOURTH, add the scaffolding files to your source control. Assuming you use git, it would be:
+FIFTH, add the scaffolding files to your source control. Assuming you use git, it would be:
 
 ```
 git add ci/setup-dkml
 ```
 
-### GitLab
+## Using GitLab CI/CD backend
 
 > macOS runners are not available in the GitLab CI/CD shared fleet unless
 > you apply and are approved at
 > https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues/new . More details are
 > available at https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/blob/main/README.md
+> 
+> This documentation assumes you have not been approved. There will be callouts
+> for where to edit once you have been approved for macOS.
 
+FIRST, create a `.gitlab-ci.yml` in the project root directory that contains
+at least:
 
-### GitHub
+```yaml
+include:
+  - local: 'ci/setup-dkml/gl/setup-dkml.gitlab-ci.yml'
 
+build_linux:
+  script:
+    - sh ci/build-test.sh
 
+build_win32:
+  script:
+    - msys64\usr\bin\bash -lc "ci/build-test.sh"
 
+# Uncomment macOS when you have a https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues
+# approved!
+#
+# build_macos:
+#   script:
+#     - sh ci/build-test.sh --opam-package "$THE_OPAM_PACKAGE" --executable-name "$THE_EXECUTABLE_NAME"
+```
 
+SECOND, create a script `ci/build-test.sh` that contains your own build logic.
 
-#### Job 1: Define the `setup-dkml` workflow
+At minimum it should contain:
+
+```bash
+#!/bin/sh
+set -euf
+
+# PATH. Add opamrun
+if [ -n "${CI_PROJECT_DIR:-}" ]; then
+    export PATH="$CI_PROJECT_DIR/.ci/sd4/opamrun:$PATH"
+elif [ -n "${PC_PROJECT_DIR:-}" ]; then
+    export PATH="$PC_PROJECT_DIR/.ci/sd4/opamrun:$PATH"
+elif [ -n "${GITHUB_WORKSPACE:-}" ]; then
+    export PATH="$GITHUB_WORKSPACE/.ci/sd4/opamrun:$PATH"
+else
+    export PATH="$PWD/.ci/sd4/opamrun:$PATH"
+fi
+
+# Initial Diagnostics (optional but useful)
+opamrun switch
+opamrun list
+opamrun var
+opamrun config report
+opamrun exec -- ocamlc -config
+
+# Make your own build logic! It may look like ...
+opamrun install . --deps-only --with-test
+opamrun exec -- dune runtest
+```
+
+## Using the GitHub Actions backend
+
+You will need three sections in your GitHub Actions `.yml` file to build your executables:
+
+1. A `setup-dkml` workflow to create the above build environments
+2. A "matrix build" workflow to build your OCaml native executables on each
+3. A "release" workflow to assemble all of your native executables into a single release
+
+### Job 1: Define the `setup-dkml` workflow
 
 Add the `setup-dkml` child workflow to your own GitHub Actions `.yml` file:
 
@@ -170,7 +249,7 @@ Only OCaml `ocaml-compiler: 4.12.1` is supported today.
 > [ "make" "download-assets-from-last-github-release" ] {!ocaml-ci}
 > ```
 
-#### Job 2: Define a matrix build workflow
+### Job 2: Define a matrix build workflow
 
 You can copy and paste the following:
 
@@ -287,7 +366,7 @@ jobs:
 
 The second last GitHub step ("Use opamrun to build your executable") should be custom to your application.
 
-#### Job 3: Define a release workflow
+### Job 3: Define a release workflow
 
 You can copy and paste the following:
 
@@ -329,9 +408,38 @@ jobs:
             dist/*
 ```
 
-#### Distributing your executable
+## Using Personal Computer Backend
 
-##### Distributing your Windows executables
+This backend is meant for troubleshooting when a GitLab CI/CD or GitHub Actions
+backend fails to build your code. You can do the build locally!
+
+> Currently this backend only runs on Windows PCs with Visual Studio already
+> installed.
+
+In PowerShell run:
+
+```powershell
+& ci\setup-dkml\pc\setup-dkml-windows_x86_64.ps1
+```
+
+You can use `& ci\setup-dkml\pc\setup-dkml-windows_x86.ps1` for 32-bit Window
+builds.
+
+After running the `.ps1` script you will see instructions for running
+Opam commands in your PowerShell terminal.
+
+To see all of the advanced options that can be set, use:
+
+```powershell
+get-help ci\setup-dkml\pc\setup-dkml-windows_x86_64.ps1
+```
+
+See [Advanced Usage: Job Inputs](#job-inputs) for some of the advanced options that
+can be set.
+
+## Distributing your executable
+
+### Distributing your Windows executables
 
 Since your executable has been compiled with the Microsoft Visual Studio
 Compiler (MSVC), your executable will require that the Visual Studio
@@ -397,38 +505,38 @@ the `VCToolsRedistDir` environment variable. The `VCToolsRedistDir` environment
 variable will also be available to use as
 `opamrun exec -- sh -c 'echo $VCToolsRedistDir'`
 
-### Advanced Usage
+## Advanced Usage
 
-#### Job Inputs
+### Job Inputs
 
-##### CACHE_PREFIX
+#### CACHE_PREFIX
 
 The prefix of the cache keys.
 
-##### FDOPEN_OPAMEXE_BOOTSTRAP
+#### FDOPEN_OPAMEXE_BOOTSTRAP
 
-Boolean.
+Boolean. Either `true` or anything else (ex. `false`).
 
 Use opam.exe from fdopen on Windows. Typically only used when bootstrapping Opam for the first time. May be needed to solve '\"create_process\" failed on sleep: Bad file descriptor' which may need https://github.com/ocaml/opam/commit/417b97d8cfada35682a0f4107eb2e4f9e24fba91
 
-#### Matrix Variables
+### Matrix Variables
 
-##### gl_image
+#### gl_image
 
 The GitLab virtual machine image for macOS. Examples: `macos-11-xcode-12`.
 
 Linux always uses a [Docker-in-Docker image](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker).
 
-##### gl_tags
+#### gl_tags
 
 GitLab CI/CD uses tags like
 `[shared-windows, windows, windows-1809]` to specify the type of runner machine to use
 
-##### gh_os
+#### gh_os
 
 The GitHub Actions operating system.
 
-##### bootstrap_opam_version
+#### bootstrap_opam_version
 
 We need an old working Opam; see BOOTSTRAPPING.md of dkml-installer repository.
 We use https://github.com/diskuv/dkml-installer-ocaml/releases
@@ -437,7 +545,7 @@ to get an old one; you specify its version number here.
 Special value of 'os' means use the OS's package manager
 (yum/apt/brew).
 
-##### opam_root
+#### opam_root
 
 OPAMROOT must be a subdirectory of GITHUB_WORKSPACE if running in
 dockcross so that the Opam root (and switch) is visible in both the
@@ -450,7 +558,7 @@ limit on Windows (macOS/XCode also has some small limit).
 
 CAUTION: The opam_root MUST be in sync with outputs.import_func!
 
-##### vsstudio_hostarch
+#### vsstudio_hostarch
 
 Only needed if `gh_os: windows-*`. The ARCH in
 `vsdevcmd.bat -host_arch=ARCH`. Example: x64.
@@ -465,25 +573,26 @@ If you see ppx problems with missing _BitScanForward64 then
 https://github.com/janestreet/base/blob/8993e35ba2e83e5020b2deb548253ef1e4a699d4/src/int_math_stubs.c#L25-L32
 has been compiled with the wrong host architecture.
 
-##### vsstudio_arch
+#### vsstudio_arch
 
 Only needed if `gh_os: windows-*`. The ARCH in
 `vsdevcmd.bat -arch=ARCH`. Example: x86.
 Confer: https://docs.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170#use-the-developer-tools-in-an-existing-command-window
 
-##### vsstudio_<others>
+#### vsstudio_(others)
 
 Hardcodes details about Visual Studio rather than let DKML discover
 a compatible Visual Studio installation.
 
 Example:
-  vsstudio_dir: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
-  vsstudio_vcvarsver: '14.16'
-  vsstudio_winsdkver: '10.0.18362.0'
-  vsstudio_msvspreference: 'VS16.5'
-  vsstudio_cmakegenerator: 'Visual Studio 16 2019'
 
-##### ocaml_options:
+    vsstudio_dir: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
+    vsstudio_vcvarsver: '14.16'
+    vsstudio_winsdkver: '10.0.18362.0'
+    vsstudio_msvspreference: 'VS16.5'
+    vsstudio_cmakegenerator: 'Visual Studio 16 2019'
+
+#### ocaml_options:
 
 Space separated list of `ocaml-option-*` packages.
 
@@ -493,6 +602,7 @@ macos is only the major platform without 32-bit.
 
 You don't need to include `ocaml-option-32bit` because it is auto
 chosen when the target ABI ends with x86.
+
 ## Sponsor
 
 <a href="https://ocaml-sf.org">

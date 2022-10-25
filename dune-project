@@ -1,6 +1,7 @@
 (lang dune 2.9)
 
 (name dkml-workflows)
+
 (version 1.0.0)
 
 (generate_opam_files true)
@@ -24,6 +25,8 @@
   dune
   (astring
    (>= 0.8.5))
+  (bos
+   (>= 0.2.1))
   (crunch
    (>= 3.2.0))
   (jingoo
