@@ -4,7 +4,7 @@
   (setenv
    OCAMLRUNPARAM
    b
-   (run ../../../src/pc_setup_dkml.exe --output-windows_x86 %{target}))))
+   (run ../../src/pc_setup_dkml.exe --output-windows_x86 %{target}))))
 
 (rule
  (alias runtest)
