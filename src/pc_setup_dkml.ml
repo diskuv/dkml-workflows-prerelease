@@ -23,7 +23,7 @@ let windows_action ~dkml_host_abi filename =
 
 let () =
   (* Parse args *)
-  let exe_name = "pc-setup-dkml.exe" in
+  let exe_name = "pc-setup-dkml" in
   let usage =
     Printf.sprintf
       "%s [--output-windows_x86 OUTPUT_FILE.ps1] [--output-windows_x86_64 \

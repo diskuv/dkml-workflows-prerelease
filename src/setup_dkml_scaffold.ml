@@ -141,7 +141,7 @@ let scaffold ~output_dir () =
 
 let () =
   (* Parse args *)
-  let exe_name = "generate-setup-dkml-scaffold.exe" in
+  let exe_name = "generate-setup-dkml-scaffold" in
   let usage = Printf.sprintf "%s --output-file OUTPUT_FILE" exe_name in
   let anon _s = failwith "No command line arguments are supported" in
   let output_dir = ref "ci/setup-dkml" in
