@@ -7,11 +7,10 @@ most common operating systems.
 Table of Contents:
 - [dkml-workflows](#dkml-workflows)
   - [Configure your project](#configure-your-project)
+  - [Create `ci/build-test.sh`](#create-cibuild-testsh)
+  - [Examples](#examples)
   - [Using GitLab CI/CD backend](#using-gitlab-cicd-backend)
   - [Using the GitHub Actions backend](#using-the-github-actions-backend)
-    - [Job 1: Define the `setup-dkml` workflow](#job-1-define-the-setup-dkml-workflow)
-    - [Job 2: Define a matrix build workflow](#job-2-define-a-matrix-build-workflow)
-    - [Job 3: Define a release workflow](#job-3-define-a-release-workflow)
   - [Using Personal Computer Backend](#using-personal-computer-backend)
   - [Distributing your executable](#distributing-your-executable)
     - [Distributing your Windows executables](#distributing-your-windows-executables)
@@ -41,7 +40,7 @@ In contrast to the conventional [setup-ocaml](https://github.com/marketplace/act
 | dkml-base-compiler                   | ocaml-base-compiler       | `setup-dkml` **only supports 4.12.1 today**. `setup-ocaml` supports all versions and variants of OCaml                                                                                                                                                                                                      |
 | GitHub Local Action                  | GitHub Marketplace Action | `setup-dkml` uses Dune and Opam to distribute the GitHub build logic, while `setup-ocaml` is distributed through GitHub Marketplace which is easier to use                                                                                                                                                  |
 | GitLab CI/CD Local Include           | *not supported*           | `setup-dkml` supports GitLab CI/CD                                                                                                                                                                                                                                                                          |
-| Personal Computer Scripts | *not supported* | `setup-dkml` can generates scripts (only Windows today) to simulate CI on your personal computer for troubleshooting | 
+| Personal Computer Scripts            | *not supported*           | `setup-dkml` can generates scripts (only Windows today) to simulate CI on your personal computer for troubleshooting                                                                                                                                                                                        |
 | MSVC + MSYS2                         | GCC + Cygwin              | On Windows `setup-dkml` can let your native code use ordinary Windows libraries without ABI conflicts. You can also distribute your executables without the license headache of redistributing or statically linking `libgcc_s_seh` and `libstdc++`                                                         |
 | dkml-base-compiler                   | ocaml-base-compiler       | On macOS, `setup-dkml` cross-compiles to ARM64 with `dune -x darwin_arm64`                                                                                                                                                                                                                                  |
 | CentOS 7 and Linux distros from 2014 | Latest Ubuntu             | On Linux, `setup-dkml` builds with an old GLIBC. `setup-dkml` dynamically linked Linux executables will be highly portable as GLIBC compatibility issues should be rare, and compatible with the unmodified LGPL license used by common OCaml dependencies like [GNU MP](https://gmplib.org/manual/Copying) |
@@ -109,6 +108,7 @@ FIRST, add a dependency to `dkml-workflows` in your project.
 SECOND, update your Opam switch with the new `dkml-workflows` dependency:
 
 ```
+git commit -a -m 'Add dkml-workflows@v1'
 opam install . --deps-only
 ```
 
@@ -149,40 +149,10 @@ FIFTH, add the scaffolding files to your source control. Assuming you use git, i
 git add ci/setup-dkml
 ```
 
-## Using GitLab CI/CD backend
+## Create `ci/build-test.sh`
 
-> macOS runners are not available in the GitLab CI/CD shared fleet unless
-> you apply and are approved at
-> https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues/new . More details are
-> available at https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/blob/main/README.md
-> 
-> This documentation assumes you have not been approved. There will be callouts
-> for where to edit once you have been approved for macOS.
-
-FIRST, create a `.gitlab-ci.yml` in the project root directory that contains
-at least:
-
-```yaml
-include:
-  - local: 'ci/setup-dkml/gl/setup-dkml.gitlab-ci.yml'
-
-build_linux:
-  script:
-    - sh ci/build-test.sh
-
-build_win32:
-  script:
-    - msys64\usr\bin\bash -lc "ci/build-test.sh"
-
-# Uncomment macOS when you have a https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues
-# approved!
-#
-# build_macos:
-#   script:
-#     - sh ci/build-test.sh --opam-package "$THE_OPAM_PACKAGE" --executable-name "$THE_EXECUTABLE_NAME"
-```
-
-SECOND, create a script `ci/build-test.sh` that contains your own build logic.
+Your build logic will be inside a POSIX shell script. This will work even on Windows; just be careful on Windows
+that you save the shell script with LF line endings (not CRLF), and use UTF-8 encoding.
 
 At minimum it should contain:
 
@@ -213,57 +183,75 @@ opamrun install . --deps-only --with-test
 opamrun exec -- dune runtest
 ```
 
-## Using the GitHub Actions backend
+## Examples
 
-You will need three sections in your GitHub Actions `.yml` file to build your executables:
+The full list of examples is:
 
-1. A `setup-dkml` workflow to create the above build environments
-2. A "matrix build" workflow to build your OCaml native executables on each
-3. A "release" workflow to assemble all of your native executables into a single release
+| Example                                                                                      | Who For                                                                                                                                         |
+| -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [dkml-workflows-monorepo-example](https://github.com/diskuv/dkml-workflows-monorepo-example) | **Not ready for public use yet!**<br>You want to cross-compile ARM64 on Mac Intel.<br>You are building [Mirage unikernels](https://mirage.io/). |
+| [dkml-workflows-regular-example](https://github.com/diskuv/dkml-workflows-regular-example)   | Everybody else                                                                                                                                  |
 
-### Job 1: Define the `setup-dkml` workflow
+## Using GitLab CI/CD backend
 
-Add the `setup-dkml` child workflow to your own GitHub Actions `.yml` file:
+> macOS runners are not available in the GitLab CI/CD shared fleet unless
+> you apply and are approved at
+> https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues/new . More details are
+> available at https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/blob/main/README.md
+> 
+> This documentation assumes you have not been approved. There will be callouts
+> for where to edit once you have been approved for macOS.
+
+Create a `.gitlab-ci.yml` in the project root directory that contains
+at least:
 
 ```yaml
-jobs:
-  setup-dkml:
-    uses: 'diskuv/dkml-workflows/.github/workflows/setup-dkml.yml@v1'
-    permissions:
-      #   By explicitly setting at least one permission, all other permissions
-      #   are set to none. setup-dkml.yml does not need access to your code!
-      #   Verify in 'Set up job > GITHUB_TOKEN permissions'.
-      actions: none
-    with:
-      ocaml-compiler: 4.12.1
+include:
+  - local: 'ci/setup-dkml/gl/setup-dkml.gitlab-ci.yml'
+
+build_linux:
+  script:
+    - sh ci/build-test.sh
+
+build_win32:
+  script:
+    - msys64\usr\bin\bash -lc "ci/build-test.sh"
+
+# Uncomment macOS when you have a https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues
+# approved!
+#
+# build_macos:
+#   script:
+#     - sh ci/build-test.sh --opam-package "$THE_OPAM_PACKAGE" --executable-name "$THE_EXECUTABLE_NAME"
 ```
 
-`setup-dkml` will create an Opam switch containing an OCaml compiler based on the dkml-base-compiler packages.
-Only OCaml `ocaml-compiler: 4.12.1` is supported today.
+The [Examples](#examples) include more features, like the uploading and releasing of your built artifacts.
 
-> **Advanced**
->
-> The switch will have an Opam variable `ocaml-ci=true` that can be used in Opam filter expressions for advanced optimizations like:
->
-> ```c
-> [ "make" "rebuild-expensive-assets-from-scratch" ]    {ocaml-ci}
-> [ "make" "download-assets-from-last-github-release" ] {!ocaml-ci}
-> ```
+## Using the GitHub Actions backend
 
-### Job 2: Define a matrix build workflow
-
-You can copy and paste the following:
+Create a GitHub workflow file in `.github/workflows` that contains at least:
 
 ```yaml
-jobs:
-  setup-dkml:
-    # ...
-  build:
-    # Wait until `setup-dkml` is finished
-    needs: setup-dkml
+# Suggested filename: .github/workflows/build-with-dkml.yml
 
-    # Five (5) build environments will be available. You can include
-    # all of them or a subset of them.
+name: Build with DKML compiler
+
+env:
+  OPAM_PACKAGE: "your_example"
+  DKML_COMPILER: "" # You can override the dkml-compiler package version. Example: 4.12.1-v1.0.2
+
+on:
+  push:
+    branches:
+      - main
+      - v*
+    tags:
+      - v*
+  # ... or trigger manually from GitHub web interface
+  workflow_dispatch:
+
+jobs:
+  build:
     strategy:
       fail-fast: false
       matrix:
@@ -271,143 +259,58 @@ jobs:
           - gh_os: windows-2019
             abi_pattern: win32-windows_x86
             dkml_host_abi: windows_x86
-            opam_root: D:/.opam
-            gh_unix_shell: msys2 {0}
-            msys2_system: MINGW32
-            msys2_packages: mingw-w64-i686-pkg-config
           - gh_os: windows-2019
             abi_pattern: win32-windows_x86_64
             dkml_host_abi: windows_x86_64
-            opam_root: D:/.opam
-            gh_unix_shell: msys2 {0}
-            msys2_system: CLANG64
-            msys2_packages: mingw-w64-clang-x86_64-pkg-config
-          - gh_os: macos-latest
-            abi_pattern: macos-darwin_all
-            dkml_host_abi: darwin_x86_64
-            opam_root: /Users/runner/.opam
-            gh_unix_shell: sh
           - gh_os: ubuntu-latest
             abi_pattern: manylinux2014-linux_x86
             dkml_host_abi: linux_x86
-            opam_root: .ci/opamroot
-            gh_unix_shell: sh
           - gh_os: ubuntu-latest
             abi_pattern: manylinux2014-linux_x86_64
             dkml_host_abi: linux_x86_64
-            opam_root: .ci/opamroot
-            gh_unix_shell: sh
+          - gh_os: macos-latest
+            abi_pattern: macos-darwin_all
+            dkml_host_abi: darwin_x86_64
 
     runs-on: ${{ matrix.gh_os }}
-    name: build-${{ matrix.abi_pattern }}
-
-    # Use a Unix shell by default, even on Windows
-    defaults:
-      run:
-        shell: ${{ matrix.gh_unix_shell }}
+    name: build / ${{ matrix.abi_pattern }}
 
     steps:
-      # Checkout your source code however you'd like. Typically it is:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install MSYS2 to provide Unix shell (Windows only)
-        if: startsWith(matrix.dkml_host_abi, 'windows')
-        uses: msys2/setup-msys2@v2
+      # The Setup DKML action will create the environment variables:
+      #   opam_root, exe_ext, dkml_host_abi, abi_pattern (and many more)
+
+      - name: Setup DKML on a Windows host
+        if: startsWith(matrix.dkml_host_abi, 'windows_')
+        uses: ./ci/setup-dkml/gh-windows
         with:
-          msystem: ${{ matrix.msys2_system }}
-          update: true
-          install: >-
-            ${{ matrix.msys2_packages }}
-            wget
-            make
-            rsync
-            diffutils
-            patch
-            unzip
-            git
-            tar
+          DKML_COMPILER: ${{ env.DKML_COMPILER }}
 
-      - name: Download setup-dkml artifacts
-        uses: actions/download-artifact@v3
+      - name: Setup DKML on a Darwin host
+        if: startsWith(matrix.dkml_host_abi, 'darwin_')
+        uses: ./ci/setup-dkml/gh-darwin
         with:
-          path: .ci/dist
+          DKML_COMPILER: ${{ env.DKML_COMPILER }}
 
-      - name: Import build environments from setup-dkml
-        run: |
-          ${{ needs.setup-dkml.outputs.import_func }}
-          import ${{ matrix.abi_pattern }}
-
-      - name: Cache Opam downloads by host
-        uses: actions/cache@v3
+      - name: Setup DKML on a Linux host
+        if: startsWith(matrix.dkml_host_abi, 'linux_')
+        uses: ./ci/setup-dkml/gh-linux
         with:
-          path: ${{ matrix.opam_root }}/download-cache
-          key: ${{ matrix.dkml_host_abi }}
+          DKML_COMPILER: ${{ env.DKML_COMPILER }}
 
-      # >>>>>>>>>>>>>
-      # You can customize the next two steps!
-      # >>>>>>>>>>>>>
+      - name: Build and test the package on Windows host
+        if: startsWith(matrix.dkml_host_abi, 'windows_')
+        shell: msys2 {0}
+        run: ci/build-test.sh --opam-package your_example.opam --executable-name your_example
 
-      - name: Use opamrun to build your executable
-        run: |
-          #!/bin/sh
-          set -eufx
-          opamrun install . --with-test --deps-only --yes
-          opamrun exec -- dune build @install
-
-          # Package up whatever you built
-          mkdir dist
-          tar cvfCz dist/${{ matrix.abi_pattern }}.tar.gz _build/install/default .
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.abi_pattern }}
-          path: dist/${{ matrix.abi_pattern }}.tar.gz
+      - name: Build and test the package on non-Windows host
+        if: "!startsWith(matrix.dkml_host_abi, 'windows_')"
+        run: ci/build-test.sh --opam-package your_example.opam --executable-name your_example
 ```
 
-The second last GitHub step ("Use opamrun to build your executable") should be custom to your application.
-
-### Job 3: Define a release workflow
-
-You can copy and paste the following:
-
-```yaml
-jobs:
-  setup-dkml:
-    # ...
-  build:
-    # ...
-  release:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # Needed for softprops/action-gh-release@v1
-    # Wait until `build` complete
-    needs:
-      - build
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          path: dist
-
-      - name: Remove setup artifacts
-        run: rm -rf setup-*
-        working-directory: dist
-
-      - name: Display files downloaded
-        run: ls -R
-        working-directory: dist
-
-      # >>>>>>>>>>>>>
-      # You can customize the next two steps!
-      # >>>>>>>>>>>>>
-
-      - name: Release (only when Git tag pushed)
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            dist/*
-```
+The [Examples](#examples) include more features, like the uploading and releasing of your built artifacts.
 
 ## Using Personal Computer Backend
 
