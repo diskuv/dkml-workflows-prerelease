@@ -238,6 +238,7 @@ name: Build with DKML compiler
 
 env:
   OPAM_PACKAGE: "your_example"
+  EXECUTABLE_NAME: "your_example"
   DKML_COMPILER: "" # You can override the dkml-compiler package version. Example: 4.12.1-v1.0.2
 
 on:
@@ -303,11 +304,11 @@ jobs:
       - name: Build and test the package on Windows host
         if: startsWith(matrix.dkml_host_abi, 'windows_')
         shell: msys2 {0}
-        run: ci/build-test.sh --opam-package your_example.opam --executable-name your_example
+        run: ci/build-test.sh --opam-package ${{ env.OPAM_PACKAGE }} --executable-name ${{ env.EXECUTABLE_NAME }}
 
       - name: Build and test the package on non-Windows host
         if: "!startsWith(matrix.dkml_host_abi, 'windows_')"
-        run: ci/build-test.sh --opam-package your_example.opam --executable-name your_example
+        run: ci/build-test.sh --opam-package ${{ env.OPAM_PACKAGE }} --executable-name ${{ env.EXECUTABLE_NAME }}
 ```
 
 The [Examples](#examples) include more features, like the uploading and releasing of your built artifacts.
