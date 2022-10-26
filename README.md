@@ -139,7 +139,7 @@ at least the following:
 FOURTH, generate scaffolding files:
 
 ```
-opam exec -- generate-setup-dkml-scaffold.exe
+opam exec -- generate-setup-dkml-scaffold
 dune build '@gen-dkml' --auto-promote
 ```
 
