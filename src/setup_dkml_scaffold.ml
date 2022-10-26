@@ -29,7 +29,7 @@ let scaffold_gh ~output_dir () =
   (setenv
   OCAMLRUNPARAM
   b
-  (run %%{bin:gh-setup-dkml-action-yml.exe} --output-%s %%{target}))))
+  (run gh-setup-dkml-action-yml --output-%s %%{target}))))
 
 (rule
 (alias gen-dkml)
@@ -61,7 +61,7 @@ let scaffold_gl ~output_dir () =
   OCAMLRUNPARAM
   b
   (run
-    %%{bin:gl-setup-dkml-yml.exe}
+    gl-setup-dkml-yml
     ; Exclude macOS until you have a https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues approved
     --exclude-macos
     --output-file
@@ -105,7 +105,7 @@ let scaffold_pc ~output_dir () =
   (setenv
   OCAMLRUNPARAM
   b
-  (run %%{bin:pc-setup-dkml.exe} --output-windows_x86 %%{target}))))
+  (run pc-setup-dkml --output-windows_x86 %%{target}))))
 
 (rule
 (target setup-dkml-windows_x86_64-gen.ps1)
@@ -113,7 +113,7 @@ let scaffold_pc ~output_dir () =
   (setenv
   OCAMLRUNPARAM
   b
-  (run %%{bin:pc-setup-dkml.exe} --output-windows_x86_64 %%{target}))))
+  (run pc-setup-dkml --output-windows_x86_64 %%{target}))))
 
 (rule
 (alias gen-dkml)
