@@ -7,7 +7,7 @@
   (glob_files tmpl/gl/*.yml))
  (target tmpl.ml)
  (action
-  (run ocaml-crunch -m plain -o %{target} tmpl/)))
+  (run ocaml-crunch -m plain -o %{target} tmpl)))
 
 (rule
  (deps
@@ -17,7 +17,7 @@
   (glob_files scripts/*.cmd))
  (target scripts.ml)
  (action
-  (run ocaml-crunch -m plain -o %{target} scripts/)))
+  (run ocaml-crunch -m plain -o %{target} scripts)))
 
 (library
  (name workflow_content)
