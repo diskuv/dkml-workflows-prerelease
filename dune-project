@@ -17,7 +17,8 @@
  (description
   "`desktop` provides desktop executables for all DKML installable platforms")
  (depends
-  (dkml-install (>= 0.2.0))))
+  (dkml-install (>= 0.2.0))
+  (dkml-workflows (and (>= 1.0.0) :build))))
 
 (package
  (name dkml-component-staging-desktop)
