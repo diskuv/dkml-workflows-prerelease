@@ -1,6 +1,21 @@
 ## v1
 
+New Features:
+1. Support GitLab CI/CD
+2. Support desktop testing on Windows
+3. GitHub now uses a composite action rather than a child
+   workflow, resulting in less artifact copying and
+   quicker builds.
+
+There are significant breaking changes. It will be far easier
+to onboard with [the new version `v1` instructions](https://github.com/diskuv/dkml-workflows/tree/v1#readme)
+and then remove your `v0` code, rather than try to do an in-place upgrade:
+* Any custom build logic you have in your GitHub workflow should go into
+  the new `ci/build-test.sh`. Alternatively, if you don't care about ever running troubleshooting
+  CI on your desktop or GitLab, directly into your new `.github/workflows/build-with-dkml.yml`.
+
 Breaking changes:
+- The GitHub child workflow has been replaced by a GitHub composite action
 - Input variables have been renamed to allow the same variable names between GitHub Actions and
   GitLab CI/CD (the latter does not support dashes in variable names).
 
@@ -33,13 +48,6 @@ Breaking changes:
     `[shared-windows, windows, windows-1809]` to specify the type of runner machine to use,
     and for macOS image you can supply an XCode version like `macos-11-xcode-12`.
   
-New Features:
-1. Support GitLab CI/CD
-   - Use Mustache to generate GitHub Actions so can
-     re-use common logic (especially package pins)
-     between GitHub Actions and GitLab CI/CD
-   - Add dune-project and .opam so src/ can be built
-
 ## v0
 
 Initial release
