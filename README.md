@@ -154,7 +154,10 @@ git add ci/setup-dkml
 Your build logic will be inside a POSIX shell script. This will work even on Windows; just be careful on Windows
 that you save the shell script with LF line endings (not CRLF), and use UTF-8 encoding.
 
-At minimum it should contain:
+You don't need to name the file `ci/build-test.sh` however the
+documentation assumes that filename.
+
+At minimum the file should contain:
 
 ```bash
 #!/bin/sh
@@ -177,6 +180,9 @@ opamrun list
 opamrun var
 opamrun config report
 opamrun exec -- ocamlc -config
+
+# Update
+opamrun update
 
 # Make your own build logic! It may look like ...
 opamrun install . --deps-only --with-test
