@@ -795,6 +795,10 @@ export OPAMROOTISOK=1
 if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
 if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
 
+# Reset environment so no conflicts with a parent Opam
+unset OPAM_SWITCH_PREFIX
+unset OPAMSWITCH
+
 echo "Running inside Docker container: \$*" >&2
 set +e
 "\$@"
@@ -875,6 +879,10 @@ export OPAMROOT='${opam_root}'
 export OPAMROOTISOK=1
 if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
 if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
+
+# Reset environment so no conflicts with a parent Opam
+unset OPAM_SWITCH_PREFIX
+unset OPAMSWITCH
 
 echo "Running: \$*" >&2
 set +e

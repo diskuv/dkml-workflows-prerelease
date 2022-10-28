@@ -39,13 +39,13 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "${CACHE_PREFIX}-1-507384-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
+    - key: "${CACHE_PREFIX}-1-8e30c2-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
       paths:
         - .ci/sd4/bs
     - key: "${CACHE_PREFIX}-1-${abi_pattern}-${vsstudio_arch}-${vsstudio_hostarch}-${vsstudio_dir}-${vsstudio_vcvarsver}-${vsstudio_winsdkver}-${vsstudio_msvspreference}-${vsstudio_cmakegenerator}"
       paths:
         - .ci/sd4/vsenv.sh
-    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-1-507384-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-1-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
+    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-1-8e30c2-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-1-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
       paths:
         - ${opam_root}/config
         - ${opam_root}/dkml
@@ -707,6 +707,10 @@ build_win32:
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
       
+      # Reset environment so no conflicts with a parent Opam
+      unset OPAM_SWITCH_PREFIX
+      unset OPAMSWITCH
+      
       echo "Running inside Docker container: \$*" >&2
       set +e
       "\$@"
@@ -787,6 +791,10 @@ build_win32:
       export OPAMROOTISOK=1
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
+      
+      # Reset environment so no conflicts with a parent Opam
+      unset OPAM_SWITCH_PREFIX
+      unset OPAMSWITCH
       
       echo "Running: \$*" >&2
       set +e
@@ -1857,6 +1865,10 @@ build_macos:
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
       
+      # Reset environment so no conflicts with a parent Opam
+      unset OPAM_SWITCH_PREFIX
+      unset OPAMSWITCH
+      
       echo "Running inside Docker container: \$*" >&2
       set +e
       "\$@"
@@ -1937,6 +1949,10 @@ build_macos:
       export OPAMROOTISOK=1
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
+      
+      # Reset environment so no conflicts with a parent Opam
+      unset OPAM_SWITCH_PREFIX
+      unset OPAMSWITCH
       
       echo "Running: \$*" >&2
       set +e
@@ -2898,6 +2914,10 @@ build_linux:
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
       
+      # Reset environment so no conflicts with a parent Opam
+      unset OPAM_SWITCH_PREFIX
+      unset OPAMSWITCH
+      
       echo "Running inside Docker container: \$*" >&2
       set +e
       "\$@"
@@ -2978,6 +2998,10 @@ build_linux:
       export OPAMROOTISOK=1
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
+      
+      # Reset environment so no conflicts with a parent Opam
+      unset OPAM_SWITCH_PREFIX
+      unset OPAMSWITCH
       
       echo "Running: \$*" >&2
       set +e
