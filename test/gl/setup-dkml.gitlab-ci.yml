@@ -40,13 +40,13 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "${CACHE_PREFIX}-1-7c755c-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
+    - key: "${CACHE_PREFIX}-1-92d878-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
       paths:
         - .ci/sd4/bs
     - key: "${CACHE_PREFIX}-1-${abi_pattern}-${vsstudio_arch}-${vsstudio_hostarch}-${vsstudio_dir}-${vsstudio_vcvarsver}-${vsstudio_winsdkver}-${vsstudio_msvspreference}-${vsstudio_cmakegenerator}"
       paths:
         - .ci/sd4/vsenv.sh
-    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-1-7c755c-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-1-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
+    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-1-92d878-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-1-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
       paths:
         - ${opam_root}/config
         - ${opam_root}/dkml
@@ -710,9 +710,12 @@ build_win32:
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
       
-      # Reset environment so no conflicts with a parent Opam
+      # Reset environment so no conflicts with a parent Opam or OCaml system
       unset OPAM_SWITCH_PREFIX
       unset OPAMSWITCH
+      unset CAML_LD_LIBRARY_PATH
+      unset OCAMLLIB
+      unset OCAML_TOPLEVEL_PATH
       
       echo "Running inside Docker container: \$*" >&2
       set +e
@@ -795,9 +798,12 @@ build_win32:
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
       
-      # Reset environment so no conflicts with a parent Opam
+      # Reset environment so no conflicts with a parent Opam or OCaml system
       unset OPAM_SWITCH_PREFIX
       unset OPAMSWITCH
+      unset CAML_LD_LIBRARY_PATH
+      unset OCAMLLIB
+      unset OCAML_TOPLEVEL_PATH
       
       echo "Running: \$*" >&2
       set +e
@@ -1158,9 +1164,9 @@ build_win32:
           opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
           section_end "install-compiler-$do_install_compiler_NAME"
       }
-      do_install_compiler dkml true
+      do_install_compiler dkml
       if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-          do_install_compiler two false
+          do_install_compiler two
       fi
       
       do_summary() {
@@ -1906,9 +1912,12 @@ build_macos:
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
       
-      # Reset environment so no conflicts with a parent Opam
+      # Reset environment so no conflicts with a parent Opam or OCaml system
       unset OPAM_SWITCH_PREFIX
       unset OPAMSWITCH
+      unset CAML_LD_LIBRARY_PATH
+      unset OCAMLLIB
+      unset OCAML_TOPLEVEL_PATH
       
       echo "Running inside Docker container: \$*" >&2
       set +e
@@ -1991,9 +2000,12 @@ build_macos:
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
       
-      # Reset environment so no conflicts with a parent Opam
+      # Reset environment so no conflicts with a parent Opam or OCaml system
       unset OPAM_SWITCH_PREFIX
       unset OPAMSWITCH
+      unset CAML_LD_LIBRARY_PATH
+      unset OCAMLLIB
+      unset OCAML_TOPLEVEL_PATH
       
       echo "Running: \$*" >&2
       set +e
@@ -2354,9 +2366,9 @@ build_macos:
           opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
           section_end "install-compiler-$do_install_compiler_NAME"
       }
-      do_install_compiler dkml true
+      do_install_compiler dkml
       if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-          do_install_compiler two false
+          do_install_compiler two
       fi
       
       do_summary() {
@@ -2993,9 +3005,12 @@ build_linux:
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
       
-      # Reset environment so no conflicts with a parent Opam
+      # Reset environment so no conflicts with a parent Opam or OCaml system
       unset OPAM_SWITCH_PREFIX
       unset OPAMSWITCH
+      unset CAML_LD_LIBRARY_PATH
+      unset OCAMLLIB
+      unset OCAML_TOPLEVEL_PATH
       
       echo "Running inside Docker container: \$*" >&2
       set +e
@@ -3078,9 +3093,12 @@ build_linux:
       if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
       if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
       
-      # Reset environment so no conflicts with a parent Opam
+      # Reset environment so no conflicts with a parent Opam or OCaml system
       unset OPAM_SWITCH_PREFIX
       unset OPAMSWITCH
+      unset CAML_LD_LIBRARY_PATH
+      unset OCAMLLIB
+      unset OCAML_TOPLEVEL_PATH
       
       echo "Running: \$*" >&2
       set +e
@@ -3441,9 +3459,9 @@ build_linux:
           opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
           section_end "install-compiler-$do_install_compiler_NAME"
       }
-      do_install_compiler dkml true
+      do_install_compiler dkml
       if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-          do_install_compiler two false
+          do_install_compiler two
       fi
       
       do_summary() {

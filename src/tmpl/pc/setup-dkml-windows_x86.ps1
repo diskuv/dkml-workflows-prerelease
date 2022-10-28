@@ -77,10 +77,13 @@ param (
 
 $ErrorActionPreference = "Stop"
 
-# Reset environment so no conflicts with a parent Opam
-if (Test-Path Env:OPAMROOT)           { Remove-Item Env:OPAMROOT }
-if (Test-Path Env:OPAMSWITCH)         { Remove-Item Env:OPAMSWITCH }
-if (Test-Path Env:OPAM_SWITCH_PREFIX) { Remove-Item Env:OPAM_SWITCH_PREFIX }
+# Reset environment so no conflicts with a parent Opam or OCaml system
+if (Test-Path Env:OPAMROOT)             { Remove-Item Env:OPAMROOT }
+if (Test-Path Env:OPAMSWITCH)           { Remove-Item Env:OPAMSWITCH }
+if (Test-Path Env:OPAM_SWITCH_PREFIX)   { Remove-Item Env:OPAM_SWITCH_PREFIX }
+if (Test-Path Env:CAML_LD_LIBRARY_PATH) { Remove-Item Env:CAML_LD_LIBRARY_PATH }
+if (Test-Path Env:OCAMLLIB)             { Remove-Item Env:OCAMLLIB }
+if (Test-Path Env:OCAML_TOPLEVEL_PATH)  { Remove-Item Env:OCAML_TOPLEVEL_PATH }
 
 # Pushdown context variables
 $env:PC_CI = 'true'

@@ -137,10 +137,13 @@ param (
 
 $ErrorActionPreference = "Stop"
 
-# Reset environment so no conflicts with a parent Opam
-if (Test-Path Env:OPAMROOT)           { Remove-Item Env:OPAMROOT }
-if (Test-Path Env:OPAMSWITCH)         { Remove-Item Env:OPAMSWITCH }
-if (Test-Path Env:OPAM_SWITCH_PREFIX) { Remove-Item Env:OPAM_SWITCH_PREFIX }
+# Reset environment so no conflicts with a parent Opam or OCaml system
+if (Test-Path Env:OPAMROOT)             { Remove-Item Env:OPAMROOT }
+if (Test-Path Env:OPAMSWITCH)           { Remove-Item Env:OPAMSWITCH }
+if (Test-Path Env:OPAM_SWITCH_PREFIX)   { Remove-Item Env:OPAM_SWITCH_PREFIX }
+if (Test-Path Env:CAML_LD_LIBRARY_PATH) { Remove-Item Env:CAML_LD_LIBRARY_PATH }
+if (Test-Path Env:OCAMLLIB)             { Remove-Item Env:OCAMLLIB }
+if (Test-Path Env:OCAML_TOPLEVEL_PATH)  { Remove-Item Env:OCAML_TOPLEVEL_PATH }
 
 # Pushdown context variables
 $env:PC_CI = 'true'
@@ -802,9 +805,12 @@ export OPAMROOTISOK=1
 if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
 if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
 
-# Reset environment so no conflicts with a parent Opam
+# Reset environment so no conflicts with a parent Opam or OCaml system
 unset OPAM_SWITCH_PREFIX
 unset OPAMSWITCH
+unset CAML_LD_LIBRARY_PATH
+unset OCAMLLIB
+unset OCAML_TOPLEVEL_PATH
 
 echo "Running inside Docker container: \$*" >&2
 set +e
@@ -887,9 +893,12 @@ export OPAMROOTISOK=1
 if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
 if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
 
-# Reset environment so no conflicts with a parent Opam
+# Reset environment so no conflicts with a parent Opam or OCaml system
 unset OPAM_SWITCH_PREFIX
 unset OPAMSWITCH
+unset CAML_LD_LIBRARY_PATH
+unset OCAMLLIB
+unset OCAML_TOPLEVEL_PATH
 
 echo "Running: \$*" >&2
 set +e
@@ -1250,9 +1259,9 @@ do_install_compiler() {
     opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
     section_end "install-compiler-$do_install_compiler_NAME"
 }
-do_install_compiler dkml true
+do_install_compiler dkml
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_install_compiler two false
+    do_install_compiler two
 fi
 
 do_summary() {

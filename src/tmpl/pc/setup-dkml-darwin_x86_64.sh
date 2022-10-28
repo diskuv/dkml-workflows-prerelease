@@ -1,10 +1,13 @@
 #!/bin/sh
 set -euf
 
-# Reset environment so no conflicts with a parent Opam
+# Reset environment so no conflicts with a parent Opam or OCaml system
+unset OPAMROOT
 unset OPAM_SWITCH_PREFIX
 unset OPAMSWITCH
-unset OPAMROOT
+unset CAML_LD_LIBRARY_PATH
+unset OCAMLLIB
+unset OCAML_TOPLEVEL_PATH
 
 export PC_PROJECT_DIR="$PWD"
 export FDOPEN_OPAMEXE_BOOTSTRAP=false
