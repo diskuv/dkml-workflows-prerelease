@@ -40,13 +40,13 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "${CACHE_PREFIX}-1-92d878-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
+    - key: "${CACHE_PREFIX}-1-52d559-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
       paths:
         - .ci/sd4/bs
     - key: "${CACHE_PREFIX}-1-${abi_pattern}-${vsstudio_arch}-${vsstudio_hostarch}-${vsstudio_dir}-${vsstudio_vcvarsver}-${vsstudio_winsdkver}-${vsstudio_msvspreference}-${vsstudio_cmakegenerator}"
       paths:
         - .ci/sd4/vsenv.sh
-    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-1-92d878-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-1-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
+    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-1-52d559-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-1-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
       paths:
         - ${opam_root}/config
         - ${opam_root}/dkml
@@ -1107,7 +1107,7 @@ build_win32:
                       echo Opam 2.0 support in dockcross to use a portable opam var prefix not yet implemented
                       exit 67
                   fi
-                  OP=$(opamrun var prefix --switch "$do_summary_NAME")
+                  OP=$(opamrun var prefix --switch "$do_use_vsstudio_NAME")
                   OPSC=$OP/.opam-switch/switch-config
                   if grep setenv: "$OPSC"; then
                       echo "INFO: Updating switch-config. Old was:"
@@ -1129,21 +1129,21 @@ build_win32:
                   cat "$OPSC" >&2 # print
                   ;;
               *)
-                  opamrun option --switch "$do_summary_NAME" setenv= # reset
-                  opamrun option --switch "$do_summary_NAME" setenv+='DKML_COMPILE_SPEC = "1"'
-                  opamrun option --switch "$do_summary_NAME" setenv+='DKML_COMPILE_TYPE = "VS"'
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_DIR = \"$E_VS_DIR\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_VCVARSVER = \"$E_VS_VCVARSVER\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_WINSDKVER = \"$E_VS_WINSDKVER\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
-                  opamrun option --switch "$do_summary_NAME" setenv # print
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv= # reset
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+='DKML_COMPILE_SPEC = "1"'
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+='DKML_COMPILE_TYPE = "VS"'
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_DIR = \"$E_VS_DIR\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_VCVARSVER = \"$E_VS_VCVARSVER\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_WINSDKVER = \"$E_VS_WINSDKVER\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv # print
                   ;;
               esac
       
               # shellcheck disable=SC2016
-              opamrun exec --switch "$do_summary_NAME" -- sh -c 'echo $VCToolsRedistDir'
+              opamrun exec --switch "$do_use_vsstudio_NAME" -- sh -c 'echo $VCToolsRedistDir'
       
               section_end "use-vsstudio-$do_use_vsstudio_NAME"
               ;;
@@ -2309,7 +2309,7 @@ build_macos:
                       echo Opam 2.0 support in dockcross to use a portable opam var prefix not yet implemented
                       exit 67
                   fi
-                  OP=$(opamrun var prefix --switch "$do_summary_NAME")
+                  OP=$(opamrun var prefix --switch "$do_use_vsstudio_NAME")
                   OPSC=$OP/.opam-switch/switch-config
                   if grep setenv: "$OPSC"; then
                       echo "INFO: Updating switch-config. Old was:"
@@ -2331,21 +2331,21 @@ build_macos:
                   cat "$OPSC" >&2 # print
                   ;;
               *)
-                  opamrun option --switch "$do_summary_NAME" setenv= # reset
-                  opamrun option --switch "$do_summary_NAME" setenv+='DKML_COMPILE_SPEC = "1"'
-                  opamrun option --switch "$do_summary_NAME" setenv+='DKML_COMPILE_TYPE = "VS"'
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_DIR = \"$E_VS_DIR\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_VCVARSVER = \"$E_VS_VCVARSVER\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_WINSDKVER = \"$E_VS_WINSDKVER\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
-                  opamrun option --switch "$do_summary_NAME" setenv # print
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv= # reset
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+='DKML_COMPILE_SPEC = "1"'
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+='DKML_COMPILE_TYPE = "VS"'
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_DIR = \"$E_VS_DIR\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_VCVARSVER = \"$E_VS_VCVARSVER\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_WINSDKVER = \"$E_VS_WINSDKVER\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv # print
                   ;;
               esac
       
               # shellcheck disable=SC2016
-              opamrun exec --switch "$do_summary_NAME" -- sh -c 'echo $VCToolsRedistDir'
+              opamrun exec --switch "$do_use_vsstudio_NAME" -- sh -c 'echo $VCToolsRedistDir'
       
               section_end "use-vsstudio-$do_use_vsstudio_NAME"
               ;;
@@ -3402,7 +3402,7 @@ build_linux:
                       echo Opam 2.0 support in dockcross to use a portable opam var prefix not yet implemented
                       exit 67
                   fi
-                  OP=$(opamrun var prefix --switch "$do_summary_NAME")
+                  OP=$(opamrun var prefix --switch "$do_use_vsstudio_NAME")
                   OPSC=$OP/.opam-switch/switch-config
                   if grep setenv: "$OPSC"; then
                       echo "INFO: Updating switch-config. Old was:"
@@ -3424,21 +3424,21 @@ build_linux:
                   cat "$OPSC" >&2 # print
                   ;;
               *)
-                  opamrun option --switch "$do_summary_NAME" setenv= # reset
-                  opamrun option --switch "$do_summary_NAME" setenv+='DKML_COMPILE_SPEC = "1"'
-                  opamrun option --switch "$do_summary_NAME" setenv+='DKML_COMPILE_TYPE = "VS"'
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_DIR = \"$E_VS_DIR\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_VCVARSVER = \"$E_VS_VCVARSVER\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_WINSDKVER = \"$E_VS_WINSDKVER\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
-                  opamrun option --switch "$do_summary_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
-                  opamrun option --switch "$do_summary_NAME" setenv # print
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv= # reset
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+='DKML_COMPILE_SPEC = "1"'
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+='DKML_COMPILE_TYPE = "VS"'
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_DIR = \"$E_VS_DIR\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_VCVARSVER = \"$E_VS_VCVARSVER\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_WINSDKVER = \"$E_VS_WINSDKVER\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv # print
                   ;;
               esac
       
               # shellcheck disable=SC2016
-              opamrun exec --switch "$do_summary_NAME" -- sh -c 'echo $VCToolsRedistDir'
+              opamrun exec --switch "$do_use_vsstudio_NAME" -- sh -c 'echo $VCToolsRedistDir'
       
               section_end "use-vsstudio-$do_use_vsstudio_NAME"
               ;;
