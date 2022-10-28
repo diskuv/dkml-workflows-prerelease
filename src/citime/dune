@@ -1,0 +1,13 @@
+(executable
+ (package dkml-build-desktop)
+ (name gen_global_install)
+ (public_name dkml-desktop-gen-global-install)
+ (modules gen_global_install)
+ (libraries dkml-runtime-distribution re))
+
+(executable
+ (package dkml-build-desktop)
+ (name copy_installed)
+ (public_name dkml-desktop-copy-installed)
+ (modules copy_installed)
+ (libraries diskuvbox bos fpath))

@@ -55,3 +55,12 @@
   (dkml-component-staging-ocamlrun (and (>= 4.12.1~) (< 4.12.2~)))
   (dkml-install (>= 0.2.0))
   (diskuvbox (>= 0.1.0))))
+
+(package
+ (name dkml-build-desktop)
+ (synopsis "Tools for building desktop executables")
+ (description
+  "Tools for building desktop executables")
+ (depends
+  (re (>= 1.10.0))
+  dkml-runtime-distribution))
