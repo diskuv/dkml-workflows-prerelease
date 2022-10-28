@@ -18,6 +18,7 @@ Table of Contents:
     - [Distributing your Windows executables](#distributing-your-windows-executables)
   - [Advanced Usage](#advanced-usage)
     - [Job Inputs](#job-inputs)
+      - [SECONDARY_SWITCH](#secondary_switch)
       - [CACHE_PREFIX](#cache_prefix)
       - [FDOPEN_OPAMEXE_BOOTSTRAP](#fdopen_opamexe_bootstrap)
     - [Matrix Variables](#matrix-variables)
@@ -442,6 +443,14 @@ variable will also be available to use as
 ## Advanced Usage
 
 ### Job Inputs
+
+#### SECONDARY_SWITCH
+
+When set to `true` the scripts will CI jobs will create the `two` switch in addition to the always present `dkml` switch.
+
+When using the secondary switch, be sure to use `--switch dkml` or `--switch two` in _all_ of your `opamrun` commands.
+
+For example, use `opamrun install --switch dkml dune` rather than `opamrun install dune`.
 
 #### CACHE_PREFIX
 

@@ -25,6 +25,9 @@ Input variable. -DKML_COMPILER takes priority. If -DKML_COMPILER is not set and 
 .PARAMETER DKML_COMPILER
 Input variable. Unspecified or blank is the latest from the default branch (main) of dkml-compiler. @repository@ is the latest from Opam.
 
+.PARAMETER SECONDARY_SWITCH
+Input variable. If true then the secondary switch named 'two' is created, in addition to the always-present 'dkml' switch. 
+
 .PARAMETER CONF_DKML_CROSS_TOOLCHAIN
 Input variable. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam.
 
@@ -53,6 +56,9 @@ param (
   [Parameter()]
   [string]
   $DKML_COMPILER = "",
+  [Parameter()]
+  [string]
+  $SECONDARY_SWITCH = "false",
   [Parameter()]
   [string]
   $CONF_DKML_CROSS_TOOLCHAIN = "@repository@",

@@ -9,6 +9,7 @@ variables:
   DKML_COMPILER: "" # "@repository@" = Opam ; "" = latest from default branch ("main") of git clone
   CONF_DKML_CROSS_TOOLCHAIN: "@repository@" # "@repository@" = Opam ; "" = latest from default branch of git clone
   DISKUV_OPAM_REPOSITORY: "" # DEFAULT_DISKUV_OPAM_REPOSITORY_TAG is used as default for empty strings
+  SECONDARY_SWITCH: "false"
   VERBOSE: "false"
 
   # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}  {{ var.name }}: {{ squot }}{{ var.value }}{{ squot }}{% endfor %}
@@ -34,6 +35,7 @@ variables:
       paths:
         - ${opam_root}/config
         - ${opam_root}/dkml
+        - ${opam_root}/two
         - ${opam_root}/repo
         - ${opam_root}/download-cache
         - ${opam_root}/.ci.root-init

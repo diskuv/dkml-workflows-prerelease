@@ -34,7 +34,11 @@ inputs:
   VERBOSE:
     description: "Turn on verbose logging"
     required: false
-    default: 'true'
+    default: 'false'
+  SECONDARY_SWITCH:
+    description: "Turn on secondary 'two' switch"
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -148,6 +152,7 @@ runs:
         path: |
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/config
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/dkml
+          {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/two
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/repo
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/download-cache
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root }}{%- endraw %}/.ci.root-init
@@ -188,6 +193,7 @@ runs:
         DISKUV_OPAM_REPOSITORY:           "{% raw -%}${{ inputs.DISKUV_OPAM_REPOSITORY }}{%- endraw %}"
         DKML_COMPILER:                    "{% raw -%}${{ inputs.DKML_COMPILER }}{%- endraw %}"
         OCAML_COMPILER:                   "{% raw -%}${{ inputs.OCAML_COMPILER }}{%- endraw %}"
+        SECONDARY_SWITCH:                 "{% raw -%}${{ inputs.SECONDARY_SWITCH }}{%- endraw %}"
         VERBOSE:                          "{% raw -%}${{ inputs.VERBOSE }}{%- endraw %}"
 
         # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}        {{ var.name }}: {{ squot }}{{ var.value }}{{ squot }}{% endfor %}

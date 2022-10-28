@@ -1,10 +1,15 @@
-## Pending
+## 1.0.1 (v1)
 
+New Features:
+- Desktop testing for Darwin on Intel CPUs
+- Help messages for desktop testing on Windows
+- Optional secondary switch `two` in addition to primary switch `dkml` enabled with
+  input variable `SECONDARY_SWITCH=true`
 ## 1.0.0 (v1)
 
 New Features:
 1. Support GitLab CI/CD
-2. Support desktop testing on Windows and macOS
+2. Support desktop testing on Windows
 3. GitHub now uses a composite action rather than a child
    workflow, resulting in less artifact copying and
    quicker builds.

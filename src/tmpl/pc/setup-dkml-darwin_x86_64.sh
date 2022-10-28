@@ -1,4 +1,5 @@
 #!/bin/sh
+set -euf
 
 # Reset environment so no conflicts with a parent Opam
 unset OPAM_SWITCH_PREFIX
@@ -6,11 +7,13 @@ unset OPAMSWITCH
 unset OPAMROOT
 
 export PC_PROJECT_DIR="$PWD"
+export FDOPEN_OPAMEXE_BOOTSTRAP=false
 export CACHE_PREFIX=v1
 export OCAML_COMPILER=
 export DKML_COMPILER=
 export CONF_DKML_CROSS_TOOLCHAIN=@repository@
 export DISKUV_OPAM_REPOSITORY=
+export SECONDARY_SWITCH=false
 # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}export {{ var.name }}='{{ var.value }}'{% endfor %}
 
 usage() {
@@ -22,10 +25,11 @@ usage() {
   echo "  --PC_PROJECT_DIR=<value>. Defaults to the current directory (${PC_PROJECT_DIR})" >&2
 
   # Input variables
-  echo "  --FDOPEN_OPAMEXE_BOOTSTRAP=true|false. Defaults to: false" >&2
+  echo "  --FDOPEN_OPAMEXE_BOOTSTRAP=true|false. Defaults to: ${FDOPEN_OPAMEXE_BOOTSTRAP}" >&2
   echo "  --CACHE_PREFIX=<value>. Defaults to: ${CACHE_PREFIX}" >&2
   echo "  --OCAML_COMPILER=<value>. --DKML_COMPILER takes priority. If --DKML_COMPILER is not set and --OCAML_COMPILER is set, then the specified OCaml version tag of dkml-compiler (ex. 4.12.1) is used. Defaults to: ${OCAML_COMPILER}" >&2
   echo "  --DKML_COMPILER=<value>. Unspecified or blank is the latest from the default branch (main) of dkml-compiler. Defaults to: ${DKML_COMPILER}" >&2
+  echo "  --SECONDARY_SWITCH=true|false. If true then the secondary switch named 'two' is created, in addition to the always-present 'dkml' switch. Defaults to: ${SECONDARY_SWITCH}" >&2
   echo "  --CONF_DKML_CROSS_TOOLCHAIN=<value>. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam. Defaults to: ${CONF_DKML_CROSS_TOOLCHAIN}" >&2
   echo "  --DISKUV_OPAM_REPOSITORY=<value>. Defaults to the value of --DEFAULT_DISKUV_OPAM_REPOSITORY_TAG (see below)" >&2
 
@@ -47,10 +51,14 @@ while getopts :h-: option; do
     PC_PROJECT_DIR=*) PC_PROJECT_DIR=${OPTARG#*=} ;;
     CACHE_PREFIX) fail "Option \"$OPTARG\" missing argument" ;;
     CACHE_PREFIX=*) CACHE_PREFIX=${OPTARG#*=} ;;
+    FDOPEN_OPAMEXE_BOOTSTRAP) fail "Option \"$OPTARG\" missing argument" ;;
+    FDOPEN_OPAMEXE_BOOTSTRAP=*) FDOPEN_OPAMEXE_BOOTSTRAP=${OPTARG#*=} ;;
     OCAML_COMPILER) fail "Option \"$OPTARG\" missing argument" ;;
     OCAML_COMPILER=*) OCAML_COMPILER=${OPTARG#*=} ;;
     DKML_COMPILER) fail "Option \"$OPTARG\" missing argument" ;;
     DKML_COMPILER=*) DKML_COMPILER=${OPTARG#*=} ;;
+    SECONDARY_SWITCH) fail "Option \"$OPTARG\" missing argument" ;;
+    SECONDARY_SWITCH=*) SECONDARY_SWITCH=${OPTARG#*=} ;;
     CONF_DKML_CROSS_TOOLCHAIN) fail "Option \"$OPTARG\" missing argument" ;;
     CONF_DKML_CROSS_TOOLCHAIN=*) CONF_DKML_CROSS_TOOLCHAIN=${OPTARG#*=} ;;
     DISKUV_OPAM_REPOSITORY) fail "Option \"$OPTARG\" missing argument" ;;
