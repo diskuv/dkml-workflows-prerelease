@@ -9,9 +9,11 @@ Table of Contents:
   - [Configure your project](#configure-your-project)
   - [Create `ci/build-test.sh`](#create-cibuild-testsh)
   - [Examples](#examples)
-  - [Using GitLab CI/CD backend](#using-gitlab-cicd-backend)
+  - [Using the GitLab CI/CD backend](#using-the-gitlab-cicd-backend)
   - [Using the GitHub Actions backend](#using-the-github-actions-backend)
-  - [Using Personal Computer Backend](#using-personal-computer-backend)
+  - [Using the Personal Computer Backend](#using-the-personal-computer-backend)
+    - [Windows PC backend](#windows-pc-backend)
+    - [macOS backend](#macos-backend)
   - [Distributing your executable](#distributing-your-executable)
     - [Distributing your Windows executables](#distributing-your-windows-executables)
   - [Advanced Usage](#advanced-usage)
@@ -198,7 +200,7 @@ The full list of examples is:
 | [dkml-workflows-monorepo-example](https://github.com/diskuv/dkml-workflows-monorepo-example) | **Not ready for public use yet!**<br>You want to cross-compile ARM64 on Mac Intel.<br>You are building [Mirage unikernels](https://mirage.io/). |
 | [dkml-workflows-regular-example](https://github.com/diskuv/dkml-workflows-regular-example)   | Everybody else                                                                                                                                  |
 
-## Using GitLab CI/CD backend
+## Using the GitLab CI/CD backend
 
 > macOS runners are not available in the GitLab CI/CD shared fleet unless
 > you apply and are approved at
@@ -319,21 +321,25 @@ jobs:
 
 The [Examples](#examples) include more features, like the uploading and releasing of your built artifacts.
 
-## Using Personal Computer Backend
+## Using the Personal Computer Backend
 
 This backend is meant for troubleshooting when a GitLab CI/CD or GitHub Actions
 backend fails to build your code. You can do the build locally!
 
-> Currently this backend only runs on Windows PCs with Visual Studio already
-> installed.
+> Currently this backend only runs on:
+> 1. Windows PCs with Visual Studio already installed
+> 2. macOS/Intel with clang (XCode) already installed. macOS/ARM64 with Rosetta emulation
+>    should also work.
 
-In PowerShell run:
+### Windows PC backend
+
+On Windows in PowerShell run:
 
 ```powershell
 & ci\setup-dkml\pc\setup-dkml-windows_x86_64.ps1
 ```
 
-You can use `& ci\setup-dkml\pc\setup-dkml-windows_x86.ps1` for 32-bit Window
+You can use `& ci\setup-dkml\pc\setup-dkml-windows_x86.ps1` for 32-bit Windows
 builds.
 
 After running the `.ps1` script you will see instructions for running
@@ -342,7 +348,24 @@ Opam commands in your PowerShell terminal.
 To see all of the advanced options that can be set, use:
 
 ```powershell
-get-help ci\setup-dkml\pc\setup-dkml-windows_x86_64.ps1
+get-help ci\setup-dkml\pc\setup-dkml-windows_x86_64.ps1 -Full
+```
+
+See [Advanced Usage: Job Inputs](#job-inputs) for some of the advanced options that
+can be set.
+
+### macOS backend
+
+Run:
+
+```bash
+sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh
+```
+
+To see all of the advanced options that can be set, use:
+
+```powershell
+sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh -h
 ```
 
 See [Advanced Usage: Job Inputs](#job-inputs) for some of the advanced options that

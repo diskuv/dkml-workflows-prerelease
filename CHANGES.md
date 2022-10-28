@@ -1,8 +1,10 @@
-## v1
+## Pending
+
+## 1.0.0 (v1)
 
 New Features:
 1. Support GitLab CI/CD
-2. Support desktop testing on Windows
+2. Support desktop testing on Windows and macOS
 3. GitHub now uses a composite action rather than a child
    workflow, resulting in less artifact copying and
    quicker builds.

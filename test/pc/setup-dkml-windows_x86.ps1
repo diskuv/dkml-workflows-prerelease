@@ -1,10 +1,87 @@
 # setup-dkml
 #   Short form: sd4
   
+<#
+.SYNOPSIS
+
+Setup Diskuv OCaml (DKML) compiler on a desktop PC.
+
+.DESCRIPTION
+
+Setup Diskuv OCaml (DKML) compiler on a desktop PC.
+
+.PARAMETER PC_PROJECT_DIR
+Context variable for the project directory. Defaults to the current directory.
+
+.PARAMETER FDOPEN_OPAMEXE_BOOTSTRAP
+Input variable.
+
+.PARAMETER CACHE_PREFIX
+Input variable.
+
+.PARAMETER OCAML_COMPILER
+Input variable. -DKML_COMPILER takes priority. If -DKML_COMPILER is not set and -OCAML_COMPILER is set, then the specified OCaml version tag of dkml-compiler (ex. 4.12.1) is used.
+
+.PARAMETER DKML_COMPILER
+Input variable. Unspecified or blank is the latest from the default branch (main) of dkml-compiler. @repository@ is the latest from Opam.
+
+.PARAMETER CONF_DKML_CROSS_TOOLCHAIN
+Input variable. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam.
+
+.PARAMETER DISKUV_OPAM_REPOSITORY
+Input variable. Defaults to the value of -DEFAULT_DISKUV_OPAM_REPOSITORY_TAG (see below)
+
+# autogen from global_env_vars.
+.PARAMETER DEFAULT_DKML_COMPILER
+Environment variable.
+
+.PARAMETER PIN_BASE
+Environment variable.
+
+.PARAMETER PIN_BIGSTRINGAF
+Environment variable.
+
+.PARAMETER PIN_CORE_KERNEL
+Environment variable.
+
+.PARAMETER PIN_CTYPES_FOREIGN
+Environment variable.
+
+.PARAMETER PIN_CTYPES
+Environment variable.
+
+.PARAMETER PIN_CURLY
+Environment variable.
+
+.PARAMETER PIN_DIGESTIF
+Environment variable.
+
+.PARAMETER PIN_DUNE
+Environment variable.
+
+.PARAMETER PIN_OCAMLBUILD
+Environment variable.
+
+.PARAMETER PIN_OCAMLFIND
+Environment variable.
+
+.PARAMETER PIN_OCP_INDENT
+Environment variable.
+
+.PARAMETER PIN_PPX_EXPECT
+Environment variable.
+
+.PARAMETER PIN_PTIME
+Environment variable.
+
+.PARAMETER PIN_TIME_NOW
+Environment variable.
+
+#>
 [CmdletBinding()]
 param (
   # Context variables
-  [Parameter()]
+  [Parameter(HelpMessage='Defaults to the current directory')]
   [string]
   $PC_PROJECT_DIR = $PWD,
   
@@ -20,13 +97,13 @@ param (
   $OCAML_COMPILER = "",
   [Parameter()]
   [string]
-  $DKML_COMPILER = "", # "@repository@" = Opam ; "" = latest from default branch ("main") of git clone
+  $DKML_COMPILER = "",
   [Parameter()]
   [string]
-  $CONF_DKML_CROSS_TOOLCHAIN = "@repository@", # "@repository@" = Opam ; "" = latest from default branch of git clone
+  $CONF_DKML_CROSS_TOOLCHAIN = "@repository@",
   [Parameter()]
   [string]
-  $DISKUV_OPAM_REPOSITORY = "" # DEFAULT_DISKUV_OPAM_REPOSITORY_TAG is used as default for empty strings
+  $DISKUV_OPAM_REPOSITORY = ""
 
   # Conflicts with automatic variable $Verbose
   # [Parameter()]
@@ -35,21 +112,21 @@ param (
     
   # Environment variables (can be overridden on command line)
   # autogen from global_env_vars.
-    ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.12.1-v1.0.2"
-    ,[Parameter()] [string] $PIN_BASE = "v0.14.3"
-    ,[Parameter()] [string] $PIN_BIGSTRINGAF = "0.8.0"
-    ,[Parameter()] [string] $PIN_CORE_KERNEL = "v0.14.2"
-    ,[Parameter()] [string] $PIN_CTYPES_FOREIGN = "0.19.2-windowssupport-r4"
-    ,[Parameter()] [string] $PIN_CTYPES = "0.19.2-windowssupport-r4"
-    ,[Parameter()] [string] $PIN_CURLY = "0.2.1-windows-env_r2"
-    ,[Parameter()] [string] $PIN_DIGESTIF = "1.0.1"
-    ,[Parameter()] [string] $PIN_DUNE = "2.9.3"
-    ,[Parameter()] [string] $PIN_OCAMLBUILD = "0.14.0"
-    ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.1"
-    ,[Parameter()] [string] $PIN_OCP_INDENT = "1.8.2-windowssupport"
-    ,[Parameter()] [string] $PIN_PPX_EXPECT = "v0.14.1"
-    ,[Parameter()] [string] $PIN_PTIME = "0.8.6-msvcsupport"
-    ,[Parameter()] [string] $PIN_TIME_NOW = "v0.14.0"
+  ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.12.1-v1.0.2"
+  ,[Parameter()] [string] $PIN_BASE = "v0.14.3"
+  ,[Parameter()] [string] $PIN_BIGSTRINGAF = "0.8.0"
+  ,[Parameter()] [string] $PIN_CORE_KERNEL = "v0.14.2"
+  ,[Parameter()] [string] $PIN_CTYPES_FOREIGN = "0.19.2-windowssupport-r4"
+  ,[Parameter()] [string] $PIN_CTYPES = "0.19.2-windowssupport-r4"
+  ,[Parameter()] [string] $PIN_CURLY = "0.2.1-windows-env_r2"
+  ,[Parameter()] [string] $PIN_DIGESTIF = "1.0.1"
+  ,[Parameter()] [string] $PIN_DUNE = "2.9.3"
+  ,[Parameter()] [string] $PIN_OCAMLBUILD = "0.14.0"
+  ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.1"
+  ,[Parameter()] [string] $PIN_OCP_INDENT = "1.8.2-windowssupport"
+  ,[Parameter()] [string] $PIN_PPX_EXPECT = "v0.14.1"
+  ,[Parameter()] [string] $PIN_PTIME = "0.8.6-msvcsupport"
+  ,[Parameter()] [string] $PIN_TIME_NOW = "v0.14.0"
 )
 
 $ErrorActionPreference = "Stop"

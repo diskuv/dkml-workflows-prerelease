@@ -1,10 +1,42 @@
 # setup-dkml
 #   Short form: sd4
   
+<#
+.SYNOPSIS
+
+Setup Diskuv OCaml (DKML) compiler on a desktop PC.
+
+.DESCRIPTION
+
+Setup Diskuv OCaml (DKML) compiler on a desktop PC.
+
+.PARAMETER PC_PROJECT_DIR
+Context variable for the project directory. Defaults to the current directory.
+
+.PARAMETER FDOPEN_OPAMEXE_BOOTSTRAP
+Input variable.
+
+.PARAMETER CACHE_PREFIX
+Input variable.
+
+.PARAMETER OCAML_COMPILER
+Input variable. -DKML_COMPILER takes priority. If -DKML_COMPILER is not set and -OCAML_COMPILER is set, then the specified OCaml version tag of dkml-compiler (ex. 4.12.1) is used.
+
+.PARAMETER DKML_COMPILER
+Input variable. Unspecified or blank is the latest from the default branch (main) of dkml-compiler. @repository@ is the latest from Opam.
+
+.PARAMETER CONF_DKML_CROSS_TOOLCHAIN
+Input variable. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam.
+
+.PARAMETER DISKUV_OPAM_REPOSITORY
+Input variable. Defaults to the value of -DEFAULT_DISKUV_OPAM_REPOSITORY_TAG (see below)
+
+# autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}.PARAMETER {{ var.name }}{{ nl }}Environment variable.{{ nl }}{% endfor %}
+#>
 [CmdletBinding()]
 param (
   # Context variables
-  [Parameter()]
+  [Parameter(HelpMessage='Defaults to the current directory')]
   [string]
   $PC_PROJECT_DIR = $PWD,
   
@@ -20,13 +52,13 @@ param (
   $OCAML_COMPILER = "",
   [Parameter()]
   [string]
-  $DKML_COMPILER = "", # "@repository@" = Opam ; "" = latest from default branch ("main") of git clone
+  $DKML_COMPILER = "",
   [Parameter()]
   [string]
-  $CONF_DKML_CROSS_TOOLCHAIN = "@repository@", # "@repository@" = Opam ; "" = latest from default branch of git clone
+  $CONF_DKML_CROSS_TOOLCHAIN = "@repository@",
   [Parameter()]
   [string]
-  $DISKUV_OPAM_REPOSITORY = "" # DEFAULT_DISKUV_OPAM_REPOSITORY_TAG is used as default for empty strings
+  $DISKUV_OPAM_REPOSITORY = ""
 
   # Conflicts with automatic variable $Verbose
   # [Parameter()]
@@ -34,7 +66,7 @@ param (
   # $VERBOSE = "false"
     
   # Environment variables (can be overridden on command line)
-  # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}    ,[Parameter()] [string] ${{ var.name }} = "{{ var.value }}"{% endfor %}
+  # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}  ,[Parameter()] [string] ${{ var.name }} = "{{ var.value }}"{% endfor %}
 )
 
 $ErrorActionPreference = "Stop"

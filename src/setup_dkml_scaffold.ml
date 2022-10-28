@@ -99,6 +99,8 @@ let scaffold_pc ~output_dir () =
   let dune_content =
     Printf.sprintf
       {|
+; windows_x86
+
 (rule
 (target setup-dkml-windows_x86-gen.ps1)
 (action
@@ -106,6 +108,13 @@ let scaffold_pc ~output_dir () =
   OCAMLRUNPARAM
   b
   (run pc-setup-dkml --output-windows_x86 %%{target}))))
+
+(rule
+(alias gen-dkml)
+(action
+  (diff setup-dkml-windows_x86.ps1 setup-dkml-windows_x86-gen.ps1)))
+
+; windows_x86_64
 
 (rule
 (target setup-dkml-windows_x86_64-gen.ps1)
@@ -118,12 +127,22 @@ let scaffold_pc ~output_dir () =
 (rule
 (alias gen-dkml)
 (action
-  (diff setup-dkml-windows_x86.ps1 setup-dkml-windows_x86-gen.ps1)))
+  (diff setup-dkml-windows_x86_64.ps1 setup-dkml-windows_x86_64-gen.ps1)))
+
+; darwin_x86_64
 
 (rule
-(alias gen-dkml)
-(action
-  (diff setup-dkml-windows_x86_64.ps1 setup-dkml-windows_x86_64-gen.ps1)))
+ (target setup-dkml-darwin_x86_64-gen.sh)
+ (action
+  (setenv
+   OCAMLRUNPARAM
+   b
+   (run pc-setup-dkml --output-darwin_x86_64 %%{target}))))
+
+(rule
+ (alias gen-dkml)
+ (action
+  (diff setup-dkml-darwin_x86_64.sh setup-dkml-darwin_x86_64-gen.sh)))
   |}
   in
   let* (_exists : bool) = OS.Dir.create pc_dir in
