@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Reset environment so no conflicts with a parent Opam
+unset OPAM_SWITCH_PREFIX
+unset OPAMSWITCH
+unset OPAMROOT
+
 export PC_PROJECT_DIR="$PWD"
 export CACHE_PREFIX=v1
 export OCAML_COMPILER=

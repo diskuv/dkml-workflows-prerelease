@@ -71,6 +71,11 @@ param (
 
 $ErrorActionPreference = "Stop"
 
+# Reset environment so no conflicts with a parent Opam
+if (Test-Path Env:OPAMROOT)           { Remove-Item Env:OPAMROOT }
+if (Test-Path Env:OPAMSWITCH)         { Remove-Item Env:OPAMSWITCH }
+if (Test-Path Env:OPAM_SWITCH_PREFIX) { Remove-Item Env:OPAM_SWITCH_PREFIX }
+
 # Pushdown context variables
 $env:PC_CI = 'true'
 $env:PC_PROJECT_DIR = $PC_PROJECT_DIR
