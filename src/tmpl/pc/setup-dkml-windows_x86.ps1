@@ -244,7 +244,8 @@ To continue your testing, run in PowerShell:
   \$env:exe_ext = "${env:exe_ext}"
   \$env:PC_PROJECT_DIR = $PWD
 
-  msys64\usr\bin\bash -lc 'PATH="\$PWD/.ci/sd4/opamrun:\$PATH"; opamrun install XYZ.opam'
+Now you can use 'opamrun' to do opam commands like:
 
-Use can you any opam-like command you want.
+  msys64\usr\bin\bash -lc 'PATH="\$PWD/.ci/sd4/opamrun:\$PATH"; opamrun install XYZ.opam'
+  msys64\usr\bin\bash -lc 'PATH="\$PWD/.ci/sd4/opamrun:\$PATH"; opamrun exec -- sh ci/build-test.sh'
 "@

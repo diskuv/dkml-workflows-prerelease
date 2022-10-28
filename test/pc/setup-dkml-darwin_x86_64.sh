@@ -1118,3 +1118,21 @@ end_of_script
 
 sh .ci/sd4/run-checkout-code.sh PC_PROJECT_DIR "${PC_PROJECT_DIR}"
 sh .ci/sd4/run-setup-dkml.sh PC_PROJECT_DIR "${PC_PROJECT_DIR}"
+
+# shellcheck disable=SC2154
+echo "
+Finished setup.
+
+To continue your testing, run:
+  export dkml_host_abi='${dkml_host_abi}'
+  export abi_pattern='${abi_pattern}'
+  export opam_root='${opam_root}'
+  export exe_ext='${exe_ext}'
+  export PC_PROJECT_DIR='$PWD'
+  export PATH=\"$PC_PROJECT_DIR/.ci/sd4/opamrun:\$PATH\"
+
+Now you can use 'opamrun' to do opam commands like:
+
+  opamrun install XYZ.opam
+  opamrun exec -- sh ci/build-test.sh
+"
