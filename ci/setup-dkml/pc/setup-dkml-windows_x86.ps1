@@ -461,6 +461,11 @@ original_opam_root_cacheable=$opam_root_cacheable
 if [ -x /usr/bin/cygpath ]; then
     opam_root=$(/usr/bin/cygpath -am "$opam_root")
     opam_root_cacheable=$(/usr/bin/cygpath -am "$opam_root_cacheable")
+    unix_opam_root=$(/usr/bin/cygpath -au "$opam_root")
+    unix_opam_root_cacheable=$(/usr/bin/cygpath -au "$opam_root_cacheable")
+else
+    unix_opam_root=$opam_root
+    unix_opam_root_cacheable=$opam_root_cacheable
 fi
 
 # load VS studio environment
@@ -511,6 +516,8 @@ opam_root=${opam_root}
 opam_root_cacheable=${opam_root_cacheable}
 original_opam_root=${original_opam_root}
 original_opam_root_cacheable=${original_opam_root_cacheable}
+unix_opam_root=${unix_opam_root}
+unix_opam_root_cacheable=${unix_opam_root_cacheable}
 dockcross_image=${dockcross_image:-}
 dockcross_image_custom_prefix=${dockcross_image_custom_prefix:-}
 dockcross_run_extra_args=${dockcross_run_extra_args:-}
@@ -736,21 +743,23 @@ fi
 }
 
 # Get Opam Cache (also define saving cache here so can keep similar things close)
+#   * rsync requires Unix paths on MSYS2/Windows (ie. /c/o/blah rather than C:/o/blah)
+#     otherwise rsync thinks the paths are remote
 do_get_opam_cache() {
-    if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
-    if [ ! -e "$opam_root_cacheable" ]; then return; fi
-    section_begin get-opam-cache "Transferring Opam cache to $opam_root_cacheable"
-    install -d "$opam_root"
-    rsync -a "$opam_root_cacheable/" "$opam_root"
+    if [ "$unix_opam_root_cacheable" = "$unix_opam_root" ]; then return; fi
+    if [ ! -e "$unix_opam_root_cacheable" ]; then return; fi
+    section_begin get-opam-cache "Transferring Opam cache to $original_opam_root_cacheable"
+    install -d "$unix_opam_root"
+    rsync -a "$unix_opam_root_cacheable/" "$unix_opam_root"
     section_end get-opam-cache
 }
 do_save_opam_cache_rsync() {
-    rsync -a --exclude=.opam-switch/build/ "$@" "$opam_root/" "$opam_root_cacheable"
+    rsync -a --exclude=.opam-switch/build/ "$@" "$unix_opam_root/" "$unix_opam_root_cacheable"
 }
 do_save_opam_cache() {
-    if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
-    section_begin get-opam-cache "Transferring Opam cache to $opam_root"
-    install -d "$opam_root_cacheable"
+    if [ "$unix_opam_root_cacheable" = "$unix_opam_root" ]; then return; fi
+    section_begin get-opam-cache "Transferring Opam cache to $original_opam_root"
+    install -d "$unix_opam_root_cacheable"
     #   --delete on a desktop is _dangerous_.
     #   --delete on CI is necessary to save space.
     if [ "${GITLAB_CI:-}" = "true" ] || [ -n "${GITHUB_RUN_ID:-}" ]; then
