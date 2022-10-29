@@ -1,10 +1,11 @@
 ## 1.0.1 (v1)
 
 New Features:
-- Desktop testing for Darwin on Intel CPUs
+- Desktop testing for macOS/Intel (or macOS/ARM64 with Rosetta emulator) and Linux 32/64-bit on Intel/AMD
 - Help messages for desktop testing on Windows
 - Optional secondary switch `two` in addition to primary switch `dkml` enabled with
   input variable `SECONDARY_SWITCH=true`
+
 ## 1.0.0 (v1)
 
 New Features:

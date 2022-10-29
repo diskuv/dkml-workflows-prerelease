@@ -36,7 +36,7 @@ export PIN_TIME_NOW='v0.14.0'
 
 usage() {
   echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
-  echo 'usage: setup-dkml-darwin_x86_64.sh [options]' >&2
+  echo 'usage: setup-dkml-linux_x86.sh [options]' >&2
   echo 'Options:' >&2
 
   # Context variables
@@ -139,11 +139,15 @@ done
 shift $((OPTIND - 1))
 
 # Set matrix variables
-# autogen from pc_matrix. only darwin_x86_64
-export abi_pattern="macos-darwin_all"
+# autogen from pc_matrix. only linux_x86
+export abi_pattern="manylinux2014-linux_x86"
+export comment="(CentOS 7, etc.)"
 export bootstrap_opam_version="2.2.0-dkml20220801T155940Z"
-export dkml_host_abi="darwin_x86_64"
-export opam_root="${PC_PROJECT_DIR}/.ci/o"
+export dkml_host_abi="linux_x86"
+export opam_root=".ci/o"
+export in_docker="true"
+export dockcross_image="dockcross/manylinux2014-x86"
+export dockcross_run_extra_args="--platform linux/386"
 
 
 ########################### before_script ###############################

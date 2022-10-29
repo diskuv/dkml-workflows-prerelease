@@ -41,11 +41,20 @@ let () =
   let usage =
     Printf.sprintf
       "%s [--output-windows_x86 OUTPUT_FILE.ps1] [--output-windows_x86_64 \
-       OUTPUT_FILE.ps1] [--output-unix OUTPUT_FILE.sh]\n\
+       OUTPUT_FILE.ps1] [--output-darwin_x86_64 OUTPUT_FILE.sh] \
+       [--output-linux_x86 OUTPUT_FILE.sh] [--output-linux_x86_64 \
+       OUTPUT_FILE.sh]\n\
        At least one --output-<ABI> option must be selected." exe_name
   in
   let anon _s = failwith "No command line arguments are supported" in
   let actions = ref [] in
+  let output_unix_abi_arg ~dkml_host_abi ~descr =
+    ( "--output-" ^ dkml_host_abi,
+      Arg.String
+        (fun filename ->
+          actions := (fun () -> unix_action ~dkml_host_abi filename) :: !actions),
+      "Output POSIX shell script for " ^ descr )
+  in
   Arg.parse
     [
       ( "--output-windows_x86",
@@ -63,13 +72,12 @@ let () =
                 windows_action ~dkml_host_abi:"windows_x86_64" filename)
               :: !actions),
         "Output Powershell script for Windows 64-bit" );
-      ( "--output-darwin_x86_64",
-        String
-          (fun filename ->
-            actions :=
-              (fun () -> unix_action ~dkml_host_abi:"darwin_x86_64" filename)
-              :: !actions),
-        "Output POSIX shell script for macOS on Intel CPUs" );
+      output_unix_abi_arg ~dkml_host_abi:"darwin_x86_64"
+        ~descr:"macOS/Intel (or macOS/ARM64 with Rosetta emulator)";
+      output_unix_abi_arg ~dkml_host_abi:"linux_x86"
+        ~descr:"Linux on 32-bit Intel/AMD";
+      output_unix_abi_arg ~dkml_host_abi:"linux_x86_64"
+        ~descr:"Linux on 64-bit Intel/AMD";
     ]
     anon exe_name;
   if !actions = [] then failwith usage;

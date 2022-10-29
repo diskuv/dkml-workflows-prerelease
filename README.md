@@ -11,9 +11,9 @@ Table of Contents:
   - [Examples](#examples)
   - [Using the GitLab CI/CD backend](#using-the-gitlab-cicd-backend)
   - [Using the GitHub Actions backend](#using-the-github-actions-backend)
-  - [Using the Personal Computer Backend](#using-the-personal-computer-backend)
+  - [Using the Personal Computer backend](#using-the-personal-computer-backend)
     - [Windows PC backend](#windows-pc-backend)
-    - [macOS backend](#macos-backend)
+    - [macOS and Linux backends](#macos-and-linux-backends)
   - [Distributing your executable](#distributing-your-executable)
     - [Distributing your Windows executables](#distributing-your-windows-executables)
   - [Advanced Usage](#advanced-usage)
@@ -322,7 +322,7 @@ jobs:
 
 The [Examples](#examples) include more features, like the uploading and releasing of your built artifacts.
 
-## Using the Personal Computer Backend
+## Using the Personal Computer backend
 
 This backend is meant for troubleshooting when a GitLab CI/CD or GitHub Actions
 backend fails to build your code. You can do the build locally!
@@ -355,12 +355,19 @@ get-help ci\setup-dkml\pc\setup-dkml-windows_x86_64.ps1 -Full
 See [Advanced Usage: Job Inputs](#job-inputs) for some of the advanced options that
 can be set.
 
-### macOS backend
+### macOS and Linux backends
 
-Run:
+Run one of:
 
 ```bash
+# macOS/Intel (or macOS/ARM64 with Rosetta emulator)
 sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh
+
+# Linux on 64-bit Intel/AMD
+sh ci/setup-dkml/pc/setup-dkml-linux_x86_64.sh
+
+# Linux on 32-bit Intel/AMD
+sh ci/setup-dkml/pc/setup-dkml-linux_x86.sh
 ```
 
 To see all of the advanced options that can be set, use:
