@@ -40,13 +40,13 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "${CACHE_PREFIX}-1-7ac92b-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
+    - key: "1_${CACHE_PREFIX}-7ac92b-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
       paths:
         - .ci/sd4/bs
-    - key: "${CACHE_PREFIX}-1-${abi_pattern}-${vsstudio_arch}-${vsstudio_hostarch}-${vsstudio_dir}-${vsstudio_vcvarsver}-${vsstudio_winsdkver}-${vsstudio_msvspreference}-${vsstudio_cmakegenerator}"
+    - key: "1_${CACHE_PREFIX}-${abi_pattern}-${vsstudio_arch}-${vsstudio_hostarch}-${vsstudio_dir}-${vsstudio_vcvarsver}-${vsstudio_winsdkver}-${vsstudio_msvspreference}-${vsstudio_cmakegenerator}"
       paths:
         - .ci/sd4/vsenv.sh
-    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-1-7ac92b-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-1-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
+    - key: "1_${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-7ac92b-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
       paths:
         - ${opam_root_cacheable}/config
         - ${opam_root_cacheable}/dkml
@@ -57,7 +57,7 @@ variables:
         - ${opam_root_cacheable}/.ci.repo-init
         # these only need gl_cachekey_ci_inputs but can't do separately because only 4 caches allowed
         - .ci/sd4/g
-    - key: "${CACHE_PREFIX}-${dkml_host_abi}-${msys2_system}-${msys2_packages}-msys2"
+    - key: "1_${CACHE_PREFIX}-${dkml_host_abi}-${msys2_system}-${msys2_packages}-msys2"
       paths:
         - ${CI_PROJECT_DIR}/msys64
 

@@ -25,13 +25,13 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "${CACHE_PREFIX}-{{ gl_cachekey_opambin }}"
+    - key: "{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_opambin }}"
       paths:
         - .ci/sd4/bs
-    - key: "${CACHE_PREFIX}-{{ gl_cachekey_vsstudio }}"
+    - key: "{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_vsstudio }}"
       paths:
         - .ci/sd4/vsenv.sh
-    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-{{ gl_cachekey_opambin }}-{{ gl_cachekey_ci_inputs }}"
+    - key: "{{ cachebust }}_${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-{{ gl_cachekey_opambin }}-{{ gl_cachekey_ci_inputs }}"
       paths:
         - ${opam_root_cacheable}/config
         - ${opam_root_cacheable}/dkml
@@ -42,7 +42,7 @@ variables:
         - ${opam_root_cacheable}/.ci.repo-init
         # these only need gl_cachekey_ci_inputs but can't do separately because only 4 caches allowed
         - .ci/sd4/g
-    - key: "${CACHE_PREFIX}-${dkml_host_abi}-${msys2_system}-${msys2_packages}-msys2"
+    - key: "{{ cachebust }}_${CACHE_PREFIX}-${dkml_host_abi}-${msys2_system}-${msys2_packages}-msys2"
       paths:
         - ${CI_PROJECT_DIR}/msys64
 

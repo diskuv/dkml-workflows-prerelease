@@ -520,5 +520,6 @@ let model ~filter_dkml_host_abi ~read_script =
   ]
   @ Scripts.to_vars read_script
   @ Typography.vars
+  @ Caching.static_vars
   @ Caching.gh_cachekeys read_script
   @ Caching.gl_cachekeys read_script

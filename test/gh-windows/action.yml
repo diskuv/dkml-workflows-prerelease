@@ -1453,9 +1453,9 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '1-7ac92b-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
-        echo '1-${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
-        echo '1-${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
+        echo '7ac92b-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
+        echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
     # Bootstrapping Opam
 
@@ -1465,7 +1465,7 @@ runs:
       with:
         path: .ci/sd4/bs
         key:
-          "${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}"
+          "1_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}"
 
     - name: Cache Opam root by (host,target)
       uses: actions/cache@v3
@@ -1480,7 +1480,7 @@ runs:
           ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.root-init
           ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.repo-init
         key:
-          c2_${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}
+          "1_${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}"
 
     # The action/checkout steps used for pinning will re-use existing Git objects
     # because of caching
@@ -1490,7 +1490,7 @@ runs:
       with:
         path: .ci/sd4/g
         key:
-          "${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('.ci/sd4/cachekey.ci.inputs') }}"
+          "1_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('.ci/sd4/cachekey.ci.inputs') }}"
 
     # Checkout code
 
@@ -1508,7 +1508,7 @@ runs:
       id: cache-sd4-vsenv
       with:
         path: .ci/sd4/vsenv.github
-        key: "${{ inputs.CACHE_PREFIX }}_sd4-vsenv-${{ hashFiles('cachekey.vsstudio') }}"
+        key: "1_${{ inputs.CACHE_PREFIX }}_sd4-vsenv-${{ hashFiles('cachekey.vsstudio') }}"
 
     - name: Configure Visual Studio (Windows)
       shell: pwsh
