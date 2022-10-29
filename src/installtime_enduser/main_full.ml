@@ -1,0 +1,1 @@
+let () = Install.cli ()

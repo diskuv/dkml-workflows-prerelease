@@ -1,17 +1,13 @@
 #!/bin/sh
 set -euf
 
-# Restructure multi-ABI directories
-_release="$(pwd)/_release"
-install -d "$_release"
-
-cd dist
-find . -mindepth 1 -maxdepth 1 -type d | while read -r distname; do
-    rsync -av "$distname/" "$_release"
+# Dump all ABIs into _archive
+_archive="$(pwd)/_archive"
+install -d "$_archive"
+find dist -mindepth 1 -maxdepth 1 -type f -name "*.tar.gz" | while read -r tarball; do
+    tar xCvfz "$_archive" "$tarball"
 done
-cd ..
 
-# Display files to be distributed
-cd _release
-ls -R
-cd ..
+# Tar ball
+install -d "_release"
+tar cvCfz "$_archive" "_release/staging.tar.gz" .

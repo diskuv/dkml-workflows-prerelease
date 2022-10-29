@@ -7,5 +7,5 @@ let register () =
     (module struct
       include Default_component_config
 
-      let component_name = "staging-desktop"
+      let component_name = "staging-desktop-full"
     end)

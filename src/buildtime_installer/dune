@@ -5,15 +5,21 @@
  (libraries dkml-install.api))
 
 (library
- (public_name dkml-component-staging-desktop)
- (name dkml_component_staging_desktop)
- (modules dkml_component_staging_desktop)
+ (public_name dkml-component-staging-desktop-ci)
+ (name dkml_component_staging_desktop_ci)
+ (modules dkml_component_staging_desktop_ci)
  (libraries dkml-install.register))
 
 (library
- (public_name dkml-component-network-desktop)
- (name dkml_component_network_desktop)
- (modules dkml_component_network_desktop)
+ (public_name dkml-component-staging-desktop-full)
+ (name dkml_component_staging_desktop_full)
+ (modules dkml_component_staging_desktop_full)
+ (libraries dkml-install.register))
+
+(library
+ (public_name dkml-component-offline-desktop-ci)
+ (name dkml_component_offline_desktop_ci)
+ (modules dkml_component_offline_desktop_ci)
  (libraries
   dkml-install.register
   dkml-component-staging-ocamlrun.api
@@ -22,9 +28,9 @@
   logs))
 
 (library
- (public_name dkml-component-offline-desktop)
- (name dkml_component_offline_desktop)
- (modules dkml_component_offline_desktop)
+ (public_name dkml-component-offline-desktop-full)
+ (name dkml_component_offline_desktop_full)
+ (modules dkml_component_offline_desktop_full)
  (libraries
   dkml-install.register
   dkml-component-staging-ocamlrun.api

@@ -101,4 +101,4 @@ set +x
 # TODO: Could use cross-compilation ... simplify that first! Then bundle the
 #       _opam/darwin_arm64-sysroot/ instead of _opam/.
 install -d "dist/$dkml_host_abi"
-tar cvCfz "$ARCHIVE_RELDIR" "dist/$dkml_host_abi/$DISTRO_TYPE-$dkml_host_abi.tar.gz" .
+tar cvCfz "$ARCHIVE_RELDIR" "dist/$dkml_host_abi.tar.gz" .

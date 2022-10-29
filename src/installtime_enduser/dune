@@ -1,0 +1,64 @@
+(library
+ (name install)
+ (modules install)
+ (libraries bos diskuvbox))
+
+(executable
+ (package dkml-component-offline-desktop-ci)
+ (name main_ci)
+ (public_name offline_desktop_install_ci)
+ (modes
+  (byte exe))
+ (modules main_ci)
+ (libraries install))
+
+(executable
+ (package dkml-component-offline-desktop-full)
+ (name main_full)
+ (public_name offline_desktop_install_full)
+ (modes
+  (byte exe))
+ (modules main_full)
+ (libraries install))
+
+(install
+ (package dkml-component-offline-desktop-ci)
+ (section share)
+ (files
+  (main_ci.bc as staging-files/generic/install.bc)))
+
+(install
+ (package dkml-component-offline-desktop-full)
+ (section share)
+ (files
+  (main_full.bc as staging-files/generic/install.bc)))
+
+(rule
+ (alias runtest)
+ (package dkml-component-offline-desktop-ci)
+ (deps
+  (:bc main_ci.bc))
+ (action
+  (progn
+   (with-stdout-to
+    info.ci.txt
+    (run ocamlobjinfo %{bc}))
+   (with-stdout-to
+    dlls.ci.corrected.txt
+    (run awk "/.*:/ {x=0} /Used DLLs:/{x=1} x==1 {print}" info.ci.txt))
+   (diff? dlls.ci.txt dlls.ci.corrected.txt))))
+
+(rule
+ (alias runtest)
+ (package dkml-component-offline-desktop-full)
+ (deps
+  (:bc main_full.bc))
+ (action
+  (progn
+   (with-stdout-to
+    info.full.txt
+    (run ocamlobjinfo %{bc}))
+   (with-stdout-to
+    dlls.full.corrected.txt
+    (run awk "/.*:/ {x=0} /Used DLLs:/{x=1} x==1 {print}" info.full.txt))
+   (diff? dlls.full.txt dlls.full.corrected.txt))))

@@ -6,10 +6,12 @@ variables:
   SECONDARY_SWITCH: 'true'
 
 build_linux:
+  timeout: 2h
   script:
     - sh ci/build-test.sh ci
 
 build_win32:
+  timeout: 3h
   script:
     - msys64\usr\bin\bash -lc "ci/build-test.sh ci"
 
@@ -17,6 +19,7 @@ build_win32:
 # approved!
 #
 # build_macos:
+#   timeout: 2h
 #   script:
 #     - sh ci/build-test.sh ci
 
