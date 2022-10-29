@@ -23,7 +23,6 @@ Table of Contents:
       - [FDOPEN_OPAMEXE_BOOTSTRAP](#fdopen_opamexe_bootstrap)
     - [Matrix Variables](#matrix-variables)
       - [gl_image](#gl_image)
-      - [gl_tags](#gl_tags)
       - [gh_os](#gh_os)
       - [bootstrap_opam_version](#bootstrap_opam_version)
       - [opam_root](#opam_root)
@@ -476,11 +475,6 @@ Use opam.exe from fdopen on Windows. Typically only used when bootstrapping Opam
 The GitLab virtual machine image for macOS. Examples: `macos-11-xcode-12`.
 
 Linux always uses a [Docker-in-Docker image](https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker).
-
-#### gl_tags
-
-GitLab CI/CD uses tags like
-`[shared-windows, windows, windows-1809]` to specify the type of runner machine to use
 
 #### gh_os
 

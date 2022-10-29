@@ -50,25 +50,6 @@ let required_msys2_packages =
          "xz";
        ])
 
-(* USELESS! Only serves as documentation because there is no way to pass an array through GitLab CI/CD in a matrix
-   variable.
-
-   Jg_types.Tlist
-     [
-       Jg_types.Tstr "shared-windows";
-       Jg_types.Tstr "windows";
-       Jg_types.Tstr "windows-1809";
-     ]
-*)
-let gl_windows_tags_as_string =
-  Jg_types.Tstr "[shared-windows, windows, windows-1809]"
-
-(* USELESS! Only serves as documentation because there is no way to pass an array through GitLab CI/CD in a matrix
-   variable.
-
-   Jg_types.Tlist [ Jg_types.Tstr "shared-macos-amd64" ] *)
-let gl_macos_tags_as_string = Jg_types.Tstr "[shared-macos-amd64]"
-
 let bootstrap_opam_version = Jg_types.Tstr "2.2.0-dkml20220801T155940Z"
 
 let matrix =
@@ -88,7 +69,6 @@ let matrix =
     [
       ("abi_pattern", Jg_types.Tstr {|win32-windows_x86|});
       ("gh_os", Jg_types.Tstr {|windows-2019|} (* 2019 has Visual Studio 2019 *));
-      ("gl_tags", gl_windows_tags_as_string);
       ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|});
       ("msys2_system", Jg_types.Tstr {|MINGW32|});
       ("msys2_packages", Jg_types.Tstr {|mingw-w64-i686-pkg-config|});
@@ -106,7 +86,6 @@ let matrix =
     [
       ("abi_pattern", Jg_types.Tstr {|win32-windows_x86_64|});
       ("gh_os", Jg_types.Tstr {|windows-2019|} (* 2019 has Visual Studio 2019 *));
-      ("gl_tags", gl_windows_tags_as_string);
       ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|});
       ("msys2_system", Jg_types.Tstr {|CLANG64|});
       ("msys2_packages", Jg_types.Tstr {|mingw-w64-clang-x86_64-pkg-config|});
@@ -123,7 +102,6 @@ let matrix =
     (* Unnecessary to use VS 14.16, but it serves as a good template for
        other (future) VS versions.
        ;[("gh_os", Jg_types.Tstr "windows-2019"   (* 2019 has Visual Studio 2019 *))
-         ; ("gl_tags", gl_windows_tags)
          ; ("abi_pattern", Jg_types.Tstr {|win32_1416-windows_64|} (* VS2017 compiler available to VS2019 *))
          ; ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|})
          ; ("msys2_system", Jg_types.Tstr {|CLANG64|})
@@ -154,7 +132,6 @@ let matrix =
         Disabled because haven't done opam log dumps on failure for
         `opam upgrade`. See https://github.com/diskuv/dkml-component-ocamlcompiler/runs/6059642542?check_suite_focus=true
         ;[("gh_os", Jg_types.Tstr "windows-2022")
-          ; ("gl_tags", gl_windows_tags)
           ; ("abi_pattern", Jg_types.Tstr {|win32_2022-windows_x86_64|})
           ; ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|})
           ; ("msys2_system", Jg_types.Tstr {|CLANG64|})
@@ -178,7 +155,6 @@ let matrix =
     [
       ("abi_pattern", Jg_types.Tstr {|macos-darwin_all|});
       ("gh_os", Jg_types.Tstr "macos-latest");
-      ("gl_tags", gl_macos_tags_as_string);
       ("gl_image", Jg_types.Tstr "macos-11-xcode-12");
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
@@ -313,7 +289,6 @@ end
   {v
     { vars: [
         { name: "abi_pattern", value: 'win32-windows_x86' },
-        { name: "gl_tags", value: '[shared-windows, windows, windows-1809]' },
         { name: "gh_unix_shell", value: 'msys2 {0}' },
         { name: "msys2_system", value: 'MINGW32' },
         { name: "msys2_packages", value: 'mingw-w64-i686-pkg-config' },
@@ -363,7 +338,6 @@ let full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value =
   {v
     windows_x86: {
       abi_pattern: 'win32-windows_x86',
-      gl_tags: '[shared-windows, windows, windows-1809]',
       gh_unix_shell: 'msys2 {0}',
       msys2_system: 'MINGW32',
       msys2_packages: 'mingw-w64-i686-pkg-config',

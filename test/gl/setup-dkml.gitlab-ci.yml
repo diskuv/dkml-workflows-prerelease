@@ -67,7 +67,6 @@ build_win32:
     matrix: [
       # autogen from gl_matrix. only windows
       { abi_pattern: 'win32-windows_x86',
-        gl_tags: '[shared-windows, windows, windows-1809]',
         msys2_system: 'MINGW32',
         msys2_packages: 'mingw-w64-i686-pkg-config',
         exe_ext: '.exe',
@@ -80,7 +79,6 @@ build_win32:
         ocaml_options: 'ocaml-option-32bit' },
         
       { abi_pattern: 'win32-windows_x86_64',
-        gl_tags: '[shared-windows, windows, windows-1809]',
         msys2_system: 'CLANG64',
         msys2_packages: 'mingw-w64-clang-x86_64-pkg-config',
         exe_ext: '.exe',
