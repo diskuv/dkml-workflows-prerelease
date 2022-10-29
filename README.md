@@ -181,6 +181,7 @@ opamrun switch
 opamrun list
 opamrun var
 opamrun config report
+opamrun option
 opamrun exec -- ocamlc -config
 
 # Update
