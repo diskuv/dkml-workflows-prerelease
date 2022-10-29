@@ -40,21 +40,21 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "${CACHE_PREFIX}-1-52d559-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
+    - key: "${CACHE_PREFIX}-1-ed02d0-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}"
       paths:
         - .ci/sd4/bs
     - key: "${CACHE_PREFIX}-1-${abi_pattern}-${vsstudio_arch}-${vsstudio_hostarch}-${vsstudio_dir}-${vsstudio_vcvarsver}-${vsstudio_winsdkver}-${vsstudio_msvspreference}-${vsstudio_cmakegenerator}"
       paths:
         - .ci/sd4/vsenv.sh
-    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-1-52d559-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-1-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
+    - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-1-ed02d0-${FDOPEN_OPAMEXE_BOOTSTRAP}-${dkml_host_abi}-${opam_abi}-${bootstrap_opam_version}-1-${OCAML_COMPILER}-${DISKUV_OPAM_REPOSITORY}-${DKML_COMPILER}-${CONF_DKML_CROSS_TOOLCHAIN}"
       paths:
-        - ${opam_root}/config
-        - ${opam_root}/dkml
-        - ${opam_root}/two
-        - ${opam_root}/repo
-        - ${opam_root}/download-cache
-        - ${opam_root}/.ci.root-init
-        - ${opam_root}/.ci.repo-init
+        - ${opam_root_cacheable}/config
+        - ${opam_root_cacheable}/dkml
+        - ${opam_root_cacheable}/two
+        - ${opam_root_cacheable}/repo
+        - ${opam_root_cacheable}/download-cache
+        - ${opam_root_cacheable}/.ci.root-init
+        - ${opam_root_cacheable}/.ci.repo-init
         # these only need gl_cachekey_ci_inputs but can't do separately because only 4 caches allowed
         - .ci/sd4/g
     - key: "${CACHE_PREFIX}-${dkml_host_abi}-${msys2_system}-${msys2_packages}-msys2"
@@ -65,9 +65,10 @@ build_win32:
   # prettier-ignore
   parallel:
     matrix: [
-      # autogen from gl_matrix. only windows
-      { abi_pattern: 'win32-windows_x86',
-        gl_tags: '[shared-windows, windows, windows-1809]',
+      # autogen from gl_vars. only windows
+      { dkml_host_os: 'windows',
+        opam_root_cacheable: 'C:/o',
+        abi_pattern: 'win32-windows_x86',
         msys2_system: 'MINGW32',
         msys2_packages: 'mingw-w64-i686-pkg-config',
         exe_ext: '.exe',
@@ -79,8 +80,9 @@ build_win32:
         vsstudio_arch: 'x86',
         ocaml_options: 'ocaml-option-32bit' },
         
-      { abi_pattern: 'win32-windows_x86_64',
-        gl_tags: '[shared-windows, windows, windows-1809]',
+      { dkml_host_os: 'windows',
+        opam_root_cacheable: 'C:/o',
+        abi_pattern: 'win32-windows_x86_64',
         msys2_system: 'CLANG64',
         msys2_packages: 'mingw-w64-clang-x86_64-pkg-config',
         exe_ext: '.exe',
@@ -359,9 +361,11 @@ build_win32:
       # ---------------------------------------------------------------------
       
       # fixup opam_root on Windows to be mixed case
-      opam_root_original=$opam_root
+      original_opam_root=$opam_root
+      original_opam_root_cacheable=$opam_root_cacheable
       if [ -x /usr/bin/cygpath ]; then
           opam_root=$(/usr/bin/cygpath -am "$opam_root")
+          opam_root_cacheable=$(/usr/bin/cygpath -am "$opam_root_cacheable")
       fi
       
       # load VS studio environment
@@ -409,7 +413,9 @@ build_win32:
       bootstrap_opam_version=$bootstrap_opam_version
       abi_pattern=$abi_pattern
       opam_root=${opam_root}
-      opam_root_original=${opam_root_original}
+      opam_root_cacheable=${opam_root_cacheable}
+      original_opam_root=${original_opam_root}
+      original_opam_root_cacheable=${original_opam_root_cacheable}
       dockcross_image=${dockcross_image:-}
       dockcross_image_custom_prefix=${dockcross_image_custom_prefix:-}
       dockcross_run_extra_args=${dockcross_run_extra_args:-}
@@ -633,6 +639,33 @@ build_win32:
               do_tar_rf .ci/sd4/dist/env-opam.tar .ci/sd4/bs/bin/rsync
           fi
       }
+      
+      # Get Opam Cache (also define saving cache here so can keep similar things close)
+      do_get_opam_cache() {
+          if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
+          if [ ! -e "$opam_root_cacheable" ]; then return; fi
+          section_begin get-opam-cache "Transferring Opam cache to $opam_root_cacheable"
+          install -d "$opam_root"
+          rsync -a "$opam_root_cacheable/" "$opam_root"
+          section_end get-opam-cache
+      }
+      do_save_opam_cache_rsync() {
+          rsync -a --exclude=.opam-switch/build/ "$@" "$opam_root/" "$opam_root_cacheable"
+      }
+      do_save_opam_cache() {
+          if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
+          section_begin get-opam-cache "Transferring Opam cache to $opam_root"
+          install -d "$opam_root_cacheable"
+          #   --delete on a desktop is _dangerous_.
+          #   --delete on CI is necessary to save space.
+          if [ "${GITLAB_CI:-}" = "true" ] || [ -n "${GITHUB_RUN_ID:-}" ]; then
+              do_save_opam_cache_rsync --delete
+          else
+              do_save_opam_cache_rsync
+          fi
+          section_end get-opam-cache
+      }
+      do_get_opam_cache
       
       # Setup Opam
       
@@ -1169,6 +1202,9 @@ build_win32:
           do_install_compiler two
       fi
       
+      # Done with Opam cache!
+      do_save_opam_cache
+      
       do_summary() {
           do_summary_NAME=$1
           shift
@@ -1348,7 +1384,7 @@ build_macos:
   # prettier-ignore
   parallel:
     matrix: [
-      # autogen from gl_matrix. only darwin
+      # autogen from gl_vars. only darwin
     ]
   image: $gl_image
   tags: [shared-macos-amd64]
@@ -1561,9 +1597,11 @@ build_macos:
       # ---------------------------------------------------------------------
       
       # fixup opam_root on Windows to be mixed case
-      opam_root_original=$opam_root
+      original_opam_root=$opam_root
+      original_opam_root_cacheable=$opam_root_cacheable
       if [ -x /usr/bin/cygpath ]; then
           opam_root=$(/usr/bin/cygpath -am "$opam_root")
+          opam_root_cacheable=$(/usr/bin/cygpath -am "$opam_root_cacheable")
       fi
       
       # load VS studio environment
@@ -1611,7 +1649,9 @@ build_macos:
       bootstrap_opam_version=$bootstrap_opam_version
       abi_pattern=$abi_pattern
       opam_root=${opam_root}
-      opam_root_original=${opam_root_original}
+      opam_root_cacheable=${opam_root_cacheable}
+      original_opam_root=${original_opam_root}
+      original_opam_root_cacheable=${original_opam_root_cacheable}
       dockcross_image=${dockcross_image:-}
       dockcross_image_custom_prefix=${dockcross_image_custom_prefix:-}
       dockcross_run_extra_args=${dockcross_run_extra_args:-}
@@ -1835,6 +1875,33 @@ build_macos:
               do_tar_rf .ci/sd4/dist/env-opam.tar .ci/sd4/bs/bin/rsync
           fi
       }
+      
+      # Get Opam Cache (also define saving cache here so can keep similar things close)
+      do_get_opam_cache() {
+          if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
+          if [ ! -e "$opam_root_cacheable" ]; then return; fi
+          section_begin get-opam-cache "Transferring Opam cache to $opam_root_cacheable"
+          install -d "$opam_root"
+          rsync -a "$opam_root_cacheable/" "$opam_root"
+          section_end get-opam-cache
+      }
+      do_save_opam_cache_rsync() {
+          rsync -a --exclude=.opam-switch/build/ "$@" "$opam_root/" "$opam_root_cacheable"
+      }
+      do_save_opam_cache() {
+          if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
+          section_begin get-opam-cache "Transferring Opam cache to $opam_root"
+          install -d "$opam_root_cacheable"
+          #   --delete on a desktop is _dangerous_.
+          #   --delete on CI is necessary to save space.
+          if [ "${GITLAB_CI:-}" = "true" ] || [ -n "${GITHUB_RUN_ID:-}" ]; then
+              do_save_opam_cache_rsync --delete
+          else
+              do_save_opam_cache_rsync
+          fi
+          section_end get-opam-cache
+      }
+      do_get_opam_cache
       
       # Setup Opam
       
@@ -2371,6 +2438,9 @@ build_macos:
           do_install_compiler two
       fi
       
+      # Done with Opam cache!
+      do_save_opam_cache
+      
       do_summary() {
           do_summary_NAME=$1
           shift
@@ -2395,22 +2465,26 @@ build_linux:
   # prettier-ignore
   parallel:
     matrix: [
-      # autogen from gl_matrix. only linux
-      { abi_pattern: 'manylinux2014-linux_x86' ,
-        comment: '(CentOS 7, etc.)' ,
-        bootstrap_opam_version: '2.2.0-dkml20220801T155940Z' ,
-        dkml_host_abi: 'linux_x86' ,
-        opam_root: '.ci/o' ,
-        in_docker: 'true' ,
-        dockcross_image: 'dockcross/manylinux2014-x86' ,
+      # autogen from gl_vars. only linux
+      { dkml_host_os: 'linux',
+        opam_root_cacheable: '.ci/o',
+        abi_pattern: 'manylinux2014-linux_x86',
+        comment: '(CentOS 7, etc.)',
+        bootstrap_opam_version: '2.2.0-dkml20220801T155940Z',
+        dkml_host_abi: 'linux_x86',
+        opam_root: '.ci/o',
+        in_docker: 'true',
+        dockcross_image: 'dockcross/manylinux2014-x86',
         dockcross_run_extra_args: '--platform linux/386' },
         
-      { abi_pattern: 'manylinux2014-linux_x86_64' ,
-        comment: '(CentOS 7, etc.)' ,
-        bootstrap_opam_version: '2.2.0-dkml20220801T155940Z' ,
-        dkml_host_abi: 'linux_x86_64' ,
-        opam_root: '.ci/o' ,
-        dockcross_image: 'dockcross/manylinux2014-x64' ,
+      { dkml_host_os: 'linux',
+        opam_root_cacheable: '.ci/o',
+        abi_pattern: 'manylinux2014-linux_x86_64',
+        comment: '(CentOS 7, etc.)',
+        bootstrap_opam_version: '2.2.0-dkml20220801T155940Z',
+        dkml_host_abi: 'linux_x86_64',
+        opam_root: '.ci/o',
+        dockcross_image: 'dockcross/manylinux2014-x64',
         in_docker: 'true' },
         
     ]
@@ -2654,9 +2728,11 @@ build_linux:
       # ---------------------------------------------------------------------
       
       # fixup opam_root on Windows to be mixed case
-      opam_root_original=$opam_root
+      original_opam_root=$opam_root
+      original_opam_root_cacheable=$opam_root_cacheable
       if [ -x /usr/bin/cygpath ]; then
           opam_root=$(/usr/bin/cygpath -am "$opam_root")
+          opam_root_cacheable=$(/usr/bin/cygpath -am "$opam_root_cacheable")
       fi
       
       # load VS studio environment
@@ -2704,7 +2780,9 @@ build_linux:
       bootstrap_opam_version=$bootstrap_opam_version
       abi_pattern=$abi_pattern
       opam_root=${opam_root}
-      opam_root_original=${opam_root_original}
+      opam_root_cacheable=${opam_root_cacheable}
+      original_opam_root=${original_opam_root}
+      original_opam_root_cacheable=${original_opam_root_cacheable}
       dockcross_image=${dockcross_image:-}
       dockcross_image_custom_prefix=${dockcross_image_custom_prefix:-}
       dockcross_run_extra_args=${dockcross_run_extra_args:-}
@@ -2928,6 +3006,33 @@ build_linux:
               do_tar_rf .ci/sd4/dist/env-opam.tar .ci/sd4/bs/bin/rsync
           fi
       }
+      
+      # Get Opam Cache (also define saving cache here so can keep similar things close)
+      do_get_opam_cache() {
+          if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
+          if [ ! -e "$opam_root_cacheable" ]; then return; fi
+          section_begin get-opam-cache "Transferring Opam cache to $opam_root_cacheable"
+          install -d "$opam_root"
+          rsync -a "$opam_root_cacheable/" "$opam_root"
+          section_end get-opam-cache
+      }
+      do_save_opam_cache_rsync() {
+          rsync -a --exclude=.opam-switch/build/ "$@" "$opam_root/" "$opam_root_cacheable"
+      }
+      do_save_opam_cache() {
+          if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
+          section_begin get-opam-cache "Transferring Opam cache to $opam_root"
+          install -d "$opam_root_cacheable"
+          #   --delete on a desktop is _dangerous_.
+          #   --delete on CI is necessary to save space.
+          if [ "${GITLAB_CI:-}" = "true" ] || [ -n "${GITHUB_RUN_ID:-}" ]; then
+              do_save_opam_cache_rsync --delete
+          else
+              do_save_opam_cache_rsync
+          fi
+          section_end get-opam-cache
+      }
+      do_get_opam_cache
       
       # Setup Opam
       
@@ -3463,6 +3568,9 @@ build_linux:
       if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
           do_install_compiler two
       fi
+      
+      # Done with Opam cache!
+      do_save_opam_cache
       
       do_summary() {
           do_summary_NAME=$1

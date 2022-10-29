@@ -56,6 +56,8 @@ runs:
         case "${{ matrix.dkml_host_abi }}" in
         
         linux_x86)
+          dkml_host_os='linux';
+          opam_root_cacheable='.ci/o';
           abi_pattern='manylinux2014-linux_x86';
           gh_os='ubuntu-latest';
           comment='(CentOS 7, etc.)';
@@ -68,6 +70,8 @@ runs:
           dockcross_run_extra_args='--platform linux/386' ;;
           
         linux_x86_64)
+          dkml_host_os='linux';
+          opam_root_cacheable='.ci/o';
           abi_pattern='manylinux2014-linux_x86_64';
           gh_os='ubuntu-latest';
           comment='(CentOS 7, etc.)';
@@ -88,6 +92,7 @@ runs:
         add dkml_host_abi "$dkml_host_abi"
         add abi_pattern "$abi_pattern"
         add opam_root "$opam_root"
+        add opam_root_cacheable "$opam_root_cacheable"
         add exe_ext "${exe_ext:-}"
         add bootstrap_opam_version "${bootstrap_opam_version:-}"
         add ocaml_options "${ocaml_options:-}"
@@ -308,9 +313,11 @@ runs:
         # ---------------------------------------------------------------------
         
         # fixup opam_root on Windows to be mixed case
-        opam_root_original=$opam_root
+        original_opam_root=$opam_root
+        original_opam_root_cacheable=$opam_root_cacheable
         if [ -x /usr/bin/cygpath ]; then
             opam_root=$(/usr/bin/cygpath -am "$opam_root")
+            opam_root_cacheable=$(/usr/bin/cygpath -am "$opam_root_cacheable")
         fi
         
         # load VS studio environment
@@ -358,7 +365,9 @@ runs:
         bootstrap_opam_version=$bootstrap_opam_version
         abi_pattern=$abi_pattern
         opam_root=${opam_root}
-        opam_root_original=${opam_root_original}
+        opam_root_cacheable=${opam_root_cacheable}
+        original_opam_root=${original_opam_root}
+        original_opam_root_cacheable=${original_opam_root_cacheable}
         dockcross_image=${dockcross_image:-}
         dockcross_image_custom_prefix=${dockcross_image_custom_prefix:-}
         dockcross_run_extra_args=${dockcross_run_extra_args:-}
@@ -582,6 +591,33 @@ runs:
                 do_tar_rf .ci/sd4/dist/env-opam.tar .ci/sd4/bs/bin/rsync
             fi
         }
+        
+        # Get Opam Cache (also define saving cache here so can keep similar things close)
+        do_get_opam_cache() {
+            if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
+            if [ ! -e "$opam_root_cacheable" ]; then return; fi
+            section_begin get-opam-cache "Transferring Opam cache to $opam_root_cacheable"
+            install -d "$opam_root"
+            rsync -a "$opam_root_cacheable/" "$opam_root"
+            section_end get-opam-cache
+        }
+        do_save_opam_cache_rsync() {
+            rsync -a --exclude=.opam-switch/build/ "$@" "$opam_root/" "$opam_root_cacheable"
+        }
+        do_save_opam_cache() {
+            if [ "$opam_root_cacheable" = "$opam_root" ]; then return; fi
+            section_begin get-opam-cache "Transferring Opam cache to $opam_root"
+            install -d "$opam_root_cacheable"
+            #   --delete on a desktop is _dangerous_.
+            #   --delete on CI is necessary to save space.
+            if [ "${GITLAB_CI:-}" = "true" ] || [ -n "${GITHUB_RUN_ID:-}" ]; then
+                do_save_opam_cache_rsync --delete
+            else
+                do_save_opam_cache_rsync
+            fi
+            section_end get-opam-cache
+        }
+        do_get_opam_cache
         
         # Setup Opam
         
@@ -1118,6 +1154,9 @@ runs:
             do_install_compiler two
         fi
         
+        # Done with Opam cache!
+        do_save_opam_cache
+        
         do_summary() {
             do_summary_NAME=$1
             shift
@@ -1140,7 +1179,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '1-52d559-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '1-ed02d0-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '1-${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '1-${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
@@ -1189,13 +1228,13 @@ runs:
       id: cache-sd4-opamroot
       with:
         path: |
-          ${{ steps.full_matrix_vars.outputs.opam_root }}/config
-          ${{ steps.full_matrix_vars.outputs.opam_root }}/dkml
-          ${{ steps.full_matrix_vars.outputs.opam_root }}/two
-          ${{ steps.full_matrix_vars.outputs.opam_root }}/repo
-          ${{ steps.full_matrix_vars.outputs.opam_root }}/download-cache
-          ${{ steps.full_matrix_vars.outputs.opam_root }}/.ci.root-init
-          ${{ steps.full_matrix_vars.outputs.opam_root }}/.ci.repo-init
+          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/config
+          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/dkml
+          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/two
+          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/repo
+          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/download-cache
+          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.root-init
+          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.repo-init
         key:
           c2_${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}
 
