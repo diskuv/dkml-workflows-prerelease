@@ -33,13 +33,13 @@ variables:
         - .ci/sd4/vsenv.sh
     - key: "${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-{{ gl_cachekey_opambin }}-{{ gl_cachekey_ci_inputs }}"
       paths:
-        - ${opam_root}/config
-        - ${opam_root}/dkml
-        - ${opam_root}/two
-        - ${opam_root}/repo
-        - ${opam_root}/download-cache
-        - ${opam_root}/.ci.root-init
-        - ${opam_root}/.ci.repo-init
+        - ${opam_root_cacheable}/config
+        - ${opam_root_cacheable}/dkml
+        - ${opam_root_cacheable}/two
+        - ${opam_root_cacheable}/repo
+        - ${opam_root_cacheable}/download-cache
+        - ${opam_root_cacheable}/.ci.root-init
+        - ${opam_root_cacheable}/.ci.repo-init
         # these only need gl_cachekey_ci_inputs but can't do separately because only 4 caches allowed
         - .ci/sd4/g
     - key: "${CACHE_PREFIX}-${dkml_host_abi}-${msys2_system}-${msys2_packages}-msys2"

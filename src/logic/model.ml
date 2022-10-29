@@ -72,6 +72,10 @@ let matrix =
 
        But GitLab CI can't cache anything unless it is in the project directory, so GitLab CI
        may encounter 260-character limit problems.
+
+      So the optional `opam_root_cacheable` (which defaults to `opam_root`) is different for
+      GitLab (gl) on Windows than `opam_root` so that the former can be in the project directory
+      while the latter is a short path that avoids 260 char limit.
     *)
     [
       ("abi_pattern", Jg_types.Tstr {|win32-windows_x86|});
