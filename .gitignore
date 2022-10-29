@@ -17,3 +17,5 @@ _build/
 # CI
 .ci/
 dist/
+_archive/
+_release/

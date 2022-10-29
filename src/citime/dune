@@ -11,3 +11,10 @@
  (public_name dkml-desktop-copy-installed)
  (modules copy_installed)
  (libraries diskuvbox bos fpath))
+
+(executable
+ (package dkml-build-desktop)
+ (name dkml_version)
+ (public_name dkml-desktop-dkml-version)
+ (modules dkml_version)
+ (libraries dkml-runtime-distribution))

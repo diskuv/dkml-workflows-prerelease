@@ -44,24 +44,44 @@ opamrun switch
 opamrun list
 opamrun var
 opamrun config report
+opamrun option
 opamrun exec --switch dkml -- ocamlc -config
 
 # Update
 opamrun update
 
-# Use the secondary switch to use the `dkml-desktop-gen-global-install` executable
-# and get the `dkml-desktop-copy-installed` executable
-install -d .ci
-COPYINSTALLED_RELPATH=".ci/dkml-desktop-copy-installed${exe_ext:-}"
-#   bump to latest dkml-runtime-distribution. will fail if not already installed
+# ----------- Secondary Switch ------------
+
+# Install dkml-build-desktop.opam into secondary switch.
 if opamrun list --switch two -s | grep -q '^dkml-runtime-distribution$'; then
+    #   bump to latest dkml-runtime-distribution
     opamrun upgrade --switch two dkml-runtime-distribution --yes
 fi
 opamrun install --switch two ./dkml-build-desktop.opam --yes
-opamrun exec --switch two -- dkml-desktop-gen-global-install "$DISTRO_TYPE" >.ci/shell.source.sh
+
+# Use the `dkml-desktop-gen-global-install` executable to create a part of this shell
+# script
+install -d .ci
+opamrun exec --switch two -- dkml-desktop-gen-global-install "$DISTRO_TYPE" >.ci/self-invoker.source.sh
+
+# Use `dkml-desktop-dkml-version` to get the DKML version
+opamrun exec --switch two -- dkml-desktop-dkml-version >.ci/dkml-version.txt
+DKML_VERSION=$(awk 'NR==1{print $1}' .ci/dkml-version.txt)
+
+# Get the `dkml-desktop-copy-installed` executable
+COPYINSTALLED_RELPATH=".ci/dkml-desktop-copy-installed${exe_ext:-}"
 install "$opam_root/two/bin/dkml-desktop-copy-installed${exe_ext:-}" "$COPYINSTALLED_RELPATH"
 
-# Define the shell functions that will be called by dkml-desktop-gen-global-install
+# ----------- Primary Switch ------------
+
+# Because dune.X.Y.Z+shim requires DKML installed (after all, it is just
+# a with-dkml.exe shim), we need either dkmlvars-v2.sexp or DKML environment
+# variables. Confer: Dkml_runtimelib.Dkml_context.get_dkmlversion
+opamrun option --switch dkml setenv= # reset
+opamrun option --switch dkml setenv+='DiskuvOCamlVarsVersion = "2"'
+opamrun option --switch dkml setenv+="DiskuvOCamlVersion = \"$DKML_VERSION\""
+
+# Define the shell functions that will be called by .ci/self-invoker.source.sh
 THE_SWITCH_PREFIX=$(opamrun var prefix --switch dkml)
 start_pkg_vers() {
     echo "Building: $*"
@@ -78,7 +98,7 @@ with_pkg_ver() {
 }
 end_pkg_vers() {
     # Install all the [## global-install] packages
-    opamrun install "$@" --switch dkml --yes --keep-build-dir
+    opamrun install "$@" --switch dkml --yes
 }
 post_pkg_ver() {
     post_pkg_ver_PKG=$1
@@ -94,11 +114,11 @@ post_pkg_ver() {
 # Call the shell functions (which will build the distribution packages)
 set -x
 #   shellcheck disable=SC1091
-. .ci/shell.source.sh
+. .ci/self-invoker.source.sh
 set +x
 
 # Tar ball
-# TODO: Could use cross-compilation ... simplify that first! Then bundle the
-#       _opam/darwin_arm64-sysroot/ instead of _opam/.
+# TODO: Could use cross-compilation ... simplify cross-compilation first! Confer
+#       diskuvbox. Then bundle the _opam/darwin_arm64-sysroot/ instead of _opam/.
 install -d "dist/$dkml_host_abi"
 tar cvCfz "$ARCHIVE_RELDIR" "dist/$dkml_host_abi.tar.gz" .

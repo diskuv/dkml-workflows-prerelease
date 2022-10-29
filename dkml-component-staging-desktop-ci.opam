@@ -18,10 +18,10 @@ depends: [
 ]
 dev-repo: "git+https://github.com/diskuv/dkml-component-enduser-desktop.git"
 build: [
-  # Unpack binary assets
+  # Unpack binary staging
 
-  ["install" "-d" "dl/assets"]
-  ["tar" "xCfz" "dl/assets" "dl/assets.tar.gz" "--strip-components=1"]
+  ["install" "-d" "dl/staging"]
+  ["tar" "xCfz" "dl/staging" "dl/staging.tar.gz" "--strip-components=1"]
 
   # Build dkml component
 
@@ -29,9 +29,9 @@ build: [
   ["dune" "build" "-p" name "-j" jobs "@install" "@runtest" {with-test} "@doc" {with-doc}]
 ]
 install: [
-  ["diskuvbox" "copy-dir" "dl/assets" "%{_:share}%/staging-files"]
+  ["diskuvbox" "copy-dir" "dl/staging" "%{_:share}%/staging-files"]
 ]
-extra-source "dl/assets.tar.gz" {
-  src: "https://github.com/ocaml/ocaml/archive/4.12.1.tar.gz"
+extra-source "dl/staging.tar.gz" {
+  src: "https://gitlab.com/diskuv-ocaml/components/dkml-component-desktop/-/archive/0.1.0/staging.tar.gz"
   checksum: "sha256=f5a48a90557cb47ace7b1590fcab1362a1af38629a218350f69c225c57e96a41"
 }

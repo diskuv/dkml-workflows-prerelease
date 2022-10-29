@@ -5,7 +5,9 @@ set -euf
 _archive="$(pwd)/_archive"
 install -d "$_archive"
 find dist -mindepth 1 -maxdepth 1 -type f -name "*.tar.gz" | while read -r tarball; do
-    tar xCvfz "$_archive" "$tarball"
+    dkml_host_abi=$(basename "${tarball%.tar.gz}")
+    install -d "$_archive/$dkml_host_abi"
+    tar xCvfz "$_archive/$dkml_host_abi" "$tarball"
 done
 
 # Tar ball
