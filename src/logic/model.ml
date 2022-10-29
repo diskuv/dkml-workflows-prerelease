@@ -210,8 +210,8 @@ let matrix =
       ("gl_opam_root", Jg_types.Tstr {|.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|.ci/o|});
       ("in_docker", Jg_types.Tstr {|true|});
-      ("dockcross_image", Jg_types.Tstr {|dockcross/manylinux2014-x86|})
-      (* Gets rid of: WARNING: The requested image's platform (linux/386) does not match the detected host platform (linux/amd64) and no specific platform was requested *);
+      ("dockcross_image", Jg_types.Tstr {|dockcross/manylinux2014-x86|});
+      (* Gets rid of: WARNING: The requested image's platform (linux/386) does not match the detected host platform (linux/amd64) and no specific platform was requested *)
       ("dockcross_run_extra_args", Jg_types.Tstr {|--platform linux/386|});
     ]
     (* ("gh_os", ubuntu-latest
@@ -237,6 +237,9 @@ let matrix =
       ("gl_opam_root", Jg_types.Tstr {|.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|.ci/o|});
       ("dockcross_image", Jg_types.Tstr {|dockcross/manylinux2014-x64|});
+      (* Use explicit platform because setup-dkml.sh will bypass 'dockcross' script (which hardcodes the --platform)
+         when the invoking user is root. In that situation the following arguments are used. *)
+      ("dockcross_run_extra_args", Jg_types.Tstr {|--platform linux/amd64|});
       ("in_docker", Jg_types.Tstr {|true|});
     ];
   ]

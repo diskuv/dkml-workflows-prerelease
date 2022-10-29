@@ -587,28 +587,126 @@ section_end bootstrap-opam
 install -d .ci/sd4/dist
 tar cf .ci/sd4/dist/env-opam.tar -T /dev/null
 
+do_get_dockcross() {
+    if [ -n "${dockcross_image:-}" ]; then
+        # The dockcross script is super-slow
+        section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
+        install -d .ci/sd4
+        #   shellcheck disable=SC2086
+        docker run ${dockcross_run_extra_args:-} --rm "${dockcross_image_custom_prefix:-}${dockcross_image:-}" >.ci/sd4/dockcross.gen
+
+        # PROBLEM 1
+        # ---------
+        # Super-annoying stderr output from dockcross at line:
+        #    tty -s && [ -z "$MSYS" ] && TTY_ARGS=-ti
+        # When there is no tty, get:
+        #   tty: ignoring all arguments
+        #   not a tty
+        # So replace 'tty -s &&' with 'false &&'
+        sed 's/tty -s &&/false \&\&/' .ci/sd4/dockcross.gen >.ci/sd4/dockcross-real
+        rm -f .ci/sd4/dockcross.gen
+        chmod +x .ci/sd4/dockcross-real
+
+        # PROBLEM 2
+        # ---------
+        # By default dockcross for ManyLinux will chown -R all python packages; super-slow (~10 seconds)!
+        # Confer: https://github.com/dockcross/dockcross/blob/master/manylinux-common/pre_exec.sh
+        # That kills speed for any repetitive dockcross invocation.
+        #
+        # BUT it is unnecessary to chown -R when the current user is root, because inside the Docker container
+        # the files are already root!
+        #
+        # The chown -R (within pre_exec.sh) is not run when the user ids are not passed in.
+        # Confer: https://github.com/dockcross/dockcross/blob/96d87416f639af0204bdd42553e4b99315ca8476/imagefiles/entrypoint.sh#L21-L53
+        #
+        # So explicitly call the entrypoint if root!
+        case "$dkml_host_abi" in
+        #       https://github.com/dockcross/dockcross/blob/master/linux-x86/linux32-entrypoint.sh
+        linux_x86)  dockcross_entrypoint=/dockcross/linux32-entrypoint.sh ;;
+        *)          dockcross_entrypoint=/dockcross/entrypoint.sh ;;
+        esac
+        cat > .ci/sd4/dockcross <<EOF
+#!/bin/bash
+set -euf
+BUILDER_UID="\$( id -u )"
+BUILDER_GID="\$( id -g )"
+if [ "\$BUILDER_UID" = 0 ] && [ "\$BUILDER_GID" = 0 ]; then
+    # ---------- Start of dockcross script snippet -------
+    # Verbatim from
+    # https://github.com/dockcross/dockcross/blob/96d87416f639af0204bdd42553e4b99315ca8476/imagefiles/dockcross#L175-L204
+    # except 1) disabling of USER_IDS
+
+    # Bash on Ubuntu on Windows
+    UBUNTU_ON_WINDOWS=\$([ -e /proc/version ] && grep -l Microsoft /proc/version || echo "")
+    # MSYS, Git Bash, etc.
+    MSYS=\$([ -e /proc/version ] && grep -l MINGW /proc/version || echo "")
+    # CYGWIN
+    CYGWIN=\$([ -e /proc/version ] && grep -l CYGWIN /proc/version || echo "")
+
+    #if [ -z "\$UBUNTU_ON_WINDOWS" -a -z "\$MSYS" -a "\$OCI_EXE" != "podman" ]; then
+    #    USER_IDS=(-e BUILDER_UID="\$( id -u )" -e BUILDER_GID="\$( id -g )" -e BUILDER_USER="\$( id -un )" -e BUILDER_GROUP="\$( id -gn )")
+    #fi
+
+    # Change the PWD when working in Docker on Windows
+    if [ -n "\$UBUNTU_ON_WINDOWS" ]; then
+        WSL_ROOT="/mnt/"
+        CFG_FILE=/etc/wsl.conf
+            if [ -f "\$CFG_FILE" ]; then
+                    CFG_CONTENT=\$(cat \$CFG_FILE | sed -r '/[^=]+=[^=]+/!d' | sed -r 's/\s+=\s/=/g')
+                    eval "\$CFG_CONTENT"
+                    if [ -n "\$root" ]; then
+                            WSL_ROOT=\$root
+                    fi
+            fi
+        HOST_PWD=\`pwd -P\`
+        HOST_PWD=\${HOST_PWD/\$WSL_ROOT//}
+    elif [ -n "\$MSYS" ]; then
+        HOST_PWD=\$PWD
+        HOST_PWD=\${HOST_PWD/\//}
+        HOST_PWD=\${HOST_PWD/\//:\/}
+    elif [ -n "\$CYGWIN" ]; then
+        for f in pwd readlink cygpath ; do
+            test -n "\$(type "\${f}" )" || { echo >&2 "Missing functionality (\${f}) (in cygwin)." ; exit 1 ; } ;
+        done ;
+        HOST_PWD="\$( cygpath -w "\$( readlink -f "\$( pwd ;)" ; )" ; )" ;
+    else
+        HOST_PWD=\$PWD
+        [ -L \$HOST_PWD ] && HOST_PWD=\$(readlink \$HOST_PWD)
+    fi
+
+    # ---------- End of dockcross script snippet -------
+
+    # Handle: dockcross --args "-v X:Y --platform P"
+    ARGS=
+    if [ "\$#" -ge 1 ] && [ "\$1" = "--args" ]; then
+        shift
+        ARGS=\$1
+        shift
+    fi
+
+    # Directly invoke entrypoint
+    exec docker run --entrypoint /bin/bash \
+        --rm \
+        \${ARGS:-} \
+         -v "\$HOST_PWD":/work \
+        ${dockcross_image_custom_prefix:-}${dockcross_image:-} ${dockcross_entrypoint} "\$@"
+else
+    HERE=\$(dirname "\$0")
+    HERE=\$(cd "\$HERE" && pwd)
+    exec "\$HERE/dockcross-real" "\$@"
+fi
+EOF
+        chmod +x .ci/sd4/dockcross
+
+        # Bundle for consumers of setup-dkml.yml
+        do_tar_rf .ci/sd4/dist/env-opam.tar .ci/sd4/dockcross .ci/sd4/dockcross-real
+
+        section_end get-dockcross
+    fi
+}
+do_get_dockcross
+
 if [ -n "${dockcross_image:-}" ]; then
-    section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
-    install -d .ci/sd4
-    #   shellcheck disable=SC2086
-    docker run ${dockcross_run_extra_args:-} --rm "${dockcross_image_custom_prefix:-}${dockcross_image:-}" >.ci/sd4/dockcross.gen
-
-    # Super-annoying stderr output from dockcross at line:
-    #    tty -s && [ -z "$MSYS" ] && TTY_ARGS=-ti
-    # When there is no tty, get:
-    #   tty: ignoring all arguments
-    #   not a tty
-    # So replace 'tty -s &&' with 'false &&'
-    sed 's/tty -s &&/false \&\&/' .ci/sd4/dockcross.gen >.ci/sd4/dockcross
-    rm -f .ci/sd4/dockcross.gen
-
-    chmod +x .ci/sd4/dockcross
-
-    # Bundle for consumers of setup-dkml.yml
-    do_tar_rf .ci/sd4/dist/env-opam.tar .ci/sd4/dockcross
-
-    section_end get-dockcross
-
     # rsync needs to be available, even after Docker container disappears
     if [ ! -e .ci/sd4/bs/bin/rsync ]; then
         section_begin get-opam-prereqs-in-dockcross 'Get Opam prerequisites (ManyLinux)'

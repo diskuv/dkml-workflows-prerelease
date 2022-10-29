@@ -7,6 +7,9 @@ New Features:
   input variable `SECONDARY_SWITCH=true`
 
 Other changes:
+- Performance: Linux CI now avoids ~10 second ManyLinux (dockcross) unnecessary recursive chown of root:root
+  owned container files. As long as calling user is root (which is true for GitHub Actions and GitLab CI/CD)
+  the chown operation is skipped.
 - Remove unused `gl_tags` matrix variable
 
 ## 1.0.0 (v1)
