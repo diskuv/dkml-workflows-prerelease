@@ -25,14 +25,9 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_opambin }}"
+    - key: "{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
       paths:
         - .ci/sd4/bs
-    - key: "{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_vsstudio }}"
-      paths:
-        - .ci/sd4/vsenv.sh
-    - key: "{{ cachebust }}_${CACHE_PREFIX}-${DKML_VERSION}-${abi_pattern}-{{ gl_cachekey_opambin }}-{{ gl_cachekey_ci_inputs }}"
-      paths:
         - ${opam_root_cacheable}/config
         - ${opam_root_cacheable}/dkml
         - ${opam_root_cacheable}/two
@@ -40,11 +35,9 @@ variables:
         - ${opam_root_cacheable}/download-cache
         - ${opam_root_cacheable}/.ci.root-init
         - ${opam_root_cacheable}/.ci.repo-init
-        # these only need gl_cachekey_ci_inputs but can't do separately because only 4 caches allowed
         - .ci/sd4/g
-    - key: "{{ cachebust }}_${CACHE_PREFIX}-${dkml_host_abi}-${msys2_system}-${msys2_packages}-msys2"
-      paths:
-        - ${CI_PROJECT_DIR}/msys64
+        - .ci/sd4/vsenv.sh
+        - msys64
 
 build_win32:
   # prettier-ignore
@@ -207,7 +200,6 @@ build_macos:
     - echo "Writing scripts ..."
     - |
       install -d .ci/sd4
-
       cat > .ci/sd4/common-values.sh <<'end_of_script'
       {{ gl_common_values_script }}
       end_of_script
@@ -222,6 +214,18 @@ build_macos:
 
     - 'sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
     - 'sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+
+    - echo "Filling cache holes ..."
+    - |
+      # Needed only to stop GitLab CI/CD cache warnings 'no matching files'
+      install -d .ci/sd4
+      rm -f .ci/sd4/vsenv.sh
+      touch .ci/sd4/vsenv.sh
+      chmod +x .ci/sd4/vsenv.sh
+
+      rm -rf msys64
+      install -d msys64
+      touch msys64/.keep
   script:
     - 'printf "Override the .gitlab-ci.yml configuration ...\n  build_macos:\n    script:\nto configure your macOS build.\n"'
 
@@ -302,5 +306,17 @@ build_linux:
 
     - 'sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
     - 'sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+
+    - echo "Filling cache holes ..."
+    - |
+      # Needed only to stop GitLab CI/CD cache warnings 'no matching files'
+      install -d .ci/sd4
+      rm -f .ci/sd4/vsenv.sh
+      touch .ci/sd4/vsenv.sh
+      chmod +x .ci/sd4/vsenv.sh
+
+      rm -rf msys64
+      install -d msys64
+      touch msys64/.keep
   script:
     - 'printf "Override the .gitlab-ci.yml configuration ...\n  build_linux:\n    script:\nto configure your Linux build.\n"'
