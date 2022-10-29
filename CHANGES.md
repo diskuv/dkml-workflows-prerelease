@@ -6,6 +6,9 @@ New Features:
 - Optional secondary switch `two` in addition to primary switch `dkml` enabled with
   input variable `SECONDARY_SWITCH=true`
 
+Other changes:
+- Remove unused `gl_tags` matrix variable
+
 ## 1.0.0 (v1)
 
 New Features:

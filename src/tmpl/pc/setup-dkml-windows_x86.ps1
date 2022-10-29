@@ -98,7 +98,7 @@ $env:CONF_DKML_CROSS_TOOLCHAIN = $CONF_DKML_CROSS_TOOLCHAIN
 $env:DISKUV_OPAM_REPOSITORY = $DISKUV_OPAM_REPOSITORY
 
 # Set matrix variables
-# autogen from pc_matrix. only windows_x86{% for outer in pc_matrix %}{%- if outer.dkml_host_abi == "windows_x86" -%}{{ nl }}{% for var in outer.vars %}$env:{{ var.name }} = "{{ var.value }}"{{ nl }}{% endfor %}{%- endif %}{% endfor %}
+# autogen from pc_vars. only windows_x86{{ nl }}{% for (name,value) in pc_vars.windows_x86 %}$env:{{ name }} = "{{ value }}"{{ nl }}{% endfor %}
 
 # Set environment variables
 # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}$env:{{ var.name }} = ${{ var.name }}{% endfor %}

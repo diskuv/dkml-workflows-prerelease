@@ -158,7 +158,9 @@ $env:CONF_DKML_CROSS_TOOLCHAIN = $CONF_DKML_CROSS_TOOLCHAIN
 $env:DISKUV_OPAM_REPOSITORY = $DISKUV_OPAM_REPOSITORY
 
 # Set matrix variables
-# autogen from pc_matrix. only windows_x86
+# autogen from pc_vars. only windows_x86
+$env:dkml_host_os = "windows"
+$env:opam_root_cacheable = "${env:PC_PROJECT_DIR}/.ci/o"
 $env:abi_pattern = "win32-windows_x86"
 $env:msys2_system = "MINGW32"
 $env:msys2_packages = "mingw-w64-i686-pkg-config"

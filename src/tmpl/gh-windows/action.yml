@@ -67,7 +67,7 @@ runs:
       run: |
         # Select correct Windows matrix variables
         case "{% raw -%}${{ matrix.dkml_host_abi }}{%- endraw %}" in
-        {% for outer in gh_matrix %}{%- if outer.dkml_host_os == "windows" -%}{{ nl }}        {{ outer.dkml_host_abi }}){{ nl }}          {% for var in outer.vars %}{{ var.name }}={{ squot }}{{ var.value }}{{ squot }} {%- if loop.last %} ;; {%- else -%} ; {%- endif %}{{ nl }}          {% endfor %}{%- endif %}{% endfor %}
+        {% for (abi,abi_vars) in gh_vars %}{%- if abi_vars.dkml_host_os == "windows" -%}{{ nl }}        {{ abi }}){{ nl }}          {% for (name,value) in abi_vars %}{{ name }}={{ squot }}{{ value }}{{ squot }} {%- if loop.last %} ;; {%- else -%} ; {%- endif %}{{ nl }}          {% endfor %}{%- endif %}{% endfor %}
         *)  echo "FATAL: Unsupported dkml_host_abi=$dkml_host_abi in Windows action.yml"; exit 107 ;;
         esac
 

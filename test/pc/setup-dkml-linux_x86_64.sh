@@ -139,7 +139,9 @@ done
 shift $((OPTIND - 1))
 
 # Set matrix variables
-# autogen from pc_matrix. only linux_x86_64
+# autogen from pc_vars. only linux_x86_64
+export dkml_host_os="linux"
+export opam_root_cacheable=".ci/o"
 export abi_pattern="manylinux2014-linux_x86_64"
 export comment="(CentOS 7, etc.)"
 export bootstrap_opam_version="2.2.0-dkml20220801T155940Z"

@@ -65,8 +65,10 @@ build_win32:
   # prettier-ignore
   parallel:
     matrix: [
-      # autogen from gl_matrix. only windows
-      { abi_pattern: 'win32-windows_x86',
+      # autogen from gl_vars. only windows
+      { dkml_host_os: 'windows',
+        opam_root_cacheable: 'C:/o',
+        abi_pattern: 'win32-windows_x86',
         msys2_system: 'MINGW32',
         msys2_packages: 'mingw-w64-i686-pkg-config',
         exe_ext: '.exe',
@@ -78,7 +80,9 @@ build_win32:
         vsstudio_arch: 'x86',
         ocaml_options: 'ocaml-option-32bit' },
         
-      { abi_pattern: 'win32-windows_x86_64',
+      { dkml_host_os: 'windows',
+        opam_root_cacheable: 'C:/o',
+        abi_pattern: 'win32-windows_x86_64',
         msys2_system: 'CLANG64',
         msys2_packages: 'mingw-w64-clang-x86_64-pkg-config',
         exe_ext: '.exe',
@@ -1346,7 +1350,7 @@ build_macos:
   # prettier-ignore
   parallel:
     matrix: [
-      # autogen from gl_matrix. only darwin
+      # autogen from gl_vars. only darwin
     ]
   image: $gl_image
   tags: [shared-macos-amd64]
@@ -2393,22 +2397,26 @@ build_linux:
   # prettier-ignore
   parallel:
     matrix: [
-      # autogen from gl_matrix. only linux
-      { abi_pattern: 'manylinux2014-linux_x86' ,
-        comment: '(CentOS 7, etc.)' ,
-        bootstrap_opam_version: '2.2.0-dkml20220801T155940Z' ,
-        dkml_host_abi: 'linux_x86' ,
-        opam_root: '.ci/o' ,
-        in_docker: 'true' ,
-        dockcross_image: 'dockcross/manylinux2014-x86' ,
+      # autogen from gl_vars. only linux
+      { dkml_host_os: 'linux',
+        opam_root_cacheable: '.ci/o',
+        abi_pattern: 'manylinux2014-linux_x86',
+        comment: '(CentOS 7, etc.)',
+        bootstrap_opam_version: '2.2.0-dkml20220801T155940Z',
+        dkml_host_abi: 'linux_x86',
+        opam_root: '.ci/o',
+        in_docker: 'true',
+        dockcross_image: 'dockcross/manylinux2014-x86',
         dockcross_run_extra_args: '--platform linux/386' },
         
-      { abi_pattern: 'manylinux2014-linux_x86_64' ,
-        comment: '(CentOS 7, etc.)' ,
-        bootstrap_opam_version: '2.2.0-dkml20220801T155940Z' ,
-        dkml_host_abi: 'linux_x86_64' ,
-        opam_root: '.ci/o' ,
-        dockcross_image: 'dockcross/manylinux2014-x64' ,
+      { dkml_host_os: 'linux',
+        opam_root_cacheable: '.ci/o',
+        abi_pattern: 'manylinux2014-linux_x86_64',
+        comment: '(CentOS 7, etc.)',
+        bootstrap_opam_version: '2.2.0-dkml20220801T155940Z',
+        dkml_host_abi: 'linux_x86_64',
+        opam_root: '.ci/o',
+        dockcross_image: 'dockcross/manylinux2014-x64',
         in_docker: 'true' },
         
     ]

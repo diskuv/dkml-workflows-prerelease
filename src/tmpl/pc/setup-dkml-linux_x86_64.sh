@@ -79,7 +79,7 @@ done
 shift $((OPTIND - 1))
 
 # Set matrix variables
-# autogen from pc_matrix. only linux_x86_64{% for outer in pc_matrix %}{%- if outer.dkml_host_abi == "linux_x86_64" -%}{{ nl }}{% for var in outer.vars %}export {{ var.name }}="{{ var.value }}"{{ nl }}{% endfor %}{%- endif %}{% endfor %}
+# autogen from pc_vars. only linux_x86_64{{ nl }}{% for (name,value) in pc_vars.linux_x86_64 %}export {{ name }}="{{ value }}"{{ nl }}{% endfor %}
 
 ########################### before_script ###############################
 

@@ -56,6 +56,8 @@ runs:
         case "${{ matrix.dkml_host_abi }}" in
         
         linux_x86)
+          dkml_host_os='linux';
+          opam_root_cacheable='.ci/o';
           abi_pattern='manylinux2014-linux_x86';
           gh_os='ubuntu-latest';
           comment='(CentOS 7, etc.)';
@@ -68,6 +70,8 @@ runs:
           dockcross_run_extra_args='--platform linux/386' ;;
           
         linux_x86_64)
+          dkml_host_os='linux';
+          opam_root_cacheable='.ci/o';
           abi_pattern='manylinux2014-linux_x86_64';
           gh_os='ubuntu-latest';
           comment='(CentOS 7, etc.)';

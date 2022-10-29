@@ -56,6 +56,8 @@ runs:
         case "${{ matrix.dkml_host_abi }}" in
         
         darwin_x86_64)
+          dkml_host_os='darwin';
+          opam_root_cacheable='/Users/runner/.opam';
           abi_pattern='macos-darwin_all';
           gh_os='macos-latest';
           gh_unix_shell='sh';

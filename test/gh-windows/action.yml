@@ -69,6 +69,8 @@ runs:
         case "${{ matrix.dkml_host_abi }}" in
         
         windows_x86)
+          dkml_host_os='windows';
+          opam_root_cacheable='D:/.opam';
           abi_pattern='win32-windows_x86';
           gh_os='windows-2019';
           gh_unix_shell='msys2 {0}';
@@ -84,6 +86,8 @@ runs:
           ocaml_options='ocaml-option-32bit' ;;
           
         windows_x86_64)
+          dkml_host_os='windows';
+          opam_root_cacheable='D:/.opam';
           abi_pattern='win32-windows_x86_64';
           gh_os='windows-2019';
           gh_unix_shell='msys2 {0}';

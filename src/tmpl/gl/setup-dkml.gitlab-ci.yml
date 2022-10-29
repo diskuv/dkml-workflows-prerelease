@@ -50,7 +50,7 @@ build_win32:
   # prettier-ignore
   parallel:
     matrix: [
-      # autogen from gl_matrix. only windows{% for outer in gl_matrix %}{%- if outer.dkml_host_os == "windows" -%}{{ nl }}      { {% for var in outer.vars %}{{ var.name }}: {{ squot }}{{ var.value }}{{ squot }} {%- if loop.last %} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
+      # autogen from gl_vars. only windows{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.dkml_host_os == "windows" -%}{{ nl }}      { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
     ]
   variables:
     # https://patchwork.kernel.org/project/qemu-devel/patch/20211215073402.144286-17-thuth@redhat.com/
@@ -198,7 +198,7 @@ build_macos:
   # prettier-ignore
   parallel:
     matrix: [
-      # autogen from gl_matrix. only darwin{% for outer in gl_matrix %}{%- if outer.dkml_host_os == "darwin" -%}{{ nl }}      { {% for var in outer.vars %}{{ var.name }}: {{ squot }}{{ var.value }}{{ squot }} {% if loop.last -%} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
+      # autogen from gl_vars. only darwin{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.dkml_host_os == "darwin" -%}{{ nl }}      { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
     ]
   image: $gl_image
   tags: [shared-macos-amd64]
@@ -229,7 +229,7 @@ build_linux:
   # prettier-ignore
   parallel:
     matrix: [
-      # autogen from gl_matrix. only linux{% for outer in gl_matrix %}{%- if outer.dkml_host_os == "linux" -%}{{ nl }}      { {% for var in outer.vars %}{{ var.name }}: {{ squot }}{{ var.value }}{{ squot }} {% if loop.last -%} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
+      # autogen from gl_vars. only linux{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.dkml_host_os == "linux" -%}{{ nl }}      { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
     ]
   extends: .build
   #     ---------------

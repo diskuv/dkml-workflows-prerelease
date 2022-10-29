@@ -139,7 +139,9 @@ done
 shift $((OPTIND - 1))
 
 # Set matrix variables
-# autogen from pc_matrix. only darwin_x86_64
+# autogen from pc_vars. only darwin_x86_64
+export dkml_host_os="darwin"
+export opam_root_cacheable="${PC_PROJECT_DIR}/.ci/o"
 export abi_pattern="macos-darwin_all"
 export bootstrap_opam_version="2.2.0-dkml20220801T155940Z"
 export dkml_host_abi="darwin_x86_64"

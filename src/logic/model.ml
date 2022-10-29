@@ -1,3 +1,10 @@
+(* Useful `dune utop` expressions:
+
+
+   Workflow_logic.Model.vars_as_object ~filter_dkml_host_abi:(fun _s -> true) ~rewrite_name_value:Workflow_logic.Model.gl_rewrite_name_value ;;
+
+   Workflow_logic.Model.full_matrix_as_list ~filter_dkml_host_abi:(fun _s -> true) ~rewrite_name_value:Workflow_logic.Model.gl_rewrite_name_value ;;
+*)
 open Astring
 open Jingoo
 
@@ -78,6 +85,7 @@ let matrix =
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
       ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
+      ("gl_opam_root_cacheable", Jg_types.Tstr {|C:/o|});
       ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|});
       ("vsstudio_hostarch", Jg_types.Tstr {|x64|});
       ("vsstudio_arch", Jg_types.Tstr {|x86|});
@@ -95,6 +103,7 @@ let matrix =
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
       ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
+      ("gl_opam_root_cacheable", Jg_types.Tstr {|C:/o|});
       ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|});
       ("vsstudio_hostarch", Jg_types.Tstr {|x64|});
       ("vsstudio_arch", Jg_types.Tstr {|x64|});
@@ -103,16 +112,7 @@ let matrix =
        other (future) VS versions.
        ;[("gh_os", Jg_types.Tstr "windows-2019"   (* 2019 has Visual Studio 2019 *))
          ; ("abi_pattern", Jg_types.Tstr {|win32_1416-windows_64|} (* VS2017 compiler available to VS2019 *))
-         ; ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|})
-         ; ("msys2_system", Jg_types.Tstr {|CLANG64|})
-         ; ("msys2_packages", Jg_types.Tstr {|mingw-w64-clang-x86_64-pkg-config|})
-         ; ("exe_ext", Jg_types.Tstr {|.exe|})
-         ; ("bootstrap_opam_version", bootstrap_opam_version)
-         ; ("opam_abi", Jg_types.Tstr {|windows_x86_64|})
-         ; ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|})
-         ; ("gh_opam_root", Jg_types.Tstr {|D:/.opam|})
-         ; ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|})
-         ; ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|})
+         ...
          ; ("vsstudio_hostarch", Jg_types.Tstr {|x64|})
          ; ("vsstudio_arch", Jg_types.Tstr {|x64|})
          ; ("vsstudio_dir", Jg_types.Tstr {|'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'|})
@@ -133,16 +133,7 @@ let matrix =
         `opam upgrade`. See https://github.com/diskuv/dkml-component-ocamlcompiler/runs/6059642542?check_suite_focus=true
         ;[("gh_os", Jg_types.Tstr "windows-2022")
           ; ("abi_pattern", Jg_types.Tstr {|win32_2022-windows_x86_64|})
-          ; ("gh_unix_shell", Jg_types.Tstr {|msys2 {0}|})
-          ; ("msys2_system", Jg_types.Tstr {|CLANG64|})
-          ; ("msys2_packages", Jg_types.Tstr {|mingw-w64-clang-x86_64-pkg-config|})
-          ; ("exe_ext", Jg_types.Tstr {|.exe|})
-          ; ("bootstrap_opam_version", bootstrap_opam_version)
-          ; ("opam_abi", Jg_types.Tstr {|windows_x86_64|})
-          ; ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|})
-          ; ("gh_opam_root", Jg_types.Tstr {|D:/.opam|})
-          ; ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|})
-          ; ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|})
+          ...
           ; ("vsstudio_hostarch", Jg_types.Tstr {|x64|})
           ; ("vsstudio_arch", Jg_types.Tstr {|x64|})
           ; ("vsstudio_dir", Jg_types.Tstr {|'C:\Program Files\Microsoft Visual Studio\2022\Enterprise'|})
@@ -250,9 +241,17 @@ module Aggregate = struct
   type t = {
     mutable dkml_host_os_opt : Jg_types.tvalue option;
     mutable dkml_host_abi_opt : string option;
+    mutable opam_root_opt : string option;
+    mutable opam_root_cacheable_opt : string option;
   }
 
-  let create () = { dkml_host_os_opt = None; dkml_host_abi_opt = None }
+  let create () =
+    {
+      dkml_host_os_opt = None;
+      dkml_host_abi_opt = None;
+      opam_root_opt = None;
+      opam_root_cacheable_opt = None;
+    }
 
   let capture ~name ~value t =
     let value_if_string value =
@@ -261,8 +260,12 @@ module Aggregate = struct
       else None
     in
     let value_as_string = value_if_string value in
-    (* Capture dkml_host_abi *)
-    if name = "dkml_host_abi" then t.dkml_host_abi_opt <- value_as_string;
+    (* Capture scalar values *)
+    (match name with
+    | "dkml_host_abi" -> t.dkml_host_abi_opt <- value_as_string
+    | "opam_root" -> t.opam_root_opt <- value_as_string
+    | "opam_root_cacheable" -> t.opam_root_cacheable_opt <- value_as_string
+    | _ -> ());
     (* Capture dkml_host_os *)
     match (name, Option.map (String.cuts ~sep:"_") value_as_string) with
     | "dkml_host_abi", Some (value_head :: _value_tail) ->
@@ -271,20 +274,47 @@ module Aggregate = struct
 
   let dkml_host_abi_opt t = t.dkml_host_abi_opt
 
+  let opam_root_opt t = t.opam_root_opt
+
+  let opam_root_cacheable_opt t = t.opam_root_cacheable_opt
+
   let dump t =
-    match (t.dkml_host_os_opt, t.dkml_host_abi_opt) with
-    | Some dkml_host_os, Some dkml_host_abi ->
+    match
+      ( t.dkml_host_os_opt,
+        t.dkml_host_abi_opt,
+        t.opam_root_opt,
+        t.opam_root_cacheable_opt )
+    with
+    | ( Some dkml_host_os,
+        Some dkml_host_abi,
+        Some opam_root,
+        opam_root_cacheable_opt ) ->
+        let opam_root_cacheable =
+          Option.fold ~none:opam_root
+            ~some:(fun opam_root_cacheable -> opam_root_cacheable)
+            opam_root_cacheable_opt
+        in
         [
           ("dkml_host_abi", Jg_types.Tstr dkml_host_abi);
           ("dkml_host_os", dkml_host_os);
+          ("opam_root", Jg_types.Tstr opam_root);
+          ("opam_root_cacheable", Jg_types.Tstr opam_root_cacheable);
         ]
+    | Some _, None, Some _, _ ->
+        failwith "Expected dkml_host_abi would be found"
+    | Some _, Some _, None, _ -> failwith "Expected opam_root would be found"
+    | None, Some _, Some _, _ ->
+        failwith "Expected dkml_host_os would be derived"
     | _ ->
         failwith
-          "Expected dkml_host_abi would be found and dkml_host_os would be \
-           derived"
+          "Expected dkml_host_abi and opam_root would be found and \
+           dkml_host_os would be derived"
 end
 
 (**
+
+  The field [opam_root_cacheable] will default to [opam_root] unless explicitly
+  set.
 
   {v
     { vars: [
@@ -303,7 +333,9 @@ end
         ...
       ],
       dkml_host_abi: "windows_x86",
-      dkml_host_os: "windows"
+      dkml_host_os: "windows",
+      opam_root: "${CI_PROJECT_DIR}/.ci/o",
+      opam_root_cacheable: "${CI_PROJECT_DIR}/.ci/o",
   v}
 *)
 let full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value =
@@ -314,12 +346,15 @@ let full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value =
         Jg_types.Tlist
           (List.filter_map
              (fun (name, value) ->
-               (* capture aggregates *)
-               Aggregate.capture ~name ~value aggregate;
                (* make name value pair unless ~rewrite_name_value is None *)
                match rewrite_name_value ~name ~value () with
-               | None -> None
+               | None ->
+                   (* capture aggregates *)
+                   Aggregate.capture ~name ~value aggregate;
+                   None
                | Some (name', value') ->
+                   (* capture aggregates (after rewriting!) *)
+                   Aggregate.capture ~name:name' ~value:value' aggregate;
                    Some
                      (Jg_types.Tobj
                         [ ("name", Jg_types.Tstr name'); ("value", value') ]))
@@ -353,6 +388,15 @@ let full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value =
 *)
 let vars_as_object ~filter_dkml_host_abi ~rewrite_name_value =
   let matrix = full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value in
+  let filter_vars f (vars : Jg_types.tvalue list) : Jg_types.tvalue list =
+    List.filter
+      (function
+        | Jg_types.Tobj
+            [ ("name", Jg_types.Tstr name); ("value", Jg_types.Tstr value) ] ->
+            f ~name ~value
+        | _ -> false)
+      vars
+  in
   let vars =
     List.map
       (function
@@ -361,6 +405,8 @@ let vars_as_object ~filter_dkml_host_abi ~rewrite_name_value =
               ("vars", Jg_types.Tlist vars);
               ("dkml_host_abi", Jg_types.Tstr dkml_host_abi);
               ("dkml_host_os", Jg_types.Tstr dkml_host_os);
+              ("opam_root", Jg_types.Tstr _opam_root);
+              ("opam_root_cacheable", Jg_types.Tstr opam_root_cacheable);
             ] ->
             ( dkml_host_abi,
               Jg_types.Tobj
@@ -368,11 +414,20 @@ let vars_as_object ~filter_dkml_host_abi ~rewrite_name_value =
                   ("name", Jg_types.Tstr "dkml_host_os");
                   ("value", Jg_types.Tstr dkml_host_os);
                 ]
-              :: vars )
+              :: Jg_types.Tobj
+                   [
+                     ("name", Jg_types.Tstr "opam_root_cacheable");
+                     ("value", Jg_types.Tstr opam_root_cacheable);
+                   ]
+              :: filter_vars
+                   (fun ~name ~value:_ ->
+                     not (String.equal name "opam_root_cacheable"))
+                   vars )
         | _ ->
             failwith
-              "Expecting [('vars', Tlist varlist); ...] where vars is the \
-               first item")
+              "Expecting [('vars', Tlist varlist); ('dkml_host_abi', ...); \
+               ('dkml_host_os', ...); ('opam_root', ...); \
+               ('opam_root_cacheable', ...); ...] where vars is the first item")
       matrix
   in
   let f_vars_to_obj = function
@@ -388,45 +443,43 @@ let vars_as_object ~filter_dkml_host_abi ~rewrite_name_value =
         prerr_endline ("FATAL: " ^ msg);
         failwith msg
   in
-  match matrix with
-  | _ ->
-      Jg_types.Tobj
-        (List.map
-           (fun (dkml_host_abi, vars) ->
-             (dkml_host_abi, Jg_types.Tobj (List.map f_vars_to_obj vars)))
-           vars)
+  Jg_types.Tobj
+    (List.map
+       (fun (dkml_host_abi, vars) ->
+         (dkml_host_abi, Jg_types.Tobj (List.map f_vars_to_obj vars)))
+       vars)
+
+let gh_rewrite_name_value ~name ~value () =
+  match
+    ( name,
+      String.is_prefix ~affix:"gl" name || String.is_prefix ~affix:"pc" name )
+  with
+  | _, true -> None
+  | "gh_opam_root", _ -> Some ("opam_root", value)
+  | "gh_opam_root_cacheable", _ -> Some ("opam_root_cacheable", value)
+  | _ -> Some (name, value)
+
+let gl_rewrite_name_value ~name ~value () =
+  match
+    ( name,
+      String.is_prefix ~affix:"gh" name || String.is_prefix ~affix:"pc" name )
+  with
+  | _, true -> None
+  | "gl_opam_root", _ -> Some ("opam_root", value)
+  | "gl_opam_root_cacheable", _ -> Some ("opam_root_cacheable", value)
+  | _ -> Some (name, value)
+
+let pc_rewrite_name_value ~name ~value () =
+  match
+    ( name,
+      String.is_prefix ~affix:"gh" name || String.is_prefix ~affix:"gl" name )
+  with
+  | _, true -> None
+  | "pc_opam_root", _ -> Some ("opam_root", value)
+  | "pc_opam_root_cacheable", _ -> Some ("opam_root_cacheable", value)
+  | _ -> Some (name, value)
 
 let model ~filter_dkml_host_abi ~read_script =
-  let gh_rewrite_name_value ~name ~value () =
-    match
-      ( name,
-        String.is_prefix ~affix:"gl" name || String.is_prefix ~affix:"pc" name
-      )
-    with
-    | _, true -> None
-    | "gh_opam_root", _ -> Some ("opam_root", value)
-    | _ -> Some (name, value)
-  in
-  let gl_rewrite_name_value ~name ~value () =
-    match
-      ( name,
-        String.is_prefix ~affix:"gh" name || String.is_prefix ~affix:"pc" name
-      )
-    with
-    | _, true -> None
-    | "gl_opam_root", _ -> Some ("opam_root", value)
-    | _ -> Some (name, value)
-  in
-  let pc_rewrite_name_value ~name ~value () =
-    match
-      ( name,
-        String.is_prefix ~affix:"gh" name || String.is_prefix ~affix:"gl" name
-      )
-    with
-    | _, true -> None
-    | "pc_opam_root", _ -> Some ("opam_root", value)
-    | _ -> Some (name, value)
-  in
   [
     ( "global_env_vars",
       Jg_types.Tlist
