@@ -36,8 +36,9 @@ else
     export PATH="$PWD/.ci/sd4/opamrun:$PATH"
 fi
 
-ARCHIVE_RELDIR=.ci/archive
-install -d "$ARCHIVE_RELDIR"
+# Where to stage files before we make a tarball archive
+STAGE_RELDIR=.ci/stage-build
+install -d "$STAGE_RELDIR"
 
 # Initial Diagnostics (optional but useful)
 opamrun switch
@@ -67,10 +68,6 @@ opamrun exec --switch two -- dkml-desktop-gen-global-install "$DISTRO_TYPE" >.ci
 # Use `dkml-desktop-dkml-version` to get the DKML version
 opamrun exec --switch two -- dkml-desktop-dkml-version >.ci/dkml-version.txt
 DKML_VERSION=$(awk 'NR==1{print $1}' .ci/dkml-version.txt)
-
-# Get the `dkml-desktop-copy-installed` executable
-COPYINSTALLED_RELPATH=".ci/dkml-desktop-copy-installed${exe_ext:-}"
-install "$opam_root/two/bin/dkml-desktop-copy-installed${exe_ext:-}" "$COPYINSTALLED_RELPATH"
 
 # ----------- Primary Switch ------------
 
@@ -108,7 +105,7 @@ post_pkg_ver() {
 
     # Copy all the installed files to the archive directory
     opamrun show --switch dkml --list-files "$post_pkg_ver_PKG" >.ci/opamshow.txt
-    "$COPYINSTALLED_RELPATH" --opam-switch-prefix "$THE_SWITCH_PREFIX" --output-dir "$ARCHIVE_RELDIR" <.ci/opamshow.txt
+    opamrun exec --switch two -- dkml-desktop-copy-installed --opam-switch-prefix "$THE_SWITCH_PREFIX" --output-dir "$STAGE_RELDIR" <.ci/opamshow.txt
 }
 
 # Call the shell functions (which will build the distribution packages)
@@ -121,4 +118,4 @@ set +x
 # TODO: Could use cross-compilation ... simplify cross-compilation first! Confer
 #       diskuvbox. Then bundle the _opam/darwin_arm64-sysroot/ instead of _opam/.
 install -d "dist/$dkml_host_abi"
-tar cvCfz "$ARCHIVE_RELDIR" "dist/$dkml_host_abi.tar.gz" .
+tar cvCfz "$STAGE_RELDIR" "dist/$dkml_host_abi.tar.gz" .
