@@ -42,10 +42,11 @@ install -d "$STAGE_RELDIR"
 
 # Initial Diagnostics (optional but useful)
 opamrun switch
-opamrun list
-opamrun var
-opamrun config report
-opamrun option
+opamrun list --switch dkml
+opamrun list --switch two
+opamrun var --switch dkml
+opamrun config report --switch dkml
+opamrun option --switch dkml
 opamrun exec --switch dkml -- ocamlc -config
 
 # Update
@@ -103,7 +104,8 @@ post_pkg_ver() {
     _post_pkg_ver_VER=$1
     shift
 
-    # Copy all the installed files to the archive directory
+    # Copy using `dkml-desktop-copy-installed` all the installed files to the
+    # archive directory
     opamrun show --switch dkml --list-files "$post_pkg_ver_PKG" >.ci/opamshow.txt
     opamrun exec --switch two -- dkml-desktop-copy-installed --opam-switch-prefix "$THE_SWITCH_PREFIX" --output-dir "$STAGE_RELDIR" <.ci/opamshow.txt
 }
