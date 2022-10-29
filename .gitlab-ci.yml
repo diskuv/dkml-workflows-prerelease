@@ -44,9 +44,8 @@ build_win32:
 release:
   stage: deploy
   image: alpine
-  except:
-    variables:
-      - $SETUP_ONLY = "true"
+  rules:
+    - if: $SETUP_ONLY != "true"
   script:
     - apk add jq rsync curl
 
