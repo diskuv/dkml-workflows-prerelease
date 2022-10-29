@@ -187,7 +187,7 @@ build_win32:
 
       # Capture Visual Studio compiler environment
     - msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c '.ci\sd4\get-msvcpath-into-msys2.cmd'"
-    - msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"    
+    - msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"
     - msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
     - msys64\usr\bin\bash -lc "sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
@@ -233,10 +233,30 @@ build_linux:
     ]
   extends: .build
   #     ---------------
-  #       Docker in Docker
-  #         https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
-  #         We need it to do 'docker run' for the dockcross scripts
-  #       ---------------
+  #     Docker in Docker
+  #       https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
+  #       We need it to do 'docker run' for the dockcross scripts
+  #     ---------------
+  #
+  #     Debugging on desktop? Get a shell session with:
+  #
+  #       docker network create gitlab-dind-network
+  #       docker volume create gitlab-dind-certs-ca
+  #       docker volume create gitlab-dind-certs-client
+  #
+  #       docker run --privileged --name gitlab-dind -d \
+  #           --network gitlab-dind-network --network-alias docker \
+  #           -e DOCKER_TLS_CERTDIR=/certs \
+  #           -v gitlab-dind-certs-ca:/certs/ca \
+  #           -v gitlab-dind-certs-client:/certs/client \
+  #       	  docker:20.10.16-dind
+  #
+  #       docker logs gitlab-dind
+  #
+  #       docker run -it --rm --network gitlab-dind-network \
+  #           -e DOCKER_TLS_CERTDIR=/certs \
+  #           -v gitlab-dind-certs-client:/certs/client:ro \
+  #           docker:20.10.16
   image: docker:20.10.16
   services:
     - docker:20.10.16-dind
