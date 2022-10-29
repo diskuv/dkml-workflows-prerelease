@@ -4,16 +4,29 @@ include:
 variables:
   # We need the secondary switch ('two') to install dkml-build-desktop.opam
   SECONDARY_SWITCH: 'true'
+  # Set to 'true' when you only want do the DKML setup but not the build-test
+  # and not the release. Good for populating the cache.
+  SETUP_ONLY: 'false'
 
 build_linux:
   timeout: 2h
   script:
-    - sh ci/build-test.sh ci
+    - |
+      if [ "$SETUP_ONLY" = "true" ]; then
+        echo 'SKIPPING BUILD since SETUP_ONLY=true'
+      else
+        sh ci/build-test.sh ci
+      fi
 
 build_win32:
   timeout: 3h
   script:
-    - msys64\usr\bin\bash -lc "ci/build-test.sh ci"
+    - |
+      if ("$env:SETUP_ONLY" -eq "true") {
+        Write-Host "SKIPPING BUILD since SETUP_ONLY=true"
+      } else {
+        msys64\usr\bin\bash -lc "ci/build-test.sh ci"
+      }
 
 # Uncomment macOS when you have a https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues
 # approved!
@@ -21,11 +34,19 @@ build_win32:
 # build_macos:
 #   timeout: 2h
 #   script:
-#     - sh ci/build-test.sh ci
+#     - |
+#       if [ "$SETUP_ONLY" = "true" ]; then
+#         echo 'SKIPPING BUILD since SETUP_ONLY=true'
+#       else
+#         sh ci/build-test.sh ci
+#       fi
 
 release:
   stage: deploy
   image: alpine
+  except:
+    variables:
+      - $SETUP_ONLY = "true"
   script:
     - apk add jq rsync curl
 
