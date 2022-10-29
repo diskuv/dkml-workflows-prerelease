@@ -67,7 +67,7 @@ build_win32:
     matrix: [
       # autogen from gl_vars. only windows
       { dkml_host_os: 'windows',
-        opam_root_cacheable: 'C:/o',
+        opam_root_cacheable: '${CI_PROJECT_DIR}/.ci/o',
         abi_pattern: 'win32-windows_x86',
         msys2_system: 'MINGW32',
         msys2_packages: 'mingw-w64-i686-pkg-config',
@@ -75,13 +75,13 @@ build_win32:
         bootstrap_opam_version: '2.2.0-dkml20220801T155940Z',
         opam_abi: 'windows_x86',
         dkml_host_abi: 'windows_x86',
-        opam_root: '${CI_PROJECT_DIR}/.ci/o',
+        opam_root: 'C:/o',
         vsstudio_hostarch: 'x64',
         vsstudio_arch: 'x86',
         ocaml_options: 'ocaml-option-32bit' },
         
       { dkml_host_os: 'windows',
-        opam_root_cacheable: 'C:/o',
+        opam_root_cacheable: '${CI_PROJECT_DIR}/.ci/o',
         abi_pattern: 'win32-windows_x86_64',
         msys2_system: 'CLANG64',
         msys2_packages: 'mingw-w64-clang-x86_64-pkg-config',
@@ -89,7 +89,7 @@ build_win32:
         bootstrap_opam_version: '2.2.0-dkml20220801T155940Z',
         opam_abi: 'windows_x86_64',
         dkml_host_abi: 'windows_x86_64',
-        opam_root: '${CI_PROJECT_DIR}/.ci/o',
+        opam_root: 'C:/o',
         vsstudio_hostarch: 'x64',
         vsstudio_arch: 'x64' },
         
