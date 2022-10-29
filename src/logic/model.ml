@@ -88,8 +88,8 @@ let matrix =
       ("opam_abi", Jg_types.Tstr {|windows_x86|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
-      ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
-      ("gl_opam_root_cacheable", Jg_types.Tstr {|C:/o|});
+      ("gl_opam_root", Jg_types.Tstr {|C:/o|});
+      ("gl_opam_root_cacheable", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|});
       ("vsstudio_hostarch", Jg_types.Tstr {|x64|});
       ("vsstudio_arch", Jg_types.Tstr {|x86|});
@@ -106,8 +106,8 @@ let matrix =
       ("opam_abi", Jg_types.Tstr {|windows_x86_64|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
-      ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
-      ("gl_opam_root_cacheable", Jg_types.Tstr {|C:/o|});
+      ("gl_opam_root", Jg_types.Tstr {|C:/o|});
+      ("gl_opam_root_cacheable", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|});
       ("vsstudio_hostarch", Jg_types.Tstr {|x64|});
       ("vsstudio_arch", Jg_types.Tstr {|x64|});
