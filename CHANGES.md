@@ -1,10 +1,42 @@
-## 1.0.1 (v1)
+## 1.1.0 (v1)
 
 New Features:
 - Desktop testing for macOS/Intel (or macOS/ARM64 with Rosetta emulator) and Linux 32/64-bit on Intel/AMD
 - Help messages for desktop testing on Windows
 - Optional secondary switch `two` in addition to primary switch `dkml` enabled with
   input variable `SECONDARY_SWITCH=true`
+
+Breaking changes:
+- The GitLab job names `build_linux`, `build_macos` and `build_win32` are now private job names `.linux:setup-dkml`,
+  `.macos:setup-dkml` and `.win32:setup-dkml`. This means in your own `.gitlab-ci.yml` you will need an "extends" statement,
+  like so:
+  ```yaml
+  build_linux:
+    extends: .linux:setup-dkml # ADD THIS ONE LINE!
+    script:
+      - opamrun exec -- echo Build me some Linux stuff
+  ```
+
+  *Why break the API?*
+
+  This change was done so you could do incremental staged builds where job A does only the setup (which caches the OCaml
+  compiler) and where the second job B does both the setup and the full build of your OCaml code. By using a private job
+  name that starts with a dot (.) like `.linux:setup-dkml`, both job A and job B can extend from `.**OS**:setup-dkml` to
+  share the setting up of the OCaml compiler cache.
+
+  The benefit you get for the extra complexity is that you are more likely to stay under GitLab runner
+  time limits; the shared SaaS GitLab runners time out jobs at 2 hours.
+  For example Job A can take one hour or more for Windows when you enable `SECONDARY_SWITCH=true`.
+
+  Hypothetically you could do a full build of your code without the caching of the OCaml compiler that took 2.5 hours.
+  GitLab would fail your full build with time limit failures. But by splitting job A from job B, job A takes 1-1.5 hours
+  while job B would only take 1.5 hours plus a few minutes for reading the cache of job A. Now both job A and job B
+  can work without running into time limits.
+
+  *Why is it a minor break?*
+
+  Since there was no announcement of the previous 1.0.0 version, it is unlikely anyone is broken. And if
+  anyone is broken, they just need to add three `extends: .setup_dkml_XXX` to their script.
 
 Other changes:
 - Performance: Linux CI now avoids ~10 second ManyLinux (dockcross) unnecessary recursive chown of root:root
@@ -61,7 +93,7 @@ Breaking changes:
   - `gl_tags` and `gl_image` are the new GitLab CI/CD equivalents. GitLab CI/CD uses tags like
     `[shared-windows, windows, windows-1809]` to specify the type of runner machine to use,
     and for macOS image you can supply an XCode version like `macos-11-xcode-12`.
-  
+
 ## v0
 
 Initial release

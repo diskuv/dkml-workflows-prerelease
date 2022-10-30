@@ -14,7 +14,7 @@ variables:
 
   # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}  {{ var.name }}: {{ squot }}{{ var.value }}{{ squot }}{% endfor %}
 
-.build:
+.common:setup-dkml:
   stage: build
   artifacts:
     untracked: false
@@ -39,7 +39,7 @@ variables:
         - .ci/sd4/vsenv.sh
         - msys64
 
-build_win32:
+.win32:setup-dkml:
   # prettier-ignore
   parallel:
     matrix: [
@@ -51,7 +51,7 @@ build_win32:
     MSYSTEM: '{% raw %}${msys2_system}{% endraw %}' # Start a 64 bit environment if CLANG64, etc.
   image: $gl_image
   tags: [shared-windows, windows, windows-1809]
-  extends: .build
+  extends: .common:setup-dkml
   timeout: 2h
   before_script:
     # ------------------
@@ -226,7 +226,7 @@ build_win32:
   script:
     - 'Write-Host "Override the .gitlab-ci.yml configuration ...`n  build_win32:`n    script:`nto configure your Windows build."'
 
-build_macos:
+.setup_macos:
   # prettier-ignore
   parallel:
     matrix: [
@@ -234,7 +234,7 @@ build_macos:
     ]
   image: $gl_image
   tags: [shared-macos-amd64]
-  extends: .build
+  extends: .common:setup-dkml
   before_script:
     - echo "Writing scripts ..."
     - |
@@ -268,13 +268,13 @@ build_macos:
   script:
     - 'printf "Override the .gitlab-ci.yml configuration ...\n  build_macos:\n    script:\nto configure your macOS build.\n"'
 
-build_linux:
+.linux:setup-dkml:
   # prettier-ignore
   parallel:
     matrix: [
       # autogen from gl_vars. only linux{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.dkml_host_os == "linux" -%}{{ nl }}      { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
     ]
-  extends: .build
+  extends: .common:setup-dkml
   #     ---------------
   #     Docker in Docker
   #       https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker

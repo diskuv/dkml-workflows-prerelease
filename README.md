@@ -218,18 +218,21 @@ at least:
 include:
   - local: 'ci/setup-dkml/gl/setup-dkml.gitlab-ci.yml'
 
-build_linux:
+linux:build:
+  extends: .linux:setup-dkml
   script:
     - sh ci/build-test.sh
 
-build_win32:
+win32:build:
+  extends: .win32:setup-dkml
   script:
     - msys64\usr\bin\bash -lc "ci/build-test.sh"
 
 # Uncomment macOS when you have a https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues
 # approved!
 #
-# build_macos:
+# macos:build:
+#   extends: .macos:setup-dkml
 #   script:
 #     - sh ci/build-test.sh --opam-package "$THE_OPAM_PACKAGE" --executable-name "$THE_EXECUTABLE_NAME"
 ```

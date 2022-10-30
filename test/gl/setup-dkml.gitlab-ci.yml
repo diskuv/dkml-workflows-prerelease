@@ -29,7 +29,7 @@ variables:
   PIN_PTIME: '0.8.6-msvcsupport'
   PIN_TIME_NOW: 'v0.14.0'
 
-.build:
+.common:setup-dkml:
   stage: build
   artifacts:
     untracked: false
@@ -40,7 +40,7 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "1_${CACHE_PREFIX}-1_0_0-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
+    - key: "1_${CACHE_PREFIX}-1_1_0-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
@@ -54,7 +54,7 @@ variables:
         - .ci/sd4/vsenv.sh
         - msys64
 
-build_win32:
+.win32:setup-dkml:
   # prettier-ignore
   parallel:
     matrix: [
@@ -93,7 +93,7 @@ build_win32:
     MSYSTEM: '${msys2_system}' # Start a 64 bit environment if CLANG64, etc.
   image: $gl_image
   tags: [shared-windows, windows, windows-1809]
-  extends: .build
+  extends: .common:setup-dkml
   timeout: 2h
   before_script:
     # ------------------
@@ -1519,7 +1519,7 @@ build_win32:
   script:
     - 'Write-Host "Override the .gitlab-ci.yml configuration ...`n  build_win32:`n    script:`nto configure your Windows build."'
 
-build_macos:
+.setup_macos:
   # prettier-ignore
   parallel:
     matrix: [
@@ -1527,7 +1527,7 @@ build_macos:
     ]
   image: $gl_image
   tags: [shared-macos-amd64]
-  extends: .build
+  extends: .common:setup-dkml
   before_script:
     - echo "Writing scripts ..."
     - |
@@ -2718,7 +2718,7 @@ build_macos:
   script:
     - 'printf "Override the .gitlab-ci.yml configuration ...\n  build_macos:\n    script:\nto configure your macOS build.\n"'
 
-build_linux:
+.linux:setup-dkml:
   # prettier-ignore
   parallel:
     matrix: [
@@ -2746,7 +2746,7 @@ build_linux:
         in_docker: 'true' },
         
     ]
-  extends: .build
+  extends: .common:setup-dkml
   #     ---------------
   #     Docker in Docker
   #       https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
