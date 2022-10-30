@@ -1,6 +1,12 @@
 include:
   - local: 'ci/setup-dkml/gl/setup-dkml.gitlab-ci.yml'
 
+stages:
+  - prepare
+  - build
+  - test
+  - deploy
+
 variables:
   # We need the secondary switch ('two') to install dkml-build-desktop.opam
   SECONDARY_SWITCH: 'true'
@@ -8,7 +14,10 @@ variables:
   # and not the release. Good for populating the cache.
   SETUP_ONLY: 'false'
 
-build_linux:
+linux:build:
+  extends: .linux:setup-dkml
+  stage: build
+  needs: [] # see comments in win32:build
   timeout: 2h
   script:
     - |
@@ -18,8 +27,26 @@ build_linux:
         sh ci/build-test.sh ci
       fi
 
-build_win32:
-  timeout: 3h
+# We use staging (two jobs) for Windows because without a cache
+# the job will exceed 2 hours (the GitLab shared SaaS runner limit).
+win32:prepare:
+  extends: .win32:setup-dkml
+  stage: prepare
+  timeout: 2h
+  script:
+    - Write-Host "OCaml compiler caching complete."
+
+win32:build:
+  extends: .win32:setup-dkml
+  stage: build
+  # For reasons unknown (perhaps 'needs' has bugs with parallel matrix) the
+  # following does not work. So instead we can
+  # 1. Place `needs: []` to move other jobs ahead rather than delay this job.
+  # 2. Place other jobs in prior stages.
+  # We do #1 since #2 causes a block wait for this job.
+  # needs:
+  #   - job: win32:prepare
+  timeout: 2h
   script:
     - |
       if ("$env:SETUP_ONLY" -eq "true") {
@@ -31,7 +58,10 @@ build_win32:
 # Uncomment macOS when you have a https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues
 # approved!
 #
-# build_macos:
+# macos:build:
+#   extends: .macos:setup-dkml
+#   stage: build
+#   needs: [] # see comments in win32:build
 #   timeout: 2h
 #   script:
 #     - |

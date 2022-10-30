@@ -29,7 +29,7 @@ variables:
   PIN_PTIME: '0.8.6-msvcsupport'
   PIN_TIME_NOW: 'v0.14.0'
 
-.build:
+.common:setup-dkml:
   stage: build
   artifacts:
     untracked: false
@@ -40,7 +40,7 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "1_${CACHE_PREFIX}-8f9b573-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
+    - key: "1_${CACHE_PREFIX}-8808c91-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
@@ -54,7 +54,7 @@ variables:
         - .ci/sd4/vsenv.sh
         - msys64
 
-build_win32:
+.win32:setup-dkml:
   # prettier-ignore
   parallel:
     matrix: [
@@ -93,18 +93,36 @@ build_win32:
     MSYSTEM: '${msys2_system}' # Start a 64 bit environment if CLANG64, etc.
   image: $gl_image
   tags: [shared-windows, windows, windows-1809]
-  extends: .build
+  extends: .common:setup-dkml
   timeout: 2h
   before_script:
+    # ------------------
+    # Section formatting
+    # ------------------
+    #
+    # https://docs.gitlab.com/ee/ci/jobs/index.html#expand-and-collapse-job-log-sections
+    #
+    # Within the shell scripts `setup-dkml.sh` and `checkout-code.sh` the section color is
+    # bright blue (ESC [94m); we purposely use a different color so we know whether to look
+    # in this GitLab script (cyan) or in a script (bright blue).
+    - $esc="$([char]27)"; $cr="$([char]13)"; $TXT_SECTION="${esc}[36m"; $TXT_CLEAR="${esc}[0m"
+    - |
+      function Get-CurrentEpochSecs {
+          [long]$timestamp = [math]::Round((([datetime]::UtcNow) - (Get-Date -Date '1/1/1970')).TotalMilliseconds)
+          [math]::Round($timestamp / 1000)
+      }
+
+    # ------------------ SECTION BEGIN Install MSYS2
+    #   MSYS2
+    #   -----
+    #
+    #   https://www.msys2.org/docs/ci/
+    #   https://patchwork.kernel.org/project/qemu-devel/patch/20211215073402.144286-17-thuth@redhat.com/
+    - Write-Host "${esc}[0Ksection_start:$(Get-CurrentEpochSecs):install-msys2[collapsed=true]${cr}${esc}[0K"$TXT_SECTION"Install MSYS2"
+
     # Troubleshooting
     - If ( "${env:VERBOSE}" -eq "true" ) { dir 'env:' }
 
-    # -----
-    # MSYS2
-    # -----
-    #
-    # https://www.msys2.org/docs/ci/
-    # https://patchwork.kernel.org/project/qemu-devel/patch/20211215073402.144286-17-thuth@redhat.com/
     - |
       if ( Test-Path -Path msys64\usr\bin\pacman.exe ) {
         Write-Host "Re-using MSYS2 from cache."
@@ -135,12 +153,22 @@ build_win32:
     - Write-Host "Uninstall MSYS2 conflicting executables ..."
     - msys64\usr\bin\bash -lc 'rm -vf /usr/bin/link.exe' # link.exe interferes with MSVC's link.exe
 
+    # ------------------ SECTION END Install MSYS2
+    - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):install-msys2${cr}${esc}[0K"
+
+    # ------------------ SECTION BEGIN Install VSSetup
+    - Write-Host "${esc}[0Ksection_start:$(Get-CurrentEpochSecs):install-vssetup[collapsed=true]${cr}${esc}[0K"$TXT_SECTION"Install VSSetup"
+
     - Write-Host "Installing VSSetup for the Get-VSSetupInstance function ..."
     - Install-Module VSSetup -Scope CurrentUser -Force
 
-    - Write-Host "Writing scripts ..."
+    # ------------------ SECTION END Install VSSetup
+    - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):install-vssetup${cr}${esc}[0K"
 
-    # POSIX and AWK scripts
+    # ------------------ SECTION BEGIN Write Scripts
+    - Write-Host "${esc}[0Ksection_start:$(Get-CurrentEpochSecs):write-scripts[collapsed=true]${cr}${esc}[0K"$TXT_SECTION"Write Scripts"
+
+    #   POSIX and AWK scripts
 
     - If ( !(Test-Path -Path .ci\sd4 ) ) { New-Item .ci\sd4 -ItemType Directory | Out-Null }
 
@@ -1350,7 +1378,7 @@ build_win32:
       Set-Content -Path ".ci\sd4\msvcpath.awk" -Encoding Unicode -Value $Content
     - msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/msvcpath.awk'
 
-    # PowerShell (UTF-16) and Batch (ANSI) scripts
+    #   PowerShell (UTF-16) and Batch (ANSI) scripts
 
     - |
       $Content = @'
@@ -1448,7 +1476,15 @@ build_win32:
       '@
       Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
 
+    # ------------------ SECTION END Write Scripts
+    - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):write-scripts${cr}${esc}[0K"
+
     - msys64\usr\bin\bash -lc "sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
+
+
+
+    # ------------------ SECTION BEGIN Detect Visual Studio
+    - Write-Host "${esc}[0Ksection_start:$(Get-CurrentEpochSecs):detect-vs[collapsed=true]${cr}${esc}[0K"$TXT_SECTION"Detect Visual Studio"
 
       # Diagnose Visual Studio environment variables (Windows)
       # This wastes time and has lots of rows! Only run if "VERBOSE" GitHub input key.
@@ -1476,11 +1512,14 @@ build_win32:
     - msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"
     - msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
+    # ------------------ SECTION END Detect Visual Studio
+    - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):detect-vs${cr}${esc}[0K"
+
     - msys64\usr\bin\bash -lc "sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
   script:
     - 'Write-Host "Override the .gitlab-ci.yml configuration ...`n  build_win32:`n    script:`nto configure your Windows build."'
 
-build_macos:
+.setup_macos:
   # prettier-ignore
   parallel:
     matrix: [
@@ -1488,7 +1527,7 @@ build_macos:
     ]
   image: $gl_image
   tags: [shared-macos-amd64]
-  extends: .build
+  extends: .common:setup-dkml
   before_script:
     - echo "Writing scripts ..."
     - |
@@ -2679,7 +2718,7 @@ build_macos:
   script:
     - 'printf "Override the .gitlab-ci.yml configuration ...\n  build_macos:\n    script:\nto configure your macOS build.\n"'
 
-build_linux:
+.linux:setup-dkml:
   # prettier-ignore
   parallel:
     matrix: [
@@ -2707,7 +2746,7 @@ build_linux:
         in_docker: 'true' },
         
     ]
-  extends: .build
+  extends: .common:setup-dkml
   #     ---------------
   #     Docker in Docker
   #       https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
