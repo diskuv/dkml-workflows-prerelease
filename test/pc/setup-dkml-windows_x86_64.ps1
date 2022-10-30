@@ -842,12 +842,25 @@ fi
 # Get Opam Cache (also define saving cache here so can keep similar things close)
 #   * rsync requires Unix paths on MSYS2/Windows (ie. /c/o/blah rather than C:/o/blah)
 #     otherwise rsync thinks the paths are remote
+transfer_dir() {
+    transfer_dir_SRC=$1
+    shift
+    transfer_dir_DST=$1
+    shift
+    # Remove the destination directory completely, but make sure the parent of the
+    # destination directory exists so `mv` will work
+    install -d "$transfer_dir_DST"
+    rm -rf "$transfer_dir_DST"
+    # Move
+    mv "$transfer_dir_SRC" "$transfer_dir_DST"
+}
 do_get_opam_cache() {
     if [ "$unix_opam_root_cacheable" = "$unix_opam_root" ]; then return; fi
     if [ ! -e "$unix_opam_root_cacheable" ]; then return; fi
     section_begin get-opam-cache "Transferring Opam cache to $original_opam_root_cacheable"
-    install -d "$unix_opam_root"
-    rsync -a "$unix_opam_root_cacheable/" "$unix_opam_root"
+    echo Starting transfer # need some output or GitLab CI will not display the section duration
+    transfer_dir "$unix_opam_root_cacheable" "$unix_opam_root"
+    echo Finished transfer
     section_end get-opam-cache
 }
 do_save_opam_cache_rsync() {
@@ -855,16 +868,11 @@ do_save_opam_cache_rsync() {
 }
 do_save_opam_cache() {
     if [ "$unix_opam_root_cacheable" = "$unix_opam_root" ]; then return; fi
-    section_begin get-opam-cache "Transferring Opam cache to $original_opam_root"
-    install -d "$unix_opam_root_cacheable"
-    #   --delete on a desktop is _dangerous_.
-    #   --delete on CI is necessary to save space.
-    if [ "${GITLAB_CI:-}" = "true" ] || [ -n "${GITHUB_RUN_ID:-}" ]; then
-        do_save_opam_cache_rsync --delete
-    else
-        do_save_opam_cache_rsync
-    fi
-    section_end get-opam-cache
+    section_begin save-opam-cache "Transferring Opam cache to $original_opam_root"
+    echo Starting transfer # need some output or GitLab CI will not display the section duration
+    transfer_dir "$unix_opam_root" "$unix_opam_root_cacheable"
+    echo Finished transfer
+    section_end save-opam-cache
 }
 do_get_opam_cache
 
