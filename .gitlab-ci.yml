@@ -29,8 +29,10 @@ linux:build:
 
 # We use staging (two jobs) for Windows because without a cache
 # the job will exceed 2 hours (the GitLab shared SaaS runner limit).
+# Using SECONDARY_SWITCH=true is very expensive.
 win32:prepare:
   extends: .win32:setup-dkml
+  artifacts: {} # don't need artifacts for the prepare stage
   stage: prepare
   timeout: 2h
   script:
@@ -43,7 +45,8 @@ win32:build:
   # following does not work. So instead we can
   # 1. Place `needs: []` to move other jobs ahead rather than delay this job.
   # 2. Place other jobs in prior stages.
-  # We do #1 since #2 causes a block wait for this job.
+  # We do #1 since #2 can cause a bigger block wait for this job (because
+  # more jobs are in prior stages for #2).
   # needs:
   #   - job: win32:prepare
   timeout: 2h
@@ -81,7 +84,7 @@ release:
 
     # Make _release
     - ci/prepare-release.sh
-    
+
     # Create public packages
     - |
       if [ -z "$CI_COMMIT_TAG" ]; then

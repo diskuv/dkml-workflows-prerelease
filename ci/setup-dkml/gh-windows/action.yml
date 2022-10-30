@@ -743,12 +743,25 @@ runs:
         # Get Opam Cache (also define saving cache here so can keep similar things close)
         #   * rsync requires Unix paths on MSYS2/Windows (ie. /c/o/blah rather than C:/o/blah)
         #     otherwise rsync thinks the paths are remote
+        transfer_dir() {
+            transfer_dir_SRC=$1
+            shift
+            transfer_dir_DST=$1
+            shift
+            # Remove the destination directory completely, but make sure the parent of the
+            # destination directory exists so `mv` will work
+            install -d "$transfer_dir_DST"
+            rm -rf "$transfer_dir_DST"
+            # Move
+            mv "$transfer_dir_SRC" "$transfer_dir_DST"
+        }
         do_get_opam_cache() {
             if [ "$unix_opam_root_cacheable" = "$unix_opam_root" ]; then return; fi
             if [ ! -e "$unix_opam_root_cacheable" ]; then return; fi
             section_begin get-opam-cache "Transferring Opam cache to $original_opam_root_cacheable"
-            install -d "$unix_opam_root"
-            rsync -a "$unix_opam_root_cacheable/" "$unix_opam_root"
+            echo Starting transfer # need some output or GitLab CI will not display the section duration
+            transfer_dir "$unix_opam_root_cacheable" "$unix_opam_root"
+            echo Finished transfer
             section_end get-opam-cache
         }
         do_save_opam_cache_rsync() {
@@ -756,16 +769,11 @@ runs:
         }
         do_save_opam_cache() {
             if [ "$unix_opam_root_cacheable" = "$unix_opam_root" ]; then return; fi
-            section_begin get-opam-cache "Transferring Opam cache to $original_opam_root"
-            install -d "$unix_opam_root_cacheable"
-            #   --delete on a desktop is _dangerous_.
-            #   --delete on CI is necessary to save space.
-            if [ "${GITLAB_CI:-}" = "true" ] || [ -n "${GITHUB_RUN_ID:-}" ]; then
-                do_save_opam_cache_rsync --delete
-            else
-                do_save_opam_cache_rsync
-            fi
-            section_end get-opam-cache
+            section_begin save-opam-cache "Transferring Opam cache to $original_opam_root"
+            echo Starting transfer # need some output or GitLab CI will not display the section duration
+            transfer_dir "$unix_opam_root" "$unix_opam_root_cacheable"
+            echo Finished transfer
+            section_end save-opam-cache
         }
         do_get_opam_cache
         
@@ -1453,7 +1461,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '7ac92b-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '233654-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
