@@ -9,8 +9,8 @@ test-gl-linux:
 test-gl-win32:
   extends: .win32:setup-dkml
 
-# test-gl-macos:
-#   extends: .macos:setup-dkml
+test-gl-macos:
+  extends: .macos:setup-dkml
 
 # Test personal computer (PC) scripts
 
