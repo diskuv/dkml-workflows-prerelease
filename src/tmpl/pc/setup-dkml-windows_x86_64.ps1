@@ -211,6 +211,9 @@ msys64\usr\bin\bash -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .
 Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
 
 msys64\usr\bin\bash -lc "sh .ci/sd4/run-checkout-code.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
+if ($LASTEXITCODE -ne 0) {
+  throw "run-checkout-code.sh failed"
+}
 
 # Diagnose Visual Studio environment variables (Windows)
 # This wastes time and has lots of rows! Only run if "VERBOSE" GitHub input key.
@@ -239,6 +242,9 @@ msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f -
 msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
 msys64\usr\bin\bash -lc "sh .ci/sd4/run-setup-dkml.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
+if ($LASTEXITCODE -ne 0) {
+  throw "run-setup-dkml.sh failed"
+}
 
 ########################### script ###############################
 
