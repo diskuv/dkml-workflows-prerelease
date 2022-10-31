@@ -142,7 +142,7 @@ FOURTH, generate scaffolding files:
 
 ```
 opam exec -- generate-setup-dkml-scaffold
-dune build '@gen-dkml' --auto-promote
+opam exec -- dune build '@gen-dkml' --auto-promote
 ```
 
 FIFTH, add the scaffolding files to your source control. Assuming you use git, it would be:
