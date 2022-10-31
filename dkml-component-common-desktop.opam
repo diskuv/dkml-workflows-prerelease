@@ -14,7 +14,7 @@ bug-reports:
 depends: [
   "dune" {>= "2.9"}
   "dkml-install" {>= "0.2.0"}
-  "dkml-workflows" {>= "1.0.0" & build}
+  "dkml-workflows" {>= "1.1.0" & build}
   "odoc" {with-doc}
 ]
 build: [
@@ -36,7 +36,7 @@ build: [
 dev-repo: "git+https://github.com/diskuv/dkml-component-enduser-desktop.git"
 pin-depends: [
   [
-    "dkml-workflows.1.0.0"
+    "dkml-workflows.1.1.0"
     "git+https://github.com/diskuv/dkml-workflows.git#v1"
   ]
   [
