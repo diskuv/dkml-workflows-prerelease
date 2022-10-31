@@ -154,6 +154,7 @@ $env:FDOPEN_OPAMEXE_BOOTSTRAP = $FDOPEN_OPAMEXE_BOOTSTRAP
 $env:CACHE_PREFIX = $CACHE_PREFIX
 $env:OCAML_COMPILER = $OCAML_COMPILER
 $env:DKML_COMPILER = $DKML_COMPILER
+$env:SECONDARY_SWITCH = $SECONDARY_SWITCH
 $env:CONF_DKML_CROSS_TOOLCHAIN = $CONF_DKML_CROSS_TOOLCHAIN
 $env:DISKUV_OPAM_REPOSITORY = $DISKUV_OPAM_REPOSITORY
 
@@ -228,7 +229,7 @@ else {
 Write-Host "Update MSYS2 ..."
 msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu' # Core update (in case any core packages are outdated)
 msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu' # Normal update
-taskkill /F /FI "MODULES eq msys-2.0.dll"
+if ("${env:CI}" -eq "true") { taskkill /F /FI "MODULES eq msys-2.0.dll" } # Only safe to kill MSYS2 in CI
 
 Write-Host "Install matrix, required and CI packages ..."
 #   Packages for GitLab CI:
@@ -1107,7 +1108,7 @@ EOF
     # Bundle for consumers of setup-dkml.yml
     do_tar_rf .ci/sd4/dist/env-opam.tar .ci/sd4/opamrun
 }
-section_begin 'write-opam-scripts' 'Write and Distribute Opam scripts'
+section_begin 'write-opam-scripts' 'Write and distribute opam scripts'
 do_write_opam_scripts
 section_end 'write-opam-scripts'
 
@@ -1133,7 +1134,7 @@ PATH="$setup_WORKSPACE/.ci/sd4/opamrun:$PATH"
 #   2. We have to separate the Opam download cache from the other Opam
 #      caches
 if [ ! -e "$opam_root/.ci.root-init" ]; then
-    section_begin opam-init 'Initialize Opam root'
+    section_begin opam-init 'Initialize opam root'
 
     # Clear any partial previous attempt
     rm -rf "$opam_root"
@@ -1159,7 +1160,7 @@ if [ ! -e "$opam_root/.ci.root-init" ]; then
     section_end opam-init
 fi
 
-section_begin opam-vars "Opam variables"
+section_begin opam-vars "Summary: opam global variables"
 opamrun var --global || true
 section_end opam-vars
 
@@ -1169,38 +1170,53 @@ section_end opam-vars
 # updates, so this step comes after the Opam switch cache load but before the
 # initial Opam switch creation.
 
-section_begin opam-repo "Opam repository"
+do_opam_repositories_config() {
+    do_opam_repositories_config_NAME=$1
+    shift
 
-if [ -x /usr/bin/cygpath ]; then
-    if [ -n "${RUNNER_TEMP:-}" ]; then
-        # GitHub Actions
-        TEMP=$(cygpath -am "$RUNNER_TEMP")
-    else
-        # GitLab CI/CD
-        install -d .ci/tmp
-        TEMP=$(cygpath -am ".ci/tmp")
+    section_begin "opam-repo-$do_opam_repositories_config_NAME" "Configure opam repositories"
+
+    if [ -x /usr/bin/cygpath ]; then
+        if [ -n "${RUNNER_TEMP:-}" ]; then
+            # GitHub Actions
+            TEMP=$(cygpath -am "$RUNNER_TEMP")
+        else
+            # GitLab CI/CD
+            install -d .ci/tmp
+            TEMP=$(cygpath -am ".ci/tmp")
+        fi
+        export TEMP
     fi
-    export TEMP
-fi
-if [ ! -e "$opam_root/.ci.repo-init" ]; then
-    opamrun repository remove default --yes --all --dont-select || true
-    opamrun repository remove diskuv --yes --all --dont-select || true
-    opamrun repository add default https://opam.ocaml.org --yes --dont-select
-    opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --yes --dont-select
-    touch "$opam_root/.ci.repo-init"
+    if [ ! -e "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then
+        opamrun repository remove default --switch "$do_opam_repositories_config_NAME" --yes || true
+        opamrun repository remove diskuv --switch "$do_opam_repositories_config_NAME" --yes || true
+        opamrun repository add default https://opam.ocaml.org --switch "$do_opam_repositories_config_NAME" --yes
+        opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
+        touch "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
+    fi
+
+    # Whether .ci.repo-init or not, always set the `diskuv` repository url since it can change
+    opamrun repository set-url diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
+    section_end "opam-repo-$do_opam_repositories_config_NAME"
+}
+do_opam_repositories_config dkml
+if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+    do_opam_repositories_config two
 fi
 
-# Whether .ci.repo-init or not, always set the `diskuv` repository url since it can change
-opamrun repository set-url diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --yes --dont-select
-# Update both `default` and `diskuv` Opam repositories
-opamrun update default diskuv
-section_end opam-repo
+do_opam_repositories_update() {
+    section_begin "opam-repo-update" "Update opam repositories"
+    # Update both `default` and `diskuv` Opam repositories
+    opamrun update default diskuv
+    section_end "opam-repo-update"
+}
+do_opam_repositories_update
 
 do_switch_create() {
     do_switch_create_NAME=$1
     shift
 
-    section_begin "switch-create-$do_switch_create_NAME" "Create Opam switch $do_switch_create_NAME"
+    section_begin "switch-create-$do_switch_create_NAME" "Create opam switch $do_switch_create_NAME"
     # Create, or recreate, the Opam switch. The Opam switch should not be
     # cached except for the compiler (confer docs for setup-ocaml GitHub
     # Action) which is the 'dkml' switch (or the 'two' switch).
@@ -1418,7 +1434,7 @@ do_save_opam_cache
 do_summary() {
     do_summary_NAME=$1
     shift
-    section_begin "summary-$do_summary_NAME" "Summary for $do_summary_NAME switch"
+    section_begin "summary-$do_summary_NAME" "Summary: $do_summary_NAME switch"
     opamrun var --switch "$do_summary_NAME"
     opamrun exec --switch "$do_summary_NAME" -- ocamlc -config
     section_end "summary-$do_summary_NAME"
@@ -1558,6 +1574,9 @@ msys64\usr\bin\bash -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .
 Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
 
 msys64\usr\bin\bash -lc "sh .ci/sd4/run-checkout-code.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
+if ($LASTEXITCODE -ne 0) {
+  throw "run-checkout-code.sh failed"
+}
 
 # Diagnose Visual Studio environment variables (Windows)
 # This wastes time and has lots of rows! Only run if "VERBOSE" GitHub input key.
@@ -1581,11 +1600,14 @@ msys64\usr\bin\bash -lc "dos2unix .ci/sd4/vsenv.sh"
 Get-Content .ci/sd4/vsenv.sh
 
 # Capture Visual Studio compiler environment
-msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c .ci/sd4/get-msvcpath-into-msys2.cmd"
+msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c '.ci\sd4\get-msvcpath-into-msys2.cmd'"
 msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"    
 msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
 msys64\usr\bin\bash -lc "sh .ci/sd4/run-setup-dkml.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
+if ($LASTEXITCODE -ne 0) {
+  throw "run-setup-dkml.sh failed"
+}
 
 ########################### script ###############################
 
@@ -1593,16 +1615,16 @@ Write-Host @"
 Finished setup.
 
 To continue your testing, run in PowerShell:
-  \$env:CHERE_INVOKING = "yes"
-  \$env:MSYSTEM = "$env:msys2_system"
-  \$env:dkml_host_abi = "$env:dkml_host_abi"
-  \$env:abi_pattern = "$env:abi_pattern"
-  \$env:opam_root = "$env:opam_root"
-  \$env:exe_ext = "${env:exe_ext}"
-  \$env:PC_PROJECT_DIR = $PWD
+  `$env:CHERE_INVOKING = "yes"
+  `$env:MSYSTEM = "$env:msys2_system"
+  `$env:dkml_host_abi = "$env:dkml_host_abi"
+  `$env:abi_pattern = "$env:abi_pattern"
+  `$env:opam_root = "$env:opam_root"
+  `$env:exe_ext = "${env:exe_ext}"
+  `$env:PC_PROJECT_DIR = "$PWD"
 
 Now you can use 'opamrun' to do opam commands like:
 
-  msys64\usr\bin\bash -lc 'PATH="\$PWD/.ci/sd4/opamrun:\$PATH"; opamrun install XYZ.opam'
-  msys64\usr\bin\bash -lc 'PATH="\$PWD/.ci/sd4/opamrun:\$PATH"; opamrun exec -- sh ci/build-test.sh'
+  msys64\usr\bin\bash -lc 'PATH="`$PWD/.ci/sd4/opamrun:`$PATH"; opamrun install XYZ.opam'
+  msys64\usr\bin\bash -lc 'PATH="`$PWD/.ci/sd4/opamrun:`$PATH"; opamrun exec -- sh ci/build-test.sh'
 "@
