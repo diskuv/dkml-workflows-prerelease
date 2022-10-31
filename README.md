@@ -87,10 +87,7 @@ FIRST, add a dependency to `dkml-workflows` in your project.
      ```scheme
      (package
        ; ...
-       (dkml-workflows
-         (and
-          (>= 1.0.0)
-          :build))
+       (dkml-workflows (and (>= 1.1.0) :build))
        ...
      )
      ```
@@ -102,7 +99,7 @@ FIRST, add a dependency to `dkml-workflows` in your project.
      depends: [
        "ocaml"
        "dune" {>= "2.9"}
-       "dkml-workflows" {>= "1.0.0" & build}
+       "dkml-workflows" {>= "1.1.0" & build}
      ]
      # ...
      ```
