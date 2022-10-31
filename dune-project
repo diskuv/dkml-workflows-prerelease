@@ -42,7 +42,7 @@
  (description
   "`desktop` provides desktop executables for all DKML installable platforms")
  (depends
-  (dkml-component-staging-desktop (= :version))
+  (dkml-component-staging-desktop-ci (= :version))
   (dkml-component-common-desktop (= :version))
   (dkml-component-staging-ocamlrun (and (>= 4.12.1~) (< 4.12.2~)))
   (dkml-install (>= 0.2.0))
@@ -54,7 +54,7 @@
  (description
   "`desktop` provides desktop executables for all DKML installable platforms")
  (depends
-  (dkml-component-staging-desktop (= :version))
+  (dkml-component-staging-desktop-full (= :version))
   (dkml-component-common-desktop (= :version))
   (dkml-component-staging-ocamlrun (and (>= 4.12.1~) (< 4.12.2~)))
   (dkml-install (>= 0.2.0))
