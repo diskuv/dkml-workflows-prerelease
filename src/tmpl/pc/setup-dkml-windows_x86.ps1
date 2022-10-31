@@ -140,7 +140,7 @@ else {
 Write-Host "Update MSYS2 ..."
 msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu' # Core update (in case any core packages are outdated)
 msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu' # Normal update
-taskkill /F /FI "MODULES eq msys-2.0.dll"
+if ("${env:CI}" -eq "true") { taskkill /F /FI "MODULES eq msys-2.0.dll" } # Only safe to kill MSYS2 in CI
 
 Write-Host "Install matrix, required and CI packages ..."
 #   Packages for GitLab CI:
