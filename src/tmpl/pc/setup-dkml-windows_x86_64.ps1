@@ -233,7 +233,7 @@ msys64\usr\bin\bash -lc "dos2unix .ci/sd4/vsenv.sh"
 Get-Content .ci/sd4/vsenv.sh
 
 # Capture Visual Studio compiler environment
-msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c .ci/sd4/get-msvcpath-into-msys2.cmd"
+msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c '.ci\sd4\get-msvcpath-into-msys2.cmd'"
 msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"    
 msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 

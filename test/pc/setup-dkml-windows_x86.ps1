@@ -1581,7 +1581,7 @@ msys64\usr\bin\bash -lc "dos2unix .ci/sd4/vsenv.sh"
 Get-Content .ci/sd4/vsenv.sh
 
 # Capture Visual Studio compiler environment
-msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c .ci/sd4/get-msvcpath-into-msys2.cmd"
+msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c '.ci\sd4\get-msvcpath-into-msys2.cmd'"
 msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"    
 msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
@@ -1593,16 +1593,16 @@ Write-Host @"
 Finished setup.
 
 To continue your testing, run in PowerShell:
-  \$env:CHERE_INVOKING = "yes"
-  \$env:MSYSTEM = "$env:msys2_system"
-  \$env:dkml_host_abi = "$env:dkml_host_abi"
-  \$env:abi_pattern = "$env:abi_pattern"
-  \$env:opam_root = "$env:opam_root"
-  \$env:exe_ext = "${env:exe_ext}"
-  \$env:PC_PROJECT_DIR = $PWD
+  `$env:CHERE_INVOKING = "yes"
+  `$env:MSYSTEM = "$env:msys2_system"
+  `$env:dkml_host_abi = "$env:dkml_host_abi"
+  `$env:abi_pattern = "$env:abi_pattern"
+  `$env:opam_root = "$env:opam_root"
+  `$env:exe_ext = "${env:exe_ext}"
+  `$env:PC_PROJECT_DIR = "$PWD"
 
 Now you can use 'opamrun' to do opam commands like:
 
-  msys64\usr\bin\bash -lc 'PATH="\$PWD/.ci/sd4/opamrun:\$PATH"; opamrun install XYZ.opam'
-  msys64\usr\bin\bash -lc 'PATH="\$PWD/.ci/sd4/opamrun:\$PATH"; opamrun exec -- sh ci/build-test.sh'
+  msys64\usr\bin\bash -lc 'PATH="`$PWD/.ci/sd4/opamrun:`$PATH"; opamrun install XYZ.opam'
+  msys64\usr\bin\bash -lc 'PATH="`$PWD/.ci/sd4/opamrun:`$PATH"; opamrun exec -- sh ci/build-test.sh'
 "@
