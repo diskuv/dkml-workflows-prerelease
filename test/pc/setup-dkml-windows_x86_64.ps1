@@ -1169,11 +1169,11 @@ section_end opam-vars
 # updates, so this step comes after the Opam switch cache load but before the
 # initial Opam switch creation.
 
-do_opam_repositories() {
-    do_opam_repositories_NAME=$1
+do_opam_repositories_config() {
+    do_opam_repositories_config_NAME=$1
     shift
 
-    section_begin "opam-repo-$do_opam_repositories_NAME" "Configure opam repositories"
+    section_begin "opam-repo-$do_opam_repositories_config_NAME" "Configure opam repositories"
 
     if [ -x /usr/bin/cygpath ]; then
         if [ -n "${RUNNER_TEMP:-}" ]; then
@@ -1186,24 +1186,30 @@ do_opam_repositories() {
         fi
         export TEMP
     fi
-    if [ ! -e "$opam_root/.ci.$do_opam_repositories_NAME.repo-init" ]; then
-        opamrun repository remove default --switch "$do_opam_repositories_NAME" --yes --all --dont-select || true
-        opamrun repository remove diskuv --switch "$do_opam_repositories_NAME" --yes --all --dont-select || true
-        opamrun repository add default https://opam.ocaml.org --switch "$do_opam_repositories_NAME" --yes --dont-select
-        opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_NAME" --yes --dont-select
-        touch "$opam_root/.ci.$do_opam_repositories_NAME.repo-init"
+    if [ ! -e "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then
+        opamrun repository remove default --switch "$do_opam_repositories_config_NAME" --yes || true
+        opamrun repository remove diskuv --switch "$do_opam_repositories_config_NAME" --yes || true
+        opamrun repository add default https://opam.ocaml.org --switch "$do_opam_repositories_config_NAME" --yes
+        opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
+        touch "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
     fi
 
     # Whether .ci.repo-init or not, always set the `diskuv` repository url since it can change
-    opamrun repository set-url diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_NAME" --yes --dont-select
+    opamrun repository set-url diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
+    section_end "opam-repo-$do_opam_repositories_config_NAME"
+}
+do_opam_repositories_config dkml
+if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+    do_opam_repositories_config two
+fi
+
+do_opam_repositories_update() {
+    section_begin "opam-repo-update" "Update opam repositories"
     # Update both `default` and `diskuv` Opam repositories
     opamrun update default diskuv
-    section_end "opam-repo-$do_opam_repositories_NAME"
+    section_end "opam-repo-update"
 }
-do_opam_repositories dkml
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_opam_repositories two
-fi
+do_opam_repositories_update
 
 do_switch_create() {
     do_switch_create_NAME=$1

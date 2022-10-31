@@ -1069,11 +1069,11 @@ runs:
         # updates, so this step comes after the Opam switch cache load but before the
         # initial Opam switch creation.
         
-        do_opam_repositories() {
-            do_opam_repositories_NAME=$1
+        do_opam_repositories_config() {
+            do_opam_repositories_config_NAME=$1
             shift
         
-            section_begin "opam-repo-$do_opam_repositories_NAME" "Configure opam repositories"
+            section_begin "opam-repo-$do_opam_repositories_config_NAME" "Configure opam repositories"
         
             if [ -x /usr/bin/cygpath ]; then
                 if [ -n "${RUNNER_TEMP:-}" ]; then
@@ -1086,24 +1086,30 @@ runs:
                 fi
                 export TEMP
             fi
-            if [ ! -e "$opam_root/.ci.$do_opam_repositories_NAME.repo-init" ]; then
-                opamrun repository remove default --switch "$do_opam_repositories_NAME" --yes --all --dont-select || true
-                opamrun repository remove diskuv --switch "$do_opam_repositories_NAME" --yes --all --dont-select || true
-                opamrun repository add default https://opam.ocaml.org --switch "$do_opam_repositories_NAME" --yes --dont-select
-                opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_NAME" --yes --dont-select
-                touch "$opam_root/.ci.$do_opam_repositories_NAME.repo-init"
+            if [ ! -e "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then
+                opamrun repository remove default --switch "$do_opam_repositories_config_NAME" --yes || true
+                opamrun repository remove diskuv --switch "$do_opam_repositories_config_NAME" --yes || true
+                opamrun repository add default https://opam.ocaml.org --switch "$do_opam_repositories_config_NAME" --yes
+                opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
+                touch "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
             fi
         
             # Whether .ci.repo-init or not, always set the `diskuv` repository url since it can change
-            opamrun repository set-url diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_NAME" --yes --dont-select
+            opamrun repository set-url diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
+            section_end "opam-repo-$do_opam_repositories_config_NAME"
+        }
+        do_opam_repositories_config dkml
+        if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+            do_opam_repositories_config two
+        fi
+        
+        do_opam_repositories_update() {
+            section_begin "opam-repo-update" "Update opam repositories"
             # Update both `default` and `diskuv` Opam repositories
             opamrun update default diskuv
-            section_end "opam-repo-$do_opam_repositories_NAME"
+            section_end "opam-repo-update"
         }
-        do_opam_repositories dkml
-        if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-            do_opam_repositories two
-        fi
+        do_opam_repositories_update
         
         do_switch_create() {
             do_switch_create_NAME=$1
@@ -1470,7 +1476,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '21a671-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '23d604-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
