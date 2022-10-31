@@ -567,14 +567,14 @@ do_bootstrap() {
     # Bootstrap from historical release
     runit_BOOTSTRAPPED=0
 
-    #   Bootstrap Opam from fdopen (Windows)
+    #   Bootstrap opam from fdopen (Windows)
     if [ "$runit_BOOTSTRAPPED" = 0 ] && [ "${FDOPEN_OPAMEXE_BOOTSTRAP:-}" = "true" ]; then
         if [ -e .ci/sd4/opam64/bin/opam.exe ] && [ -e .ci/sd4/opam64/bin/opam-installer.exe ]; then
             runit_BOOTSTRAPPED=1
         else
             case "$dkml_host_abi" in
             windows_*)
-                echo 'Bootstrap Opam from fdopen (Windows) ...'
+                echo 'Bootstrap opam from fdopen (Windows) ...'
                 install -d .ci/sd4/bs/bin
                 wget -O "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz https://github.com/fdopen/opam-repository-mingw/releases/download/0.0.0.2/opam64.tar.xz
 
@@ -603,7 +603,7 @@ do_bootstrap() {
         cd .ci/sd4/bs
 
         if [ ! -e version ] || [ "$(cat version)" != "$bootstrap_opam_version" ]; then
-            echo 'Bootstrap Opam from historical release (non-Windows; Windows non-fdopen) ...'
+            echo 'Bootstrap opam from historical release (non-Windows; Windows non-fdopen) ...'
             if command -v curl; then
                 curl -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
             else
@@ -627,7 +627,7 @@ do_bootstrap() {
     case "$runit_BOOTSTRAPPED,$bootstrap_opam_version,$dkml_host_abi" in
     0,os,darwin_*)
         if ! command -v opam; then
-            echo 'Bootstrap Opam from package manager (macOS) ...'
+            echo 'Bootstrap opam from package manager (macOS) ...'
             brew install gpatch
             brew install opam
         fi
@@ -635,7 +635,7 @@ do_bootstrap() {
         ;;
     0,os,linux_x86)
         if [ ! -x .ci/sd4/bs/bin/opam ]; then
-            echo 'Bootstrap Opam from GitHub ocaml/opam release (Linux x86) ...'
+            echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86) ...'
             install -d .ci/sd4/bs/bin
             wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
             sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
@@ -654,7 +654,7 @@ do_bootstrap() {
         ;;
     0,os,linux_x86_64)
         if [ ! -x .ci/sd4/bs/bin/opam ]; then
-            echo 'Bootstrap Opam from GitHub ocaml/opam release (Linux x86_64) ...'
+            echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86_64) ...'
             install -d .ci/sd4/bs/bin
             wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
             sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
@@ -673,7 +673,7 @@ do_bootstrap() {
         ;;
     esac
 }
-section_begin bootstrap-opam 'Bootstrap Opam'
+section_begin bootstrap-opam 'Bootstrap opam'
 do_bootstrap
 section_end bootstrap-opam
 
@@ -1107,7 +1107,7 @@ EOF
     # Bundle for consumers of setup-dkml.yml
     do_tar_rf .ci/sd4/dist/env-opam.tar .ci/sd4/opamrun
 }
-section_begin 'write-opam-scripts' 'Write and distribute opam scripts'
+section_begin 'write-opam-scripts' 'Write opam scripts'
 do_write_opam_scripts
 section_end 'write-opam-scripts'
 
@@ -1165,15 +1165,50 @@ section_end opam-vars
 
 # Build OCaml
 
-# `opam repository` operations need the Opam switches present to perform
-# updates, so this step comes after the Opam switch cache load but before the
-# initial Opam switch creation.
+do_switch_create() {
+    do_switch_create_NAME=$1
+    shift
+
+    section_begin "switch-create-$do_switch_create_NAME" "Create opam switch $do_switch_create_NAME"
+    # Create, or recreate, the Opam switch. The Opam switch should not be
+    # cached except for the compiler (confer docs for setup-ocaml GitHub
+    # Action) which is the 'dkml' switch (or the 'two' switch).
+    # Check if the switch name is present in the Opam root (which may come from cache)
+    NOMINALLY_PRESENT=false
+    if opamrun switch list --short | grep "^${do_switch_create_NAME}\$"; then NOMINALLY_PRESENT=true; fi
+
+    # Check if the switch is actually present in case of cache incoherence
+    # or corrupt Opam state that could result in:
+    #   Error:  No config file found for switch dkml. Switch broken?
+    if [ $NOMINALLY_PRESENT = true ] && [ ! -e "$opam_root/$do_switch_create_NAME/.opam-switch/switch-config" ]; then
+        # Remove the switch name from Opam root, and any partial switch state.
+        # Ignore inevitable warnings/failure about missing switch.
+        opamrun switch remove "$do_switch_create_NAME" --yes || true
+        rm -rf "${opam_root:?}/$do_switch_create_NAME"
+        NOMINALLY_PRESENT=false
+    fi
+
+    if [ $NOMINALLY_PRESENT = false ]; then
+        opamrun switch create "$do_switch_create_NAME" --empty --yes
+    fi
+    section_end "switch-create-$do_switch_create_NAME"
+}
+do_switch_create dkml
+if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+    do_switch_create two
+else
+    # Always create a secondary switch ... just empty. Avoid problems with cache content missing
+    # and idempotency.
+    opamrun switch remove two --yes || true
+    rm -rf "$opam_root/two"
+    opamrun switch create two --empty --yes
+fi
 
 do_opam_repositories_config() {
     do_opam_repositories_config_NAME=$1
     shift
 
-    section_begin "opam-repo-$do_opam_repositories_config_NAME" "Configure opam repositories"
+    section_begin "opam-repo-$do_opam_repositories_config_NAME" "Configure opam repositories for $do_opam_repositories_config_NAME"
 
     if [ -x /usr/bin/cygpath ]; then
         if [ -n "${RUNNER_TEMP:-}" ]; then
@@ -1210,45 +1245,6 @@ do_opam_repositories_update() {
     section_end "opam-repo-update"
 }
 do_opam_repositories_update
-
-do_switch_create() {
-    do_switch_create_NAME=$1
-    shift
-
-    section_begin "switch-create-$do_switch_create_NAME" "Create opam switch $do_switch_create_NAME"
-    # Create, or recreate, the Opam switch. The Opam switch should not be
-    # cached except for the compiler (confer docs for setup-ocaml GitHub
-    # Action) which is the 'dkml' switch (or the 'two' switch).
-    # Check if the switch name is present in the Opam root (which may come from cache)
-    NOMINALLY_PRESENT=false
-    if opamrun switch list --short | grep "^${do_switch_create_NAME}\$"; then NOMINALLY_PRESENT=true; fi
-
-    # Check if the switch is actually present in case of cache incoherence
-    # or corrupt Opam state that could result in:
-    #   Error:  No config file found for switch dkml. Switch broken?
-    if [ $NOMINALLY_PRESENT = true ] && [ ! -e "$opam_root/$do_switch_create_NAME/.opam-switch/switch-config" ]; then
-        # Remove the switch name from Opam root, and any partial switch state.
-        # Ignore inevitable warnings/failure about missing switch.
-        opamrun switch remove "$do_switch_create_NAME" --yes || true
-        rm -rf "${opam_root:?}/$do_switch_create_NAME"
-        NOMINALLY_PRESENT=false
-    fi
-
-    if [ $NOMINALLY_PRESENT = false ]; then
-        opamrun switch create "$do_switch_create_NAME" --repos diskuv,default --empty --yes
-    fi
-    section_end "switch-create-$do_switch_create_NAME"
-}
-do_switch_create dkml
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_switch_create two
-else
-    # Always create a secondary switch ... just empty. Avoid problems with cache content missing
-    # and idempotency.
-    opamrun switch remove two --yes || true
-    rm -rf "$opam_root/two"
-    opamrun switch create two --empty --yes
-fi
 
 do_pins() {
     do_pins_NAME=$1
