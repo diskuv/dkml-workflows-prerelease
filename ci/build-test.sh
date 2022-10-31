@@ -75,9 +75,13 @@ DKML_VERSION=$(awk 'NR==1{print $1}' .ci/dkml-version.txt)
 # Because dune.X.Y.Z+shim requires DKML installed (after all, it is just
 # a with-dkml.exe shim), we need either dkmlvars-v2.sexp or DKML environment
 # variables. Confer: Dkml_runtimelib.Dkml_context.get_dkmlversion
-opamrun option --switch dkml setenv= # reset
-opamrun option --switch dkml setenv+='DiskuvOCamlVarsVersion = "2"'
-opamrun option --switch dkml setenv+="DiskuvOCamlVersion = \"$DKML_VERSION\""
+opamrun option --switch dkml setenv > .ci/setenv.txt
+if ! grep -q '^DiskuvOCamlVarsVersion ' .ci/setenv.txt; then
+    opamrun option --switch dkml setenv+='DiskuvOCamlVarsVersion = "2"'
+fi
+if ! grep -q '^DiskuvOCamlVersion ' .ci/setenv.txt; then
+    opamrun option --switch dkml setenv+="DiskuvOCamlVersion = \"$DKML_VERSION\""
+fi
 
 # Define the shell functions that will be called by .ci/self-invoker.source.sh
 THE_SWITCH_PREFIX=$(opamrun var prefix --switch dkml)
