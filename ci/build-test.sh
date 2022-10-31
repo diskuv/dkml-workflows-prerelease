@@ -25,16 +25,22 @@ exe_ext=${exe_ext:-}
 .
 "
 
-# PATH. Add opamrun
+# Set project directory
 if [ -n "${CI_PROJECT_DIR:-}" ]; then
-    export PATH="$CI_PROJECT_DIR/.ci/sd4/opamrun:$PATH"
+    PROJECT_DIR="$CI_PROJECT_DIR"
 elif [ -n "${PC_PROJECT_DIR:-}" ]; then
-    export PATH="$PC_PROJECT_DIR/.ci/sd4/opamrun:$PATH"
+    PROJECT_DIR="$PC_PROJECT_DIR"
 elif [ -n "${GITHUB_WORKSPACE:-}" ]; then
-    export PATH="$GITHUB_WORKSPACE/.ci/sd4/opamrun:$PATH"
+    PROJECT_DIR="$GITHUB_WORKSPACE"
 else
-    export PATH="$PWD/.ci/sd4/opamrun:$PATH"
+    PROJECT_DIR="$PWD"
 fi
+if [ -x /usr/bin/cygpath ]; then
+    PROJECT_DIR=$(/usr/bin/cygpath -au "$PROJECT_DIR")
+fi
+
+# PATH. Add opamrun
+export PATH="$PROJECT_DIR/.ci/sd4/opamrun:$PATH"
 
 # Where to stage files before we make a tarball archive
 STAGE_RELDIR=.ci/stage-build
@@ -82,6 +88,18 @@ fi
 if ! grep -q '^DiskuvOCamlVersion ' .ci/setenv.txt; then
     opamrun option --switch dkml setenv+="DiskuvOCamlVersion = \"$DKML_VERSION\""
 fi
+case "${dkml_host_abi}" in
+windows_*)
+    if ! grep -q '^DiskuvOCamlMSYS2Dir ' .ci/setenv.txt; then
+        if [ -x /usr/bin/cygpath ]; then
+            MSYS2_DIR_NATIVE=$(/usr/bin/cygpath -aw "$PROJECT_DIR/msys64")
+        else
+            MSYS2_DIR_NATIVE="$PROJECT_DIR"
+        fi
+        MSYS2_DIR_NATIVE_ESCAPED=$(printf "%s" "$MSYS2_DIR_NATIVE" | sed 's/\\/\\\\/g')
+        opamrun option --switch dkml setenv+="DiskuvOCamlMSYS2Dir = \"$MSYS2_DIR_NATIVE_ESCAPED\""
+    fi
+esac
 
 # Define the shell functions that will be called by .ci/self-invoker.source.sh
 THE_SWITCH_PREFIX=$(opamrun var prefix --switch dkml)
