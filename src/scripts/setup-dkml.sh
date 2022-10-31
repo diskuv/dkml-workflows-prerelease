@@ -752,9 +752,44 @@ section_end opam-vars
 
 # Build OCaml
 
-# `opam repository` operations need the Opam switches present to perform
-# updates, so this step comes after the Opam switch cache load but before the
-# initial Opam switch creation.
+do_switch_create() {
+    do_switch_create_NAME=$1
+    shift
+
+    section_begin "switch-create-$do_switch_create_NAME" "Create opam switch $do_switch_create_NAME"
+    # Create, or recreate, the Opam switch. The Opam switch should not be
+    # cached except for the compiler (confer docs for setup-ocaml GitHub
+    # Action) which is the 'dkml' switch (or the 'two' switch).
+    # Check if the switch name is present in the Opam root (which may come from cache)
+    NOMINALLY_PRESENT=false
+    if opamrun switch list --short | grep "^${do_switch_create_NAME}\$"; then NOMINALLY_PRESENT=true; fi
+
+    # Check if the switch is actually present in case of cache incoherence
+    # or corrupt Opam state that could result in:
+    #   Error:  No config file found for switch dkml. Switch broken?
+    if [ $NOMINALLY_PRESENT = true ] && [ ! -e "$opam_root/$do_switch_create_NAME/.opam-switch/switch-config" ]; then
+        # Remove the switch name from Opam root, and any partial switch state.
+        # Ignore inevitable warnings/failure about missing switch.
+        opamrun switch remove "$do_switch_create_NAME" --yes || true
+        rm -rf "${opam_root:?}/$do_switch_create_NAME"
+        NOMINALLY_PRESENT=false
+    fi
+
+    if [ $NOMINALLY_PRESENT = false ]; then
+        opamrun switch create "$do_switch_create_NAME" --empty --yes
+    fi
+    section_end "switch-create-$do_switch_create_NAME"
+}
+do_switch_create dkml
+if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+    do_switch_create two
+else
+    # Always create a secondary switch ... just empty. Avoid problems with cache content missing
+    # and idempotency.
+    opamrun switch remove two --yes || true
+    rm -rf "$opam_root/two"
+    opamrun switch create two --empty --yes
+fi
 
 do_opam_repositories_config() {
     do_opam_repositories_config_NAME=$1
@@ -797,45 +832,6 @@ do_opam_repositories_update() {
     section_end "opam-repo-update"
 }
 do_opam_repositories_update
-
-do_switch_create() {
-    do_switch_create_NAME=$1
-    shift
-
-    section_begin "switch-create-$do_switch_create_NAME" "Create opam switch $do_switch_create_NAME"
-    # Create, or recreate, the Opam switch. The Opam switch should not be
-    # cached except for the compiler (confer docs for setup-ocaml GitHub
-    # Action) which is the 'dkml' switch (or the 'two' switch).
-    # Check if the switch name is present in the Opam root (which may come from cache)
-    NOMINALLY_PRESENT=false
-    if opamrun switch list --short | grep "^${do_switch_create_NAME}\$"; then NOMINALLY_PRESENT=true; fi
-
-    # Check if the switch is actually present in case of cache incoherence
-    # or corrupt Opam state that could result in:
-    #   Error:  No config file found for switch dkml. Switch broken?
-    if [ $NOMINALLY_PRESENT = true ] && [ ! -e "$opam_root/$do_switch_create_NAME/.opam-switch/switch-config" ]; then
-        # Remove the switch name from Opam root, and any partial switch state.
-        # Ignore inevitable warnings/failure about missing switch.
-        opamrun switch remove "$do_switch_create_NAME" --yes || true
-        rm -rf "${opam_root:?}/$do_switch_create_NAME"
-        NOMINALLY_PRESENT=false
-    fi
-
-    if [ $NOMINALLY_PRESENT = false ]; then
-        opamrun switch create "$do_switch_create_NAME" --repos diskuv,default --empty --yes
-    fi
-    section_end "switch-create-$do_switch_create_NAME"
-}
-do_switch_create dkml
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_switch_create two
-else
-    # Always create a secondary switch ... just empty. Avoid problems with cache content missing
-    # and idempotency.
-    opamrun switch remove two --yes || true
-    rm -rf "$opam_root/two"
-    opamrun switch create two --empty --yes
-fi
 
 do_pins() {
     do_pins_NAME=$1
