@@ -22,6 +22,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        channel:
+          - release
+          - next
         include:
           - gh_os: windows-2019
             abi_pattern: win32-windows_x86
@@ -73,11 +76,11 @@ jobs:
       - name: Build and test the package on Windows host
         if: startsWith(matrix.dkml_host_abi, 'windows_')
         shell: msys2 {0}
-        run: ci/build-test.sh ${{ env.DISTRO_TYPE }}
+        run: ci/build-test.sh ${{ env.DISTRO_TYPE }} ${{ matrix.channel }}
 
       - name: Build and test the package on non-Windows host
         if: "!startsWith(matrix.dkml_host_abi, 'windows_')"
-        run: ci/build-test.sh ${{ env.DISTRO_TYPE }}
+        run: ci/build-test.sh ${{ env.DISTRO_TYPE }} ${{ matrix.channel }}
 
       - uses: actions/upload-artifact@v3
         with:

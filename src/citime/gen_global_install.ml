@@ -24,21 +24,22 @@ let re_sanitize =
 
 let gen_calls pkgs =
   let pkgs_with_spaces =
+    String.concat " " (List.map (fun (pkg, _ver) -> pkg) pkgs)
+  in
+  let pkgvers_with_spaces =
     String.concat " "
       (List.map (fun (pkg, ver) -> Printf.sprintf "%s.%s" pkg ver) pkgs)
   in
   Printf.printf "echo '--- START [## global-install] PACKAGE VERSIONS ---'\n";
-  Printf.printf "start_pkg_vers %s\n" pkgs_with_spaces;
+  Printf.printf "start_pkg_vers %s\n" pkgvers_with_spaces;
   Printf.printf "echo '--- WITH [## global-install] PACKAGE VERSIONS ---'\n";
   List.iter
     (fun (pkg, ver) -> Printf.printf "with_pkg_ver '%s' '%s'\n" pkg ver)
     pkgs;
-  Printf.printf "echo '--- END [## global-install] PACKAGE VERSIONS ---'\n";
-  Printf.printf "end_pkg_vers %s\n" pkgs_with_spaces;
+  Printf.printf "echo '--- END [## global-install] PACKAGES ---'\n";
+  Printf.printf "end_pkgs %s\n" pkgs_with_spaces;
   Printf.printf "echo '--- POST [## global-install] PACKAGE VERSIONS ---'\n";
-  List.iter
-    (fun (pkg, ver) -> Printf.printf "post_pkg_ver '%s' '%s'\n" pkg ver)
-    pkgs
+  List.iter (fun (pkg, _ver) -> Printf.printf "post_pkg '%s'\n" pkg) pkgs
 
 let () =
   let distro_type =
