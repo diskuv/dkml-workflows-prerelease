@@ -86,6 +86,20 @@ do_fill_skipped_cache_entries() {
         echo "Found msys64/"
     fi
 
+    if [ -s "$unix_opam_root_cacheable/.ci.dkml.repo-init" ]; then
+        echo "Found non-empty $unix_opam_root_cacheable/.ci.dkml.repo-init"
+    else
+        touch "$unix_opam_root_cacheable/.ci.dkml.repo-init"
+        echo "Created empty $unix_opam_root_cacheable/.ci.dkml.repo-init"
+    fi
+
+    if [ -s "$unix_opam_root_cacheable/.ci.two.repo-init" ]; then
+        echo "Found non-empty $unix_opam_root_cacheable/.ci.two.repo-init"
+    else
+        touch "$unix_opam_root_cacheable/.ci.two.repo-init"
+        echo "Created empty $unix_opam_root_cacheable/.ci.two.repo-init"
+    fi
+
     section_end fill-skipped-cache-entries
 }
 do_fill_skipped_cache_entries

@@ -1080,7 +1080,7 @@ runs:
         #      a PR!).
         #   2. We have to separate the Opam download cache from the other Opam
         #      caches
-        if [ ! -e "$opam_root/.ci.root-init" ]; then
+        if [ ! -s "$opam_root/.ci.root-init" ]; then # non-empty init file so can be cached irrespective of existence
             section_begin opam-init 'Initialize opam root'
 
             # Clear any partial previous attempt
@@ -1102,7 +1102,7 @@ runs:
                 opamrun init --disable-sandboxing --no-setup --kind local --bare "$setup_WORKSPACE/.ci/sd4/eor"
                 ;;
             esac
-            touch "$opam_root/.ci.root-init"
+            echo yes > "$opam_root/.ci.root-init"
 
             section_end opam-init
         fi
@@ -1174,13 +1174,12 @@ runs:
 
             section_begin "opam-repo-$do_opam_repositories_config_NAME" "Attach Diskuv repository to $do_opam_repositories_config_NAME"
 
-            if [ ! -e "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then
+            if [ -s "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then # non-empty init file so can be cached irrespective of existence
                 opamrun --no-troubleshooting repository remove diskuv --switch "$do_opam_repositories_config_NAME" --yes || true
                 opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
-                touch "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
+                echo yes > "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
             fi
 
-            # Whether .ci.repo-init or not, always set the `diskuv` repository url since it can change
             section_end "opam-repo-$do_opam_repositories_config_NAME"
         }
         do_opam_repositories_config dkml
@@ -1481,6 +1480,20 @@ runs:
                 echo "Found msys64/"
             fi
 
+            if [ -s "$unix_opam_root_cacheable/.ci.dkml.repo-init" ]; then
+                echo "Found non-empty $unix_opam_root_cacheable/.ci.dkml.repo-init"
+            else
+                touch "$unix_opam_root_cacheable/.ci.dkml.repo-init"
+                echo "Created empty $unix_opam_root_cacheable/.ci.dkml.repo-init"
+            fi
+
+            if [ -s "$unix_opam_root_cacheable/.ci.two.repo-init" ]; then
+                echo "Found non-empty $unix_opam_root_cacheable/.ci.two.repo-init"
+            else
+                touch "$unix_opam_root_cacheable/.ci.two.repo-init"
+                echo "Created empty $unix_opam_root_cacheable/.ci.two.repo-init"
+            fi
+
             section_end fill-skipped-cache-entries
         }
         do_fill_skipped_cache_entries
@@ -1618,7 +1631,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo 'de75ad-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo 'bde49d-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 

@@ -1188,7 +1188,7 @@ PATH="$setup_WORKSPACE/.ci/sd4/opamrun:$PATH"
 #      a PR!).
 #   2. We have to separate the Opam download cache from the other Opam
 #      caches
-if [ ! -e "$opam_root/.ci.root-init" ]; then
+if [ ! -s "$opam_root/.ci.root-init" ]; then # non-empty init file so can be cached irrespective of existence
     section_begin opam-init 'Initialize opam root'
 
     # Clear any partial previous attempt
@@ -1210,7 +1210,7 @@ if [ ! -e "$opam_root/.ci.root-init" ]; then
         opamrun init --disable-sandboxing --no-setup --kind local --bare "$setup_WORKSPACE/.ci/sd4/eor"
         ;;
     esac
-    touch "$opam_root/.ci.root-init"
+    echo yes > "$opam_root/.ci.root-init"
 
     section_end opam-init
 fi
@@ -1282,13 +1282,12 @@ do_opam_repositories_config() {
 
     section_begin "opam-repo-$do_opam_repositories_config_NAME" "Attach Diskuv repository to $do_opam_repositories_config_NAME"
 
-    if [ ! -e "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then
+    if [ -s "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then # non-empty init file so can be cached irrespective of existence
         opamrun --no-troubleshooting repository remove diskuv --switch "$do_opam_repositories_config_NAME" --yes || true
         opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
-        touch "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
+        echo yes > "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
     fi
 
-    # Whether .ci.repo-init or not, always set the `diskuv` repository url since it can change
     section_end "opam-repo-$do_opam_repositories_config_NAME"
 }
 do_opam_repositories_config dkml
