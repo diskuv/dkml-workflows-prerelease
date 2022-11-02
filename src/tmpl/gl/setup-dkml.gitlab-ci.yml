@@ -153,6 +153,13 @@ variables:
 
     - |
       $Content = @'
+      {{ gl_teardown_dkml_script }}
+      '@
+      Set-Content -Path ".ci\sd4\run-teardown-dkml.sh" -Encoding Unicode -Value $Content
+    - msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/run-teardown-dkml.sh'
+
+    - |
+      $Content = @'
       {{ gl_msvcenv_awk }}
       '@
       Set-Content -Path ".ci\sd4\msvcenv.awk" -Encoding Unicode -Value $Content

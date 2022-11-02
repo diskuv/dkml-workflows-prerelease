@@ -79,6 +79,7 @@ let to_vars read_script =
     [
       ("common_values_script", "common-values.sh");
       ("setup_dkml_script", "setup-dkml.sh");
+      ("teardown_dkml_script", "teardown-dkml.sh");
       ("checkout_code_script", "checkout-code.sh");
       ("config_vsstudio_ps1", "config-vsstudio.ps1");
       ("get_msvcpath_cmd", "get-msvcpath.cmd");

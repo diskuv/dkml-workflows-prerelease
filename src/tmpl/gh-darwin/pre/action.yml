@@ -1,9 +1,9 @@
 # setup-dkml
 #   Short form: sd4
 
-name: setup-dkml
+name: pre-dkml
 author: Diskuv, Inc.
-description: Build OCaml native executables for Darwin
+description: Setup before building OCaml native executables for Darwin
 
 # WARNING: The inputs.*.default seem to do nothing!
 # 2022-10-21: Unclear if warning still applies after move from a GitHub child workflow to a GitHub composite action

@@ -20,61 +20,77 @@ let scaffold_gh ~output_dir () =
     | [] -> Ok ()
     | { gh_dir; gh_output_option } :: tl ->
         let gh_dir = Fpath.(output_dir / gh_dir) in
-        let gh_action_file = Fpath.(gh_dir / "action.yml") in
-        let gh_dune_file = Fpath.(gh_dir / "dune") in
-        let action_content = Printf.sprintf {||} in
-        let dune_content =
+        let gh_dune_file_pre = Fpath.(gh_dir / "pre" / "dune") in
+        let gh_dune_file_post = Fpath.(gh_dir / "post" / "dune") in
+        let dune_content_pre =
           Printf.sprintf
             {|%s
 (rule
-(alias gen-dkml)
-(target action.gen.yml)
-(action
-  (setenv
-  OCAMLRUNPARAM
-  b
-  (run gh-setup-dkml-action-yml --output-%s %%{target}))))
+  (alias gen-dkml)
+  (target action.gen.yml)
+  (action
+    (setenv
+     OCAMLRUNPARAM
+     b
+    (run gh-dkml-action-yml --phase pre --output-%s %%{target}))))
 
 (rule
-(alias gen-dkml)
-(action
-  (diff action.yml action.gen.yml)))
+  (alias gen-dkml)
+  (action
+    (diff action.yml action.gen.yml)))
 |}
             do_not_edit gh_output_option
         in
-        let* (_exists : bool) = OS.Dir.create gh_dir in
-        let* () = OS.File.write gh_action_file action_content in
-        let* () = OS.File.write gh_dune_file dune_content in
+        let dune_content_post =
+          Printf.sprintf
+            {|%s
+(rule
+  (alias gen-dkml)
+  (target action.gen.yml)
+  (action
+    (setenv
+     OCAMLRUNPARAM
+     b
+    (run gh-dkml-action-yml --phase post --output-%s %%{target}))))
+
+(rule
+  (alias gen-dkml)
+  (action
+    (diff action.yml action.gen.yml)))
+|}
+            do_not_edit gh_output_option
+        in
+        let* (_exists : bool) = OS.Dir.create (Fpath.parent gh_dune_file_pre) in
+        let* (_exists : bool) = OS.Dir.create (Fpath.parent gh_dune_file_post) in
+        let* () = OS.File.write gh_dune_file_pre dune_content_pre in
+        let* () = OS.File.write gh_dune_file_post dune_content_post in
         helper tl
   in
   helper gh_configs
 
 let scaffold_gl ~output_dir () =
   let gl_dir = Fpath.(output_dir / "gl") in
-  let gl_include_file = Fpath.(gl_dir / "setup-dkml.gitlab-ci.yml") in
   let gl_dune_file = Fpath.(gl_dir / "dune") in
-  let include_content = Printf.sprintf {||} in
   let dune_content =
     Printf.sprintf
       {|%s
 (rule
-(target setup-dkml.gen.gitlab-ci.yml)
-(alias gen-dkml)
-(action
-  (setenv
-  OCAMLRUNPARAM
-  b
-  (run gl-setup-dkml-yml --output-file %%{target}))))
+  (target setup-dkml.gen.gitlab-ci.yml)
+  (alias gen-dkml)
+  (action
+    (setenv
+     OCAMLRUNPARAM
+     b
+    (run gl-setup-dkml-yml --output-file %%{target}))))
 
 (rule
-(alias gen-dkml)
-(action
-  (diff setup-dkml.gitlab-ci.yml setup-dkml.gen.gitlab-ci.yml)))
+  (alias gen-dkml)
+  (action
+    (diff setup-dkml.gitlab-ci.yml setup-dkml.gen.gitlab-ci.yml)))
 |}
       do_not_edit
   in
   let* (_exists : bool) = OS.Dir.create gl_dir in
-  let* () = OS.File.write gl_include_file include_content in
   let* () = OS.File.write gl_dune_file dune_content in
   Ok ()
 
@@ -103,47 +119,47 @@ let scaffold_pc ~output_dir () =
 ; windows_x86
 
 (rule
-(target setup-dkml-windows_x86-gen.ps1)
-(action
-  (setenv
-  OCAMLRUNPARAM
-  b
-  (run pc-setup-dkml --output-windows_x86 %%{target}))))
+  (target setup-dkml-windows_x86-gen.ps1)
+  (action
+    (setenv
+     OCAMLRUNPARAM
+     b
+    (run pc-setup-dkml --output-windows_x86 %%{target}))))
 
 (rule
-(alias gen-dkml)
-(action
-  (diff setup-dkml-windows_x86.ps1 setup-dkml-windows_x86-gen.ps1)))
+  (alias gen-dkml)
+  (action
+    (diff setup-dkml-windows_x86.ps1 setup-dkml-windows_x86-gen.ps1)))
 
 ; windows_x86_64
 
 (rule
-(target setup-dkml-windows_x86_64-gen.ps1)
-(action
-  (setenv
-  OCAMLRUNPARAM
-  b
-  (run pc-setup-dkml --output-windows_x86_64 %%{target}))))
+  (target setup-dkml-windows_x86_64-gen.ps1)
+  (action
+    (setenv
+     OCAMLRUNPARAM
+     b
+    (run pc-setup-dkml --output-windows_x86_64 %%{target}))))
 
 (rule
-(alias gen-dkml)
-(action
-  (diff setup-dkml-windows_x86_64.ps1 setup-dkml-windows_x86_64-gen.ps1)))
+  (alias gen-dkml)
+  (action
+    (diff setup-dkml-windows_x86_64.ps1 setup-dkml-windows_x86_64-gen.ps1)))
 
 ; darwin_x86_64
 
 (rule
- (target setup-dkml-darwin_x86_64-gen.sh)
- (action
-  (setenv
-   OCAMLRUNPARAM
-   b
-   (run pc-setup-dkml --output-darwin_x86_64 %%{target}))))
+  (target setup-dkml-darwin_x86_64-gen.sh)
+  (action
+    (setenv
+     OCAMLRUNPARAM
+     b
+    (run pc-setup-dkml --output-darwin_x86_64 %%{target}))))
 
 (rule
- (alias gen-dkml)
- (action
-  (diff setup-dkml-darwin_x86_64.sh setup-dkml-darwin_x86_64-gen.sh)))
+  (alias gen-dkml)
+  (action
+    (diff setup-dkml-darwin_x86_64.sh setup-dkml-darwin_x86_64-gen.sh)))
   |}
       do_not_edit
   in
