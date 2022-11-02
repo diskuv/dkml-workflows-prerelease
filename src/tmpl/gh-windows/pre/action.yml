@@ -118,6 +118,10 @@ runs:
         {{ gh_setup_dkml_script }}
         end_of_script
 
+        cat > .ci/sd4/run-teardown-dkml.sh <<'end_of_script'
+        {{ gh_teardown_dkml_script }}
+        end_of_script
+
         install -d .ci/sd4
 
         cat > .ci/sd4/msvcenv.awk <<'end_of_script'
