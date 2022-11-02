@@ -109,6 +109,18 @@ runs:
                     "$(date +%s)" \
                     "$print_section_end_NAME"
             }
+        elif [ -n "${GITHUB_ENV:-}" ]; then
+            # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#grouping-log-lines
+            print_section_start() {
+                print_section_start_NAME=$1
+                shift
+                printf "::group::%s\n" "$print_section_start_NAME"
+            }
+            print_section_end() {
+                print_section_end_NAME=$1
+                shift
+                printf "::endgroup::\n"
+            }
         else
             print_section_start() {
                 print_section_start_NAME=$1
