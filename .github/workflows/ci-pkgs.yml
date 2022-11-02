@@ -54,21 +54,21 @@ jobs:
 
       - name: Setup DKML on a Windows host
         if: startsWith(matrix.dkml_host_abi, 'windows_')
-        uses: ./ci/setup-dkml/gh-windows
+        uses: ./ci/setup-dkml/gh-windows/pre
         with:
           DKML_COMPILER: ${{ env.DKML_COMPILER }}
           SECONDARY_SWITCH: ${{ env.SECONDARY_SWITCH }}
 
       - name: Setup DKML on a Darwin host
         if: startsWith(matrix.dkml_host_abi, 'darwin_')
-        uses: ./ci/setup-dkml/gh-darwin
+        uses: ./ci/setup-dkml/gh-darwin/pre
         with:
           DKML_COMPILER: ${{ env.DKML_COMPILER }}
           SECONDARY_SWITCH: ${{ env.SECONDARY_SWITCH }}
 
       - name: Setup DKML on a Linux host
         if: startsWith(matrix.dkml_host_abi, 'linux_')
-        uses: ./ci/setup-dkml/gh-linux
+        uses: ./ci/setup-dkml/gh-linux/pre
         with:
           DKML_COMPILER: ${{ env.DKML_COMPILER }}
           SECONDARY_SWITCH: ${{ env.SECONDARY_SWITCH }}
@@ -81,6 +81,18 @@ jobs:
       - name: Build and test the package on non-Windows host
         if: "!startsWith(matrix.dkml_host_abi, 'windows_')"
         run: ci/build-test.sh ${{ env.DISTRO_TYPE }} ${{ matrix.channel }}
+
+      - name: Teardown DKML on a Windows host
+        if: startsWith(matrix.dkml_host_abi, 'windows_')
+        uses: ./ci/setup-dkml/gh-windows/post
+
+      - name: Teardown DKML on a Darwin host
+        if: startsWith(matrix.dkml_host_abi, 'darwin_')
+        uses: ./ci/setup-dkml/gh-darwin/post
+
+      - name: Teardown DKML on a Linux host
+        if: startsWith(matrix.dkml_host_abi, 'linux_')
+        uses: ./ci/setup-dkml/gh-linux/post
 
       - uses: actions/upload-artifact@v3
         with:
