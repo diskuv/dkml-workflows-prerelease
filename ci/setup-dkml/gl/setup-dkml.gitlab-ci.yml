@@ -40,7 +40,7 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "1_${CACHE_PREFIX}-3949cde84-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
+    - key: "1_${CACHE_PREFIX}-1543955-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
@@ -1381,9 +1381,6 @@ variables:
           do_install_compiler two
       fi
       
-      # Done with Opam cache!
-      do_save_opam_cache
-      
       do_summary() {
           do_summary_NAME=$1
           shift
@@ -1396,6 +1393,9 @@ variables:
       if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
           do_summary two
       fi
+      
+      # Done with Opam cache!
+      do_save_opam_cache
       
       '@
       Set-Content -Path ".ci\sd4\run-setup-dkml.sh" -Encoding Unicode -Value $Content
@@ -2793,9 +2793,6 @@ variables:
           do_install_compiler two
       fi
       
-      # Done with Opam cache!
-      do_save_opam_cache
-      
       do_summary() {
           do_summary_NAME=$1
           shift
@@ -2808,6 +2805,9 @@ variables:
       if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
           do_summary two
       fi
+      
+      # Done with Opam cache!
+      do_save_opam_cache
       
       end_of_script
 
@@ -4115,9 +4115,6 @@ variables:
           do_install_compiler two
       fi
       
-      # Done with Opam cache!
-      do_save_opam_cache
-      
       do_summary() {
           do_summary_NAME=$1
           shift
@@ -4130,6 +4127,9 @@ variables:
       if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
           do_summary two
       fi
+      
+      # Done with Opam cache!
+      do_save_opam_cache
       
       end_of_script
 
