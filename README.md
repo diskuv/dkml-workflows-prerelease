@@ -44,6 +44,32 @@ $ opamrun exec -- sh ci/build-test.sh ci next
 opam upgrade dkml-workflows && opam exec -- generate-setup-dkml-scaffold && dune build '@gen-dkml' --auto-promote
 ```
 
+## Build Flow
+
+1. See [dkml-runtime-distribution](https://github.com/diskuv/dkml-runtime-distribution/blob/main/src/none/README.md)
+   for how the packages that participate in the DKML distribution are specified. The actual specification of the
+   packages is in the [same directory](https://github.com/diskuv/dkml-runtime-distribution/blob/main/src/none/)
+2. Gitlab CI/CD on macOS, Linux and Windows machines will:
+   1. Make a "secondary" switch `two` that contains [dkml-build-desktop.opam](./dkml-build-desktop.opam). That will
+      have install the list of `dkml-runtime-distribution` package specifications.
+   2. Make a primary switch `dkml` that installs all the packages specified by `dkml-runtime-distribution`.
+   3. Go through every specified package and ask Opam for the list of files that were installed by those packages.
+   4. Export the Opam installed files as a tarball for consumption by the "release" job.
+
+   Then the release job will import all the Opam installed files and make a single tarball that contains all
+   macOS, Linux and Windows binaries.
+3. `dkml-component-staging-desktop-{ci,full}.opam` will use the GitLab Release tarball as an `extra-source`.
+   When opam builds the `...-{ci,full}.opam` packages, the tarball files will be moved into the `staging-files`
+   "share" folder.
+4. The DKML installer uses the `dkml-component-offline-desktop-{ci,full}.opam` packages with dkml-install-api to make
+   installer executables:
+   * The offline components depends on the staging components, so during end-user installation the
+     `staging-files` will be present in a temporary directory.
+   * The offline components use [src/installtime_enduser/install.ml](src/installtime_enduser/install.ml) to:
+     1. Copy the `staging-files` to the end-user installation prefix.
+     2. Copy the `staging-files/<abi>/bin/fswatch.exe` to `tools/fswatch/fswatch.exe` if and only if
+        the `<abi>` is Windows.
+
 ## Status
 
 [![Syntax check](https://github.com/diskuv/dkml-component-desktop/actions/workflows/syntax.yml/badge.svg)](https://github.com/diskuv/dkml-component-desktop/actions/workflows/syntax.yml)

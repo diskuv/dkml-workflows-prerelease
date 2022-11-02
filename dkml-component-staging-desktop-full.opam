@@ -32,6 +32,6 @@ install: [
   ["diskuvbox" "copy-dir" "dl/staging" "%{_:share}%/staging-files"]
 ]
 extra-source "dl/staging.tar.gz" {
-  src: "https://gitlab.com/diskuv-ocaml/components/dkml-component-desktop/-/archive/0.1.0/staging.tar.gz"
+  src: "https://gitlab.com/diskuv-ocaml/components/dkml-component-desktop/-/archive/0.1.0/full.tar.gz"
   checksum: "sha256=f5a48a90557cb47ace7b1590fcab1362a1af38629a218350f69c225c57e96a41"
 }

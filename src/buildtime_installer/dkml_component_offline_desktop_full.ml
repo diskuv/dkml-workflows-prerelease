@@ -8,6 +8,11 @@ open Dkml_install_register
 open Bos
 
 let execute_install ctx =
+  let other_args =
+    if Context.Abi_v2.is_windows ctx.Context.target_abi_v2 then
+      Cmd.(v "--use-dkml-fswatch")
+    else Cmd.empty
+  in
   Staging_ocamlrun_api.spawn_ocamlrun ctx
     Cmd.(
       v
@@ -15,7 +20,7 @@ let execute_install ctx =
            (ctx.Context.path_eval
               "%{offline-desktop-full:share-generic}%/install.bc"))
       %% Log_config.to_args ctx.Context.log_config
-      % "--source-dir"
+      %% other_args % "--source-dir"
       % Fpath.to_string
           (ctx.Context.path_eval "%{staging-desktop-full:share-abi}%")
       % "--target-dir"
