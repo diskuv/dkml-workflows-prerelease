@@ -1082,7 +1082,7 @@ runs:
             do_switch_create_NAME=$1
             shift
 
-            section_begin "switch-create-$do_switch_create_NAME" "Create opam switch $do_switch_create_NAME"
+            section_begin "switch-create-$do_switch_create_NAME" "Create opam switch '$do_switch_create_NAME'"
             # Create, or recreate, the Opam switch. The Opam switch should not be
             # cached except for the compiler (confer docs for setup-ocaml GitHub
             # Action) which is the 'dkml' switch (or the 'two' switch).
@@ -1110,11 +1110,13 @@ runs:
         if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
             do_switch_create two
         else
+            section_begin "switch-create-two" "Create empty opam switch 'two'"
             # Always create a secondary switch ... just empty. Avoid problems with cache content missing
             # and idempotency.
             opamrun --no-troubleshooting switch remove two --yes || true
             rm -rf "$opam_root/two"
             opamrun switch create two --empty --yes
+            section_end "switch-create-two"
         fi
 
         do_switch_active() {
@@ -1137,11 +1139,13 @@ runs:
             do_opam_repositories_config_NAME=$1
             shift
 
-            section_begin "opam-repo-$do_opam_repositories_config_NAME" "Attach Diskuv repository to $do_opam_repositories_config_NAME"
+            section_begin "opam-repo-$do_opam_repositories_config_NAME" "Attach repositories to $do_opam_repositories_config_NAME"
 
             if [ -s "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then # non-empty init file so can be cached irrespective of existence
+                opamrun --no-troubleshooting repository remove default --switch "$do_opam_repositories_config_NAME" --yes || true
                 opamrun --no-troubleshooting repository remove diskuv --switch "$do_opam_repositories_config_NAME" --yes || true
-                opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
+                opamrun repository add default --switch "$do_opam_repositories_config_NAME" --yes
+                opamrun repository add diskuv --switch "$do_opam_repositories_config_NAME" --yes
                 echo yes > "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
             fi
 
@@ -1472,7 +1476,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo 'bde49d-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '4e04dd-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
@@ -1484,7 +1488,7 @@ runs:
       with:
         path: .ci/sd4/bs
         key:
-          "1_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}"
+          "2_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}"
 
     # ------
     # BEGIN Docker (ManyLinux)
@@ -1529,7 +1533,7 @@ runs:
           ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.root-init
           ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.repo-init
         key:
-          "1_${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}"
+          "2_${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}"
 
     # The action/checkout steps used for pinning will re-use existing Git objects
     # because of caching
@@ -1539,7 +1543,7 @@ runs:
       with:
         path: .ci/sd4/g
         key:
-          "1_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('.ci/sd4/cachekey.ci.inputs') }}"
+          "2_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('.ci/sd4/cachekey.ci.inputs') }}"
 
     # Checkout code
 
