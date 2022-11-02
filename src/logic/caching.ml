@@ -1,7 +1,7 @@
 open Astring
 open Jingoo
 
-let cachebust = 2
+let cachebust = 1
 
 let static_vars = [ ("cachebust", Jg_types.Tstr (string_of_int cachebust)) ]
 

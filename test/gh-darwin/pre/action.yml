@@ -1101,7 +1101,7 @@ runs:
         do_switch_active
 
         do_opam_repositories_add() {
-            section_begin "opam-repo-add" "Add Diskuv opam repository"
+            section_begin "opam-repo-add" "Add 'diskuv' opam repository"
             if ! opamrun --no-troubleshooting repository list -s | grep '^diskuv'; then
                 opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --yes --dont-select
             fi
@@ -1115,7 +1115,7 @@ runs:
 
             section_begin "opam-repo-$do_opam_repositories_config_NAME" "Attach repositories to $do_opam_repositories_config_NAME"
 
-            if [ -s "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then # non-empty init file so can be cached irrespective of existence
+            if [ ! -s "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then # non-empty init file so can be cached irrespective of existence
                 opamrun --no-troubleshooting repository remove default --switch "$do_opam_repositories_config_NAME" --yes || true
                 opamrun --no-troubleshooting repository remove diskuv --switch "$do_opam_repositories_config_NAME" --yes || true
                 opamrun repository add default --switch "$do_opam_repositories_config_NAME" --yes
@@ -1450,7 +1450,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '4e04dd-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '4b5e72-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
@@ -1462,7 +1462,7 @@ runs:
       with:
         path: .ci/sd4/bs
         key:
-          "2_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}"
+          "1_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-bs-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}"
 
     - name: Cache Opam root by (host,target)
       uses: actions/cache@v3
@@ -1475,9 +1475,10 @@ runs:
           ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/repo
           ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/download-cache
           ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.root-init
-          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.repo-init
+          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.dkml.repo-init
+          ${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}/.ci.two.repo-init
         key:
-          "2_${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}"
+          "1_${{ inputs.CACHE_PREFIX }}_${{ env.DKML_VERSION }}_${{ steps.full_matrix_vars.outputs.abi_pattern }}-sd4-opamroot-${{ hashFiles('.ci/sd4/cachekey.opam.binaries') }}-${{ hashFiles('cachekey.ci.inputs') }}"
 
     # The action/checkout steps used for pinning will re-use existing Git objects
     # because of caching
@@ -1487,7 +1488,7 @@ runs:
       with:
         path: .ci/sd4/g
         key:
-          "2_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('.ci/sd4/cachekey.ci.inputs') }}"
+          "1_${{ inputs.CACHE_PREFIX }}_${{ runner.os }}-sd4-git-${{ hashFiles('.ci/sd4/cachekey.ci.inputs') }}"
 
     # Checkout code
 
