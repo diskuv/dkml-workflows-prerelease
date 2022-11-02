@@ -33,7 +33,15 @@ $ export PC_PROJECT_DIR="$PWD"
 $ export PATH="$PWD/.ci/sd4/opamrun:$PATH"
 
 # Run the build
-$ opamrun exec -- sh ci/build-test.sh ci
+#   The first argument is: 'ci' or 'full'
+#   The second argument is: 'release' or 'next'
+$ opamrun exec -- sh ci/build-test.sh ci next
+```
+
+## Upgrading CI
+
+```bash
+opam upgrade dkml-workflows && opam exec -- generate-setup-dkml-scaffold && dune build '@gen-dkml' --auto-promote
 ```
 
 ## Status
