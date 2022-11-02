@@ -1136,6 +1136,13 @@ else
     opamrun switch create two --empty --yes
 fi
 
+do_switch_active() {
+    section_begin "switch-active" "Set dkml as active switch"
+    opamrun switch set dkml --yes
+    section_end "switch-active"
+}
+do_switch_active
+
 do_opam_repositories_add() {
     section_begin "opam-repo-add" "Add Diskuv opam repository"
     if ! opamrun --no-troubleshooting repository list -s | grep '^diskuv'; then
