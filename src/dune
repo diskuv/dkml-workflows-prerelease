@@ -1,18 +1,18 @@
 (rule
  (deps
   ; use glob_files with only a single '*' wildcard rather than glob_rec_files so works in Dune 2.9
-  (glob_files tmpl/pc/*.ps1)
-  (glob_files tmpl/pc/*.sh)
-  (glob_files tmpl/gh-darwin/pre/*.yml)
-  (glob_files tmpl/gh-darwin/post/*.yml)
-  (glob_files tmpl/gh-linux/pre/*.yml)
-  (glob_files tmpl/gh-linux/post/*.yml)
-  (glob_files tmpl/gh-windows/pre/*.yml)
-  (glob_files tmpl/gh-windows/post/*.yml)
-  (glob_files tmpl/gl/*.yml))
+  (glob_files ../tmpl/pc/*.ps1)
+  (glob_files ../tmpl/pc/*.sh)
+  (glob_files ../tmpl/gh-darwin/pre/*.yml)
+  (glob_files ../tmpl/gh-darwin/post/*.yml)
+  (glob_files ../tmpl/gh-linux/pre/*.yml)
+  (glob_files ../tmpl/gh-linux/post/*.yml)
+  (glob_files ../tmpl/gh-windows/pre/*.yml)
+  (glob_files ../tmpl/gh-windows/post/*.yml)
+  (glob_files ../tmpl/gl/*.yml))
  (target tmpl.ml)
  (action
-  (run ocaml-crunch -m plain -o %{target} tmpl)))
+  (run ocaml-crunch -m plain -o %{target} ../tmpl)))
 
 (rule
  (deps
