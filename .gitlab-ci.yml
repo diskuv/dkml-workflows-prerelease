@@ -13,6 +13,7 @@ variables:
   # Set to 'true' when you only want do the DKML setup but not the build-test
   # and not the release. Good for populating the cache.
   SETUP_ONLY: 'false'
+  SKIP_RELEASE_WIN32: 'false'
 
 linux:ci:release:build:
   extends: .linux:setup-dkml
@@ -53,6 +54,8 @@ win32:prepare:
 
 win32:ci:release:build:
   extends: .win32:setup-dkml
+  rules:
+    - if: $SKIP_RELEASE_WIN32 != "true"
   stage: build
   # For reasons unknown (perhaps 'needs' has bugs with parallel matrix) the
   # following does not work. So instead we can
