@@ -1117,7 +1117,6 @@ runs:
             section_begin "opam-repo-$do_opam_repositories_config_NAME" "Attach opam repositories to $do_opam_repositories_config_NAME"
 
             if [ ! -e "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then
-                opamrun --no-troubleshooting repository remove default --switch "$do_opam_repositories_config_NAME" --yes || true
                 opamrun --no-troubleshooting repository remove diskuv --switch "$do_opam_repositories_config_NAME" --yes || true
                 opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
                 touch "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
@@ -1345,7 +1344,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '8aed9d-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo 'ccccf1-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 

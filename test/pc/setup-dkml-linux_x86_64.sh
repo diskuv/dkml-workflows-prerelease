@@ -1163,7 +1163,6 @@ do_opam_repositories_config() {
     section_begin "opam-repo-$do_opam_repositories_config_NAME" "Attach opam repositories to $do_opam_repositories_config_NAME"
 
     if [ ! -e "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init" ]; then
-        opamrun --no-troubleshooting repository remove default --switch "$do_opam_repositories_config_NAME" --yes || true
         opamrun --no-troubleshooting repository remove diskuv --switch "$do_opam_repositories_config_NAME" --yes || true
         opamrun repository add diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --switch "$do_opam_repositories_config_NAME" --yes
         touch "$opam_root/.ci.$do_opam_repositories_config_NAME.repo-init"
