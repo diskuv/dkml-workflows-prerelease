@@ -83,34 +83,31 @@ win32:ci:next:build:
         msys64\usr\bin\bash -lc "ci/build-test.sh ci next"
       }
 
-# Uncomment macOS when you have a https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues
-# approved!
-#
-# macos:ci:release:build:
-#   extends: .macos:setup-dkml
-#   stage: build
-#   needs: [] # see comments in win32:build
-#   timeout: 2h
-#   script:
-#     - |
-#       if [ "$SETUP_ONLY" = "true" ]; then
-#         echo 'SKIPPING BUILD since SETUP_ONLY=true'
-#       else
-#         sh ci/build-test.sh ci release
-#       fi
-#
-# macos:ci:next:build:
-#   extends: .macos:setup-dkml
-#   stage: build
-#   needs: [] # see comments in win32:build
-#   timeout: 2h
-#   script:
-#     - |
-#       if [ "$SETUP_ONLY" = "true" ]; then
-#         echo 'SKIPPING BUILD since SETUP_ONLY=true'
-#       else
-#         sh ci/build-test.sh ci next
-#       fi
+macos:ci:release:build:
+  extends: .macos:setup-dkml
+  stage: build
+  needs: [] # see comments in win32:build
+  timeout: 2h
+  script:
+    - |
+      if [ "$SETUP_ONLY" = "true" ]; then
+        echo 'SKIPPING BUILD since SETUP_ONLY=true'
+      else
+        sh ci/build-test.sh ci release
+      fi
+
+macos:ci:next:build:
+  extends: .macos:setup-dkml
+  stage: build
+  needs: [] # see comments in win32:build
+  timeout: 2h
+  script:
+    - |
+      if [ "$SETUP_ONLY" = "true" ]; then
+        echo 'SKIPPING BUILD since SETUP_ONLY=true'
+      else
+        sh ci/build-test.sh ci next
+      fi
 
 release:
   stage: deploy
