@@ -9,8 +9,8 @@ test-gl-linux:
 test-gl-win32:
   extends: .win32:setup-dkml
 
-test-gl-macos:
-  extends: .macos:setup-dkml
+# test-gl-macos:
+#   extends: .macos:setup-dkml
 
 # Test personal computer (PC) scripts
 
@@ -38,3 +38,15 @@ test-pc-linux:
 
   script:
     - sh test/pc/setup-dkml-${dkml_host_abi}.sh
+
+# test-pc-macos:
+#   stage: build # no point waiting for the build phase of `local: 'test/gl/setup-dkml.gitlab-ci.yml'`
+#   parallel:
+#     matrix:
+#       - dkml_host_abi: darwin_x86_64
+
+#   tags:
+#    - shared-macos-amd64
+
+#   script:
+#     - sh test/pc/setup-dkml-${dkml_host_abi}.sh
