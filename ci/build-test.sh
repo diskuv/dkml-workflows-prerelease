@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euf
 
-DISTRO_TYPE=$1
+FLAVOR=$1
 shift
 CHANNEL=$1
 shift
@@ -15,7 +15,7 @@ build-test.sh
 ---------
 Arguments
 ---------
-DISTRO_TYPE=$DISTRO_TYPE
+FLAVOR=$FLAVOR
 CHANNEL=$CHANNEL
 .
 ------
@@ -106,7 +106,7 @@ opamrun install --switch two ./dkml-build-desktop.opam --yes
 # Use the `dkml-desktop-gen-global-install` executable to create a part of this shell
 # script
 install -d .ci
-opamrun exec --switch two -- dkml-desktop-gen-global-install "$DISTRO_TYPE" >.ci/self-invoker.source.sh
+opamrun exec --switch two -- dkml-desktop-gen-global-install "$FLAVOR" >.ci/self-invoker.source.sh
 
 # Use `dkml-desktop-dkml-version` to get the DKML version
 opamrun exec --switch two -- dkml-desktop-dkml-version >.ci/dkml-version.txt

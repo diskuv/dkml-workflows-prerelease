@@ -13,33 +13,48 @@ variables:
   # Set to 'true' when you only want do the DKML setup but not the build-test
   # and not the release. Good for populating the cache.
   SETUP_ONLY: 'false'
-  SKIP_RELEASE_WIN32: 'false'
+  SKIP_CHANNEL_RELEASE_HOST_WIN32: 'false'
+  SKIP_FLAVOR_FULL: 'false'
 
 linux:ci:release:build:
   extends: .linux:setup-dkml
   stage: build
-  needs: [] # see comments in win32:build
+  needs: [] # see comments in win32:ci:release:build
   timeout: 2h
+  rules:
+    - if: $SETUP_ONLY != "true"
   script:
-    - |
-      if [ "$SETUP_ONLY" = "true" ]; then
-        echo 'SKIPPING BUILD since SETUP_ONLY=true'
-      else
-        sh ci/build-test.sh ci release
-      fi
+    - sh ci/build-test.sh ci release
 
 linux:ci:next:build:
   extends: .linux:setup-dkml
   stage: build
-  needs: [] # see comments in win32:build
+  needs: [] # see comments in win32:ci:release:build
   timeout: 2h
+  rules:
+    - if: $SETUP_ONLY != "true"
   script:
-    - |
-      if [ "$SETUP_ONLY" = "true" ]; then
-        echo 'SKIPPING BUILD since SETUP_ONLY=true'
-      else
-        sh ci/build-test.sh ci next
-      fi
+    - sh ci/build-test.sh ci next
+
+linux:full:release:build:
+  extends: .linux:setup-dkml
+  stage: build
+  needs: [] # see comments in win32:ci:release:build
+  timeout: 2h
+  rules:
+    - if: $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
+  script:
+    - sh ci/build-test.sh full release
+
+linux:full:next:build:
+  extends: .linux:setup-dkml
+  stage: build
+  needs: [] # see comments in win32:ci:release:build
+  timeout: 2h
+  rules:
+    - if: $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
+  script:
+    - sh ci/build-test.sh full next
 
 # We use staging (two jobs) for Windows because without a cache
 # the job will exceed 2 hours (the GitLab shared SaaS runner limit).
@@ -55,7 +70,7 @@ win32:prepare:
 win32:ci:release:build:
   extends: .win32:setup-dkml
   rules:
-    - if: $SKIP_RELEASE_WIN32 != "true"
+    - if: $SKIP_CHANNEL_RELEASE_HOST_WIN32 != "true" && $SETUP_ONLY != "true"
   stage: build
   # For reasons unknown (perhaps 'needs' has bugs with parallel matrix) the
   # following does not work. So instead we can
@@ -67,50 +82,74 @@ win32:ci:release:build:
   #   - job: win32:prepare
   timeout: 2h
   script:
-    - |
-      if ("$env:SETUP_ONLY" -eq "true") {
-        Write-Host "SKIPPING BUILD since SETUP_ONLY=true"
-      } else {
-        msys64\usr\bin\bash -lc "ci/build-test.sh ci release"
-      }
+    - msys64\usr\bin\bash -lc "ci/build-test.sh ci release"
 
 win32:ci:next:build:
   extends: .win32:setup-dkml
   stage: build
   timeout: 2h
+  rules:
+    - if: $SETUP_ONLY != "true"
   script:
-    - |
-      if ("$env:SETUP_ONLY" -eq "true") {
-        Write-Host "SKIPPING BUILD since SETUP_ONLY=true"
-      } else {
-        msys64\usr\bin\bash -lc "ci/build-test.sh ci next"
-      }
+    - msys64\usr\bin\bash -lc "ci/build-test.sh ci next"
+
+win32:full:release:build:
+  extends: .win32:setup-dkml
+  rules:
+    - if: $SKIP_FLAVOR_FULL != "true" && $SKIP_CHANNEL_RELEASE_HOST_WIN32 != "true" && $SETUP_ONLY != "true"
+  stage: build
+  timeout: 2h
+  script:
+    - msys64\usr\bin\bash -lc "ci/build-test.sh full release"
+
+win32:full:next:build:
+  extends: .win32:setup-dkml
+  stage: build
+  timeout: 2h
+  rules:
+    - if: $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
+  script:
+    - msys64\usr\bin\bash -lc "ci/build-test.sh full next"
 
 # macos:ci:release:build:
 #   extends: .macos:setup-dkml
 #   stage: build
-#   needs: [] # see comments in win32:build
+#   needs: [] # see comments in win32:ci:release:build
 #   timeout: 2h
+#   rules:
+#     - if: $SETUP_ONLY != "true"
 #   script:
-#     - |
-#       if [ "$SETUP_ONLY" = "true" ]; then
-#         echo 'SKIPPING BUILD since SETUP_ONLY=true'
-#       else
-#         sh ci/build-test.sh ci release
-#       fi
+#     - sh ci/build-test.sh ci release
 
 # macos:ci:next:build:
 #   extends: .macos:setup-dkml
 #   stage: build
-#   needs: [] # see comments in win32:build
+#   needs: [] # see comments in win32:ci:release:build
 #   timeout: 2h
+#   rules:
+#     - if: $SETUP_ONLY != "true"
 #   script:
-#     - |
-#       if [ "$SETUP_ONLY" = "true" ]; then
-#         echo 'SKIPPING BUILD since SETUP_ONLY=true'
-#       else
-#         sh ci/build-test.sh ci next
-#       fi
+#     - sh ci/build-test.sh ci next
+
+# macos:full:release:build:
+#   extends: .macos:setup-dkml
+#   stage: build
+#   needs: [] # see comments in win32:ci:release:build
+#   timeout: 2h
+#   rules:
+#     - if: $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
+#   script:
+#     - sh ci/build-test.sh full release
+
+# macos:full:next:build:
+#   extends: .macos:setup-dkml
+#   stage: build
+#   needs: [] # see comments in win32:ci:release:build
+#   timeout: 2h
+#   rules:
+#     - if: $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
+#   script:
+#     - sh ci/build-test.sh full next
 
 release:
   stage: deploy
