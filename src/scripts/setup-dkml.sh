@@ -1013,6 +1013,3 @@ do_summary dkml
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_summary two
 fi
-
-# Done with Opam cache!
-do_save_opam_cache

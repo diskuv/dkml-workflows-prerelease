@@ -202,7 +202,7 @@ variables:
           print_section_start() {
               print_section_start_NAME=$1
               shift
-              printf "::group::%s\n" "$print_section_start_NAME"
+              printf "::group::"
           }
           print_section_end() {
               print_section_end_NAME=$1
@@ -1423,9 +1423,6 @@ variables:
           do_summary two
       fi
 
-      # Done with Opam cache!
-      do_save_opam_cache
-
       '@
       Set-Content -Path ".ci\sd4\run-setup-dkml.sh" -Encoding Unicode -Value $Content
     - msys64\usr\bin\bash -lc 'dos2unix .ci/sd4/run-setup-dkml.sh'
@@ -1720,7 +1717,7 @@ variables:
           print_section_start() {
               print_section_start_NAME=$1
               shift
-              printf "::group::%s\n" "$print_section_start_NAME"
+              printf "::group::"
           }
           print_section_end() {
               print_section_end_NAME=$1
@@ -2934,9 +2931,6 @@ variables:
       if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
           do_summary two
       fi
-
-      # Done with Opam cache!
-      do_save_opam_cache
 
       end_of_script
 
@@ -3071,7 +3065,7 @@ variables:
           print_section_start() {
               print_section_start_NAME=$1
               shift
-              printf "::group::%s\n" "$print_section_start_NAME"
+              printf "::group::"
           }
           print_section_end() {
               print_section_end_NAME=$1
@@ -4285,9 +4279,6 @@ variables:
       if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
           do_summary two
       fi
-
-      # Done with Opam cache!
-      do_save_opam_cache
 
       end_of_script
 

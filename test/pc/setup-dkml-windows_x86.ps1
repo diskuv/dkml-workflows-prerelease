@@ -277,7 +277,7 @@ elif [ -n "${GITHUB_ENV:-}" ]; then
     print_section_start() {
         print_section_start_NAME=$1
         shift
-        printf "::group::%s\n" "$print_section_start_NAME"
+        printf "::group::"
     }
     print_section_end() {
         print_section_end_NAME=$1
@@ -1497,9 +1497,6 @@ do_summary dkml
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_summary two
 fi
-
-# Done with Opam cache!
-do_save_opam_cache
 
 '@
 Set-Content -Path ".ci\sd4\run-setup-dkml.sh" -Encoding Unicode -Value $Content
