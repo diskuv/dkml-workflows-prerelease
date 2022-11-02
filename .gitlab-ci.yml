@@ -31,6 +31,8 @@ test-pc-windows:
 
 test-pc-linux:
   stage: build # no point waiting for the build phase of `local: 'test/gl/setup-dkml.gitlab-ci.yml'`
+  tags:
+    - saas-linux-large-amd64 # https://about.gitlab.com/blog/2022/09/22/new-machine-types-for-gitlab-saas-runners/
   parallel:
     matrix:
       - dkml_host_abi: linux_x86
