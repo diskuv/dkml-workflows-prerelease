@@ -13,7 +13,7 @@ for CHANNEL in release next; do
         find "dist/$CHANNEL" -mindepth 1 -maxdepth 1 -type f -name "*.tar.gz" | while read -r tarball; do
             dkml_host_abi=$(basename "${tarball%.tar.gz}")
             install -d "$ARCHIVE/$dkml_host_abi"
-            tar xCvfz "$ARCHIVE/$dkml_host_abi" "$tarball"
+            tar xvCfz "$ARCHIVE/$dkml_host_abi" "$tarball"
         done
 
         # Tar ball
