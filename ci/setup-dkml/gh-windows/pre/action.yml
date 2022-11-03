@@ -490,14 +490,16 @@ runs:
         PIN_CTYPES_FOREIGN=${PIN_CTYPES_FOREIGN}
         PIN_CURLY=${PIN_CURLY}
         PIN_DIGESTIF=${PIN_DIGESTIF}
+        PIN_DKML_APPS=${PIN_DKML_APPS}
         PIN_DUNE=${PIN_DUNE}
-        PIN_DUNE=${PIN_DUNE}
+        PIN_DUNE_CONFIGURATOR=${PIN_DUNE_CONFIGURATOR}
         PIN_OCAMLBUILD=${PIN_OCAMLBUILD}
         PIN_OCAMLFIND=${PIN_OCAMLFIND}
         PIN_OCP_INDENT=${PIN_OCP_INDENT}
         PIN_PPX_EXPECT=${PIN_PPX_EXPECT}
         PIN_PTIME=${PIN_PTIME}
         PIN_TIME_NOW=${PIN_TIME_NOW}
+        PIN_WITH_DKML=${PIN_WITH_DKML}
         .
         "
         case "$dkml_host_abi" in
@@ -1278,14 +1280,16 @@ runs:
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes-foreign "${PIN_CTYPES_FOREIGN}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version curly "${PIN_CURLY}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
+            opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune "${PIN_DUNE}"
-            opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-configurator "${PIN_DUNE}"
+            opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-configurator "${PIN_DUNE_CONFIGURATOR}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlbuild "${PIN_OCAMLBUILD}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlfind "${PIN_OCAMLFIND}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocp-indent "${PIN_OCP_INDENT}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_expect "${PIN_PPX_EXPECT}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ptime "${PIN_PTIME}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version time_now "${PIN_TIME_NOW}"
+            opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version with-dkml "${PIN_WITH_DKML}"
             section_end "opam-pins-$do_pins_NAME"
         }
 
@@ -1650,7 +1654,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '4b5e72-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo 'a485fe-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
@@ -1757,13 +1761,16 @@ runs:
         PIN_CTYPES: '0.19.2-windowssupport-r4'
         PIN_CURLY: '0.2.1-windows-env_r2'
         PIN_DIGESTIF: '1.0.1'
-        PIN_DUNE: '2.9.3'
+        PIN_DUNE: '2.9.3+shim.1.0.2~r0'
+        PIN_DUNE_CONFIGURATOR: '2.9.3'
+        PIN_DKML_APPS: '1.0.1'
         PIN_OCAMLBUILD: '0.14.0'
         PIN_OCAMLFIND: '1.9.1'
         PIN_OCP_INDENT: '1.8.2-windowssupport'
         PIN_PPX_EXPECT: 'v0.14.1'
         PIN_PTIME: '0.8.6-msvcsupport'
         PIN_TIME_NOW: 'v0.14.0'
+        PIN_WITH_DKML: '1.0.1'
       run: |
         sh .ci/sd4/run-setup-dkml.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"
 

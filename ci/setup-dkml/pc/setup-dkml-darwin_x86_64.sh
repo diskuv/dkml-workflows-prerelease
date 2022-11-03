@@ -26,13 +26,16 @@ export PIN_CTYPES_FOREIGN='0.19.2-windowssupport-r4'
 export PIN_CTYPES='0.19.2-windowssupport-r4'
 export PIN_CURLY='0.2.1-windows-env_r2'
 export PIN_DIGESTIF='1.0.1'
-export PIN_DUNE='2.9.3'
+export PIN_DUNE='2.9.3+shim.1.0.2~r0'
+export PIN_DUNE_CONFIGURATOR='2.9.3'
+export PIN_DKML_APPS='1.0.1'
 export PIN_OCAMLBUILD='0.14.0'
 export PIN_OCAMLFIND='1.9.1'
 export PIN_OCP_INDENT='1.8.2-windowssupport'
 export PIN_PPX_EXPECT='v0.14.1'
 export PIN_PTIME='0.8.6-msvcsupport'
 export PIN_TIME_NOW='v0.14.0'
+export PIN_WITH_DKML='1.0.1'
 
 usage() {
   echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
@@ -61,12 +64,15 @@ usage() {
   echo "  --PIN_CURLY=<value>. Defaults to: ${PIN_CURLY}" >&2
   echo "  --PIN_DIGESTIF=<value>. Defaults to: ${PIN_DIGESTIF}" >&2
   echo "  --PIN_DUNE=<value>. Defaults to: ${PIN_DUNE}" >&2
+  echo "  --PIN_DUNE_CONFIGURATOR=<value>. Defaults to: ${PIN_DUNE_CONFIGURATOR}" >&2
+  echo "  --PIN_DKML_APPS=<value>. Defaults to: ${PIN_DKML_APPS}" >&2
   echo "  --PIN_OCAMLBUILD=<value>. Defaults to: ${PIN_OCAMLBUILD}" >&2
   echo "  --PIN_OCAMLFIND=<value>. Defaults to: ${PIN_OCAMLFIND}" >&2
   echo "  --PIN_OCP_INDENT=<value>. Defaults to: ${PIN_OCP_INDENT}" >&2
   echo "  --PIN_PPX_EXPECT=<value>. Defaults to: ${PIN_PPX_EXPECT}" >&2
   echo "  --PIN_PTIME=<value>. Defaults to: ${PIN_PTIME}" >&2
   echo "  --PIN_TIME_NOW=<value>. Defaults to: ${PIN_TIME_NOW}" >&2
+  echo "  --PIN_WITH_DKML=<value>. Defaults to: ${PIN_WITH_DKML}" >&2
   exit 2
 }
 fail() {
@@ -115,6 +121,10 @@ while getopts :h-: option; do
     PIN_DIGESTIF=*) PIN_DIGESTIF=${OPTARG#*=} ;;
     PIN_DUNE) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DUNE=*) PIN_DUNE=${OPTARG#*=} ;;
+    PIN_DUNE_CONFIGURATOR) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DUNE_CONFIGURATOR=*) PIN_DUNE_CONFIGURATOR=${OPTARG#*=} ;;
+    PIN_DKML_APPS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_APPS=*) PIN_DKML_APPS=${OPTARG#*=} ;;
     PIN_OCAMLBUILD) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_OCAMLBUILD=*) PIN_OCAMLBUILD=${OPTARG#*=} ;;
     PIN_OCAMLFIND) fail "Option \"$OPTARG\" missing argument" ;;
@@ -127,6 +137,8 @@ while getopts :h-: option; do
     PIN_PTIME=*) PIN_PTIME=${OPTARG#*=} ;;
     PIN_TIME_NOW) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_TIME_NOW=*) PIN_TIME_NOW=${OPTARG#*=} ;;
+    PIN_WITH_DKML) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_WITH_DKML=*) PIN_WITH_DKML=${OPTARG#*=} ;;
     help) usage ;;
     help=*) fail "Option \"${OPTARG%%=*}\" has unexpected argument" ;;
     *) fail "Unknown long option \"${OPTARG%%=*}\"" ;;
@@ -497,14 +509,16 @@ PIN_CTYPES=${PIN_CTYPES}
 PIN_CTYPES_FOREIGN=${PIN_CTYPES_FOREIGN}
 PIN_CURLY=${PIN_CURLY}
 PIN_DIGESTIF=${PIN_DIGESTIF}
+PIN_DKML_APPS=${PIN_DKML_APPS}
 PIN_DUNE=${PIN_DUNE}
-PIN_DUNE=${PIN_DUNE}
+PIN_DUNE_CONFIGURATOR=${PIN_DUNE_CONFIGURATOR}
 PIN_OCAMLBUILD=${PIN_OCAMLBUILD}
 PIN_OCAMLFIND=${PIN_OCAMLFIND}
 PIN_OCP_INDENT=${PIN_OCP_INDENT}
 PIN_PPX_EXPECT=${PIN_PPX_EXPECT}
 PIN_PTIME=${PIN_PTIME}
 PIN_TIME_NOW=${PIN_TIME_NOW}
+PIN_WITH_DKML=${PIN_WITH_DKML}
 .
 "
 case "$dkml_host_abi" in
@@ -1285,14 +1299,16 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes-foreign "${PIN_CTYPES_FOREIGN}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version curly "${PIN_CURLY}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune "${PIN_DUNE}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-configurator "${PIN_DUNE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-configurator "${PIN_DUNE_CONFIGURATOR}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlbuild "${PIN_OCAMLBUILD}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlfind "${PIN_OCAMLFIND}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocp-indent "${PIN_OCP_INDENT}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_expect "${PIN_PPX_EXPECT}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ptime "${PIN_PTIME}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version time_now "${PIN_TIME_NOW}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version with-dkml "${PIN_WITH_DKML}"
     section_end "opam-pins-$do_pins_NAME"
 }
 
