@@ -21,6 +21,13 @@
   (dkml-workflows (and (>= 1.1.0) :build))))
 
 (package
+ (name code-hygiene)
+ (synopsis "Code hygiene")
+ (depends
+  dkml-runtime-distribution
+  (yaml (>= 3.0.0))))
+
+(package
  (name dkml-component-staging-desktop-ci)
  (synopsis "Collection of end-user installers of the CI flavor of desktop executables")
  (description
@@ -67,4 +74,5 @@
   "Tools for building desktop executables")
  (depends
   (re (>= 1.10.0))
+  (yaml (and (>= 3.0.0) :with-test))
   dkml-runtime-distribution))

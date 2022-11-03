@@ -16,8 +16,35 @@ variables:
   SKIP_CHANNEL_RELEASE_HOST_WIN32: 'false'
   SKIP_FLAVOR_FULL: 'false'
 
+# TODO: dkml-runtime-distribution is currently a TRUNK channel set in stone
+# by .opam.template. Once the first version is in Opam, move the pinning
+# into build-test.sh's preinstall() function which differentiates between
+# release and next.
+.release:
+  variables:
+    DKML_CHANNEL: release
+    # All the following are checked by test/gitlab/check_gitlab_ci.exe so that
+    # they match the RELEASED VERSION of dkml-runtime-distribution set in
+    # `dkml-build-desktop.opam`
+    PIN_DUNE: '2.9.3+shim.1.0.2~r0'
+    PIN_OCAMLFIND: '1.9.1'
+    PIN_DKML_APPS: '1.0.1'
+    PIN_WITH_DKML: '1.0.1'
+
+.next:
+  variables:
+    DKML_CHANNEL: next
+    # All the following are checked by test/gitlab/check_gitlab_ci.exe so that
+    # they match the TRUNK of dkml-runtime-distribution
+    PIN_DUNE: '2.9.3+shim.1.0.2~r0'
+    PIN_OCAMLFIND: '1.9.1'
+    PIN_DKML_APPS: '1.0.1'
+    PIN_WITH_DKML: '1.0.1'
+
 linux:ci:release:build:
-  extends: .linux:setup-dkml
+  extends:
+    - .linux:setup-dkml
+    - .release
   stage: build
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
@@ -27,7 +54,9 @@ linux:ci:release:build:
     - sh ci/build-test.sh ci release
 
 linux:ci:next:build:
-  extends: .linux:setup-dkml
+  extends:
+    - .linux:setup-dkml
+    - .next
   stage: build
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
@@ -37,7 +66,9 @@ linux:ci:next:build:
     - sh ci/build-test.sh ci next
 
 linux:full:release:build:
-  extends: .linux:setup-dkml
+  extends:
+    - .linux:setup-dkml
+    - .release
   stage: build
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
@@ -47,7 +78,9 @@ linux:full:release:build:
     - sh ci/build-test.sh full release
 
 linux:full:next:build:
-  extends: .linux:setup-dkml
+  extends:
+    - .linux:setup-dkml
+    - .release
   stage: build
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
@@ -60,7 +93,9 @@ linux:full:next:build:
 # the job will exceed 2 hours (the GitLab shared SaaS runner limit).
 # Using SECONDARY_SWITCH=true is very expensive.
 win32:prepare:
-  extends: .win32:setup-dkml
+  extends:
+    - .win32:setup-dkml
+    - .next
   artifacts: {} # don't need artifacts for the prepare stage
   stage: prepare
   timeout: 2h
@@ -68,7 +103,9 @@ win32:prepare:
     - Write-Host "OCaml compiler caching complete."
 
 win32:ci:release:build:
-  extends: .win32:setup-dkml
+  extends:
+    - .win32:setup-dkml
+    - .release
   rules:
     - if: $SKIP_CHANNEL_RELEASE_HOST_WIN32 != "true" && $SETUP_ONLY != "true"
   stage: build
@@ -85,7 +122,9 @@ win32:ci:release:build:
     - msys64\usr\bin\bash -lc "ci/build-test.sh ci release"
 
 win32:ci:next:build:
-  extends: .win32:setup-dkml
+  extends:
+    - .win32:setup-dkml
+    - .next
   stage: build
   timeout: 2h
   rules:
@@ -94,7 +133,9 @@ win32:ci:next:build:
     - msys64\usr\bin\bash -lc "ci/build-test.sh ci next"
 
 win32:full:release:build:
-  extends: .win32:setup-dkml
+  extends:
+    - .win32:setup-dkml
+    - .release
   rules:
     - if: $SKIP_FLAVOR_FULL != "true" && $SKIP_CHANNEL_RELEASE_HOST_WIN32 != "true" && $SETUP_ONLY != "true"
   stage: build
@@ -103,7 +144,9 @@ win32:full:release:build:
     - msys64\usr\bin\bash -lc "ci/build-test.sh full release"
 
 win32:full:next:build:
-  extends: .win32:setup-dkml
+  extends:
+    - .win32:setup-dkml
+    - .next
   stage: build
   timeout: 2h
   rules:
@@ -112,7 +155,9 @@ win32:full:next:build:
     - msys64\usr\bin\bash -lc "ci/build-test.sh full next"
 
 # macos:ci:release:build:
-#   extends: .macos:setup-dkml
+#   extends:
+#     - .macos:setup-dkml
+#     - .release
 #   stage: build
 #   needs: [] # see comments in win32:ci:release:build
 #   timeout: 2h
@@ -122,7 +167,9 @@ win32:full:next:build:
 #     - sh ci/build-test.sh ci release
 
 # macos:ci:next:build:
-#   extends: .macos:setup-dkml
+#   extends:
+#     - .macos:setup-dkml
+#     - .next
 #   stage: build
 #   needs: [] # see comments in win32:ci:release:build
 #   timeout: 2h
@@ -132,7 +179,9 @@ win32:full:next:build:
 #     - sh ci/build-test.sh ci next
 
 # macos:full:release:build:
-#   extends: .macos:setup-dkml
+#   extends:
+#     - .macos:setup-dkml
+#     - .release
 #   stage: build
 #   needs: [] # see comments in win32:ci:release:build
 #   timeout: 2h
@@ -142,7 +191,9 @@ win32:full:next:build:
 #     - sh ci/build-test.sh full release
 
 # macos:full:next:build:
-#   extends: .macos:setup-dkml
+#   extends:
+#     - .macos:setup-dkml
+#     - .next
 #   stage: build
 #   needs: [] # see comments in win32:ci:release:build
 #   timeout: 2h

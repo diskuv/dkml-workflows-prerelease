@@ -35,12 +35,10 @@ case "$CHANNEL" in
 next)
     preinstall() {
         opamrun repository set-url diskuv git+https://github.com/diskuv/diskuv-opam-repository.git
-        opamrun pin dune            -k version 2.9.3+shim.1.0.2~r0 --switch dkml --no-action --yes
         opamrun pin dkml-runtimelib git+https://github.com/diskuv/dkml-runtime-apps.git#main --switch dkml --no-action --yes
         opamrun pin dkml-apps       git+https://github.com/diskuv/dkml-runtime-apps.git#main --switch dkml --no-action --yes
         opamrun pin with-dkml       git+https://github.com/diskuv/dkml-runtime-apps.git#main --switch dkml --no-action --yes
         opamrun upgrade \
-            dune \
             dkml-runtimelib dkml-apps with-dkml \
             --switch dkml --yes
     }
@@ -88,6 +86,10 @@ opamrun update
 
 # Install dkml-build-desktop.opam into secondary switch.
 #
+# opamrun install ... --with-test:
+#   Testing does code hygiene, especially the checking of .gitlab-ci.yml to make
+#   sure the PIN_* variables are in sync with dkml-runtime-distribution.
+
 #   Weird error on Windows when directly do
 #   `opamrun list --switch two -s | grep -q '^dkml-runtime-distribution$'`:
 #
@@ -101,7 +103,9 @@ if grep -q '^dkml-runtime-distribution$' .ci/two.list; then
     #   bump to latest dkml-runtime-distribution
     opamrun upgrade --switch two dkml-runtime-distribution --yes
 fi
-opamrun install --switch two ./dkml-build-desktop.opam --yes
+#   PERHAPS: Only test (aka. code hygiene) on non-Windows systems. We don't expect [ctypes] dependent libraries
+#   like [yaml] (used to check .gitlab-ci.yml) to work on Windows yet.
+opamrun install --switch two ./dkml-build-desktop.opam --with-test --yes
 
 # Use the `dkml-desktop-gen-global-install` executable to create a part of this shell
 # script

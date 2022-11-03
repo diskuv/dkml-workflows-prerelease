@@ -51,8 +51,11 @@ opam upgrade dkml-workflows && opam exec -- generate-setup-dkml-scaffold && dune
    packages is in the [same directory](https://github.com/diskuv/dkml-runtime-distribution/blob/main/src/none/)
 2. Gitlab CI/CD on macOS, Linux and Windows machines will:
    1. Make a "secondary" switch `two` that contains [dkml-build-desktop.opam](./dkml-build-desktop.opam). That will
-      have install the list of `dkml-runtime-distribution` package specifications.
-   2. Make a primary switch `dkml` that installs all the packages specified by `dkml-runtime-distribution`.
+      have install the list of `dkml-runtime-distribution` package specifications. The tests for dkml-build-desktop
+      will also have checked that the opam pins specified in the GitLab `.gitlab-ci.yml` file, which are used
+      in the next step, match the `dkml-runtime-distribution` package specifications.
+   2. Make a primary switch `dkml` that installs all the packages specified by `dkml-runtime-distribution`, including
+      pinning the packages to their `dkml-runtime-distribution` specified versions.
    3. Go through every specified package and ask Opam for the list of files that were installed by those packages.
    4. Export the Opam installed files as a tarball for consumption by the "release" job.
 
