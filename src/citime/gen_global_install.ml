@@ -51,9 +51,11 @@ let () =
   (* Decide which packages are to be built *)
   let pkgs =
     let open Dkml_runtime_distribution in
-    (* Which distribution? Ci or Full? *)
+    (* Which distribution? Ci or Ci+Full? *)
     let pkgs =
-      match distro_type with Ci -> Config.ci_pkgs | Full -> Config.full_pkgs
+      match distro_type with
+      | Ci -> Config.ci_pkgs
+      | Full -> Config.ci_pkgs @ Config.full_pkgs
     in
     (* Only [## global-install] directives *)
     List.filter_map
