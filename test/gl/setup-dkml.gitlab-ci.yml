@@ -491,6 +491,7 @@ variables:
       OCAML_COMPILER=${OCAML_COMPILER:-}
       CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
       SECONDARY_SWITCH=${SECONDARY_SWITCH:-}
+      MANYLINUX=${MANYLINUX:-}
       VERBOSE=${VERBOSE:-}
       .
       -------------------
@@ -2087,6 +2088,7 @@ variables:
       OCAML_COMPILER=${OCAML_COMPILER:-}
       CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
       SECONDARY_SWITCH=${SECONDARY_SWITCH:-}
+      MANYLINUX=${MANYLINUX:-}
       VERBOSE=${VERBOSE:-}
       .
       -------------------
@@ -3227,6 +3229,9 @@ variables:
   services:
     - docker:20.10.16-dind
   variables:
+    # Whether to use the ManyLinux Docker container.
+    # Yes; we have Docker-in-Docker to support exactly this.
+    MANYLINUX: "true"
     # When you use the dind service, you must instruct Docker to talk with
     # the daemon started inside of the service. The daemon is available
     # with a network connection instead of the default
@@ -3560,6 +3565,7 @@ variables:
       OCAML_COMPILER=${OCAML_COMPILER:-}
       CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
       SECONDARY_SWITCH=${SECONDARY_SWITCH:-}
+      MANYLINUX=${MANYLINUX:-}
       VERBOSE=${VERBOSE:-}
       .
       -------------------

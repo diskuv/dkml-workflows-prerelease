@@ -5,8 +5,6 @@ name: pre-dkml
 author: Diskuv, Inc.
 description: Setup before building OCaml native executables for Linux
 
-# WARNING: The inputs.*.default seem to do nothing!
-# 2022-10-21: Unclear if warning still applies after move from a GitHub child workflow to a GitHub composite action
 inputs:
   FDOPEN_OPAMEXE_BOOTSTRAP:
     description: "Use opam.exe from fdopen on Windows. Typically only used when bootstrapping Opam for the first time. May be needed to solve '\"create_process\" failed on sleep: Bad file descriptor' which may need https://github.com/ocaml/opam/commit/417b97d8cfada35682a0f4107eb2e4f9e24fba91"
@@ -39,6 +37,10 @@ inputs:
     description: "Turn on secondary 'two' switch"
     required: false
     default: 'false'
+  MANYLINUX:
+    description: "Use a ManyLinux dockcross Docker container to generate relatively portable Linux executables without static linking. Docker is required"
+    required: false
+    default: 'true'
 
 runs:
   using: "composite"
@@ -417,6 +419,7 @@ runs:
         OCAML_COMPILER=${OCAML_COMPILER:-}
         CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
         SECONDARY_SWITCH=${SECONDARY_SWITCH:-}
+        MANYLINUX=${MANYLINUX:-}
         VERBOSE=${VERBOSE:-}
         .
         -------------------
@@ -1495,7 +1498,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo 'fafe4f-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo 'f0ad1c-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
@@ -1590,6 +1593,7 @@ runs:
         OCAML_COMPILER:                   "${{ inputs.OCAML_COMPILER }}"
         SECONDARY_SWITCH:                 "${{ inputs.SECONDARY_SWITCH }}"
         VERBOSE:                          "${{ inputs.VERBOSE }}"
+        MANYLINUX:                        "${{ inputs.MANYLINUX }}"
 
         # autogen from global_env_vars.
         DEFAULT_DKML_COMPILER: '4.12.1-v1.0.2'
