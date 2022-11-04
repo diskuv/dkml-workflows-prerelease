@@ -1067,7 +1067,15 @@ EOF
         cat >.ci/sd4/opam-with-env <<EOF
 #!/bin/sh
 set -euf
-exec bash "\$${setup_WORKSPACE_VARNAME}"/.ci/sd4/dockcross --args "-v \$${setup_WORKSPACE_VARNAME}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/opam-with-env-real "\$@"
+
+# Optionally enable terminal if and only if '-it' option given
+termargs=
+if [ "\$#" -ge 1 ] && [ "\$1" = "-it" ]; then
+    shift
+    termargs=-it
+fi
+
+exec bash "\$${setup_WORKSPACE_VARNAME}"/.ci/sd4/dockcross --args "\${termargs} -v \$${setup_WORKSPACE_VARNAME}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/opam-with-env-real "\$@"
 EOF
         chmod +x .ci/sd4/opam-with-env
 
@@ -1738,4 +1746,5 @@ Now you can use 'opamrun' to do opam commands like:
 
   msys64\usr\bin\bash -lc 'PATH="`$PWD/.ci/sd4/opamrun:`$PATH"; opamrun install XYZ.opam'
   msys64\usr\bin\bash -lc 'PATH="`$PWD/.ci/sd4/opamrun:`$PATH"; opamrun exec -- sh ci/build-test.sh'
+  msys64\usr\bin\bash -lc 'PATH="`$PWD/.ci/sd4/opamrun:`$PATH"; opamrun -it exec -- bash'
 "@

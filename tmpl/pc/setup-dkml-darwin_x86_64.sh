@@ -117,4 +117,5 @@ Now you can use 'opamrun' to do opam commands like:
 
   opamrun install XYZ.opam
   opamrun exec -- sh ci/build-test.sh
+  opamrun -it exec -- bash
 "
