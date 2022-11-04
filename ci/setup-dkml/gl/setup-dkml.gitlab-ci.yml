@@ -43,7 +43,7 @@ variables:
 
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "1_${CACHE_PREFIX}-9d51db03ec-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
+    - key: "1_${CACHE_PREFIX}-f66ac4844e-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
@@ -1083,7 +1083,7 @@ variables:
 
       HERE=\$(dirname "\$0")
       HERE=\$(cd "\$HERE" && pwd)
-      PROJECT_DIR=\$(cd "\$HERE"/../.. && pwd)
+      PROJECT_DIR=\$(cd "\$HERE"/../../.. && pwd)
 
       # Add MSVC compiler environment if available
       if [ -e "\${PROJECT_DIR}/.ci/sd4/msvcenv" ]; then
@@ -2735,7 +2735,7 @@ variables:
 
       HERE=\$(dirname "\$0")
       HERE=\$(cd "\$HERE" && pwd)
-      PROJECT_DIR=\$(cd "\$HERE"/../.. && pwd)
+      PROJECT_DIR=\$(cd "\$HERE"/../../.. && pwd)
 
       # Add MSVC compiler environment if available
       if [ -e "\${PROJECT_DIR}/.ci/sd4/msvcenv" ]; then
@@ -4267,7 +4267,7 @@ variables:
 
       HERE=\$(dirname "\$0")
       HERE=\$(cd "\$HERE" && pwd)
-      PROJECT_DIR=\$(cd "\$HERE"/../.. && pwd)
+      PROJECT_DIR=\$(cd "\$HERE"/../../.. && pwd)
 
       # Add MSVC compiler environment if available
       if [ -e "\${PROJECT_DIR}/.ci/sd4/msvcenv" ]; then
