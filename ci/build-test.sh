@@ -103,9 +103,16 @@ if grep -q '^dkml-runtime-distribution$' .ci/two.list; then
     #   bump to latest dkml-runtime-distribution
     opamrun upgrade --switch two dkml-runtime-distribution --yes
 fi
-#   PERHAPS: Only test (aka. code hygiene) on non-Windows systems. We don't expect [ctypes] dependent libraries
-#   like [yaml] (used to check .gitlab-ci.yml) to work on Windows yet.
-opamrun install --switch two ./dkml-build-desktop.opam --with-test --yes
+#   Only test (aka. code hygiene) on non-Windows systems. We don't expect [ctypes] dependent libraries
+#   like [yaml] (used to check .gitlab-ci.yml) to work on Windows yet. But it would be good
+#   to get rid of this Windows/non-Windows check!
+case "$dkml_host_abi" in
+windows_*)
+    opamrun install --switch two ./dkml-build-desktop.opam --yes
+    ;;
+*)
+    opamrun install --switch two ./dkml-build-desktop.opam --with-test --yes
+esac
 
 # Use the `dkml-desktop-gen-global-install` executable to create a part of this shell
 # script
