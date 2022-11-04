@@ -11,8 +11,13 @@ available in the end-user installation directory.
 You can test on your desktop with a session as follows:
 
 ```console
-# For macOS/Intel (darwin_x86_64). Other platforms are similar.
+# For macOS/Intel (darwin_x86_64)
 $ sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh --SECONDARY_SWITCH=true
+# For Linux/Intel (linux_x86_64). You will need Docker
+#   - Running this from macOS with Docker will also work
+#   - Running this using with-dkml.exe on Windows with Docker will also work
+#     (the normal Linux containers host, not the Windows containers host)
+$ sh ci/setup-dkml/pc/setup-dkml-linux_x86_64.sh --SECONDARY_SWITCH=true
 ...
 Finished setup.
 
