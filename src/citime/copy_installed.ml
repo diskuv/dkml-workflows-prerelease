@@ -63,20 +63,25 @@ let copy_path_if_file ~opam_switch_prefix ~output_dir abspath () =
             (Format.asprintf "The path %a could not be read: %a" Fpath.pp
                abspath Rresult.R.pp_msg msg))
 
-let copy ~opam_switch_prefix ~output_dir =
-  try
-    while true do
-      let abspath = input_line stdin in
-      match String.trim abspath with
-      | "" -> ()
-      | abspath' ->
-          copy_path_if_file ~opam_switch_prefix ~output_dir abspath' ()
-    done
-  with End_of_file -> ()
+let copy ~input_listing ~opam_switch_prefix ~output_dir =
+  let ic = open_in (Fpath.to_string input_listing) in
+  Fun.protect
+    ~finally:(fun () -> close_in ic)
+    (fun () ->
+      try
+        while true do
+          let abspath = input_line ic in
+          match String.trim abspath with
+          | "" -> ()
+          | abspath' ->
+              copy_path_if_file ~opam_switch_prefix ~output_dir abspath' ()
+        done
+      with End_of_file -> ())
 
 let () =
   (* parse *)
   let opam_switch_prefix = ref "" in
+  let input_listing = ref "" in
   let output_dir = ref "" in
   let anon _s =
     failwith
@@ -84,6 +89,9 @@ let () =
   in
   Arg.parse
     [
+      ( "--input-listing",
+        Set_string input_listing,
+        "The response from an `opam show --list-files` command" );
       ( "--opam-switch-prefix",
         Set_string opam_switch_prefix,
         "The opam switch prefix. Typically it is available in the \
@@ -92,9 +100,11 @@ let () =
       ("--output-dir", Set_string output_dir, "The output directory");
     ]
     anon "dkml-desktop-copy-installed";
+  if String.equal !input_listing "" then
+    badarg "Missing --input-listing INPUT_LISTING";
   if String.equal !opam_switch_prefix "" then
     badarg "Missing --opam-switch-prefix OPAM_SWITCH_PREFIX";
   if String.equal !output_dir "" then badarg "Missing --output-dir OUTPUT_DIR";
-  copy
+  copy ~input_listing:(Fpath.v !input_listing)
     ~opam_switch_prefix:(Fpath.v !opam_switch_prefix)
     ~output_dir:(Fpath.v !output_dir)
