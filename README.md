@@ -26,21 +26,22 @@ To continue your testing, run:
   export abi_pattern='macos-darwin_all'
   export opam_root='/Volumes/Source/dkml-component-desktop/.ci/o'
   export exe_ext=''
-  export PC_PROJECT_DIR='/Volumes/Source/dkml-component-desktop'
-  export PATH="/Volumes/Source/dkml-component-desktop/.ci/sd4/opamrun:$PATH"
 
-# Copy and adapt from above
+Now you can use 'opamrun' to do opam commands like:
+
+  opamrun install XYZ.opam
+  sh ci/build-test.sh
+
+# Copy and adapt from above (the text above will be different for each of: Linux, macOS and Windows)
 $ export dkml_host_abi='darwin_x86_64'
 $ export abi_pattern='macos-darwin_all'
 $ export opam_root="$PWD/.ci/o"
 $ export exe_ext=''
-$ export PC_PROJECT_DIR="$PWD"
-$ export PATH="$PWD/.ci/sd4/opamrun:$PATH"
 
 # Run the build
 #   The first argument is: 'ci' or 'full'
 #   The second argument is: 'release' or 'next'
-$ opamrun exec -- sh ci/build-test.sh ci next
+$ sh ci/build-test.sh ci next
 ```
 
 ## Upgrading CI
