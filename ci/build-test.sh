@@ -112,10 +112,6 @@ opamrun install --switch two ./dkml-build-desktop.opam --with-test --yes
 install -d .ci
 opamrun exec --switch two -- dkml-desktop-gen-global-install "$FLAVOR" >.ci/self-invoker.source.sh
 
-# Use `dkml-desktop-dkml-version` to get the DKML version
-opamrun exec --switch two -- dkml-desktop-dkml-version >.ci/dkml-version.txt
-DKML_VERSION=$(awk 'NR==1{print $1}' .ci/dkml-version.txt)
-
 # ----------- Primary Switch ------------
 
 # Define the shell functions that will be called by .ci/self-invoker.source.sh
