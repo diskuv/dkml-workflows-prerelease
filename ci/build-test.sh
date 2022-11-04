@@ -118,33 +118,6 @@ DKML_VERSION=$(awk 'NR==1{print $1}' .ci/dkml-version.txt)
 
 # ----------- Primary Switch ------------
 
-# Because dune.X.Y.Z+shim requires DKML installed (after all, it is just
-# a with-dkml.exe shim), we need either dkmlvars-v2.sexp or DKML environment
-# variables. Confer: Dkml_runtimelib.Dkml_context.get_dkmlversion
-#
-# grep matches either:
-#   [... [DiskuvOCamlVersion = "1.0.1"] ...]
-#   DiskuvOCamlVersion = "1.0.1"
-opamrun option --switch dkml setenv > .ci/setenv.txt
-if ! grep -q '\(^|\[\)DiskuvOCamlVarsVersion ' .ci/setenv.txt; then
-    opamrun option --switch dkml setenv+='DiskuvOCamlVarsVersion = "2"'
-fi
-if ! grep -q '\(^|\[\)DiskuvOCamlVersion ' .ci/setenv.txt; then
-    opamrun option --switch dkml setenv+="DiskuvOCamlVersion = \"$DKML_VERSION\""
-fi
-case "${dkml_host_abi}" in
-windows_*)
-    if ! grep -q '\(^|\[\)DiskuvOCamlMSYS2Dir ' .ci/setenv.txt; then
-        if [ -x /usr/bin/cygpath ]; then
-            MSYS2_DIR_NATIVE=$(/usr/bin/cygpath -aw "$PROJECT_DIR/msys64")
-        else
-            MSYS2_DIR_NATIVE="$PROJECT_DIR"
-        fi
-        MSYS2_DIR_NATIVE_ESCAPED=$(printf "%s" "$MSYS2_DIR_NATIVE" | sed 's/\\/\\\\/g')
-        opamrun option --switch dkml setenv+="DiskuvOCamlMSYS2Dir = \"$MSYS2_DIR_NATIVE_ESCAPED\""
-    fi
-esac
-
 # Define the shell functions that will be called by .ci/self-invoker.source.sh
 THE_SWITCH_PREFIX=$(opamrun var prefix --switch dkml)
 start_pkg_vers() {
