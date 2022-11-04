@@ -275,10 +275,10 @@ fixup_opam_root() {
     # shellcheck disable=SC2034
     original_opam_root_cacheable=$opam_root_cacheable
     if [ -x /usr/bin/cygpath ]; then
-        opam_root=$(/usr/bin/cygpath -am "$opam_root")
-        opam_root_cacheable=$(/usr/bin/cygpath -am "$opam_root_cacheable")
-        unix_opam_root=$(/usr/bin/cygpath -au "$opam_root")
-        unix_opam_root_cacheable=$(/usr/bin/cygpath -au "$opam_root_cacheable")
+        opam_root=$(/usr/bin/cygpath -m "$opam_root")
+        opam_root_cacheable=$(/usr/bin/cygpath -m "$opam_root_cacheable")
+        unix_opam_root=$(/usr/bin/cygpath -u "$opam_root")
+        unix_opam_root_cacheable=$(/usr/bin/cygpath -u "$opam_root_cacheable")
     else
         # shellcheck disable=SC2034
         unix_opam_root=$opam_root
@@ -894,8 +894,15 @@ EOF
 
     case "${opam_root}" in
     /* | ?:*) # /a/b/c or C:\Windows
+        validate_supports_docker() {
+            echo "Docker only supported with relative paths for the opam root, not: ${opam_root}" >&2
+            exit 3
+        }
         ;;
     *) # relative path
+        validate_supports_docker() {
+            true
+        }
         cat >.ci/sd4/opam-in-docker <<EOF
 #!/bin/sh
 set -euf
@@ -979,6 +986,8 @@ exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross --args "\${termargs} -v \${PROJECT
 EOF
         chmod +x .ci/sd4/opam-with-env
 
+        validate_supports_docker
+
         # Bundle for consumers of setup-dkml.yml
         echo '__ opam-in-docker __' >&2
         cat .ci/sd4/opam-in-docker >&2
@@ -993,6 +1002,8 @@ set -euf
 exec ${docker_runner:-} /work/.ci/sd4/deescalate /work/.ci/sd4/opam-in-docker "\$@"
 EOF
         chmod +x .ci/sd4/opam-with-env
+
+        validate_supports_docker
 
         # Bundle for consumers of setup-dkml.yml
         echo '__ opam-in-docker __' >&2
