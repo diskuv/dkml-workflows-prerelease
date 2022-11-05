@@ -151,10 +151,7 @@ post_pkg() {
     # Copy using `dkml-desktop-copy-installed` all the installed files to the
     # archive directory
     opamrun show --switch dkml --list-files "$post_pkg_ver_PKG" >.ci/opamshow.txt
-    opamrun exec --switch two -- dkml-desktop-copy-installed \
-        --input-listing .ci/opamshow.txt \
-        --opam-switch-prefix "$THE_SWITCH_PREFIX" \
-        --output-dir "$STAGE_RELDIR"
+    opamrun exec --switch two -- dkml-desktop-copy-installed --opam-switch-prefix "$THE_SWITCH_PREFIX" --output-dir "$STAGE_RELDIR" <.ci/opamshow.txt
 }
 
 # Call the shell functions (which will build the distribution packages)
@@ -164,7 +161,7 @@ set -x
 set +x
 
 # Tar ball
-install -d "dist/$CHANNEL/$dkml_host_abi"
+install -d "dist/$CHANNEL/$FLAVOR/$dkml_host_abi"
 #   TODO: Could use cross-compilation ... simplify cross-compilation first! Confer
 #         diskuvbox. Then bundle the _opam/darwin_arm64-sysroot/ instead of _opam/.
-tar cvCfz "$STAGE_RELDIR" "dist/$CHANNEL/$dkml_host_abi.tar.gz" .
+tar cvCfz "$STAGE_RELDIR" "dist/$CHANNEL/$FLAVOR/$dkml_host_abi.tar.gz" .

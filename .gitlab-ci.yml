@@ -225,10 +225,13 @@ release:
     - CI_PROJECT_PATH_URLENCODED=$(printf %s "${CI_PROJECT_PATH}" | jq -s -R -r @uri) # Must be url-encoded per https://docs.gitlab.com/ee/user/packages/generic_packages/
     - |
       GLAB_CURL_HEADER="JOB-TOKEN: ${CI_JOB_TOKEN}"
-      find _release -mindepth 1 -maxdepth 1 -type f | while read -r tarball; do
-        channel=$(basename "${tarball%.tar.gz}")
+      find _release -mindepth 1 -maxdepth 1 -type d | while read -r channel; do
+        channel=$(basename "${channel}")
         PACKAGE_REGISTRY_URL="${CI_API_V4_URL}/projects/${CI_PROJECT_PATH_URLENCODED}/packages/generic/${channel}/${PKGTAG}"
         echo "${PACKAGE_REGISTRY_URL}"
-        curl --fail --header "${GLAB_CURL_HEADER}" --upload-file "_release/${channel}.tar.gz" "${PACKAGE_REGISTRY_URL}/staging.tar.gz"
+        find "_release/${channel}" -mindepth 1 -maxdepth 1 -type f | while read -r tarball; do
+          flavor=$(basename "${tarball%.tar.gz}")
+          curl --fail --header "${GLAB_CURL_HEADER}" --upload-file "_release/${channel}/${flavor}.tar.gz" "${PACKAGE_REGISTRY_URL}/${flavor}.tar.gz"
+        done
       done
 
