@@ -14,6 +14,7 @@ bug-reports:
 depends: [
   "dune" {>= "2.9"}
   "dkml-install" {>= "0.2.0"}
+  "diskuvbox" {>= "0.1.0"}
   "odoc" {with-doc}
 ]
 dev-repo: "git+https://github.com/diskuv/dkml-component-enduser-desktop.git"

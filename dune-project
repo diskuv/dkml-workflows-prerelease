@@ -33,7 +33,8 @@
  (description
   "`desktop` provides desktop executables for all DKML installable platforms")
  (depends
-  (dkml-install (>= 0.2.0))))
+  (dkml-install (>= 0.2.0))
+  (diskuvbox (>= 0.1.0))))
 
 (package
  (name dkml-component-staging-desktop-full)
@@ -41,7 +42,8 @@
  (description
   "`desktop` provides desktop executables for all DKML installable platforms")
  (depends
-  (dkml-install (>= 0.2.0))))
+  (dkml-install (>= 0.2.0))
+  (diskuvbox (>= 0.1.0))))
 
 (package
  (name dkml-component-offline-desktop-ci)
