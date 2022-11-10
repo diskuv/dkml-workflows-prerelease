@@ -22,7 +22,7 @@ build: [
   # Unpack binary staging
 
   ["install" "-d" "dl/staging"]
-  ["tar" "xCfz" "dl/staging" "dl/staging.tar.gz" "--strip-components=1"]
+  ["tar" "xCfz" "dl/staging" "dl/staging.tar.gz" "--no-same-owner" "--strip-components=1"]
 
   # Build dkml component
 
