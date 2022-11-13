@@ -1,7 +1,7 @@
 (library
  (name install)
  (modules install)
- (libraries bos diskuvbox))
+ (libraries bos cmdliner diskuvbox dkml-install.api fmt.cli fmt.tty logs.cli logs.fmt))
 
 (executable
  (package dkml-component-offline-desktop-ci)
