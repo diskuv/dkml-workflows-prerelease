@@ -34,6 +34,8 @@ variables:
 .next:
   variables:
     DKML_CHANNEL: next
+    # Use the latest diskuv opam repository
+    DISKUV_OPAM_REPOSITORY: main
     # All the following are checked by test/gitlab/check_gitlab_ci.exe so that
     # they match the TRUNK of dkml-runtime-distribution
     PIN_DUNE: '2.9.3+shim.1.0.2~r0'
