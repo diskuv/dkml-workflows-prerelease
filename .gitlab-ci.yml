@@ -38,8 +38,8 @@ variables:
     # they match the TRUNK of dkml-runtime-distribution
     PIN_DUNE: '2.9.3+shim.1.0.2~r0'
     PIN_OCAMLFIND: '1.9.1'
-    PIN_DKML_APPS: '1.0.1'
-    PIN_WITH_DKML: '1.0.1'
+    PIN_DKML_APPS: '1.0.2~prerel7'
+    PIN_WITH_DKML: '1.0.2~prerel7'
 
 linux:ci:release:build:
   extends:
