@@ -82,7 +82,7 @@ linux:full:release:build:
 linux:full:next:build:
   extends:
     - .linux:setup-dkml
-    - .release
+    - .next
   stage: build
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
