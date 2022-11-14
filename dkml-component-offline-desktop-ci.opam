@@ -7,9 +7,8 @@ description:
 maintainer: ["opensource+diskuv-ocaml@support.diskuv.com"]
 authors: ["Diskuv, Inc. <opensource+diskuv-ocaml@support.diskuv.com>"]
 license: "Apache-2.0"
-homepage: "https://github.com/diskuv/dkml-component-enduser-desktop"
-bug-reports:
-  "https://github.com/diskuv/dkml-component-enduser-desktop/issues"
+homepage: "https://github.com/diskuv/dkml-component-desktop"
+bug-reports: "https://github.com/diskuv/dkml-component-desktop/issues"
 depends: [
   "dune" {>= "2.9"}
   "dkml-component-staging-desktop-ci" {= version}
@@ -35,4 +34,4 @@ build: [
   ]
   ["dune" "install" "-p" name "--create-install-files" name]
 ]
-dev-repo: "git+https://github.com/diskuv/dkml-component-enduser-desktop.git"
+dev-repo: "git+https://github.com/diskuv/dkml-component-desktop.git"

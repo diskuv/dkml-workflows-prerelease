@@ -6,7 +6,7 @@
 (generate_opam_files true)
 
 (source
- (github diskuv/dkml-component-enduser-desktop))
+ (github diskuv/dkml-component-desktop))
 (license Apache-2.0)
 (authors "Diskuv, Inc. <opensource+diskuv-ocaml@support.diskuv.com>")
 (maintainers "opensource+diskuv-ocaml@support.diskuv.com")
