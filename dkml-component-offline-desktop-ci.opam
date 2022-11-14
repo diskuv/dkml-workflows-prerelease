@@ -11,6 +11,7 @@ homepage: "https://github.com/diskuv/dkml-component-desktop"
 bug-reports: "https://github.com/diskuv/dkml-component-desktop/issues"
 depends: [
   "dune" {>= "2.9"}
+  "dkml-component-staging-withdkml" {= version}
   "dkml-component-staging-desktop-ci" {= version}
   "dkml-component-common-desktop" {= version}
   "dkml-component-staging-ocamlrun" {>= "4.12.1~" & < "4.12.2~"}

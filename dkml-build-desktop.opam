@@ -33,8 +33,10 @@ build: [
 ]
 dev-repo: "git+https://github.com/diskuv/dkml-component-desktop.git"
 pin-depends: [
+  # Default for channel=release. After first submission to opam of
+  # dkml-runtime-distribution this pin can be removed.
   [
-    "dkml-runtime-distribution.1.0.1"
-    "git+https://github.com/diskuv/dkml-runtime-distribution.git#v1.0.1"
+    "dkml-runtime-distribution.1.0.2~prerel7"
+    "git+https://github.com/diskuv/dkml-runtime-distribution.git#1.0.2-prerel7_r2"
   ]
 ]

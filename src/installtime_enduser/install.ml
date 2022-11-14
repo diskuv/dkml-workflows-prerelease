@@ -1,12 +1,15 @@
-let install (_ : Dkml_install_api.Log_config.t) use_dkml_fswatch source_dir
-    target_dir =
-  (match Diskuvbox.copy_dir ~src:source_dir ~dst:target_dir () with
+let install (_ : Dkml_install_api.Log_config.t) use_dkml_fswatch
+    withdkml_source_dir desktop_source_dir target_dir =
+  (match Diskuvbox.copy_dir ~src:withdkml_source_dir ~dst:target_dir () with
+  | Ok () -> ()
+  | Error msg -> failwith msg);
+  (match Diskuvbox.copy_dir ~src:desktop_source_dir ~dst:target_dir () with
   | Ok () -> ()
   | Error msg -> failwith msg);
   if use_dkml_fswatch then
     match
       Diskuvbox.copy_file
-        ~src:Fpath.(source_dir / "bin" / "dkml-fswatch.exe")
+        ~src:Fpath.(desktop_source_dir / "bin" / "dkml-fswatch.exe")
         ~dst:Fpath.(target_dir / "tools" / "fswatch" / "fswatch.exe")
         ()
     with
@@ -20,10 +23,21 @@ let use_dkml_fswatch_t =
   in
   Cmdliner.Arg.(value & flag & info ~doc [ "use-dkml-fswatch" ])
 
-let source_dir_t =
+let withdkml_source_dir_t =
   let x =
     Cmdliner.Arg.(
-      required & opt (some dir) None & info ~doc:"Source path" [ "source-dir" ])
+      required
+      & opt (some dir) None
+      & info ~doc:"with-dkml source path" [ "withdkml-source-dir" ])
+  in
+  Cmdliner.Term.(const Fpath.v $ x)
+
+let desktop_source_dir_t =
+  let x =
+    Cmdliner.Arg.(
+      required
+      & opt (some dir) None
+      & info ~doc:"Desktop source path" [ "desktop-source-dir" ])
   in
   Cmdliner.Term.(const Fpath.v $ x)
 
@@ -50,8 +64,8 @@ let setup_log_t =
 let cli () =
   let t =
     Cmdliner.Term.
-      ( const install $ setup_log_t $ use_dkml_fswatch_t $ source_dir_t
-        $ target_dir_t,
+      ( const install $ setup_log_t $ use_dkml_fswatch_t $ withdkml_source_dir_t
+        $ desktop_source_dir_t $ target_dir_t,
         info "opam-install.bc" ~doc:"Install opam" )
   in
   Cmdliner.Term.(exit @@ eval t)

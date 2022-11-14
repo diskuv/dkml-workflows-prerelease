@@ -5,6 +5,12 @@
  (libraries dkml-install.api))
 
 (library
+ (public_name dkml-component-staging-withdkml)
+ (name dkml_component_staging_withdkml)
+ (modules dkml_component_staging_withdkml)
+ (libraries dkml-install.register))
+
+(library
  (public_name dkml-component-staging-desktop-ci)
  (name dkml_component_staging_desktop_ci)
  (modules dkml_component_staging_desktop_ci)

@@ -20,7 +20,9 @@ let execute_install ctx =
            (ctx.Context.path_eval
               "%{offline-desktop-full:share-generic}%/install.bc"))
       %% Log_config.to_args ctx.Context.log_config
-      %% other_args % "--source-dir"
+      %% other_args % "--withdkml-source-dir"
+      % Fpath.to_string (ctx.Context.path_eval "%{staging-withdkml:share-abi}%")
+      % "--desktop-source-dir"
       % Fpath.to_string
           (ctx.Context.path_eval "%{staging-desktop-full:share-abi}%")
       % "--target-dir"

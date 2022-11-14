@@ -14,6 +14,7 @@ variables:
   # and not the release. Good for populating the cache.
   SETUP_ONLY: 'false'
   SKIP_CHANNEL_RELEASE_HOST_WIN32: 'false'
+  SKIP_CHANNEL_RELEASE: 'false'
   SKIP_FLAVOR_FULL: 'false'
 
 # TODO: dkml-runtime-distribution is currently a TRUNK channel set in stone
@@ -51,7 +52,7 @@ linux:ci:release:build:
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
   rules:
-    - if: $SETUP_ONLY != "true"
+    - if: $SKIP_CHANNEL_RELEASE != "true" && $SETUP_ONLY != "true"
   script:
     - sh ci/build-test.sh ci release
 
@@ -75,7 +76,7 @@ linux:full:release:build:
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
   rules:
-    - if: $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
+    - if: $SKIP_CHANNEL_RELEASE != "true" && $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
   script:
     - sh ci/build-test.sh full release
 
@@ -109,7 +110,7 @@ win32:ci:release:build:
     - .win32:setup-dkml
     - .release
   rules:
-    - if: $SKIP_CHANNEL_RELEASE_HOST_WIN32 != "true" && $SETUP_ONLY != "true"
+    - if: $SKIP_CHANNEL_RELEASE != "true" && $SKIP_CHANNEL_RELEASE_HOST_WIN32 != "true" && $SETUP_ONLY != "true"
   stage: build
   # For reasons unknown (perhaps 'needs' has bugs with parallel matrix) the
   # following does not work. So instead we can
@@ -139,7 +140,7 @@ win32:full:release:build:
     - .win32:setup-dkml
     - .release
   rules:
-    - if: $SKIP_FLAVOR_FULL != "true" && $SKIP_CHANNEL_RELEASE_HOST_WIN32 != "true" && $SETUP_ONLY != "true"
+    - if: $SKIP_CHANNEL_RELEASE != "true" && $SKIP_FLAVOR_FULL != "true" && $SKIP_CHANNEL_RELEASE_HOST_WIN32 != "true" && $SETUP_ONLY != "true"
   stage: build
   timeout: 2h
   script:
@@ -164,7 +165,7 @@ win32:full:next:build:
 #   needs: [] # see comments in win32:ci:release:build
 #   timeout: 2h
 #   rules:
-#     - if: $SETUP_ONLY != "true"
+#     - if: $SKIP_CHANNEL_RELEASE != "true" && $SETUP_ONLY != "true"
 #   script:
 #     - sh ci/build-test.sh ci release
 
@@ -188,7 +189,7 @@ win32:full:next:build:
 #   needs: [] # see comments in win32:ci:release:build
 #   timeout: 2h
 #   rules:
-#     - if: $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
+#     - if: $SKIP_CHANNEL_RELEASE != "true" && $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
 #   script:
 #     - sh ci/build-test.sh full release
 

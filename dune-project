@@ -28,6 +28,14 @@
   (yaml (>= 3.0.0))))
 
 (package
+ (name dkml-component-staging-withdkml)
+ (synopsis "Places with-dkml binary into the DKML staging-files")
+ (description "Places with-dkml binary into the DKML staging-files")
+ (depends
+  (dkml-install (>= 0.2.0))
+  (diskuvbox (>= 0.1.0))))
+
+(package
  (name dkml-component-staging-desktop-ci)
  (synopsis "Collection of end-user installers of the CI flavor of desktop executables")
  (description
@@ -51,6 +59,7 @@
  (description
   "`desktop` provides desktop executables for all DKML installable platforms")
  (depends
+  (dkml-component-staging-withdkml (= :version))
   (dkml-component-staging-desktop-ci (= :version))
   (dkml-component-common-desktop (= :version))
   (dkml-component-staging-ocamlrun (and (>= 4.12.1~) (< 4.12.2~)))
@@ -63,6 +72,7 @@
  (description
   "`desktop` provides desktop executables for all DKML installable platforms")
  (depends
+  (dkml-component-staging-withdkml (= :version))
   (dkml-component-staging-desktop-full (= :version))
   (dkml-component-common-desktop (= :version))
   (dkml-component-staging-ocamlrun (and (>= 4.12.1~) (< 4.12.2~)))
