@@ -68,6 +68,7 @@ export PATH="$PROJECT_DIR/.ci/sd4/opamrun:$PATH"
 
 # Where to stage files before we make a tarball archive
 STAGE_RELDIR=.ci/stage-build
+rm -rf "$STAGE_RELDIR"
 install -d "$STAGE_RELDIR"
 
 # Initial Diagnostics (optional but useful)
@@ -90,6 +91,10 @@ opamrun update
 #   Testing does code hygiene, especially the checking of .gitlab-ci.yml to make
 #   sure the PIN_* variables are in sync with dkml-runtime-distribution.
 
+#   Use latest dkml-runtime-distribution when channel=next
+if [ "$CHANNEL" = next ]; then
+    opamrun pin dkml-runtime-distribution git+https://github.com/diskuv/dkml-runtime-distribution.git --switch dkml --no-action --yes
+fi
 #   Weird error on Windows when directly do
 #   `opamrun list --switch two -s | grep -q '^dkml-runtime-distribution$'`:
 #
@@ -98,6 +103,7 @@ opamrun update
 #       Called from OpamConsole.errmsg in file "src/core/opamConsole.ml" (inlined), line 605, characters 17-42
 #       Called from OpamCliMain.main_catch_all in file "src/client/opamCliMain.ml", line 365, characters 6-94
 #       Called from Dune__exe__OpamMain in file "src/client/opamMain.ml", line 12, characters 9-28
+#   So split the opamrun and grep commands.
 opamrun list --switch two -s >.ci/two.list
 if grep -q '^dkml-runtime-distribution$' .ci/two.list; then
     #   bump to latest dkml-runtime-distribution

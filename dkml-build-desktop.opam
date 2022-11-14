@@ -34,7 +34,7 @@ build: [
 dev-repo: "git+https://github.com/diskuv/dkml-component-desktop.git"
 pin-depends: [
   [
-    "dkml-runtime-distribution.~dev"
-    "git+https://github.com/diskuv/dkml-runtime-distribution.git"
+    "dkml-runtime-distribution.1.0.1"
+    "git+https://github.com/diskuv/dkml-runtime-distribution.git#v1.0.1"
   ]
 ]
