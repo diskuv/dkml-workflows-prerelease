@@ -9,6 +9,10 @@ unset CAML_LD_LIBRARY_PATH
 unset OCAMLLIB
 unset OCAML_TOPLEVEL_PATH
 
+# For MSYS2 on Windows, stop path conversion from \ to / which messes up
+# docker (which is a native Windows command).
+export MSYS2_ARG_CONV_EXCL='*'
+
 export PC_PROJECT_DIR="$PWD"
 export FDOPEN_OPAMEXE_BOOTSTRAP=false
 export CACHE_PREFIX=v1

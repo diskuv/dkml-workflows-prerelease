@@ -1,3 +1,7 @@
+## Pending (v1)
+
+- Desktop testing for Linux works with plain MSYS2 on Windows (using docker).
+
 ## 1.1.0 (v1)
 
 New Features:

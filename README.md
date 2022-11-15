@@ -12,7 +12,7 @@ Table of Contents:
   - [Using the GitLab CI/CD backend](#using-the-gitlab-cicd-backend)
   - [Using the GitHub Actions backend](#using-the-github-actions-backend)
   - [Using the Personal Computer backend](#using-the-personal-computer-backend)
-    - [Windows PC backend](#windows-pc-backend)
+    - [Windows backend](#windows-backend)
     - [macOS and Linux backends](#macos-and-linux-backends)
   - [Distributing your executable](#distributing-your-executable)
     - [Distributing your Windows executables](#distributing-your-windows-executables)
@@ -349,12 +349,10 @@ The [Examples](#examples) include more features, like the uploading and releasin
 This backend is meant for troubleshooting when a GitLab CI/CD or GitHub Actions
 backend fails to build your code. You can do the build locally!
 
-> Currently this backend only runs on:
-> 1. Windows PCs with Visual Studio already installed
-> 2. macOS/Intel with clang (XCode) already installed. macOS/ARM64 with Rosetta emulation
->    should also work.
+> Tip: The Linux backend can be run from macOS and Windows PCs because it
+> uses Docker.
 
-### Windows PC backend
+### Windows backend
 
 On Windows in PowerShell run:
 
@@ -388,12 +386,17 @@ sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh
 # Linux on 64-bit Intel/AMD. Docker is required.
 #   - Running this from macOS/Intel with Docker or macOS/Silicon with Docker will also work
 #   - Running this using with-dkml.exe on Windows with Docker will also work
-#     (the normal Linux containers host, not the Windows containers host)
+#     (the normal Linux containers host, not the Windows containers host). The
+#     easiest is using 'with-dkml sh ...' if you have Diskuv OCaml. You can also
+#     download MSYS2 from https://www.msys2.org/#installation, or Cygwin, and then
+#     run MSYS2 or Cygwin, but you must make sure that 'docker' is in your PATH
+#     (ex. export PATH='/c/Program Files/Docker/Docker/resources/bin':"$PATH").
 sh ci/setup-dkml/pc/setup-dkml-linux_x86_64.sh
 
 # Linux on 32-bit Intel/AMD. Docker is required.
 #   - Running this from macOS/Intel should also work (not tested). macOS/Silicon will not work.
-#   - Running this using with-dkml.exe on Windows with Docker should also work (not tested)
+#   - Running this on Windows should also work using the same guidance as
+#     on Linux 64-bit. Has not been tested
 sh ci/setup-dkml/pc/setup-dkml-linux_x86.sh
 ```
 
