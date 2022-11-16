@@ -17,10 +17,6 @@ variables:
   SKIP_CHANNEL_RELEASE: 'false'
   SKIP_FLAVOR_FULL: 'false'
 
-# TODO: dkml-runtime-distribution is currently a TRUNK channel set in stone
-# by .opam.template. Once the first version is in Opam, move the pinning
-# into build-test.sh's preinstall() function which differentiates between
-# release and next.
 .release:
   variables:
     DKML_CHANNEL: release

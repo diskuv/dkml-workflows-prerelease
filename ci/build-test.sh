@@ -35,12 +35,15 @@ case "$CHANNEL" in
 next)
     preinstall() {
         opamrun repository set-url diskuv git+https://github.com/diskuv/diskuv-opam-repository.git
-        opamrun pin dkml-runtimelib git+https://github.com/diskuv/dkml-runtime-apps.git#main --switch dkml --no-action --yes
-        opamrun pin dkml-apps       git+https://github.com/diskuv/dkml-runtime-apps.git#main --switch dkml --no-action --yes
-        opamrun pin with-dkml       git+https://github.com/diskuv/dkml-runtime-apps.git#main --switch dkml --no-action --yes
+        opamrun pin dkml-runtime-common         git+https://github.com/diskuv/dkml-runtime-common.git#main --switch dkml --no-action --yes
+        opamrun pin dkml-runtime-distribution   git+https://github.com/diskuv/dkml-runtime-distribution.git#main --switch dkml --no-action --yes
+        opamrun pin dkml-runtimelib             git+https://github.com/diskuv/dkml-runtime-apps.git#main --switch dkml --no-action --yes
+        # with_pkg_ver(): opamrun pin dkml-apps                   git+https://github.com/diskuv/dkml-runtime-apps.git#main --switch dkml --no-action --yes
+        # with_pkg_ver(): opamrun pin with-dkml                   git+https://github.com/diskuv/dkml-runtime-apps.git#main --switch dkml --no-action --yes
         opamrun upgrade \
-            dkml-runtimelib dkml-apps with-dkml \
+            dkml-runtime-common dkml-runtime-distribution \
             --switch dkml --yes
+            # dkml-runtimelib dkml-apps with-dkml \
     }
     ;;
 release)
