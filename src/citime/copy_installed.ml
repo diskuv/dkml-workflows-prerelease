@@ -2,13 +2,14 @@ open Bos
 
 let usage () =
   prerr_endline
-    {|usage: dkml-desktop-copy-installed --opam-switch-prefix OPAM_SWITCH_PREFIX --output-dir OUTPUT_DIR
+    {|usage: dkml-desktop-copy-installed --file-list FILE_LIST --opam-switch-prefix OPAM_SWITCH_PREFIX --output-dir OUTPUT_DIR
 
-The standard input should be the response for one or more opam packages:
+The FILE_LIST should be a file with the opam show --list-files response for one or more opam
+packages. For example:
 
   opam show --list-files dune
 
-Like the following:
+The FILE_LIST should look like the following:
 
   /Volumes/Source/dkml-component-desktop/.ci/o/dkml/bin/dune
   /Volumes/Source/dkml-component-desktop/.ci/o/dkml/bin/dune-real
@@ -63,20 +64,25 @@ let copy_path_if_file ~opam_switch_prefix ~output_dir abspath () =
             (Format.asprintf "The path %a could not be read: %a" Fpath.pp
                abspath Rresult.R.pp_msg msg))
 
-let copy ~opam_switch_prefix ~output_dir =
-  try
-    while true do
-      let abspath = input_line stdin in
-      match String.trim abspath with
-      | "" -> ()
-      | abspath' ->
-          copy_path_if_file ~opam_switch_prefix ~output_dir abspath' ()
-    done
-  with End_of_file -> ()
+let copy ~file_list ~opam_switch_prefix ~output_dir =
+  let ch = open_in (Fpath.to_string file_list) in
+  Fun.protect
+    ~finally:(fun () -> close_in ch)
+    (fun () ->
+      try
+        while true do
+          let abspath = input_line ch in
+          match String.trim abspath with
+          | "" -> ()
+          | abspath' ->
+              copy_path_if_file ~opam_switch_prefix ~output_dir abspath' ()
+        done
+      with End_of_file -> ())
 
 let () =
   (* parse *)
   let opam_switch_prefix = ref "" in
+  let file_list = ref "" in
   let output_dir = ref "" in
   let anon _s =
     failwith
@@ -84,6 +90,9 @@ let () =
   in
   Arg.parse
     [
+      ( "--file-list",
+        Set_string file_list,
+        "The file with the output of 'opam show --list-files PACKAGES" );
       ( "--opam-switch-prefix",
         Set_string opam_switch_prefix,
         "The opam switch prefix. Typically it is available in the \
@@ -94,7 +103,8 @@ let () =
     anon "dkml-desktop-copy-installed";
   if String.equal !opam_switch_prefix "" then
     badarg "Missing --opam-switch-prefix OPAM_SWITCH_PREFIX";
+  if String.equal !file_list "" then badarg "Missing --file-list FILE_LIST";
   if String.equal !output_dir "" then badarg "Missing --output-dir OUTPUT_DIR";
-  copy
+  copy ~file_list:(Fpath.v !file_list)
     ~opam_switch_prefix:(Fpath.v !opam_switch_prefix)
     ~output_dir:(Fpath.v !output_dir)
