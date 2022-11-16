@@ -14,6 +14,8 @@ variables:
   # and not the release. Good for populating the cache.
   SETUP_ONLY: 'false'
   SKIP_CHANNEL_RELEASE_HOST_WIN32: 'false'
+  # TODO: Set this to 'false' after the next prerelease (anything after prerel7 which uses with-dkml.exe instead of with-dkml)
+  SKIP_HOST_LINUX: 'true'
   # TODO: Set this to 'false' after the first release.
   SKIP_CHANNEL_RELEASE: 'true'
   SKIP_FLAVOR_FULL: 'false'
@@ -49,7 +51,7 @@ linux:ci:release:build:
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
   rules:
-    - if: $SKIP_CHANNEL_RELEASE != "true" && $SETUP_ONLY != "true"
+    - if: $SKIP_CHANNEL_RELEASE != "true" && $SKIP_HOST_LINUX != "true" && $SETUP_ONLY != "true"
   script:
     - sh ci/build-test.sh ci release
 
@@ -61,7 +63,7 @@ linux:ci:next:build:
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
   rules:
-    - if: $SETUP_ONLY != "true"
+    - if: $SKIP_HOST_LINUX != "true" && $SETUP_ONLY != "true"
   script:
     - sh ci/build-test.sh ci next
 
@@ -73,7 +75,7 @@ linux:full:release:build:
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
   rules:
-    - if: $SKIP_CHANNEL_RELEASE != "true" && $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
+    - if: $SKIP_CHANNEL_RELEASE != "true" && $SKIP_FLAVOR_FULL != "true" && $SKIP_HOST_LINUX != "true" && $SETUP_ONLY != "true"
   script:
     - sh ci/build-test.sh full release
 
@@ -85,7 +87,7 @@ linux:full:next:build:
   needs: [] # see comments in win32:ci:release:build
   timeout: 2h
   rules:
-    - if: $SKIP_FLAVOR_FULL != "true" && $SETUP_ONLY != "true"
+    - if: $SKIP_FLAVOR_FULL != "true" && $SKIP_HOST_LINUX != "true" && $SETUP_ONLY != "true"
   script:
     - sh ci/build-test.sh full next
 
