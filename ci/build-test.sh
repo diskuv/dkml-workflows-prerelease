@@ -94,9 +94,9 @@ opamrun update
 #   Testing does code hygiene, especially the checking of .gitlab-ci.yml to make
 #   sure the PIN_* variables are in sync with dkml-runtime-distribution.
 
-#   Use latest dkml-runtime-distribution when channel=next
+#   Use latest dkml-runtime-distribution when channel=next in the secondary switch
 if [ "$CHANNEL" = next ]; then
-    opamrun pin dkml-runtime-distribution git+https://github.com/diskuv/dkml-runtime-distribution.git --switch dkml --no-action --yes
+    opamrun pin dkml-runtime-distribution git+https://github.com/diskuv/dkml-runtime-distribution.git --switch two --no-action --yes
 fi
 #   Weird error on Windows when directly do
 #   `opamrun list --switch two -s | grep -q '^dkml-runtime-distribution$'`:
