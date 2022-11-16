@@ -14,7 +14,8 @@ variables:
   # and not the release. Good for populating the cache.
   SETUP_ONLY: 'false'
   SKIP_CHANNEL_RELEASE_HOST_WIN32: 'false'
-  SKIP_CHANNEL_RELEASE: 'false'
+  # TODO: Set this to 'false' after the first release.
+  SKIP_CHANNEL_RELEASE: 'true'
   SKIP_FLAVOR_FULL: 'false'
 
 .release:
