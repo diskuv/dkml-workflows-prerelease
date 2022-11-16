@@ -1,8 +1,0 @@
-pin-depends: [
-  # Default for channel=release. After first submission to opam of
-  # dkml-runtime-distribution this pin can be removed.
-  [
-    "dkml-runtime-distribution.1.0.2~prerel7"
-    "git+https://github.com/diskuv/dkml-runtime-distribution.git#1.0.2-prerel7_r2"
-  ]
-]

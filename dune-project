@@ -24,6 +24,7 @@
  (name code-hygiene)
  (synopsis "Code hygiene")
  (depends
+  ; dkml-runtime-distribution has a ~dev dependency within this package. Keep it this way.
   dkml-runtime-distribution
   (yaml (>= 3.0.0))))
 
@@ -87,4 +88,4 @@
  (depends
   (re (>= 1.10.0))
   (yaml (and (>= 3.0.0) :with-test))
-  dkml-runtime-distribution))
+  (dkml-runtime-distribution (>= 1.0.2~prerel7))))
