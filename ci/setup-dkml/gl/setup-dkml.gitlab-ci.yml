@@ -1481,6 +1481,9 @@ variables:
           shift
           section_begin "install-compiler-$do_install_compiler_NAME" "Install OCaml compiler for $do_install_compiler_NAME switch"
           opamrun pin list --switch "$do_install_compiler_NAME"
+          # BEGIN DEBUG
+          opamrun --no-troubleshooting show --switch "$do_install_compiler_NAME" --field opam-file dune || true
+          # END DEBUG
           # shellcheck disable=SC2086
           opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
           section_end "install-compiler-$do_install_compiler_NAME"
