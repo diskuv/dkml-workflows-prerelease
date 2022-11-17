@@ -28,14 +28,14 @@ export PIN_CURLY='0.2.1-windows-env_r2'
 export PIN_DIGESTIF='1.0.1'
 export PIN_DUNE='2.9.3+shim.1.0.2~r0'
 export PIN_DUNE_CONFIGURATOR='2.9.3'
-export PIN_DKML_APPS='1.0.1'
+export PIN_DKML_APPS='1.0.2~prerel8'
 export PIN_OCAMLBUILD='0.14.0'
 export PIN_OCAMLFIND='1.9.1'
 export PIN_OCP_INDENT='1.8.2-windowssupport'
 export PIN_PPX_EXPECT='v0.14.1'
 export PIN_PTIME='0.8.6-msvcsupport'
 export PIN_TIME_NOW='v0.14.0'
-export PIN_WITH_DKML='1.0.1'
+export PIN_WITH_DKML='1.0.2~prerel8'
 
 usage() {
   echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
@@ -382,6 +382,10 @@ install -d .ci/sd4/g
 
 # dkml-runtime-distribution
 
+#   For 'Diagnose Visual Studio environment variables (Windows)' we need dkml-runtime-distribution
+#   so that 'Import-Module Machine' and 'Get-VSSetupInstance' can be run.
+#   The version doesn't matter too much, as long as it has a functioning Get-VSSetupInstance.
+#   commit 1a3ec82dd851751a95e6a4797387a8163c51520e = tag v0.4.0-prerel20
 case "$dkml_host_abi" in
 windows_*)
     section_begin checkout-dkml-runtime-distribution 'Checkout dkml-runtime-distribution'
@@ -399,7 +403,7 @@ set -euf
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=cc9518fa5630bfbe24d4c5e0e2cc29af513037ce
+DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=26dfc8a980d30023a05c73e6bd38425ae34488d5
 # Constants
 #   Should be edited by release.sh, but ...
 #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
@@ -1442,9 +1446,11 @@ do_setenv() {
     windows_*)
         if ! grep -q '\(^|\[\)DiskuvOCamlMSYS2Dir ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
             if [ -x /usr/bin/cygpath ]; then
-                MSYS2_DIR_NATIVE=$(/usr/bin/cygpath -aw "msys64")
+                MSYS2_DIR_NATIVE=$(/usr/bin/cygpath -aw /)
             else
-                MSYS2_DIR_NATIVE="$PWD"
+                # If we are already inside MSYS2 then MSYSTEM_PREFIX should be set. But cygpath should be there as well!!
+                echo "FATAL: Could not locate MSYS2: there was no cygpath" >&2
+                exit 3
             fi
             MSYS2_DIR_NATIVE_ESCAPED=$(printf "%s" "$MSYS2_DIR_NATIVE" | sed 's/\\/\\\\/g')
             opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlMSYS2Dir = \"$MSYS2_DIR_NATIVE_ESCAPED\""
