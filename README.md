@@ -46,6 +46,12 @@ $ sh ci/build-test.sh ci next
 
 ## Upgrading CI
 
+Optional: Do the following to get the bleeding edge:
+
+```bash
+opam pin dkml-workflows git+https://github.com/diskuv/dkml-workflows-prerelease.git#v1 --no-action --yes
+```
+
 ```bash
 opam upgrade dkml-workflows && opam exec -- generate-setup-dkml-scaffold && dune build '@gen-dkml' --auto-promote
 ```
