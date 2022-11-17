@@ -11,6 +11,10 @@ open Jingoo
 let global_env_vars =
   [
     ("DEFAULT_DKML_COMPILER", "4.12.1-v1.0.2");
+
+    (* Almost all of the PIN_ values come from dkml-runtime-distribution's *-pkgs.txt.
+       TODO: Unify these (perhaps with release.sh), or better yet remove the pins
+       completely by upstreaming Windows and Android (aka. all DKML architectures) *)
     ("PIN_BASE", "v0.14.3");
     ("PIN_BIGSTRINGAF", "0.8.0");
     ("PIN_CORE_KERNEL", "v0.14.2");
@@ -18,7 +22,7 @@ let global_env_vars =
     ("PIN_CTYPES", "0.19.2-windowssupport-r4");
     ("PIN_CURLY", "0.2.1-windows-env_r2");
     ("PIN_DIGESTIF", "1.0.1");
-    ("PIN_DUNE", "2.9.3+shim.1.0.2~r0");
+    ("PIN_DUNE", "2.9.3+shim.1.0.2~r8");
     ("PIN_DUNE_CONFIGURATOR", "2.9.3");
     (* PIN_DKML_APPS is maintained by diskuv-ocaml's release.sh in dkml-workflows-prerelease *)
     ("PIN_DKML_APPS", "1.0.2~prerel9");
