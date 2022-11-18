@@ -18,6 +18,8 @@ $ sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh --SECONDARY_SWITCH=true
 #   - Running this using with-dkml.exe on Windows with Docker will also work
 #     (the normal Linux containers host, not the Windows containers host)
 $ sh ci/setup-dkml/pc/setup-dkml-linux_x86_64.sh --SECONDARY_SWITCH=true
+# For Windows (windows_x86_64) in PowerShell
+$ & .\ci\setup-dkml\pc\setup-dkml-windows_x86_64.ps1 -SECONDARY_SWITCH true
 ...
 Finished setup.
 
