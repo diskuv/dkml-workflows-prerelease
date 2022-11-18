@@ -19,6 +19,12 @@ The FILE_LIST should look like the following:
   ...
   /Volumes/Source/dkml-component-desktop/.ci/o/dkml/man/man1/dune.1
 
+It may contain lines like the following (confer
+https://github.com/ocaml/opam/blob/d282c1d4ed442eeffdb3f81acaa26bf60a2be61f/src/client/opamListCommand.ml#L611-L612):
+
+  /Volumes/Source/dkml-component-desktop/.ci/o/dkml/bin/dune (absent)
+  /Volumes/Source/dkml-component-desktop/.ci/o/dkml/bin/dune-real (modified since)
+
 The processing is as follows:
 1. Any directories in the output like dkml/lib/dune above will be ignored.
 2. The OPAM_SWITCH_PREFIX ancestor directories are stripped from the output.
@@ -66,6 +72,7 @@ let copy_path_if_file ~opam_switch_prefix ~output_dir abspath () =
 
 let copy ~file_list ~opam_switch_prefix ~output_dir =
   let ch = open_in (Fpath.to_string file_list) in
+  let modified_since_suffix = " (modified since)" in
   Fun.protect
     ~finally:(fun () -> close_in ch)
     (fun () ->
@@ -74,6 +81,15 @@ let copy ~file_list ~opam_switch_prefix ~output_dir =
           let abspath = input_line ch in
           match String.trim abspath with
           | "" -> ()
+          (* https://github.com/ocaml/opam/blob/d282c1d4ed442eeffdb3f81acaa26bf60a2be61f/src/client/opamListCommand.ml#L611-L612 *)
+          | s when Astring.String.is_suffix ~affix:" (absent)" s ->
+            ()
+          | s when Astring.String.is_suffix ~affix:modified_since_suffix s ->
+            let abspath' = Astring.String.with_range
+              ~len:(String.length s - String.length modified_since_suffix)
+              s
+            in
+            copy_path_if_file ~opam_switch_prefix ~output_dir abspath' ()
           | abspath' ->
               copy_path_if_file ~opam_switch_prefix ~output_dir abspath' ()
         done
