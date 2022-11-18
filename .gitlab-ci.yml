@@ -38,10 +38,10 @@ variables:
     DISKUV_OPAM_REPOSITORY: main
     # All the following are checked by test/gitlab/check_gitlab_ci.exe so that
     # they match the TRUNK of dkml-runtime-distribution
-    PIN_DUNE: '2.9.3+shim.1.0.2~r7'
+    PIN_DUNE: '2.9.3+shim.1.0.2~r8'
     PIN_OCAMLFIND: '1.9.1'
-    PIN_DKML_APPS: '1.0.2~prerel7'
-    PIN_WITH_DKML: '1.0.2~prerel7'
+    PIN_DKML_APPS: '1.0.2~prerel9'
+    PIN_WITH_DKML: '1.0.2~prerel9'
 
 linux:ci:release:build:
   extends:
