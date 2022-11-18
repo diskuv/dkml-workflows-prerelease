@@ -36,7 +36,8 @@ let register () =
 
       let component_name = "offline-desktop-full"
 
-      let install_depends_on = [ "staging-ocamlrun"; "staging-desktop-full" ]
+      let install_depends_on =
+        [ "staging-ocamlrun"; "staging-desktop-full"; "staging-withdkml" ]
 
       let install_user_subcommand ~component_name:_ ~subcommand_name ~fl ~ctx_t
           =
