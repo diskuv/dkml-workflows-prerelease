@@ -160,6 +160,12 @@ post_pkg() {
     # Copy using `dkml-desktop-copy-installed` all the installed files to the
     # archive directory
     opamrun show --switch dkml --list-files "$post_pkg_ver_PKG" >.ci/opamshow.txt
+    # START DEBUG
+    cat .ci/opamshow.txt >&2
+    if [ -e "$THE_SWITCH_PREFIX/bin" ]; then
+        ls -l "$THE_SWITCH_PREFIX/bin" >&2
+    fi
+    # END DEBUG
     opamrun exec --switch two -- dkml-desktop-copy-installed \
         --file-list .ci/opamshow.txt \
         --opam-switch-prefix "$THE_SWITCH_PREFIX" \
