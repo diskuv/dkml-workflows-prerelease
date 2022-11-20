@@ -128,6 +128,11 @@ esac
 install -d .ci
 opamrun exec --switch two -- dkml-desktop-gen-global-install "$FLAVOR" >.ci/self-invoker.source.sh
 
+# Use the `dkml-desktop-gen-global-compile` executable to create a list of
+# packages "global-compile.txt" that will be compiled by an installer on the end-user machine
+install -d "$STAGE_RELDIR/share/dkml-component-desktop"
+opamrun exec --switch two -- dkml-desktop-gen-global-compile "$FLAVOR" >"$STAGE_RELDIR/share/dkml-component-desktop/global-compile.txt"
+
 # ----------- Primary Switch ------------
 
 # Define the shell functions that will be called by .ci/self-invoker.source.sh
@@ -174,7 +179,6 @@ set -x
 set +x
 
 # Tar ball
-install -d "dist/$CHANNEL/$FLAVOR/$dkml_host_abi"
 #   TODO: Could use cross-compilation ... simplify cross-compilation first! Confer
 #         diskuvbox. Then bundle the _opam/darwin_arm64-sysroot/ instead of _opam/.
 tar cvCfz "$STAGE_RELDIR" "dist/$CHANNEL/$FLAVOR/$dkml_host_abi.tar.gz" .

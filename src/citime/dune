@@ -7,6 +7,13 @@
 
 (executable
  (package dkml-build-desktop)
+ (name gen_global_compile)
+ (public_name dkml-desktop-gen-global-compile)
+ (modules gen_global_compile)
+ (libraries dkml-runtime-distribution re))
+
+(executable
+ (package dkml-build-desktop)
  (name copy_installed)
  (public_name dkml-desktop-copy-installed)
  (modules copy_installed)
