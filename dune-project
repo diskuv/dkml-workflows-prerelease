@@ -55,6 +55,15 @@
   (diskuvbox (>= 0.1.0))))
 
 (package
+ (name dkml-component-staging-desktop-compile)
+ (synopsis "Manifests of which packages are compiled on the end-user machine at installation")
+ (description
+  "Manifests of which packages are compiled on the end-user machine at installation")
+ (depends
+  (dkml-install (>= 0.2.0))
+  (diskuvbox (>= 0.1.0))))
+
+(package
  (name dkml-component-offline-desktop-ci)
  (synopsis "Offline install of the CI flavor of desktop executables")
  (description

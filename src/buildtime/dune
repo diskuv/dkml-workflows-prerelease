@@ -11,6 +11,12 @@
  (libraries dkml-install.register))
 
 (library
+ (public_name dkml-component-staging-desktop-compile)
+ (name dkml_component_staging_desktop_compile)
+ (modules dkml_component_staging_desktop_compile)
+ (libraries dkml-install.register))
+
+(library
  (public_name dkml-component-staging-desktop-ci)
  (name dkml_component_staging_desktop_ci)
  (modules dkml_component_staging_desktop_ci)

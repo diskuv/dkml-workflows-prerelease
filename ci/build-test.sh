@@ -130,8 +130,8 @@ opamrun exec --switch two -- dkml-desktop-gen-global-install "$FLAVOR" >.ci/self
 
 # Use the `dkml-desktop-gen-global-compile` executable to create a list of
 # packages "global-compile.txt" that will be compiled by an installer on the end-user machine
-install -d "$STAGE_RELDIR/share/dkml-component-desktop"
-opamrun exec --switch two -- dkml-desktop-gen-global-compile "$FLAVOR" >"$STAGE_RELDIR/share/dkml-component-desktop/global-compile.txt"
+install -d "dist/$CHANNEL/$FLAVOR"
+opamrun exec --switch two -- dkml-desktop-gen-global-compile "$FLAVOR" >"dist/$CHANNEL/$FLAVOR/$dkml_host_abi.global-compile.txt"
 
 # ----------- Primary Switch ------------
 
