@@ -30,8 +30,8 @@ export PIN_CTYPES_FOREIGN='0.19.2-windowssupport-r4'
 export PIN_CTYPES='0.19.2-windowssupport-r4'
 export PIN_CURLY='0.2.1-windows-env_r2'
 export PIN_DIGESTIF='1.0.1'
-export PIN_DUNE='2.9.3+shim.1.0.2~r0'
-export PIN_DUNE_CONFIGURATOR='2.9.3'
+export PIN_DUNE='2.9.3+shim.1.0.2~r8'
+export PIN_DUNE_CONFIGURATOR='2.9.3+msvc'
 export PIN_DKML_APPS='1.0.2~prerel9'
 export PIN_OCAMLBUILD='0.14.0'
 export PIN_OCAMLFIND='1.9.1'
@@ -411,7 +411,7 @@ set -euf
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=8696ca55b11bb7a3a9f1cd46ca53e55bc12cc5ca
+DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=274559dd38b9cd471cd4193e94ba68615376f6ce
 # Constants
 #   Should be edited by release.sh, but ...
 #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
