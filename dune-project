@@ -6,7 +6,10 @@
 (generate_opam_files true)
 
 (source
- (github diskuv/dkml-component-desktop))
+ (uri "git+https://gitlab.com/diskuv-ocaml/components/dkml-component-desktop.git"))
+(homepage "https://gitlab.com/diskuv-ocaml/components/dkml-component-desktop")
+(documentation "https://gitlab.com/diskuv-ocaml/components/dkml-component-desktop/-/blob/main/README.md")
+(bug_reports "https://gitlab.com/diskuv-ocaml/components/dkml-component-desktop/-/issues")
 (license Apache-2.0)
 (authors "Diskuv, Inc. <opensource+diskuv-ocaml@support.diskuv.com>")
 (maintainers "opensource+diskuv-ocaml@support.diskuv.com")
