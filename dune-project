@@ -97,4 +97,5 @@
  (depends
   (re (>= 1.10.0))
   (yaml (and (>= 3.0.0) :with-test))
+  (dkml-runtime-common (>= 1.0.2~prerel7))
   (dkml-runtime-distribution (>= 1.0.2~prerel7))))

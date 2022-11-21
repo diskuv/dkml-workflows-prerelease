@@ -1,0 +1,27 @@
+; don't waste time traversing down intermediate directories
+
+(dirs
+ (:standard \ dist msys64 _opam _release .ci))
+
+(rule
+ (alias gen-opam)
+ (target sha256.cksum)
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    sh
+    "%{dep:src/citime/checksum.sh} %{lib:dkml-runtime-common:unix/crossplatform-functions.sh} %{read:desktop.version.txt} with-dkml.tar.gz"))))
+
+(rule
+ (alias gen-opam)
+ (target dkml-component-staging-withdkml.opam.template.gen)
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    src/citime/bump_source.exe
+    --opam-file
+    %{dep:dkml-component-staging-withdkml.opam.template}
+    --version-file
+    %{dep:desktop.version.txt}))))

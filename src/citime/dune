@@ -1,5 +1,12 @@
 (executable
  (package dkml-build-desktop)
+ (name bump_source)
+ (public_name dkml-bump-source)
+ (modules bump_source)
+ (libraries bos re))
+
+(executable
+ (package dkml-build-desktop)
  (name gen_global_install)
  (public_name dkml-desktop-gen-global-install)
  (modules gen_global_install)
