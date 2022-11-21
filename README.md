@@ -6,6 +6,12 @@ in the [DKML runtime distribution packages](https://github.com/diskuv/dkml-runti
 These package files are executables, man pages and other assets which will be
 available in the end-user installation directory.
 
+## Upgrading
+
+1. Update `desktop.version.txt`
+2. Run: `dune build '@gen-opam' --auto-promote`
+3. Run: `dune build *.opam`
+
 ## Developing
 
 You can test on your desktop with a session as follows:

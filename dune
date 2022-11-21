@@ -5,23 +5,140 @@
 
 (rule
  (alias gen-opam)
- (target sha256.cksum)
+ (target dkml-component-staging-desktop-compile.opam.template.gen)
  (action
-  (with-stdout-to
-   %{target}
-   (run
-    sh
-    "%{dep:src/citime/checksum.sh} %{lib:dkml-runtime-common:unix/crossplatform-functions.sh} %{read:desktop.version.txt} with-dkml.tar.gz"))))
+  (progn
+   (with-stdout-to
+    %{target}.sha256
+    (run
+     sh
+     %{dep:src/citime/checksum.sh}
+     %{lib:dkml-runtime-common:unix/crossplatform-functions.sh}
+     %{read:desktop.version.txt}
+     global-compile.tar.gz))
+   (with-stdout-to
+    %{target}
+    (run
+     src/citime/bump_source.exe
+     --opam-file
+     %{dep:dkml-component-staging-desktop-compile.opam.template}
+     --version-file
+     %{dep:desktop.version.txt}
+     --download-file
+     dl/staging.tar.gz
+     --artifact
+     global-compile.tar.gz
+     --sha256-file
+     %{target}.sha256)))))
+
+(rule
+ (alias gen-opam)
+ (action
+  (diff
+   dkml-component-staging-desktop-compile.opam.template
+   dkml-component-staging-desktop-compile.opam.template.gen)))
+
+(rule
+ (alias gen-opam)
+ (target dkml-component-staging-desktop-ci.opam.template.gen)
+ (action
+  (progn
+   (with-stdout-to
+    %{target}.sha256
+    (run
+     sh
+     %{dep:src/citime/checksum.sh}
+     %{lib:dkml-runtime-common:unix/crossplatform-functions.sh}
+     %{read:desktop.version.txt}
+     ci.tar.gz))
+   (with-stdout-to
+    %{target}
+    (run
+     src/citime/bump_source.exe
+     --opam-file
+     %{dep:dkml-component-staging-desktop-ci.opam.template}
+     --version-file
+     %{dep:desktop.version.txt}
+     --download-file
+     dl/staging.tar.gz
+     --artifact
+     ci.tar.gz
+     --sha256-file
+     %{target}.sha256)))))
+
+(rule
+ (alias gen-opam)
+ (action
+  (diff
+   dkml-component-staging-desktop-ci.opam.template
+   dkml-component-staging-desktop-ci.opam.template.gen)))
+
+(rule
+ (alias gen-opam)
+ (target dkml-component-staging-desktop-full.opam.template.gen)
+ (action
+  (progn
+   (with-stdout-to
+    %{target}.sha256
+    (run
+     sh
+     %{dep:src/citime/checksum.sh}
+     %{lib:dkml-runtime-common:unix/crossplatform-functions.sh}
+     %{read:desktop.version.txt}
+     full.tar.gz))
+   (with-stdout-to
+    %{target}
+    (run
+     src/citime/bump_source.exe
+     --opam-file
+     %{dep:dkml-component-staging-desktop-full.opam.template}
+     --version-file
+     %{dep:desktop.version.txt}
+     --download-file
+     dl/staging.tar.gz
+     --artifact
+     full.tar.gz
+     --sha256-file
+     %{target}.sha256)))))
+
+(rule
+ (alias gen-opam)
+ (action
+  (diff
+   dkml-component-staging-desktop-full.opam.template
+   dkml-component-staging-desktop-full.opam.template.gen)))
 
 (rule
  (alias gen-opam)
  (target dkml-component-staging-withdkml.opam.template.gen)
  (action
-  (with-stdout-to
-   %{target}
-   (run
-    src/citime/bump_source.exe
-    --opam-file
-    %{dep:dkml-component-staging-withdkml.opam.template}
-    --version-file
-    %{dep:desktop.version.txt}))))
+  (progn
+   (with-stdout-to
+    %{target}.sha256
+    (run
+     sh
+     %{dep:src/citime/checksum.sh}
+     %{lib:dkml-runtime-common:unix/crossplatform-functions.sh}
+     %{read:desktop.version.txt}
+     with-dkml.tar.gz))
+   (with-stdout-to
+    %{target}
+    (run
+     src/citime/bump_source.exe
+     --opam-file
+     %{dep:dkml-component-staging-withdkml.opam.template}
+     --version-file
+     %{dep:desktop.version.txt}
+     --download-file
+     dl/staging.tar.gz
+     --artifact
+     with-dkml.tar.gz
+     --sha256-file
+     %{target}.sha256)))))
+
+(rule
+ (alias gen-opam)
+ (action
+  (diff
+   dkml-component-staging-withdkml.opam.template
+   dkml-component-staging-withdkml.opam.template.gen)))
