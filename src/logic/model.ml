@@ -25,7 +25,7 @@ let global_env_vars =
     ("PIN_DUNE", "2.9.3+shim.1.0.2~r8");
     ("PIN_DUNE_CONFIGURATOR", "2.9.3+msvc");
     (* PIN_DKML_APPS is maintained by diskuv-ocaml's release.sh in dkml-workflows-prerelease *)
-    ("PIN_DKML_APPS", "1.0.2~prerel9");
+    ("PIN_DKML_APPS", "1.0.2~prerel10");
     ("PIN_OCAMLBUILD", "0.14.0");
     ("PIN_OCAMLFIND", "1.9.1");
     ("PIN_OCP_INDENT", "1.8.2-windowssupport");
@@ -33,7 +33,7 @@ let global_env_vars =
     ("PIN_PTIME", "0.8.6-msvcsupport");
     ("PIN_TIME_NOW", "v0.14.0");
     (* PIN_WITH_DKML is maintained by diskuv-ocaml's release.sh in dkml-workflows-prerelease *)
-    ("PIN_WITH_DKML", "1.0.2~prerel9");
+    ("PIN_WITH_DKML", "1.0.2~prerel10");
   ]
 
 let required_msys2_packages =
