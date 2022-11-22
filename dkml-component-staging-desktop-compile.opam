@@ -39,6 +39,6 @@ install: [
 # - M.N.O[-prerelP]-prep : Used to let GitLab CI/CD (etc.) create a staging.tar.gz
 # - M.N.O[-prerelP]      : Used to create Opam archive (dune-release or opam-publish)
 extra-source "dl/staging.tar.gz" {
-  src: "https://gitlab.com/api/v4/projects/diskuv-ocaml%2Fcomponents%2Fdkml-component-desktop/packages/generic/next/0.1.0-prerel9-prep/global-compile.tar.gz"
-  checksum: "sha256=7f0d9b1e2293e81960a6339eb24f00c85ef3379383aa41b4ed8ccbb265b7b477"
+  src: "https://gitlab.com/api/v4/projects/diskuv-ocaml%2Fcomponents%2Fdkml-component-desktop/packages/generic/next/0.1.0-prerel13-prep/global-compile.tar.gz"
+  checksum: "sha256=26ddbe328a2ed94d25b026b9efc5f841d77354ec7515bc359798bb478569d7c3"
 }
