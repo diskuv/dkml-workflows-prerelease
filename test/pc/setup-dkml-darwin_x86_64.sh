@@ -28,14 +28,14 @@ export PIN_CURLY='0.2.1-windows-env_r2'
 export PIN_DIGESTIF='1.0.1'
 export PIN_DUNE='2.9.3+shim.1.0.2~r13'
 export PIN_DUNE_CONFIGURATOR='2.9.3+msvc'
-export PIN_DKML_APPS='1.0.2~prerel13'
+export PIN_DKML_APPS='1.0.2~prerel14'
 export PIN_OCAMLBUILD='0.14.0'
 export PIN_OCAMLFIND='1.9.1'
 export PIN_OCP_INDENT='1.8.2-windowssupport'
 export PIN_PPX_EXPECT='v0.14.1'
 export PIN_PTIME='0.8.6-msvcsupport'
 export PIN_TIME_NOW='v0.14.0'
-export PIN_WITH_DKML='1.0.2~prerel13'
+export PIN_WITH_DKML='1.0.2~prerel14'
 
 usage() {
   echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
@@ -403,7 +403,7 @@ set -euf
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=37bce3c52eb22650c93356c0ab08327c35becaee
+DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=b060e2e41bbd864ad8003f1598d632ea1325b335
 # Constants
 #   Should be edited by release.sh, but ...
 #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
