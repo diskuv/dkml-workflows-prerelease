@@ -17,6 +17,6 @@ install: [
 # - M.N.O[-prerelP]      : Used to create Opam archive (dune-release or opam-publish) after -prep
 #                          is built and this extra-source was updated
 extra-source "dl/staging.tar.gz" {
-  src: "https://gitlab.com/api/v4/projects/diskuv-ocaml%2Fcomponents%2Fdkml-component-desktop/packages/generic/next/0.1.0-prerel13-prep/with-dkml.tar.gz"
-  checksum: "sha256=51e1b7a56fa469db8856ed364131a91c026aae0dc0416a7788fd3d69aa492639"
+  src: "https://gitlab.com/api/v4/projects/diskuv-ocaml%2Fcomponents%2Fdkml-component-desktop/packages/generic/next/0.1.0-prerel20-prep/with-dkml.tar.gz"
+  checksum: "sha256=7a7219b3ef2d0268e5160f8cf6c12550323f6617e5458b5e81249d14bf23bb38"
 }
