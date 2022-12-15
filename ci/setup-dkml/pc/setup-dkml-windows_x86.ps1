@@ -127,7 +127,7 @@ param (
     
   # Environment variables (can be overridden on command line)
   # autogen from global_env_vars.
-  ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.12.1-v1.0.2"
+  ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.14.0-v1.0.2-prerel33"
   ,[Parameter()] [string] $PIN_BASE = "v0.14.3"
   ,[Parameter()] [string] $PIN_BIGSTRINGAF = "0.8.0"
   ,[Parameter()] [string] $PIN_CORE_KERNEL = "v0.14.2"
@@ -135,16 +135,16 @@ param (
   ,[Parameter()] [string] $PIN_CTYPES = "0.19.2-windowssupport-r4"
   ,[Parameter()] [string] $PIN_CURLY = "0.2.1-windows-env_r2"
   ,[Parameter()] [string] $PIN_DIGESTIF = "1.0.1"
-  ,[Parameter()] [string] $PIN_DUNE = "2.9.3+shim.1.0.2~r8"
+  ,[Parameter()] [string] $PIN_DUNE = "2.9.3+shim.1.0.2~r13"
   ,[Parameter()] [string] $PIN_DUNE_CONFIGURATOR = "2.9.3+msvc"
-  ,[Parameter()] [string] $PIN_DKML_APPS = "1.0.2~prerel9"
+  ,[Parameter()] [string] $PIN_DKML_APPS = "1.0.2~prerel33"
   ,[Parameter()] [string] $PIN_OCAMLBUILD = "0.14.0"
   ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.1"
   ,[Parameter()] [string] $PIN_OCP_INDENT = "1.8.2-windowssupport"
   ,[Parameter()] [string] $PIN_PPX_EXPECT = "v0.14.1"
   ,[Parameter()] [string] $PIN_PTIME = "0.8.6-msvcsupport"
   ,[Parameter()] [string] $PIN_TIME_NOW = "v0.14.0"
-  ,[Parameter()] [string] $PIN_WITH_DKML = "1.0.2~prerel9"
+  ,[Parameter()] [string] $PIN_WITH_DKML = "1.0.2~prerel33"
 )
 
 $ErrorActionPreference = "Stop"
@@ -507,7 +507,7 @@ set -euf
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=274559dd38b9cd471cd4193e94ba68615376f6ce
+DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=cb68871c0d83465cea360c0611ce4c46b3197f77
 # Constants
 #   Should be edited by release.sh, but ...
 #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
@@ -970,6 +970,7 @@ EOF
 
     # ---------------
     # Create Opam troubleshooting script
+    #   Dump logs modified within the last 4 hours
     # ---------------
 
     cat >.ci/sd4/troubleshoot-opam.sh <<EOF
@@ -977,8 +978,13 @@ EOF
 set -euf
 OPAMROOT=\$1
 shift
+if find . -maxdepth 0 -mmin -240 2>/dev/null >/dev/null; then
+    FINDARGS="-mmin -240" # is -mmin supported? BSD (incl. macOS), MSYS2, GNU
+else
+    FINDARGS="-mtime -1" # use 1 day instead. Solaris
+fi
 printf "\n\n========= [START OF TROUBLESHOOTING] ===========\n\n" >&2
-find "\$OPAMROOT"/log -mindepth 1 -maxdepth 1 -name "*.out" ! -name "log-*.out" ! -name "ocaml-variants-*.out" | while read -r dump_on_error_LOG; do
+find "\$OPAMROOT"/log -mindepth 1 -maxdepth 1 \$FINDARGS -name "*.out" ! -name "log-*.out" ! -name "ocaml-variants-*.out" | while read -r dump_on_error_LOG; do
     dump_on_error_BLOG=\$(basename "\$dump_on_error_LOG")
     printf "\n\n========= [TROUBLESHOOTING] %s ===========\n\n" "\$dump_on_error_BLOG" >&2
     awk -v BLOG="\$dump_on_error_BLOG" '{print "[" BLOG "]", \$0}' "\$dump_on_error_LOG" >&2
@@ -1383,6 +1389,7 @@ do_pins() {
         # Validate OCAML_COMPILER (OCAML_COMPILER specified)
         case "${OCAML_COMPILER:-}" in
         4.12.1) true ;;
+        4.14.0) true ;;
         *)
             echo "OCAML_COMPILER version ${OCAML_COMPILER:-} is not supported" >&2
             exit 109
