@@ -10,7 +10,7 @@ open Jingoo
 
 let global_env_vars =
   [
-    ("DEFAULT_DKML_COMPILER", "4.12.1-v1.0.2");
+    ("DEFAULT_DKML_COMPILER", "4.14.0-v1.0.2-prerel33");
 
     (* Almost all of the PIN_ values come from dkml-runtime-distribution's *-pkgs.txt.
        TODO: Unify these (perhaps with release.sh), or better yet remove the pins

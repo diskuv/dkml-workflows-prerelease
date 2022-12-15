@@ -1,6 +1,7 @@
-## Pending (v1)
+## 1.2.0 (v1)
 
-- Desktop testing for Linux works with plain MSYS2 on Windows (using docker).
+- Upgrade OCaml from 4.12.1 to 4.14.0
+- Desktop testing for Linux works with plain MSYS2 on Windows (using docker)
 
 ## 1.1.0 (v1)
 

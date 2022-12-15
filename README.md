@@ -18,18 +18,18 @@ Table of Contents:
     - [Distributing your Windows executables](#distributing-your-windows-executables)
   - [Advanced Usage](#advanced-usage)
     - [Job Inputs](#job-inputs)
-      - [SECONDARY_SWITCH](#secondary_switch)
-      - [CACHE_PREFIX](#cache_prefix)
-      - [FDOPEN_OPAMEXE_BOOTSTRAP](#fdopen_opamexe_bootstrap)
+      - [SECONDARY\_SWITCH](#secondary_switch)
+      - [CACHE\_PREFIX](#cache_prefix)
+      - [FDOPEN\_OPAMEXE\_BOOTSTRAP](#fdopen_opamexe_bootstrap)
     - [Matrix Variables](#matrix-variables)
-      - [gl_image](#gl_image)
-      - [gh_os](#gh_os)
-      - [bootstrap_opam_version](#bootstrap_opam_version)
-      - [opam_root](#opam_root)
-      - [vsstudio_hostarch](#vsstudio_hostarch)
-      - [vsstudio_arch](#vsstudio_arch)
-      - [vsstudio_(others)](#vsstudio_others)
-      - [ocaml_options:](#ocaml_options)
+      - [gl\_image](#gl_image)
+      - [gh\_os](#gh_os)
+      - [bootstrap\_opam\_version](#bootstrap_opam_version)
+      - [opam\_root](#opam_root)
+      - [vsstudio\_hostarch](#vsstudio_hostarch)
+      - [vsstudio\_arch](#vsstudio_arch)
+      - [vsstudio\_(others)](#vsstudio_others)
+      - [ocaml\_options:](#ocaml_options)
   - [Sponsor](#sponsor)
 
 This project gives you "`setup-dkml`" scripts to build and automatically create
@@ -39,7 +39,7 @@ In contrast to the conventional [setup-ocaml](https://github.com/marketplace/act
 
 | `setup-dkml`                         | `setup-ocaml`             | Consequence                                                                                                                                                                                                                                                                                                 |
 | ------------------------------------ | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dkml-base-compiler                   | ocaml-base-compiler       | `setup-dkml` **only supports 4.12.1 today**. `setup-ocaml` supports all versions and variants of OCaml                                                                                                                                                                                                      |
+| dkml-base-compiler                   | ocaml-base-compiler       | `setup-dkml` **only supports 4.14.0 today**. `setup-ocaml` supports all versions and variants of OCaml                                                                                                                                                                                                      |
 | GitHub Local Action                  | GitHub Marketplace Action | `setup-dkml` uses Dune and Opam to distribute the GitHub build logic, while `setup-ocaml` is distributed through GitHub Marketplace which is easier to use                                                                                                                                                  |
 | GitLab CI/CD Local Include           | *not supported*           | `setup-dkml` supports GitLab CI/CD                                                                                                                                                                                                                                                                          |
 | Personal Computer Scripts            | *not supported*           | `setup-dkml` can generates scripts (only Windows today) to simulate CI on your personal computer for troubleshooting                                                                                                                                                                                        |
@@ -254,7 +254,7 @@ name: Build with DKML compiler
 env:
   OPAM_PACKAGE: "your_example"
   EXECUTABLE_NAME: "your_example"
-  DKML_COMPILER: "" # You can override the dkml-compiler package version. Example: 4.12.1-v1.0.2
+  DKML_COMPILER: "" # You can override the dkml-compiler package version. Example: 4.12.1-v1.0.2, 4.14.0-v1.0.2-prerel33
 
 on:
   push:
