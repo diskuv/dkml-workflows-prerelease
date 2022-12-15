@@ -58,6 +58,8 @@ $ sh ci/build-test.sh ci next
 Optional: Do the following to get the bleeding edge:
 
 ```bash
+opam pin remove crunch --no-action --yes
+opam pin remove cmdliner --no-action --yes
 opam pin dkml-workflows git+https://github.com/diskuv/dkml-workflows-prerelease.git#v1 --no-action --yes
 ```
 
