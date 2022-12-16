@@ -62,9 +62,6 @@ Environment variable.
 .PARAMETER PIN_DUNE
 Environment variable.
 
-.PARAMETER PIN_DUNE_CONFIGURATOR
-Environment variable.
-
 .PARAMETER PIN_DKML_APPS
 Environment variable.
 
@@ -127,7 +124,7 @@ param (
     
   # Environment variables (can be overridden on command line)
   # autogen from global_env_vars.
-  ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.12.1-v1.0.2"
+  ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.14.0-v1.1.0-prerel1"
   ,[Parameter()] [string] $PIN_BASE = "v0.14.3"
   ,[Parameter()] [string] $PIN_BIGSTRINGAF = "0.8.0"
   ,[Parameter()] [string] $PIN_CORE_KERNEL = "v0.14.2"
@@ -135,16 +132,15 @@ param (
   ,[Parameter()] [string] $PIN_CTYPES = "0.19.2-windowssupport-r4"
   ,[Parameter()] [string] $PIN_CURLY = "0.2.1-windows-env_r2"
   ,[Parameter()] [string] $PIN_DIGESTIF = "1.0.1"
-  ,[Parameter()] [string] $PIN_DUNE = "2.9.3+shim.1.0.2~r13"
-  ,[Parameter()] [string] $PIN_DUNE_CONFIGURATOR = "2.9.3+msvc"
-  ,[Parameter()] [string] $PIN_DKML_APPS = "1.0.2~prerel14"
+  ,[Parameter()] [string] $PIN_DUNE = "3.6.2~a237caa+shim"
+  ,[Parameter()] [string] $PIN_DKML_APPS = "1.1.0~prerel6"
   ,[Parameter()] [string] $PIN_OCAMLBUILD = "0.14.0"
   ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.1"
   ,[Parameter()] [string] $PIN_OCP_INDENT = "1.8.2-windowssupport"
   ,[Parameter()] [string] $PIN_PPX_EXPECT = "v0.14.1"
   ,[Parameter()] [string] $PIN_PTIME = "0.8.6-msvcsupport"
   ,[Parameter()] [string] $PIN_TIME_NOW = "v0.14.0"
-  ,[Parameter()] [string] $PIN_WITH_DKML = "1.0.2~prerel14"
+  ,[Parameter()] [string] $PIN_WITH_DKML = "1.1.0~prerel6"
 )
 
 $ErrorActionPreference = "Stop"
@@ -198,7 +194,6 @@ $env:PIN_CTYPES = $PIN_CTYPES
 $env:PIN_CURLY = $PIN_CURLY
 $env:PIN_DIGESTIF = $PIN_DIGESTIF
 $env:PIN_DUNE = $PIN_DUNE
-$env:PIN_DUNE_CONFIGURATOR = $PIN_DUNE_CONFIGURATOR
 $env:PIN_DKML_APPS = $PIN_DKML_APPS
 $env:PIN_OCAMLBUILD = $PIN_OCAMLBUILD
 $env:PIN_OCAMLFIND = $PIN_OCAMLFIND
@@ -507,7 +502,7 @@ set -euf
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=b060e2e41bbd864ad8003f1598d632ea1325b335
+DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=011d06d8777a5c2b9c52a93db0d3e75353f11f46
 # Constants
 #   Should be edited by release.sh, but ...
 #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
@@ -620,7 +615,6 @@ PIN_CURLY=${PIN_CURLY}
 PIN_DIGESTIF=${PIN_DIGESTIF}
 PIN_DKML_APPS=${PIN_DKML_APPS}
 PIN_DUNE=${PIN_DUNE}
-PIN_DUNE_CONFIGURATOR=${PIN_DUNE_CONFIGURATOR}
 PIN_OCAMLBUILD=${PIN_OCAMLBUILD}
 PIN_OCAMLFIND=${PIN_OCAMLFIND}
 PIN_OCP_INDENT=${PIN_OCP_INDENT}
@@ -1389,6 +1383,7 @@ do_pins() {
         # Validate OCAML_COMPILER (OCAML_COMPILER specified)
         case "${OCAML_COMPILER:-}" in
         4.12.1) true ;;
+        4.14.0) true ;;
         *)
             echo "OCAML_COMPILER version ${OCAML_COMPILER:-} is not supported" >&2
             exit 109
@@ -1448,7 +1443,7 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune "${PIN_DUNE}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-configurator "${PIN_DUNE_CONFIGURATOR}"
+    opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action dune-configurator # this used to be pinned, so any cached opamroot needs it unpinned
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlbuild "${PIN_OCAMLBUILD}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlfind "${PIN_OCAMLFIND}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocp-indent "${PIN_OCP_INDENT}"
