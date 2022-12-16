@@ -117,7 +117,6 @@ PIN_CURLY=${PIN_CURLY}
 PIN_DIGESTIF=${PIN_DIGESTIF}
 PIN_DKML_APPS=${PIN_DKML_APPS}
 PIN_DUNE=${PIN_DUNE}
-PIN_DUNE_CONFIGURATOR=${PIN_DUNE_CONFIGURATOR}
 PIN_OCAMLBUILD=${PIN_OCAMLBUILD}
 PIN_OCAMLFIND=${PIN_OCAMLFIND}
 PIN_OCP_INDENT=${PIN_OCP_INDENT}
@@ -946,7 +945,7 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune "${PIN_DUNE}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-configurator "${PIN_DUNE_CONFIGURATOR}"
+    opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action dune-configurator # this used to be pinned, so any cached opamroot needs it unpinned
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlbuild "${PIN_OCAMLBUILD}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlfind "${PIN_OCAMLFIND}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocp-indent "${PIN_OCP_INDENT}"
