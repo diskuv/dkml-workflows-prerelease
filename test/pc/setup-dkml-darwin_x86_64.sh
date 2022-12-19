@@ -18,7 +18,7 @@ export CONF_DKML_CROSS_TOOLCHAIN=@repository@
 export DISKUV_OPAM_REPOSITORY=
 export SECONDARY_SWITCH=false
 # autogen from global_env_vars.
-export DEFAULT_DKML_COMPILER='4.14.0-v1.1.0-prerel1'
+export DEFAULT_DKML_COMPILER='4.14.0-v1.1.0-prerel13'
 export PIN_BASE='v0.14.3'
 export PIN_BIGSTRINGAF='0.8.0'
 export PIN_CORE_KERNEL='v0.14.2'
@@ -27,14 +27,14 @@ export PIN_CTYPES='0.19.2-windowssupport-r4'
 export PIN_CURLY='0.2.1-windows-env_r2'
 export PIN_DIGESTIF='1.0.1'
 export PIN_DUNE='3.6.2~a237caa+shim'
-export PIN_DKML_APPS='1.1.0~prerel12'
+export PIN_DKML_APPS='1.1.0~prerel13'
 export PIN_OCAMLBUILD='0.14.0'
 export PIN_OCAMLFIND='1.9.1'
 export PIN_OCP_INDENT='1.8.2-windowssupport'
 export PIN_PPX_EXPECT='v0.14.1'
 export PIN_PTIME='0.8.6-msvcsupport'
 export PIN_TIME_NOW='v0.14.0'
-export PIN_WITH_DKML='1.1.0~prerel12'
+export PIN_WITH_DKML='1.1.0~prerel13'
 
 usage() {
   echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
@@ -403,7 +403,7 @@ set -euf
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=9f37e71eef1500242a4da1f434b628a989ff8900
+DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=c8bdf9c88f8630086ff504ec1d6a83c69c0a8346
 # Constants
 #   Should be edited by release.sh, but ...
 #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
