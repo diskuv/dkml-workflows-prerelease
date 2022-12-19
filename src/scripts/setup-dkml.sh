@@ -16,6 +16,10 @@ shift
 setup_WORKSPACE=$1
 shift
 
+if [ -x /usr/bin/cygpath ]; then
+    setup_WORKSPACE=$(/usr/bin/cygpath -au "$setup_WORKSPACE")
+fi
+
 # ------------------ Variables and functions ------------------------
 
 # shellcheck source=./common-values.sh

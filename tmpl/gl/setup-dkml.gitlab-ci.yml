@@ -38,6 +38,7 @@ variables:
         - ${opam_root_cacheable}/.ci.two.repo-init
         - .ci/sd4/g
         - .ci/sd4/vsenv.sh
+        - .ci/sd4/vsenv.ps1
         - msys64
 
 .win32:setup-dkml:
@@ -90,7 +91,13 @@ variables:
       } else {
           Write-Host "Download the archive ..."
           If ( !(Test-Path -Path msys64\var\cache ) ) { New-Item msys64\var\cache -ItemType Directory | Out-Null }
-          If ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) { Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2022-09-04/msys2-base-x86_64-20220904.sfx.exe" -outfile "msys64\var\cache\msys2.exe" }
+          If ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) {
+              Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2022-10-28/msys2-base-x86_64-20221028.sfx.exe" -outfile "msys64\var\cache\msys2.exe"
+              $Msys2ActualHash = (Get-FileHash -Algorithm SHA256 "msys64\var\cache\msys2.exe").Hash
+              if ("$Msys2ActualHash" -ne "E365B79B4B30B6F4BAF34BD93F3D2A41C0A92801C7A96D79CDDBFCA1090A0554") {
+                  throw "The MSYS2 installer was corrupted. You will need to retry the CI job. If that fails contact MSYS2 (file an issue) for why their installer executable changed"
+              }
+          }
 
           Write-Host "Extract the archive ..."
           msys64\var\cache\msys2.exe -y # Extract to .\msys64
@@ -184,7 +191,7 @@ variables:
       REM   because it stomps over the PATH. So we are inside a Batch script to do the query.
       msys64\usr\bin\bash -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .ci/sd4/msvcenv"
       '@
-      Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
+      Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.bat" -Encoding Default -Value $Content
 
     # ------------------ SECTION END Write pre scripts
     - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):write-pre-scripts${cr}${esc}[0K"
@@ -216,9 +223,11 @@ variables:
     - .ci\sd4\config-vsstudio.ps1
     - msys64\usr\bin\bash -lc "dos2unix .ci/sd4/vsenv.sh"
     - Get-Content .ci/sd4/vsenv.sh
+    - Get-Content .ci/sd4/vsenv.ps1
 
       # Capture Visual Studio compiler environment
-    - msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c '.ci\sd4\get-msvcpath-into-msys2.cmd'"
+    - '& .ci/sd4/vsenv.ps1'
+    - '& .ci\sd4\get-msvcpath-into-msys2.bat'
     - msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"
     - msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 

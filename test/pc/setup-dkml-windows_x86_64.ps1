@@ -133,14 +133,14 @@ param (
   ,[Parameter()] [string] $PIN_CURLY = "0.2.1-windows-env_r2"
   ,[Parameter()] [string] $PIN_DIGESTIF = "1.0.1"
   ,[Parameter()] [string] $PIN_DUNE = "3.6.2~a237caa+shim"
-  ,[Parameter()] [string] $PIN_DKML_APPS = "1.1.0~prerel6"
+  ,[Parameter()] [string] $PIN_DKML_APPS = "1.1.0~prerel10"
   ,[Parameter()] [string] $PIN_OCAMLBUILD = "0.14.0"
   ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.1"
   ,[Parameter()] [string] $PIN_OCP_INDENT = "1.8.2-windowssupport"
   ,[Parameter()] [string] $PIN_PPX_EXPECT = "v0.14.1"
   ,[Parameter()] [string] $PIN_PTIME = "0.8.6-msvcsupport"
   ,[Parameter()] [string] $PIN_TIME_NOW = "v0.14.0"
-  ,[Parameter()] [string] $PIN_WITH_DKML = "1.1.0~prerel6"
+  ,[Parameter()] [string] $PIN_WITH_DKML = "1.1.0~prerel10"
 )
 
 $ErrorActionPreference = "Stop"
@@ -406,6 +406,10 @@ shift
 setup_WORKSPACE=$1
 shift
 
+if [ -x /usr/bin/cygpath ]; then
+    setup_WORKSPACE=$(/usr/bin/cygpath -au "$setup_WORKSPACE")
+fi
+
 # ------------------------ Functions ------------------------
 
 # shellcheck source=./common-values.sh
@@ -501,7 +505,7 @@ set -euf
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=011d06d8777a5c2b9c52a93db0d3e75353f11f46
+DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=72b3d7c3ce3aae9b96d8af593968d96f2f25c489
 # Constants
 #   Should be edited by release.sh, but ...
 #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
@@ -512,6 +516,10 @@ setup_WORKSPACE_VARNAME=$1
 shift
 setup_WORKSPACE=$1
 shift
+
+if [ -x /usr/bin/cygpath ]; then
+    setup_WORKSPACE=$(/usr/bin/cygpath -au "$setup_WORKSPACE")
+fi
 
 # ------------------ Variables and functions ------------------------
 
@@ -1662,7 +1670,7 @@ if (("${env:GITLAB_CI}" -eq "true") -or ("${env:PC_CI}" -eq "true")) {
 }
 
 # Locate Visual Studio (Windows)
-if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv${ExportExt}))) {
+if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv${ExportExt}) -or !(Test-Path -Path .ci/sd4/vsenv.ps1))) {
     $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
     Import-Module Machine
 
@@ -1677,6 +1685,12 @@ if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv${ExportEx
     Write-Output "${ExportSN}VS_WINSDKVER=${ExportSV}$($VisualStudioProps.WinSdkVer)${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
     Write-Output "${ExportSN}VS_MSVSPREFERENCE=${ExportSV}$($VisualStudioProps.MsvsPreference)${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
     Write-Output "${ExportSN}VS_CMAKEGENERATOR=${ExportSV}$($VisualStudioProps.CMakeGenerator)${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
+
+    Write-Output "`$env:VS_DIR='$($VisualStudioProps.InstallPath)'" > .ci/sd4/vsenv.ps1
+    Write-Output "`$env:VS_VCVARSVER='$($VisualStudioProps.VcVarsVer)'" >> .ci/sd4/vsenv.ps1
+    Write-Output "`$env:VS_WINSDKVER='$($VisualStudioProps.WinSdkVer)'" >> .ci/sd4/vsenv.ps1
+    Write-Output "`$env:VS_MSVSPREFERENCE='$($VisualStudioProps.MsvsPreference)'" >> .ci/sd4/vsenv.ps1
+    Write-Output "`$env:VS_CMAKEGENERATOR='$($VisualStudioProps.CMakeGenerator)'" >> .ci/sd4/vsenv.ps1
 }
 
 # Link to hardcoded Visual Studio (Windows)
@@ -1686,6 +1700,12 @@ if ("${env:vsstudio_dir}" -ne "") {
     Write-Output "${ExportSN}VS_WINSDKVER=${ExportSV}${env:vsstudio_winsdkver}${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
     Write-Output "${ExportSN}VS_MSVSPREFERENCE=${ExportSV}${env:vsstudio_msvspreference}${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
     Write-Output "${ExportSN}VS_CMAKEGENERATOR=${ExportSV}${env:vsstudio_cmakegenerator}${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
+
+    Write-Output "`$env:VS_DIR='${env:vsstudio_dir}'" > .ci/sd4/vsenv.ps1
+    Write-Output "`$env:VS_VCVARSVER='${env:vsstudio_vcvarsver}'" >> .ci/sd4/vsenv.ps1
+    Write-Output "`$env:VS_WINSDKVER='${env:vsstudio_winsdkver}'" >> .ci/sd4/vsenv.ps1
+    Write-Output "`$env:VS_MSVSPREFERENCE='${env:vsstudio_msvspreference}'" >> .ci/sd4/vsenv.ps1
+    Write-Output "`$env:VS_CMAKEGENERATOR='${env:vsstudio_cmakegenerator}'" >> .ci/sd4/vsenv.ps1
 }
 
 '@
@@ -1700,6 +1720,8 @@ REM packages (ocamlbuild, etc.) which
 REM need a native compiler will fail without the MSVC compiler in the
 REM PATH. There isn't a `with-dkml.exe` alternative available at
 REM this stage of the GitHub workflow.
+SET VSCMD_DEBUG=2
+SET VSCMD_SKIP_SENDTELEMETRY=1
 call "%VS_DIR%\Common7\Tools\VsDevCmd.bat" -no_logo -host_arch=%vsstudio_hostarch% -arch=%vsstudio_arch% -vcvars_ver=%VS_VCVARSVER% -winsdk=%VS_WINSDKVER%
 if %ERRORLEVEL% neq 0 (
     echo.

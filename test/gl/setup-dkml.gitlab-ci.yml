@@ -22,14 +22,14 @@ variables:
   PIN_CURLY: '0.2.1-windows-env_r2'
   PIN_DIGESTIF: '1.0.1'
   PIN_DUNE: '3.6.2~a237caa+shim'
-  PIN_DKML_APPS: '1.1.0~prerel6'
+  PIN_DKML_APPS: '1.1.0~prerel10'
   PIN_OCAMLBUILD: '0.14.0'
   PIN_OCAMLFIND: '1.9.1'
   PIN_OCP_INDENT: '1.8.2-windowssupport'
   PIN_PPX_EXPECT: 'v0.14.1'
   PIN_PTIME: '0.8.6-msvcsupport'
   PIN_TIME_NOW: 'v0.14.0'
-  PIN_WITH_DKML: '1.1.0~prerel6'
+  PIN_WITH_DKML: '1.1.0~prerel10'
 
 .common:setup-dkml:
   stage: build
@@ -55,6 +55,7 @@ variables:
         - ${opam_root_cacheable}/.ci.two.repo-init
         - .ci/sd4/g
         - .ci/sd4/vsenv.sh
+        - .ci/sd4/vsenv.ps1
         - msys64
 
 .win32:setup-dkml:
@@ -134,7 +135,13 @@ variables:
       } else {
           Write-Host "Download the archive ..."
           If ( !(Test-Path -Path msys64\var\cache ) ) { New-Item msys64\var\cache -ItemType Directory | Out-Null }
-          If ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) { Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2022-09-04/msys2-base-x86_64-20220904.sfx.exe" -outfile "msys64\var\cache\msys2.exe" }
+          If ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) {
+              Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2022-10-28/msys2-base-x86_64-20221028.sfx.exe" -outfile "msys64\var\cache\msys2.exe"
+              $Msys2ActualHash = (Get-FileHash -Algorithm SHA256 "msys64\var\cache\msys2.exe").Hash
+              if ("$Msys2ActualHash" -ne "E365B79B4B30B6F4BAF34BD93F3D2A41C0A92801C7A96D79CDDBFCA1090A0554") {
+                  throw "The MSYS2 installer was corrupted. You will need to retry the CI job. If that fails contact MSYS2 (file an issue) for why their installer executable changed"
+              }
+          }
 
           Write-Host "Extract the archive ..."
           msys64\var\cache\msys2.exe -y # Extract to .\msys64
@@ -327,6 +334,10 @@ variables:
       setup_WORKSPACE=$1
       shift
 
+      if [ -x /usr/bin/cygpath ]; then
+          setup_WORKSPACE=$(/usr/bin/cygpath -au "$setup_WORKSPACE")
+      fi
+
       # ------------------------ Functions ------------------------
 
       # shellcheck source=./common-values.sh
@@ -422,7 +433,7 @@ variables:
       # Constants
       SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
       #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-      DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=011d06d8777a5c2b9c52a93db0d3e75353f11f46
+      DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=72b3d7c3ce3aae9b96d8af593968d96f2f25c489
       # Constants
       #   Should be edited by release.sh, but ...
       #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
@@ -433,6 +444,10 @@ variables:
       shift
       setup_WORKSPACE=$1
       shift
+
+      if [ -x /usr/bin/cygpath ]; then
+          setup_WORKSPACE=$(/usr/bin/cygpath -au "$setup_WORKSPACE")
+      fi
 
       # ------------------ Variables and functions ------------------------
 
@@ -1584,7 +1599,7 @@ variables:
       }
 
       # Locate Visual Studio (Windows)
-      if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv${ExportExt}))) {
+      if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv${ExportExt}) -or !(Test-Path -Path .ci/sd4/vsenv.ps1))) {
           $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
           Import-Module Machine
 
@@ -1599,6 +1614,12 @@ variables:
           Write-Output "${ExportSN}VS_WINSDKVER=${ExportSV}$($VisualStudioProps.WinSdkVer)${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
           Write-Output "${ExportSN}VS_MSVSPREFERENCE=${ExportSV}$($VisualStudioProps.MsvsPreference)${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
           Write-Output "${ExportSN}VS_CMAKEGENERATOR=${ExportSV}$($VisualStudioProps.CMakeGenerator)${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
+
+          Write-Output "`$env:VS_DIR='$($VisualStudioProps.InstallPath)'" > .ci/sd4/vsenv.ps1
+          Write-Output "`$env:VS_VCVARSVER='$($VisualStudioProps.VcVarsVer)'" >> .ci/sd4/vsenv.ps1
+          Write-Output "`$env:VS_WINSDKVER='$($VisualStudioProps.WinSdkVer)'" >> .ci/sd4/vsenv.ps1
+          Write-Output "`$env:VS_MSVSPREFERENCE='$($VisualStudioProps.MsvsPreference)'" >> .ci/sd4/vsenv.ps1
+          Write-Output "`$env:VS_CMAKEGENERATOR='$($VisualStudioProps.CMakeGenerator)'" >> .ci/sd4/vsenv.ps1
       }
 
       # Link to hardcoded Visual Studio (Windows)
@@ -1608,6 +1629,12 @@ variables:
           Write-Output "${ExportSN}VS_WINSDKVER=${ExportSV}${env:vsstudio_winsdkver}${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
           Write-Output "${ExportSN}VS_MSVSPREFERENCE=${ExportSV}${env:vsstudio_msvspreference}${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
           Write-Output "${ExportSN}VS_CMAKEGENERATOR=${ExportSV}${env:vsstudio_cmakegenerator}${ExportEV}" >> .ci/sd4/vsenv${ExportExt}
+
+          Write-Output "`$env:VS_DIR='${env:vsstudio_dir}'" > .ci/sd4/vsenv.ps1
+          Write-Output "`$env:VS_VCVARSVER='${env:vsstudio_vcvarsver}'" >> .ci/sd4/vsenv.ps1
+          Write-Output "`$env:VS_WINSDKVER='${env:vsstudio_winsdkver}'" >> .ci/sd4/vsenv.ps1
+          Write-Output "`$env:VS_MSVSPREFERENCE='${env:vsstudio_msvspreference}'" >> .ci/sd4/vsenv.ps1
+          Write-Output "`$env:VS_CMAKEGENERATOR='${env:vsstudio_cmakegenerator}'" >> .ci/sd4/vsenv.ps1
       }
 
       '@
@@ -1622,6 +1649,8 @@ variables:
       REM need a native compiler will fail without the MSVC compiler in the
       REM PATH. There isn't a `with-dkml.exe` alternative available at
       REM this stage of the GitHub workflow.
+      SET VSCMD_DEBUG=2
+      SET VSCMD_SKIP_SENDTELEMETRY=1
       call "%VS_DIR%\Common7\Tools\VsDevCmd.bat" -no_logo -host_arch=%vsstudio_hostarch% -arch=%vsstudio_arch% -vcvars_ver=%VS_VCVARSVER% -winsdk=%VS_WINSDKVER%
       if %ERRORLEVEL% neq 0 (
           echo.
@@ -1642,7 +1671,7 @@ variables:
       REM   because it stomps over the PATH. So we are inside a Batch script to do the query.
       msys64\usr\bin\bash -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .ci/sd4/msvcenv"
       '@
-      Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
+      Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.bat" -Encoding Default -Value $Content
 
     # ------------------ SECTION END Write pre scripts
     - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):write-pre-scripts${cr}${esc}[0K"
@@ -1674,9 +1703,11 @@ variables:
     - .ci\sd4\config-vsstudio.ps1
     - msys64\usr\bin\bash -lc "dos2unix .ci/sd4/vsenv.sh"
     - Get-Content .ci/sd4/vsenv.sh
+    - Get-Content .ci/sd4/vsenv.ps1
 
       # Capture Visual Studio compiler environment
-    - msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c '.ci\sd4\get-msvcpath-into-msys2.cmd'"
+    - '& .ci/sd4/vsenv.ps1'
+    - '& .ci\sd4\get-msvcpath-into-msys2.bat'
     - msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"
     - msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
@@ -2005,6 +2036,10 @@ variables:
       setup_WORKSPACE=$1
       shift
 
+      if [ -x /usr/bin/cygpath ]; then
+          setup_WORKSPACE=$(/usr/bin/cygpath -au "$setup_WORKSPACE")
+      fi
+
       # ------------------------ Functions ------------------------
 
       # shellcheck source=./common-values.sh
@@ -2097,7 +2132,7 @@ variables:
       # Constants
       SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
       #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-      DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=011d06d8777a5c2b9c52a93db0d3e75353f11f46
+      DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=72b3d7c3ce3aae9b96d8af593968d96f2f25c489
       # Constants
       #   Should be edited by release.sh, but ...
       #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
@@ -2108,6 +2143,10 @@ variables:
       shift
       setup_WORKSPACE=$1
       shift
+
+      if [ -x /usr/bin/cygpath ]; then
+          setup_WORKSPACE=$(/usr/bin/cygpath -au "$setup_WORKSPACE")
+      fi
 
       # ------------------ Variables and functions ------------------------
 
@@ -3560,6 +3599,10 @@ variables:
       setup_WORKSPACE=$1
       shift
 
+      if [ -x /usr/bin/cygpath ]; then
+          setup_WORKSPACE=$(/usr/bin/cygpath -au "$setup_WORKSPACE")
+      fi
+
       # ------------------------ Functions ------------------------
 
       # shellcheck source=./common-values.sh
@@ -3652,7 +3695,7 @@ variables:
       # Constants
       SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
       #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-      DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=011d06d8777a5c2b9c52a93db0d3e75353f11f46
+      DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=72b3d7c3ce3aae9b96d8af593968d96f2f25c489
       # Constants
       #   Should be edited by release.sh, but ...
       #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
@@ -3663,6 +3706,10 @@ variables:
       shift
       setup_WORKSPACE=$1
       shift
+
+      if [ -x /usr/bin/cygpath ]; then
+          setup_WORKSPACE=$(/usr/bin/cygpath -au "$setup_WORKSPACE")
+      fi
 
       # ------------------ Variables and functions ------------------------
 

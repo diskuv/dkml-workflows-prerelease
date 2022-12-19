@@ -2,6 +2,8 @@
 
 - Upgrade OCaml from 4.12.1 to 4.14.0
 - Desktop testing for Linux works with plain MSYS2 on Windows (using docker)
+- Fix bug on GitLab CI where MSYS2 calling into cmd.exe could leave the
+  GitLab CI session as Command Prompt rather than the usual PowerShell.
 
 ## 1.1.0 (v1)
 

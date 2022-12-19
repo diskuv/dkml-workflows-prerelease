@@ -5,6 +5,8 @@ REM packages (ocamlbuild, etc.) which
 REM need a native compiler will fail without the MSVC compiler in the
 REM PATH. There isn't a `with-dkml.exe` alternative available at
 REM this stage of the GitHub workflow.
+SET VSCMD_DEBUG=2
+SET VSCMD_SKIP_SENDTELEMETRY=1
 call "%VS_DIR%\Common7\Tools\VsDevCmd.bat" -no_logo -host_arch=%vsstudio_hostarch% -arch=%vsstudio_arch% -vcvars_ver=%VS_VCVARSVER% -winsdk=%VS_WINSDKVER%
 if %ERRORLEVEL% neq 0 (
     echo.
