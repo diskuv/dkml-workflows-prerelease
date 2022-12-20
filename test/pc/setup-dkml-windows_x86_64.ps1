@@ -124,7 +124,7 @@ param (
     
   # Environment variables (can be overridden on command line)
   # autogen from global_env_vars.
-  ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.14.0-v1.1.0-prerel13"
+  ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.14.0-v1.1.0-prerel15"
   ,[Parameter()] [string] $PIN_BASE = "v0.14.3"
   ,[Parameter()] [string] $PIN_BIGSTRINGAF = "0.8.0"
   ,[Parameter()] [string] $PIN_CORE_KERNEL = "v0.14.2"
@@ -132,15 +132,15 @@ param (
   ,[Parameter()] [string] $PIN_CTYPES = "0.19.2-windowssupport-r4"
   ,[Parameter()] [string] $PIN_CURLY = "0.2.1-windows-env_r2"
   ,[Parameter()] [string] $PIN_DIGESTIF = "1.0.1"
-  ,[Parameter()] [string] $PIN_DUNE = "3.6.2~a237caa+shim"
-  ,[Parameter()] [string] $PIN_DKML_APPS = "1.1.0~prerel13"
+  ,[Parameter()] [string] $PIN_DUNE = "3.6.2~d97293a+shim"
+  ,[Parameter()] [string] $PIN_DKML_APPS = "1.1.0~prerel15"
   ,[Parameter()] [string] $PIN_OCAMLBUILD = "0.14.0"
   ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.1"
   ,[Parameter()] [string] $PIN_OCP_INDENT = "1.8.2-windowssupport"
   ,[Parameter()] [string] $PIN_PPX_EXPECT = "v0.14.1"
   ,[Parameter()] [string] $PIN_PTIME = "0.8.6-msvcsupport"
   ,[Parameter()] [string] $PIN_TIME_NOW = "v0.14.0"
-  ,[Parameter()] [string] $PIN_WITH_DKML = "1.1.0~prerel13"
+  ,[Parameter()] [string] $PIN_WITH_DKML = "1.1.0~prerel15"
 )
 
 $ErrorActionPreference = "Stop"
@@ -505,7 +505,7 @@ set -euf
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=c8bdf9c88f8630086ff504ec1d6a83c69c0a8346
+DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=f390ba39afcad7ae0d0957cbe9d819c210759d87
 # Constants
 #   Should be edited by release.sh, but ...
 #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
