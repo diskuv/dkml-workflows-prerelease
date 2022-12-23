@@ -22,7 +22,7 @@ let global_env_vars =
     ("PIN_CTYPES", "0.19.2-windowssupport-r4");
     ("PIN_CURLY", "0.2.1-windows-env_r2");
     ("PIN_DIGESTIF", "1.0.1");
-    ("PIN_DUNE", "3.6.2~d97293a+shim");
+    ("PIN_DUNE", "3.6.2");
     (* PIN_DKML_APPS is maintained by diskuv-ocaml's release.sh in dkml-workflows-prerelease *)
     ("PIN_DKML_APPS", "1.1.0~prerel22");
     ("PIN_OCAMLBUILD", "0.14.0");
