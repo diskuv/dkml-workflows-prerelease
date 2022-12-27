@@ -4,9 +4,9 @@ set -euf
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=6303854b20a2bfa1edf7df995a60a3777f46f9fa
+DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=cdf6463c5c3c7ca37bc798e17929bff1c481bfdd
 # Constants
-DKML_VERSION=1.1.0-prerel27
+DKML_VERSION=1.1.0
 
 setup_WORKSPACE_VARNAME=$1
 shift
