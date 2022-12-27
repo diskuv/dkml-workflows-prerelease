@@ -6,10 +6,7 @@ SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce
 #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
 DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=6303854b20a2bfa1edf7df995a60a3777f46f9fa
 # Constants
-#   Should be edited by release.sh, but ...
-#   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
-#   can come back in.
-DKML_VERSION=0.4.0
+DKML_VERSION=1.1.0-prerel27
 
 setup_WORKSPACE_VARNAME=$1
 shift
