@@ -148,7 +148,7 @@ runs:
         REM (For some reason no shell commands can happen after the last msys2 -c in GitHub Actions
         REM so split into multiple steps!
         '@
-        Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
+        Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.bat" -Encoding Default -Value $Content
 
     - name: Prepare cache keys
       # An undocumented bug with GitHub Actions is that a space in the key
@@ -229,7 +229,7 @@ runs:
     - name: Capture Visual Studio compiler environment (1/2) (Windows)
       shell: cmd
       run: |
-        call .ci\sd4\get-msvcpath-into-msys2.cmd
+        call .ci\sd4\get-msvcpath-into-msys2.bat
 
     - name: Capture Visual Studio compiler environment (2/2) (Windows)
       shell: msys2 {0}
@@ -275,7 +275,7 @@ runs:
         if [ -x /usr/bin/cygpath ]; then opamrunabs=$(/usr/bin/cygpath -aw "$opamrunabs"); fi
         echo "$opamrunabs" >> $GITHUB_PATH
 
-        #   Special case: GITHUB_PATH does not influence msys2.CMD of msys2/setup-msys2@v2, so place in real MSYS2 PATH
+        #   Special case: GITHUB_PATH does not influence msys2.bat of msys2/setup-msys2@v2, so place in real MSYS2 PATH
         if [ -n "${MSYSTEM:-}" ]; then
           install -d /usr/local/bin
           install -v .ci/sd4/opamrun/opamrun /usr/local/bin/opamrun

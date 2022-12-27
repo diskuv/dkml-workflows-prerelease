@@ -78,6 +78,7 @@ OCAML_COMPILER=${OCAML_COMPILER:-}
 CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
 SECONDARY_SWITCH=${SECONDARY_SWITCH:-}
 MANYLINUX=${MANYLINUX:-}
+DKML_HOME=${DKML_HOME:-}
 VERBOSE=${VERBOSE:-}
 .
 -------------------
@@ -1043,12 +1044,32 @@ do_use_vsstudio dkml
 do_setenv() {
     do_setenv_SWITCH=$1
     shift
+    section_begin "setenv-$do_setenv_SWITCH" "Set opam option for $do_setenv_SWITCH switch"
     opamrun option --switch "$do_setenv_SWITCH" setenv > ".ci/sd4/setenv.$do_setenv_SWITCH.txt"
     if ! grep -q '\(^|\[\)DiskuvOCamlVarsVersion ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
         opamrun option --switch "$do_setenv_SWITCH" setenv+='DiskuvOCamlVarsVersion = "2"'
     fi
     if ! grep -q '\(^|\[\)DiskuvOCamlVersion ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
         opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlVersion = \"$DKML_VERSION\""
+    fi
+    if [ "$do_setenv_SWITCH" = dkml ] && [ -n "${DKML_HOME:-}" ]; then
+      do_setenv_DKMLHOME_ESCAPED="$DKML_HOME"
+      do_setenv_USRBIN_ESCAPED="$DKML_HOME/usr/bin"
+      do_setenv_BIN_ESCAPED="$DKML_HOME/bin"
+      if [ -x /usr/bin/cygpath ]; then
+        do_setenv_DKMLHOME_ESCAPED=$(/usr/bin/cygpath -aw "$do_setenv_DKMLHOME_ESCAPED" | sed 's/\\/\\\\/g')
+        do_setenv_USRBIN_ESCAPED=$(/usr/bin/cygpath -aw "$do_setenv_USRBIN_ESCAPED" | sed 's/\\/\\\\/g')
+        do_setenv_BIN_ESCAPED=$(/usr/bin/cygpath -aw "$do_setenv_BIN_ESCAPED" | sed 's/\\/\\\\/g')
+      fi
+      if ! grep -q '\(^|\[\)DiskuvOCamlHome ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
+          opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlHome = \"$do_setenv_DKMLHOME_ESCAPED\""
+      fi
+      if ! grep -q '\(^|\[\)DiskuvOCamlBinaryPaths ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
+          opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlBinaryPaths = \"$do_setenv_USRBIN_ESCAPED;$do_setenv_BIN_ESCAPED\""
+      fi
+      if ! grep -q '\(^|\[\)DiskuvOCamlDeploymentId ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
+          opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlDeploymentId = \"setup-dkml-switch-$do_setenv_SWITCH\""
+      fi
     fi
     case "${dkml_host_abi}" in
     windows_*)
@@ -1064,6 +1085,7 @@ do_setenv() {
             opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlMSYS2Dir = \"$MSYS2_DIR_NATIVE_ESCAPED\""
         fi
     esac
+    section_end "setenv-$do_setenv_SWITCH"
 }
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_setenv two

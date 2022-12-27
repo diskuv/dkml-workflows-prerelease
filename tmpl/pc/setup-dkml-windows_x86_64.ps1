@@ -34,6 +34,10 @@ Input variable. Unspecified or blank is the latest from the default branch (main
 .PARAMETER DISKUV_OPAM_REPOSITORY
 Input variable. Defaults to the value of -DEFAULT_DISKUV_OPAM_REPOSITORY_TAG (see below)
 
+.PARAMETER DKML_HOME
+Input variables. If specified then DiskuvOCamlHome, DiskuvOCamlBinaryPaths and DiskuvOCamlDeploymentId will be set, in addition to the always-present DiskuvOCamlVarsVersion, DiskuvOCamlVersion
+and DiskuvOCamlMSYS2Dir.
+
 # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}.PARAMETER {{ var.name }}{{ nl }}Environment variable.{{ nl }}{% endfor %}
 #>
 [CmdletBinding()]
@@ -64,7 +68,10 @@ param (
   $CONF_DKML_CROSS_TOOLCHAIN = "@repository@",
   [Parameter()]
   [string]
-  $DISKUV_OPAM_REPOSITORY = ""
+  $DISKUV_OPAM_REPOSITORY = "",
+  [Parameter()]
+  [string]
+  $DKML_HOME = ""
 
   # Conflicts with automatic variable $Verbose
   # [Parameter()]
@@ -97,6 +104,7 @@ $env:DKML_COMPILER = $DKML_COMPILER
 $env:SECONDARY_SWITCH = $SECONDARY_SWITCH
 $env:CONF_DKML_CROSS_TOOLCHAIN = $CONF_DKML_CROSS_TOOLCHAIN
 $env:DISKUV_OPAM_REPOSITORY = $DISKUV_OPAM_REPOSITORY
+$env:DKML_HOME = $DKML_HOME
 
 # Set matrix variables
 # autogen from pc_vars. only windows_x86_64{{ nl }}{% for (name,value) in pc_vars.windows_x86_64 %}$env:{{ name }} = "{{ value }}"{{ nl }}{% endfor %}
@@ -208,7 +216,7 @@ REM * We can't use `bash -lc` directly to query for all MSVC environment variabl
 REM   because it stomps over the PATH. So we are inside a Batch script to do the query.
 msys64\usr\bin\bash -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .ci/sd4/msvcenv"
 '@
-Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.cmd" -Encoding Default -Value $Content
+Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.bat" -Encoding Default -Value $Content
 
 msys64\usr\bin\bash -lc "sh .ci/sd4/run-checkout-code.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
 if ($LASTEXITCODE -ne 0) {
@@ -235,9 +243,11 @@ If ( "${env:VERBOSE}" -eq "true" ) {
 .ci\sd4\config-vsstudio.ps1
 msys64\usr\bin\bash -lc "dos2unix .ci/sd4/vsenv.sh"
 Get-Content .ci/sd4/vsenv.sh
+Get-Content .ci/sd4/vsenv.ps1
 
 # Capture Visual Studio compiler environment
-msys64\usr\bin\bash -lc ". .ci/sd4/vsenv.sh && cmd /c '.ci\sd4\get-msvcpath-into-msys2.cmd'"
+& .ci\sd4\vsenv.ps1
+& .ci\sd4\get-msvcpath-into-msys2.bat
 msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"    
 msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
@@ -263,5 +273,5 @@ Now you can use 'opamrun' to do opam commands like:
 
   msys64\usr\bin\bash -lc 'PATH="`$PWD/.ci/sd4/opamrun:`$PATH"; opamrun install XYZ.opam'
   msys64\usr\bin\bash -lc 'PATH="`$PWD/.ci/sd4/opamrun:`$PATH"; opamrun exec -- bash'
-  msys64\usr\bin\bash -lc 'PATH="sh ci/build-test.sh'
+  msys64\usr\bin\bash -lc 'sh ci/build-test.sh'
 "@

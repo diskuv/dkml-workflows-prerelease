@@ -325,12 +325,9 @@ runs:
         # Constants
         SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
         #   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-        DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=450507354d0d3228204182f88d1b05ce1038b153
+        DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=6303854b20a2bfa1edf7df995a60a3777f46f9fa
         # Constants
-        #   Should be edited by release.sh, but ...
-        #   Can't be 1.0.0 or later until https://github.com/ocaml/opam-repository/pull/21704 ocaml-option-32bit
-        #   can come back in.
-        DKML_VERSION=0.4.0
+        DKML_VERSION=1.1.0-prerel27
 
         setup_WORKSPACE_VARNAME=$1
         shift
@@ -402,6 +399,7 @@ runs:
         CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
         SECONDARY_SWITCH=${SECONDARY_SWITCH:-}
         MANYLINUX=${MANYLINUX:-}
+        DKML_HOME=${DKML_HOME:-}
         VERBOSE=${VERBOSE:-}
         .
         -------------------
@@ -1367,12 +1365,32 @@ runs:
         do_setenv() {
             do_setenv_SWITCH=$1
             shift
+            section_begin "setenv-$do_setenv_SWITCH" "Set opam option for $do_setenv_SWITCH switch"
             opamrun option --switch "$do_setenv_SWITCH" setenv > ".ci/sd4/setenv.$do_setenv_SWITCH.txt"
             if ! grep -q '\(^|\[\)DiskuvOCamlVarsVersion ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
                 opamrun option --switch "$do_setenv_SWITCH" setenv+='DiskuvOCamlVarsVersion = "2"'
             fi
             if ! grep -q '\(^|\[\)DiskuvOCamlVersion ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
                 opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlVersion = \"$DKML_VERSION\""
+            fi
+            if [ "$do_setenv_SWITCH" = dkml ] && [ -n "${DKML_HOME:-}" ]; then
+              do_setenv_DKMLHOME_ESCAPED="$DKML_HOME"
+              do_setenv_USRBIN_ESCAPED="$DKML_HOME/usr/bin"
+              do_setenv_BIN_ESCAPED="$DKML_HOME/bin"
+              if [ -x /usr/bin/cygpath ]; then
+                do_setenv_DKMLHOME_ESCAPED=$(/usr/bin/cygpath -aw "$do_setenv_DKMLHOME_ESCAPED" | sed 's/\\/\\\\/g')
+                do_setenv_USRBIN_ESCAPED=$(/usr/bin/cygpath -aw "$do_setenv_USRBIN_ESCAPED" | sed 's/\\/\\\\/g')
+                do_setenv_BIN_ESCAPED=$(/usr/bin/cygpath -aw "$do_setenv_BIN_ESCAPED" | sed 's/\\/\\\\/g')
+              fi
+              if ! grep -q '\(^|\[\)DiskuvOCamlHome ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
+                  opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlHome = \"$do_setenv_DKMLHOME_ESCAPED\""
+              fi
+              if ! grep -q '\(^|\[\)DiskuvOCamlBinaryPaths ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
+                  opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlBinaryPaths = \"$do_setenv_USRBIN_ESCAPED;$do_setenv_BIN_ESCAPED\""
+              fi
+              if ! grep -q '\(^|\[\)DiskuvOCamlDeploymentId ' ".ci/sd4/setenv.$do_setenv_SWITCH.txt"; then
+                  opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlDeploymentId = \"setup-dkml-switch-$do_setenv_SWITCH\""
+              fi
             fi
             case "${dkml_host_abi}" in
             windows_*)
@@ -1388,6 +1406,7 @@ runs:
                     opamrun option --switch "$do_setenv_SWITCH" setenv+="DiskuvOCamlMSYS2Dir = \"$MSYS2_DIR_NATIVE_ESCAPED\""
                 fi
             esac
+            section_end "setenv-$do_setenv_SWITCH"
         }
         if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
             do_setenv two
@@ -1554,7 +1573,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo 'b4eb64-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo 'bb8fee-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
@@ -1630,14 +1649,14 @@ runs:
         PIN_CURLY: '0.2.1-windows-env_r2'
         PIN_DIGESTIF: '1.0.1'
         PIN_DUNE: '3.6.2'
-        PIN_DKML_APPS: '1.1.0~prerel22'
+        PIN_DKML_APPS: '1.1.0~prerel27'
         PIN_OCAMLBUILD: '0.14.0'
         PIN_OCAMLFIND: '1.9.1'
         PIN_OCP_INDENT: '1.8.2-windowssupport'
         PIN_PPX_EXPECT: 'v0.14.1'
         PIN_PTIME: '0.8.6-msvcsupport'
         PIN_TIME_NOW: 'v0.14.0'
-        PIN_WITH_DKML: '1.1.0~prerel22'
+        PIN_WITH_DKML: '1.1.0~prerel27'
       run: |
         sh .ci/sd4/run-setup-dkml.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"
 

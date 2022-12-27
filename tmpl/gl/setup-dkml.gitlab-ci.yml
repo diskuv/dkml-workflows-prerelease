@@ -11,10 +11,11 @@ variables:
   DISKUV_OPAM_REPOSITORY: "" # DEFAULT_DISKUV_OPAM_REPOSITORY_TAG is used as default for empty strings
   SECONDARY_SWITCH: "false"
   VERBOSE: "false"
+  DKML_HOME: ""
 
   # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}  {{ var.name }}: {{ squot }}{{ var.value }}{{ squot }}{% endfor %}
 
-.common:setup-dkml:
+.common:setup-dkml-allplusmincache:
   stage: build
   artifacts:
     untracked: false
@@ -22,17 +23,22 @@ variables:
     paths:
       - dist
     expire_in: "1 days"
-
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
+    - key: "a_{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
+      paths:
+        - ${opam_root_cacheable}/download-cache
+
+.common:setup-dkml-cache:
+  # Only 4 caches allowed in GitLab CI
+  cache:
+    - key: "b_{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
         - ${opam_root_cacheable}/dkml
         - ${opam_root_cacheable}/two
         - ${opam_root_cacheable}/repo
-        - ${opam_root_cacheable}/download-cache
         - ${opam_root_cacheable}/.ci.root-init
         - ${opam_root_cacheable}/.ci.dkml.repo-init
         - ${opam_root_cacheable}/.ci.two.repo-init
@@ -41,19 +47,18 @@ variables:
         - .ci/sd4/vsenv.ps1
         - msys64
 
-.win32:setup-dkml:
-  # prettier-ignore
-  parallel:
-    matrix: [
-      # autogen from gl_vars. only windows{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.dkml_host_os == "windows" -%}{{ nl }}      { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
-    ]
+.common:setup-dkml:
+  extends:
+    - .common:setup-dkml-allplusmincache
+    - .common:setup-dkml-cache
+
+.win32:setup-dkml-allplusmincache:
+  extends: .common:setup-dkml-allplusmincache
   variables:
     # https://patchwork.kernel.org/project/qemu-devel/patch/20211215073402.144286-17-thuth@redhat.com/
     CHERE_INVOKING: "yes" # Preserve the current working directory
-    MSYSTEM: '{% raw %}${msys2_system}{% endraw %}' # Start a 64 bit environment if CLANG64, etc.
-  image: $gl_image
+    MSYSTEM: '${msys2_system}' # Start a 64 bit environment if CLANG64, etc.
   tags: [shared-windows, windows, windows-1809]
-  extends: .common:setup-dkml
   timeout: 2h
   before_script:
     # ------------------
@@ -226,7 +231,7 @@ variables:
     - Get-Content .ci/sd4/vsenv.ps1
 
       # Capture Visual Studio compiler environment
-    - '& .ci/sd4/vsenv.ps1'
+    - '& .ci\sd4\vsenv.ps1'
     - '& .ci\sd4\get-msvcpath-into-msys2.bat'
     - msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"
     - msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
@@ -268,6 +273,36 @@ variables:
     - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):write-post-scripts${cr}${esc}[0K"
 
     - if (Test-Path -Path msys64\usr\bin\bash.exe) { msys64\usr\bin\bash -lc "sh .ci/sd4/run-teardown-dkml.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'" }
+
+# Advanced job: Typically you use .win32:setup-dkml, but sometimes you have to
+# work around GitLab bugs with declaring dependencies on parallel jobs, where
+# the dependent job is itself a parallel job. Only solution is to _not_ use
+# parallel jobs. Confer:
+# https://forum.gitlab.com/t/ci-specifying-artifact-dependencies-when-using-parallel-matrix/45026/2
+# https://gitlab.com/gitlab-org/gitlab/-/merge_requests/82734
+# https://gitlab.com/gitlab-org/gitlab/-/issues/373992
+.win32-windows_x86:setup-dkml-allplusmincache:
+  extends: .win32:setup-dkml-allplusmincache
+  # prettier-ignore
+  variables:
+    # autogen from gl_vars. only win32-windows_x86{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.abi_pattern == "win32-windows_x86" -%}{{ nl }}    { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} } {%- else -%} , {%- endif %}{{ nl }}      {% endfor %}{%- endif %}{% endfor %}
+
+# Advanced job: Typically you use .win32:setup-dkml
+.win32-windows_x86_64:setup-dkml-allplusmincache:
+  extends: .win32:setup-dkml-allplusmincache
+  # prettier-ignore
+  variables:
+    # autogen from gl_vars. only win32-windows_x86_64{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.abi_pattern == "win32-windows_x86_64" -%}{{ nl }}    { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} } {%- else -%} , {%- endif %}{{ nl }}      {% endfor %}{%- endif %}{% endfor %}
+
+.win32:setup-dkml:
+  extends:
+    - .win32:setup-dkml-allplusmincache
+    - .common:setup-dkml-cache
+  # prettier-ignore
+  parallel:
+    matrix: [
+      # autogen from gl_vars. only windows{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.dkml_host_os == "windows" -%}{{ nl }}      { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
+    ]
 
 .macos:setup-dkml:
   # prettier-ignore

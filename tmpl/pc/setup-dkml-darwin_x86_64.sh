@@ -14,9 +14,10 @@ export FDOPEN_OPAMEXE_BOOTSTRAP=false
 export CACHE_PREFIX=v1
 export OCAML_COMPILER=
 export DKML_COMPILER=
+export SECONDARY_SWITCH=false
 export CONF_DKML_CROSS_TOOLCHAIN=@repository@
 export DISKUV_OPAM_REPOSITORY=
-export SECONDARY_SWITCH=false
+export DKML_HOME=
 # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}export {{ var.name }}='{{ var.value }}'{% endfor %}
 
 usage() {
@@ -35,6 +36,7 @@ usage() {
   echo "  --SECONDARY_SWITCH=true|false. If true then the secondary switch named 'two' is created, in addition to the always-present 'dkml' switch. Defaults to: ${SECONDARY_SWITCH}" >&2
   echo "  --CONF_DKML_CROSS_TOOLCHAIN=<value>. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam. Defaults to: ${CONF_DKML_CROSS_TOOLCHAIN}" >&2
   echo "  --DISKUV_OPAM_REPOSITORY=<value>. Defaults to the value of --DEFAULT_DISKUV_OPAM_REPOSITORY_TAG (see below)" >&2
+  echo "  --DKML_HOME=<value>. then DiskuvOCamlHome, DiskuvOCamlBinaryPaths and DiskuvOCamlDeploymentId will be set, in addition to the always-present DiskuvOCamlVarsVersion and DiskuvOCamlVersion." >&2
 
   # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}  echo "  --{{ var.name }}=<value>. Defaults to: $\{{{ var.name }}}" >&2{% endfor %}
   exit 2
@@ -66,6 +68,8 @@ while getopts :h-: option; do
     CONF_DKML_CROSS_TOOLCHAIN=*) CONF_DKML_CROSS_TOOLCHAIN=${OPTARG#*=} ;;
     DISKUV_OPAM_REPOSITORY) fail "Option \"$OPTARG\" missing argument" ;;
     DISKUV_OPAM_REPOSITORY=*) DISKUV_OPAM_REPOSITORY=${OPTARG#*=} ;;
+    DKML_HOME) fail "Option \"$OPTARG\" missing argument" ;;
+    DKML_HOME=*) DKML_HOME=${OPTARG#*=} ;;
     # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}    {{ var.name }}) fail "Option \"$OPTARG\" missing argument" ;;{{ nl }}    {{ var.name }}=*) {{ var.name }}=${OPTARG#*=} ;;{% endfor %}
     help) usage ;;
     help=*) fail "Option \"${OPTARG%%=*}\" has unexpected argument" ;;
