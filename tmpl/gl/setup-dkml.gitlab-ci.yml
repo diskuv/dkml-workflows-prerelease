@@ -36,8 +36,36 @@ variables:
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
-        - ${opam_root_cacheable}/dkml
-        - ${opam_root_cacheable}/two
+        - ${opam_root_cacheable}/dkml/.dkml
+        - ${opam_root_cacheable}/dkml/.opam-switch/config
+        - ${opam_root_cacheable}/dkml/.opam-switch/install
+        - ${opam_root_cacheable}/dkml/.opam-switch/overlay
+        - ${opam_root_cacheable}/dkml/.opam-switch/packages
+        - ${opam_root_cacheable}/dkml/.opam-switch/environment
+        - ${opam_root_cacheable}/dkml/.opam-switch/switch-config
+        - ${opam_root_cacheable}/dkml/.opam-switch/switch-state
+        - ${opam_root_cacheable}/dkml/bin
+        - ${opam_root_cacheable}/dkml/doc
+        - ${opam_root_cacheable}/dkml/lib
+        - ${opam_root_cacheable}/dkml/man
+        - ${opam_root_cacheable}/dkml/sbin
+        - ${opam_root_cacheable}/dkml/share
+        - ${opam_root_cacheable}/dkml/src-ocaml
+        - ${opam_root_cacheable}/two/.dkml
+        - ${opam_root_cacheable}/two/.opam-switch/config
+        - ${opam_root_cacheable}/two/.opam-switch/install
+        - ${opam_root_cacheable}/two/.opam-switch/overlay
+        - ${opam_root_cacheable}/two/.opam-switch/packages
+        - ${opam_root_cacheable}/two/.opam-switch/environment
+        - ${opam_root_cacheable}/two/.opam-switch/switch-config
+        - ${opam_root_cacheable}/two/.opam-switch/switch-state
+        - ${opam_root_cacheable}/two/bin
+        - ${opam_root_cacheable}/two/doc
+        - ${opam_root_cacheable}/two/lib
+        - ${opam_root_cacheable}/two/man
+        - ${opam_root_cacheable}/two/sbin
+        - ${opam_root_cacheable}/two/share
+        - ${opam_root_cacheable}/two/src-ocaml
         - ${opam_root_cacheable}/repo
         - ${opam_root_cacheable}/.ci.root-init
         - ${opam_root_cacheable}/.ci.dkml.repo-init
