@@ -155,7 +155,7 @@ shift $((OPTIND - 1))
 export dkml_host_os="darwin"
 export opam_root_cacheable="${PC_PROJECT_DIR}/.ci/o"
 export abi_pattern="macos-darwin_all"
-export bootstrap_opam_version="2.2.0-dkml20220801T155940Z"
+export bootstrap_opam_version="2.2.0-alpha-20221104"
 export dkml_host_abi="darwin_x86_64"
 export opam_root="${PC_PROJECT_DIR}/.ci/o"
 

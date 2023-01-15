@@ -1,3 +1,8 @@
+## Pending
+
+- Bump opam on 2.2 trunk from `2.2.0-dkml20220801T155940Z` to
+  `2.2.0-alpha-20221104`
+
 ## 1.2.0 (v1)
 
 - Upgrade OCaml from 4.12.1 to 4.14.0

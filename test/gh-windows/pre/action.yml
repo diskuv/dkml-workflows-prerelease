@@ -68,7 +68,7 @@ runs:
           msys2_system='MINGW32';
           msys2_packages='mingw-w64-i686-pkg-config';
           exe_ext='.exe';
-          bootstrap_opam_version='2.2.0-dkml20220801T155940Z';
+          bootstrap_opam_version='2.2.0-alpha-20221104';
           opam_abi='windows_x86';
           dkml_host_abi='windows_x86';
           opam_root='D:/.opam';
@@ -85,7 +85,7 @@ runs:
           msys2_system='CLANG64';
           msys2_packages='mingw-w64-clang-x86_64-pkg-config';
           exe_ext='.exe';
-          bootstrap_opam_version='2.2.0-dkml20220801T155940Z';
+          bootstrap_opam_version='2.2.0-alpha-20221104';
           opam_abi='windows_x86_64';
           dkml_host_abi='windows_x86_64';
           opam_root='D:/.opam';
