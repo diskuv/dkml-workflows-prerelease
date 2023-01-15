@@ -13,7 +13,7 @@ let global_env_vars =
     ("DEFAULT_DKML_COMPILER", "4.14.0-v1.1.0-prerel15");
 
     (* Almost all of the PIN_ values come from dkml-runtime-distribution's *-pkgs.txt.
-       They have to correspond with src/scripts/setup-dkml.sh [do_pins].
+       They have to correspond with src/scripts/setup-dkml.sh [do_pins and setup-info].
 
        TODO: Unify these (perhaps with release.sh), or better yet remove the pins
        completely by upstreaming Windows and Android (aka. all DKML architectures) *)
