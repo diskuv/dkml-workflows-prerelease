@@ -25,6 +25,8 @@ let global_env_vars =
     ("PIN_DUNE", "3.6.2");
     (* PIN_DKML_APPS is maintained by diskuv-ocaml's release.sh in dkml-workflows-prerelease *)
     ("PIN_DKML_APPS", "1.2.0~prerel1");
+    (* PIN_DKML_EXE is maintained by diskuv-ocaml's release.sh in dkml-workflows-prerelease *)
+    ("PIN_DKML_EXE", "1.2.0~prerel1");
     ("PIN_OCAMLBUILD", "0.14.0");
     ("PIN_OCAMLFIND", "1.9.1");
     ("PIN_OCP_INDENT", "1.8.2-windowssupport");
