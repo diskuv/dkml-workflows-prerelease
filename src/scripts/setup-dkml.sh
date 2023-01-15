@@ -938,22 +938,31 @@ do_pins() {
     # - ppx_expect; only patch is for v0.14.1. Need to upstream fix the problem.
     # - base; patches for v0.14.1/2/3. Need to upstream fix the problem.
     section_begin "opam-pins-$do_pins_NAME" "Opam pins for $do_pins_NAME switch"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest "${PIN_ALCOTEST}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest-async "${PIN_ALCOTEST_ASYNC}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest-js "${PIN_ALCOTEST_JS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest-lwt "${PIN_ALCOTEST_LWT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest-mirage "${PIN_ALCOTEST_MIRAGE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base_bigstring "${PIN_BASE_BIGSTRING}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigstringaf "${PIN_BIGSTRINGAF}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version core "${PIN_CORE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version core_kernel "${PIN_CORE_KERNEL}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes "${PIN_CTYPES}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes-foreign "${PIN_CTYPES_FOREIGN}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version curly "${PIN_CURLY}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
+    opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action digestif # this used to be pinned, so any cached opamroot needs it unpinned
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune "${PIN_DUNE}"
     opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action dune-configurator # this used to be pinned, so any cached opamroot needs it unpinned
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version feather "${PIN_FEATHER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlbuild "${PIN_OCAMLBUILD}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlfind "${PIN_OCAMLFIND}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocp-indent "${PIN_OCP_INDENT}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_expect "${PIN_PPX_EXPECT}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ptime "${PIN_PTIME}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version time_now "${PIN_TIME_NOW}"
+    opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action ptime # this used to be pinned, so any cached opamroot needs it unpinned
+    opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action time_now # this used to be pinned, so any cached opamroot needs it unpinned
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version with-dkml "${PIN_WITH_DKML}"
     section_end "opam-pins-$do_pins_NAME"
 }

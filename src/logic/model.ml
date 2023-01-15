@@ -13,26 +13,33 @@ let global_env_vars =
     ("DEFAULT_DKML_COMPILER", "4.14.0-v1.1.0-prerel15");
 
     (* Almost all of the PIN_ values come from dkml-runtime-distribution's *-pkgs.txt.
+       They have to correspond with src/scripts/setup-dkml.sh [do_pins].
+
        TODO: Unify these (perhaps with release.sh), or better yet remove the pins
        completely by upstreaming Windows and Android (aka. all DKML architectures) *)
-    ("PIN_BASE", "v0.14.3");
-    ("PIN_BIGSTRINGAF", "0.8.0");
-    ("PIN_CORE_KERNEL", "v0.14.2");
-    ("PIN_CTYPES_FOREIGN", "0.19.2-windowssupport-r4");
-    ("PIN_CTYPES", "0.19.2-windowssupport-r4");
+    ("PIN_ALCOTEST", "1.6.0");
+    ("PIN_ALCOTEST_ASYNC", "1.6.0");
+    ("PIN_ALCOTEST_JS", "1.6.0");
+    ("PIN_ALCOTEST_LWT", "1.6.0");
+    ("PIN_ALCOTEST_MIRAGE", "1.6.0");
+    ("PIN_BASE", "v0.15.1");
+    ("PIN_BASE_BIGSTRING", "v0.15.0");
+    ("PIN_BIGSTRINGAF", "0.9.0+msvc");
+    ("PIN_CORE", "v0.15.1");
+    ("PIN_CORE_KERNEL", "v0.15.0");
+    ("PIN_CTYPES_FOREIGN", "0.19.2-windowssupport-r5");
+    ("PIN_CTYPES", "0.19.2-windowssupport-r5");
     ("PIN_CURLY", "0.2.1-windows-env_r2");
-    ("PIN_DIGESTIF", "1.0.1");
-    ("PIN_DUNE", "3.6.2");
     (* PIN_DKML_APPS is maintained by diskuv-ocaml's release.sh in dkml-workflows-prerelease *)
     ("PIN_DKML_APPS", "1.2.0~prerel4");
     (* PIN_DKML_EXE is maintained by diskuv-ocaml's release.sh in dkml-workflows-prerelease *)
     ("PIN_DKML_EXE", "1.2.0~prerel4");
+    ("PIN_DUNE", "3.6.2");
+    ("PIN_FEATHER", "0.3.0");
     ("PIN_OCAMLBUILD", "0.14.0");
     ("PIN_OCAMLFIND", "1.9.1");
     ("PIN_OCP_INDENT", "1.8.2-windowssupport");
-    ("PIN_PPX_EXPECT", "v0.14.1");
-    ("PIN_PTIME", "0.8.6-msvcsupport");
-    ("PIN_TIME_NOW", "v0.14.0");
+    ("PIN_PPX_EXPECT", "v0.15.1");
     (* PIN_WITH_DKML is maintained by diskuv-ocaml's release.sh in dkml-workflows-prerelease *)
     ("PIN_WITH_DKML", "1.2.0~prerel4");
   ]
