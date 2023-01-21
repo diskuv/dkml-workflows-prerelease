@@ -76,6 +76,7 @@ DISKUV_OPAM_REPOSITORY=${DISKUV_OPAM_REPOSITORY:-}
 DKML_COMPILER=${DKML_COMPILER:-}
 OCAML_COMPILER=${OCAML_COMPILER:-}
 CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
+PRIMARY_SWITCH_SKIP_INSTALL=${PRIMARY_SWITCH_SKIP_INSTALL:-}
 SECONDARY_SWITCH=${SECONDARY_SWITCH:-}
 MANYLINUX=${MANYLINUX:-}
 DKML_HOME=${DKML_HOME:-}
@@ -1116,7 +1117,9 @@ do_install_compiler() {
     opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
     section_end "install-compiler-$do_install_compiler_NAME"
 }
-do_install_compiler dkml
+if ! [ "${PRIMARY_SWITCH_SKIP_INSTALL:-}" = "true" ]; then
+    do_install_compiler dkml
+fi
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_install_compiler two
 fi

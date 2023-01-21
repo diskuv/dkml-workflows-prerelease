@@ -20,6 +20,7 @@ Table of Contents:
     - [Job Inputs](#job-inputs)
       - [SECONDARY\_SWITCH](#secondary_switch)
       - [CACHE\_PREFIX](#cache_prefix)
+      - [PRIMARY\_SWITCH\_SKIP\_INSTALL](#primary_switch_skip_install)
       - [FDOPEN\_OPAMEXE\_BOOTSTRAP](#fdopen_opamexe_bootstrap)
     - [Matrix Variables](#matrix-variables)
       - [gl\_image](#gl_image)
@@ -492,6 +493,10 @@ For example, use `opamrun install --switch dkml dune` rather than `opamrun insta
 #### CACHE_PREFIX
 
 The prefix of the cache keys.
+
+#### PRIMARY_SWITCH_SKIP_INSTALL
+
+When set to `true` no dkml-base-compiler will be installed in the `dkml` switch.
 
 #### FDOPEN_OPAMEXE_BOOTSTRAP
 

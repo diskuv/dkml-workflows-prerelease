@@ -25,6 +25,9 @@ Input variable. -DKML_COMPILER takes priority. If -DKML_COMPILER is not set and 
 .PARAMETER DKML_COMPILER
 Input variable. Unspecified or blank is the latest from the default branch (main) of dkml-compiler. @repository@ is the latest from Opam.
 
+.PARAMETER PRIMARY_SWITCH_SKIP_INSTALL
+Input variable. If true no dkml-base-compiler will be installed in the 'dkml' switch.
+
 .PARAMETER SECONDARY_SWITCH
 Input variable. If true then the secondary switch named 'two' is created, in addition to the always-present 'dkml' switch. 
 
@@ -60,6 +63,9 @@ param (
   [Parameter()]
   [string]
   $DKML_COMPILER = "",
+  [Parameter()]
+  [string]
+  $PRIMARY_SWITCH_SKIP_INSTALL = "false",
   [Parameter()]
   [string]
   $SECONDARY_SWITCH = "false",
@@ -101,6 +107,7 @@ $env:FDOPEN_OPAMEXE_BOOTSTRAP = $FDOPEN_OPAMEXE_BOOTSTRAP
 $env:CACHE_PREFIX = $CACHE_PREFIX
 $env:OCAML_COMPILER = $OCAML_COMPILER
 $env:DKML_COMPILER = $DKML_COMPILER
+$env:PRIMARY_SWITCH_SKIP_INSTALL = $PRIMARY_SWITCH_SKIP_INSTALL
 $env:SECONDARY_SWITCH = $SECONDARY_SWITCH
 $env:CONF_DKML_CROSS_TOOLCHAIN = $CONF_DKML_CROSS_TOOLCHAIN
 $env:DISKUV_OPAM_REPOSITORY = $DISKUV_OPAM_REPOSITORY
