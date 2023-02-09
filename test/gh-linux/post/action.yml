@@ -27,7 +27,7 @@ runs:
           gh_os='ubuntu-latest';
           comment='(CentOS 7, etc.)';
           gh_unix_shell='sh';
-          bootstrap_opam_version='2.2.0-alpha-20221104';
+          bootstrap_opam_version='2.2.0-alpha-20221228';
           dkml_host_abi='linux_x86';
           opam_root='.ci/o';
           in_docker='true';
@@ -41,7 +41,7 @@ runs:
           gh_os='ubuntu-latest';
           comment='(CentOS 7, etc.)';
           gh_unix_shell='sh';
-          bootstrap_opam_version='2.2.0-alpha-20221104';
+          bootstrap_opam_version='2.2.0-alpha-20221228';
           dkml_host_abi='linux_x86_64';
           opam_root='.ci/o';
           dockcross_image='dockcross/manylinux2014-x64';
@@ -83,14 +83,14 @@ runs:
         PIN_CTYPES_FOREIGN: '0.19.2-windowssupport-r5'
         PIN_CTYPES: '0.19.2-windowssupport-r5'
         PIN_CURLY: '0.2.1-windows-env_r2'
-        PIN_DKML_APPS: '1.2.0~prerel8'
-        PIN_DKML_EXE: '1.2.0~prerel8'
+        PIN_DKML_APPS: '1.2.1~prerel1'
+        PIN_DKML_EXE: '1.2.1~prerel1'
         PIN_DUNE: '3.6.2'
         PIN_FEATHER: '0.3.0'
         PIN_OCAMLBUILD: '0.14.0'
         PIN_OCAMLFIND: '1.9.1'
         PIN_OCP_INDENT: '1.8.2-windowssupport'
         PIN_PPX_EXPECT: 'v0.15.1'
-        PIN_WITH_DKML: '1.2.0~prerel8'
+        PIN_WITH_DKML: '1.2.1~prerel1'
       run: |
         sh .ci/sd4/run-teardown-dkml.sh GITHUB_WORKSPACE "$GITHUB_WORKSPACE"

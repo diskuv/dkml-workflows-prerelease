@@ -1,7 +1,9 @@
+# Changes
+
 ## Pending
 
 - Bump opam on 2.2 trunk from `2.2.0-dkml20220801T155940Z` to
-  `2.2.0-alpha-20221104`
+  `2.2.0-alpha-20221228`
 - New input variable `PRIMARY_SWITCH_SKIP_INSTALL` will skip the install of
   the dkml-base-compiler but will still set up DKML pins and repositories
 
@@ -15,15 +17,18 @@
 ## 1.1.0 (v1)
 
 New Features:
+
 - Desktop testing for macOS/Intel (or macOS/ARM64 with Rosetta emulator) and Linux 32/64-bit on Intel/AMD
 - Help messages for desktop testing on Windows
 - Optional secondary switch `two` in addition to primary switch `dkml` enabled with
   input variable `SECONDARY_SWITCH=true`
 
 Breaking changes:
+
 - The GitLab job names `build_linux`, `build_macos` and `build_win32` are now private job names `.linux:setup-dkml`,
   `.macos:setup-dkml` and `.win32:setup-dkml`. This means in your own `.gitlab-ci.yml` you will need an "extends" statement,
   like so:
+
   ```yaml
   build_linux:
     extends: .linux:setup-dkml # ADD THIS ONE LINE!
@@ -53,6 +58,7 @@ Breaking changes:
   anyone is broken, they just need to add three `extends: .setup_dkml_XXX` to their script.
 
 Other changes:
+
 - Performance: Linux CI now avoids ~10 second ManyLinux (dockcross) unnecessary recursive chown of root:root
   owned container files. As long as calling user is root (which is true for GitHub Actions and GitLab CI/CD)
   the chown operation is skipped.
@@ -61,6 +67,7 @@ Other changes:
 ## 1.0.0 (v1)
 
 New Features:
+
 1. Support GitLab CI/CD
 2. Support desktop testing on Windows
 3. GitHub now uses a composite action rather than a child
@@ -70,11 +77,13 @@ New Features:
 There are significant breaking changes. It will be far easier
 to onboard with [the new version `v1` instructions](https://github.com/diskuv/dkml-workflows/tree/v1#readme)
 and then remove your `v0` code, rather than try to do an in-place upgrade:
-* Any custom build logic you have in your GitHub workflow should go into
+
+- Any custom build logic you have in your GitHub workflow should go into
   the new `ci/build-test.sh`. Alternatively, if you don't care about ever running troubleshooting
   CI on your desktop or GitLab, directly into your new `.github/workflows/build-with-dkml.yml`.
 
 Breaking changes:
+
 - The GitHub child workflow has been replaced by a GitHub composite action
 - Input variables have been renamed to allow the same variable names between GitHub Actions and
   GitLab CI/CD (the latter does not support dashes in variable names).
