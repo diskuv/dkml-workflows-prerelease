@@ -25,11 +25,14 @@ Input variable. -DKML_COMPILER takes priority. If -DKML_COMPILER is not set and 
 .PARAMETER DKML_COMPILER
 Input variable. Unspecified or blank is the latest from the default branch (main) of dkml-compiler. @repository@ is the latest from Opam.
 
-.PARAMETER PRIMARY_SWITCH_SKIP_INSTALL
-Input variable. If true no dkml-base-compiler will be installed in the 'dkml' switch.
+.PARAMETER PRIMARY_SWITCH
+Input variable. If true (the default) then the primary switch named 'dkml' is created.
 
 .PARAMETER SECONDARY_SWITCH
-Input variable. If true then the secondary switch named 'two' is created, in addition to the always-present 'dkml' switch. 
+Input variable. If true then the secondary switch named 'two' is created.
+
+.PARAMETER PRIMARY_SWITCH_SKIP_INSTALL
+Input variable. If true no dkml-base-compiler will be installed in the 'dkml' switch.
 
 .PARAMETER CONF_DKML_CROSS_TOOLCHAIN
 Input variable. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam.
@@ -51,31 +54,24 @@ param (
   $PC_PROJECT_DIR = $PWD,
   
   # Input variables
-  [Parameter()]
   [string]
   $FDOPEN_OPAMEXE_BOOTSTRAP = "false",
-  [Parameter()]
   [string]
   $CACHE_PREFIX = "v1",
-  [Parameter()]
   [string]
   $OCAML_COMPILER = "",
-  [Parameter()]
   [string]
   $DKML_COMPILER = "",
-  [Parameter()]
   [string]
-  $PRIMARY_SWITCH_SKIP_INSTALL = "false",
-  [Parameter()]
+  $PRIMARY_SWITCH = "false",
   [string]
   $SECONDARY_SWITCH = "false",
-  [Parameter()]
+  [string]
+  $PRIMARY_SWITCH_SKIP_INSTALL = "false",
   [string]
   $CONF_DKML_CROSS_TOOLCHAIN = "@repository@",
-  [Parameter()]
   [string]
   $DISKUV_OPAM_REPOSITORY = "",
-  [Parameter()]
   [string]
   $DKML_HOME = ""
 
@@ -107,8 +103,9 @@ $env:FDOPEN_OPAMEXE_BOOTSTRAP = $FDOPEN_OPAMEXE_BOOTSTRAP
 $env:CACHE_PREFIX = $CACHE_PREFIX
 $env:OCAML_COMPILER = $OCAML_COMPILER
 $env:DKML_COMPILER = $DKML_COMPILER
-$env:PRIMARY_SWITCH_SKIP_INSTALL = $PRIMARY_SWITCH_SKIP_INSTALL
+$env:PRIMARY_SWITCH = $PRIMARY_SWITCH
 $env:SECONDARY_SWITCH = $SECONDARY_SWITCH
+$env:PRIMARY_SWITCH_SKIP_INSTALL = $PRIMARY_SWITCH_SKIP_INSTALL
 $env:CONF_DKML_CROSS_TOOLCHAIN = $CONF_DKML_CROSS_TOOLCHAIN
 $env:DISKUV_OPAM_REPOSITORY = $DISKUV_OPAM_REPOSITORY
 $env:DKML_HOME = $DKML_HOME

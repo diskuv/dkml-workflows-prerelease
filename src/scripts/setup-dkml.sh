@@ -56,6 +56,8 @@ fi
 
 section_begin setup-info "Summary: setup-dkml"
 
+PRIMARY_SWITCH=${PRIMARY_SWITCH:-true} # default is true
+
 # shellcheck disable=SC2154
 echo "
 =============
@@ -76,8 +78,9 @@ DISKUV_OPAM_REPOSITORY=${DISKUV_OPAM_REPOSITORY:-}
 DKML_COMPILER=${DKML_COMPILER:-}
 OCAML_COMPILER=${OCAML_COMPILER:-}
 CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
-PRIMARY_SWITCH_SKIP_INSTALL=${PRIMARY_SWITCH_SKIP_INSTALL:-}
+PRIMARY_SWITCH=${PRIMARY_SWITCH:-}
 SECONDARY_SWITCH=${SECONDARY_SWITCH:-}
+PRIMARY_SWITCH_SKIP_INSTALL=${PRIMARY_SWITCH_SKIP_INSTALL:-}
 MANYLINUX=${MANYLINUX:-}
 DKML_HOME=${DKML_HOME:-}
 VERBOSE=${VERBOSE:-}
@@ -814,7 +817,17 @@ do_switch_create() {
     fi
     section_end "switch-create-$do_switch_create_NAME"
 }
-do_switch_create dkml
+if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+    do_switch_create dkml
+else
+    section_begin "switch-create-dkml" "Create empty opam switch 'dkml'"
+    # Always create a primary switch ... just empty. Avoid problems with cache content missing
+    # and idempotency.
+    opamrun --no-troubleshooting switch remove dkml --yes || true
+    rm -rf "$opam_root/dkml"
+    opamrun switch create dkml --empty --yes
+    section_end "switch-create-dkml"
+fi
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_switch_create two
 else
@@ -832,6 +845,8 @@ do_switch_active() {
     opamrun switch set dkml --yes
     section_end "switch-active"
 }
+#   We always set dkml as active, even when PRIMARY_SWITCH<>"true", because
+#   `opamrun exec --` should still work.
 do_switch_active
 
 do_opam_repositories_add() {
@@ -859,7 +874,9 @@ do_opam_repositories_config() {
 
     section_end "opam-repo-$do_opam_repositories_config_NAME"
 }
-do_opam_repositories_config dkml
+if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+    do_opam_repositories_config dkml
+fi
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_opam_repositories_config two
 fi
@@ -874,7 +891,9 @@ do_opam_repositories_update() {
     opamrun update default diskuv
     section_end "opam-repo-update"
 }
-do_opam_repositories_update
+if [ "${PRIMARY_SWITCH:-}" = "true" ] || [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+    do_opam_repositories_update
+fi
 
 do_pins() {
     do_pins_NAME=$1
@@ -974,7 +993,9 @@ do_pins() {
     section_end "opam-pins-$do_pins_NAME"
 }
 
-do_pins dkml
+if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+    do_pins dkml
+fi
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_pins two
 fi
@@ -1045,10 +1066,12 @@ do_use_vsstudio() {
         ;;
     esac
 }
+if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+    do_use_vsstudio dkml
+fi
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_use_vsstudio two
 fi
-do_use_vsstudio dkml
 
 # Because dune.X.Y.Z+shim (and any user DKML packages) requires DKML installed (after all, it is just
 # a with-dkml.exe shim), we need either dkmlvars-v2.sexp or DKML environment
@@ -1103,10 +1126,12 @@ do_setenv() {
     esac
     section_end "setenv-$do_setenv_SWITCH"
 }
+if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+    do_setenv dkml
+fi
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_setenv two
 fi
-do_setenv dkml
 
 do_install_compiler() {
     do_install_compiler_NAME=$1
@@ -1117,7 +1142,7 @@ do_install_compiler() {
     opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
     section_end "install-compiler-$do_install_compiler_NAME"
 }
-if ! [ "${PRIMARY_SWITCH_SKIP_INSTALL:-}" = "true" ]; then
+if [ "${PRIMARY_SWITCH:-}" = "true" ] && ! [ "${PRIMARY_SWITCH_SKIP_INSTALL:-}" = "true" ]; then
     do_install_compiler dkml
 fi
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
@@ -1132,7 +1157,9 @@ do_summary() {
     opamrun exec --switch "$do_summary_NAME" -- ocamlc -config
     section_end "summary-$do_summary_NAME"
 }
-do_summary dkml
+if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+    do_summary dkml
+fi
 if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
     do_summary two
 fi

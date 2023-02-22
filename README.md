@@ -5,6 +5,7 @@ GitLab CI/CD, GitHub Actions and desktop scripts to setup Diskuv OCaml
 most common operating systems.
 
 Table of Contents:
+
 - [dkml-workflows](#dkml-workflows)
   - [Configure your project](#configure-your-project)
   - [Create `ci/build-test.sh`](#create-cibuild-testsh)
@@ -484,6 +485,10 @@ variable will also be available to use as
 ## Advanced Usage
 
 ### Job Inputs
+
+#### PRIMARY_SWITCH
+
+When set to `true` (the default) the `dkml` switch will be installed.
 
 #### SECONDARY_SWITCH
 

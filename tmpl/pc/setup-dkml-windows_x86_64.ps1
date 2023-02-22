@@ -1,6 +1,6 @@
 # setup-dkml
 #   Short form: sd4
-  
+
 <#
 .SYNOPSIS
 
@@ -25,11 +25,14 @@ Input variable. -DKML_COMPILER takes priority. If -DKML_COMPILER is not set and 
 .PARAMETER DKML_COMPILER
 Input variable. Unspecified or blank is the latest from the default branch (main) of dkml-compiler. @repository@ is the latest from Opam.
 
-.PARAMETER PRIMARY_SWITCH_SKIP_INSTALL
-Input variable. If true no dkml-base-compiler will be installed in the 'dkml' switch.
+.PARAMETER PRIMARY_SWITCH
+Input variable. If true (the default) then the primary switch named 'dkml' is created.
 
 .PARAMETER SECONDARY_SWITCH
-Input variable. If true then the secondary switch named 'two' is created, in addition to the always-present 'dkml' switch. 
+Input variable. If true then the secondary switch named 'two' is created.
+
+.PARAMETER PRIMARY_SWITCH_SKIP_INSTALL
+Input variable. If true no dkml-base-compiler will be installed in the 'dkml' switch.
 
 .PARAMETER CONF_DKML_CROSS_TOOLCHAIN
 Input variable. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam.
@@ -49,33 +52,26 @@ param (
   [Parameter(HelpMessage='Defaults to the current directory')]
   [string]
   $PC_PROJECT_DIR = $PWD,
-  
+
   # Input variables
-  [Parameter()]
   [string]
   $FDOPEN_OPAMEXE_BOOTSTRAP = "false",
-  [Parameter()]
   [string]
   $CACHE_PREFIX = "v1",
-  [Parameter()]
   [string]
   $OCAML_COMPILER = "",
-  [Parameter()]
   [string]
   $DKML_COMPILER = "",
-  [Parameter()]
   [string]
-  $PRIMARY_SWITCH_SKIP_INSTALL = "false",
-  [Parameter()]
+  $PRIMARY_SWITCH = "false",
   [string]
   $SECONDARY_SWITCH = "false",
-  [Parameter()]
+  [string]
+  $PRIMARY_SWITCH_SKIP_INSTALL = "false",
   [string]
   $CONF_DKML_CROSS_TOOLCHAIN = "@repository@",
-  [Parameter()]
   [string]
   $DISKUV_OPAM_REPOSITORY = "",
-  [Parameter()]
   [string]
   $DKML_HOME = ""
 
@@ -83,7 +79,7 @@ param (
   # [Parameter()]
   # [string]
   # $VERBOSE = "false"
-    
+
   # Environment variables (can be overridden on command line)
   # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}  ,[Parameter()] [string] ${{ var.name }} = "{{ var.value }}"{% endfor %}
 )
@@ -107,8 +103,9 @@ $env:FDOPEN_OPAMEXE_BOOTSTRAP = $FDOPEN_OPAMEXE_BOOTSTRAP
 $env:CACHE_PREFIX = $CACHE_PREFIX
 $env:OCAML_COMPILER = $OCAML_COMPILER
 $env:DKML_COMPILER = $DKML_COMPILER
-$env:PRIMARY_SWITCH_SKIP_INSTALL = $PRIMARY_SWITCH_SKIP_INSTALL
+$env:PRIMARY_SWITCH = $PRIMARY_SWITCH
 $env:SECONDARY_SWITCH = $SECONDARY_SWITCH
+$env:PRIMARY_SWITCH_SKIP_INSTALL = $PRIMARY_SWITCH_SKIP_INSTALL
 $env:CONF_DKML_CROSS_TOOLCHAIN = $CONF_DKML_CROSS_TOOLCHAIN
 $env:DISKUV_OPAM_REPOSITORY = $DISKUV_OPAM_REPOSITORY
 $env:DKML_HOME = $DKML_HOME
@@ -255,7 +252,7 @@ Get-Content .ci/sd4/vsenv.ps1
 # Capture Visual Studio compiler environment
 & .ci\sd4\vsenv.ps1
 & .ci\sd4\get-msvcpath-into-msys2.bat
-msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"    
+msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"
 msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
 msys64\usr\bin\bash -lc "sh .ci/sd4/run-setup-dkml.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"

@@ -33,6 +33,10 @@ inputs:
     description: "Turn on verbose logging"
     required: false
     default: 'false'
+  PRIMARY_SWITCH:
+    description: "Turn on primary 'dkml' switch"
+    required: false
+    default: 'true'
   PRIMARY_SWITCH_SKIP_INSTALL:
     description: "Disable install of dkml-base-compiler in 'dkml' switch"
     required: false
