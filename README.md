@@ -64,7 +64,7 @@ In contrast to the conventional [setup-ocaml](https://github.com/marketplace/act
 | `manylinux2014-linux_x86_64` | 64-bit Linux: CentOS 7, CentOS 8, Fedora 32+, Mageia 8+, openSUSE 15.3+, Photon OS 4.0+ (3.0+ with updates), Ubuntu 20.04+               |
 
 > **[1]** See [Distributing your Windows executables](#distributing-your-windows-executables) for further details
-
+>
 > **[2]** Cross-compiling typically requires that you use Dune to build all your OCaml package dependencies.
 > [opam monorepo](https://github.com/ocamllabs/opam-monorepo#readme) makes it easy to do exactly that.
 > Alternatively you can directly use [findlib toolchains](http://projects.camlcity.org/projects/dl/findlib-1.9.3/doc/ref-html/r865.html).
@@ -85,6 +85,7 @@ FIRST, add a dependency to `dkml-workflows` in your project.
 
 - For projects using `dune-project`:
   1. Add the following to `dune-project`:
+
      ```scheme
      (package
        ; ...
@@ -92,10 +93,12 @@ FIRST, add a dependency to `dkml-workflows` in your project.
        ...
      )
      ```
+
   2. Then do `dune build *.opam`
 - For projects not using `dune-project`:
   1. Add the following to your `<project>.opam`:
-     ```
+
+     ```text
      # ...
      depends: [
        "ocaml"
@@ -107,7 +110,7 @@ FIRST, add a dependency to `dkml-workflows` in your project.
 
 SECOND, update your Opam switch with the new `dkml-workflows` dependency:
 
-```
+```sh
 git commit -a -m 'Add dkml-workflows@v1'
 opam install . --deps-only
 ```
@@ -138,14 +141,14 @@ at least the following:
 
 FOURTH, generate scaffolding files:
 
-```
+```sh
 opam exec -- generate-setup-dkml-scaffold
 opam exec -- dune build '@gen-dkml' --auto-promote
 ```
 
 FIFTH, add the scaffolding files to your source control. Assuming you use git, it would be:
 
-```
+```sh
 git add ci/setup-dkml
 ```
 
@@ -209,8 +212,8 @@ The full list of examples is:
 
 > macOS runners are not available in the GitLab CI/CD shared fleet unless
 > you apply and are approved at
-> https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues/new . More details are
-> available at https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/blob/main/README.md
+> <https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues/new>. More details are
+> available at <https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/blob/main/README.md>
 >
 > This documentation assumes you have not been approved. There will be callouts
 > for where to edit once you have been approved for macOS.
@@ -434,7 +437,7 @@ As of April 2022 the Redistributable Packages only support Windows Vista, 7,
 To get the Redistributable Packages onto your end-user's
 machine, do one of the following:
 
-1. Ask your end-user to download from one of the links on (Microsoft Visual C++ Redistributable latest supported downloads)[https://docs.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist]. The end-user will need Administrator privileges.
+1. Ask your end-user to download from one of the links on [Microsoft Visual C++ Redistributable latest supported downloads](https://docs.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist). The end-user will need Administrator privileges.
 2. Bundle your executable inside a standard Windows installer (NSIS, Wix, etc.). You can see NSIS instructions below. The end-user will need Administrator privileges.
 3. Ask your user to download `vcruntime140.dll` and place it in the same
    directory as your executable. This is not recommended because Windows Update
@@ -486,7 +489,7 @@ variable will also be available to use as
 
 When set to `true` the scripts will CI jobs will create the `two` switch in addition to the always present `dkml` switch.
 
-When using the secondary switch, be sure to use `--switch dkml` or `--switch two` in _all_ of your `opamrun` commands.
+When using the secondary switch, be sure to use `--switch dkml` or `--switch two` in *all* of your `opamrun` commands.
 
 For example, use `opamrun install --switch dkml dune` rather than `opamrun install dune`.
 
@@ -502,7 +505,7 @@ When set to `true` no dkml-base-compiler will be installed in the `dkml` switch.
 
 Boolean. Either `true` or anything else (ex. `false`).
 
-Use opam.exe from fdopen on Windows. Typically only used when bootstrapping Opam for the first time. May be needed to solve '\"create_process\" failed on sleep: Bad file descriptor' which may need https://github.com/ocaml/opam/commit/417b97d8cfada35682a0f4107eb2e4f9e24fba91
+Use opam.exe from fdopen on Windows. Typically only used when bootstrapping Opam for the first time. May be needed to solve '\"create_process\" failed on sleep: Bad file descriptor' which may need <https://github.com/ocaml/opam/commit/417b97d8cfada35682a0f4107eb2e4f9e24fba91>
 
 ### Matrix Variables
 
@@ -519,7 +522,7 @@ The GitHub Actions operating system.
 #### bootstrap_opam_version
 
 We need an old working Opam; see BOOTSTRAPPING.md of dkml-installer repository.
-We use https://github.com/diskuv/dkml-installer-ocaml/releases
+We use <https://github.com/diskuv/dkml-installer-ocaml/releases>
 to get an old one; you specify its version number here.
 
 Special value of 'os' means use the OS's package manager
@@ -544,20 +547,20 @@ Only needed if `gh_os: windows-*`. The ARCH in
 `vsdevcmd.bat -host_arch=ARCH`. Example: x64.
 
 If you have a 64-bit Intel machine you should not use x86 because
-_WIN64 will be defined (see https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-170)
+_WIN64 will be defined (see <https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-170>)
 which is based on the host machine architecture (unless you explicitly
 cross-compile with different ARCHs; that is, -host_arch=x64 -arch=x75).
-Confer: https://docs.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170#use-the-developer-tools-in-an-existing-command-window
+Confer: <https://docs.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170#use-the-developer-tools-in-an-existing-command-window>
 
 If you see ppx problems with missing _BitScanForward64 then
-https://github.com/janestreet/base/blob/8993e35ba2e83e5020b2deb548253ef1e4a699d4/src/int_math_stubs.c#L25-L32
+<https://github.com/janestreet/base/blob/8993e35ba2e83e5020b2deb548253ef1e4a699d4/src/int_math_stubs.c#L25-L32>
 has been compiled with the wrong host architecture.
 
 #### vsstudio_arch
 
 Only needed if `gh_os: windows-*`. The ARCH in
 `vsdevcmd.bat -arch=ARCH`. Example: x86.
-Confer: https://docs.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170#use-the-developer-tools-in-an-existing-command-window
+Confer: <https://docs.microsoft.com/en-us/cpp/build/building-on-the-command-line?view=msvc-170#use-the-developer-tools-in-an-existing-command-window>
 
 #### vsstudio_(others)
 
@@ -566,13 +569,15 @@ a compatible Visual Studio installation.
 
 Example:
 
-    vsstudio_dir: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
-    vsstudio_vcvarsver: '14.16'
-    vsstudio_winsdkver: '10.0.18362.0'
-    vsstudio_msvspreference: 'VS16.5'
-    vsstudio_cmakegenerator: 'Visual Studio 16 2019'
+```yaml
+vsstudio_dir: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise'
+vsstudio_vcvarsver: '14.16'
+vsstudio_winsdkver: '10.0.18362.0'
+vsstudio_msvspreference: 'VS16.5'
+vsstudio_cmakegenerator: 'Visual Studio 16 2019'
+```
 
-#### ocaml_options:
+#### ocaml_options
 
 Space separated list of `ocaml-option-*` packages.
 
@@ -588,6 +593,5 @@ chosen when the target ABI ends with x86.
 <a href="https://ocaml-sf.org">
 <img align="left" alt="OCSF logo" src="https://ocaml-sf.org/assets/ocsf_logo.svg"/>
 </a>
-Thanks to the <a href="https://ocaml-sf.org">OCaml Software Foundation</a>
+Thanks to the [OCaml Software Foundation](https://ocaml-sf.org)
 for economic support to the development of Diskuv OCaml.
-<p/>
