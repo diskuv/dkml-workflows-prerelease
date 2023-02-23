@@ -963,7 +963,7 @@ EOF
         cat >.ci/sd4/opam-in-docker <<EOF
 #!/bin/sh
 set -euf
-export PATH="/work/.ci/sd4/bs/bin:/work/.ci/sd4/opamexe:\$PATH"
+export PATH="/work/.ci/local/bin:/work/.ci/sd4/bs/bin:/work/.ci/sd4/opamexe:\$PATH"
 export OPAMROOT=/work/${opam_root}
 export OPAMROOTISOK=1
 if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
@@ -1081,7 +1081,7 @@ HERE=\$(dirname "\$0")
 HERE=\$(cd "\$HERE" && pwd)
 PROJECT_DIR=\$(cd "\$HERE"/../.. && pwd)
 
-export PATH="\${PROJECT_DIR}/.ci/sd4/bs/bin:\${PROJECT_DIR}/.ci/sd4/opamexe:\$PATH"
+export PATH="\${PROJECT_DIR}/.ci/local/bin:\${PROJECT_DIR}/.ci/sd4/bs/bin:\${PROJECT_DIR}/.ci/sd4/opamexe:\$PATH"
 export OPAMROOT='${opam_root}'
 export OPAMROOTISOK=1
 if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi

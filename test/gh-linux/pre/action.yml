@@ -887,7 +887,7 @@ runs:
                 cat >.ci/sd4/opam-in-docker <<EOF
         #!/bin/sh
         set -euf
-        export PATH="/work/.ci/sd4/bs/bin:/work/.ci/sd4/opamexe:\$PATH"
+        export PATH="/work/.ci/local/bin:/work/.ci/sd4/bs/bin:/work/.ci/sd4/opamexe:\$PATH"
         export OPAMROOT=/work/${opam_root}
         export OPAMROOTISOK=1
         if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
@@ -1005,7 +1005,7 @@ runs:
         HERE=\$(cd "\$HERE" && pwd)
         PROJECT_DIR=\$(cd "\$HERE"/../.. && pwd)
 
-        export PATH="\${PROJECT_DIR}/.ci/sd4/bs/bin:\${PROJECT_DIR}/.ci/sd4/opamexe:\$PATH"
+        export PATH="\${PROJECT_DIR}/.ci/local/bin:\${PROJECT_DIR}/.ci/sd4/bs/bin:\${PROJECT_DIR}/.ci/sd4/opamexe:\$PATH"
         export OPAMROOT='${opam_root}'
         export OPAMROOTISOK=1
         if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
@@ -1656,7 +1656,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '91439f-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '5e4429-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
