@@ -25,8 +25,8 @@ Input variable. -DKML_COMPILER takes priority. If -DKML_COMPILER is not set and 
 .PARAMETER DKML_COMPILER
 Input variable. Unspecified or blank is the latest from the default branch (main) of dkml-compiler. @repository@ is the latest from Opam.
 
-.PARAMETER PRIMARY_SWITCH
-Input variable. If true (the default) then the primary switch named 'dkml' is created.
+.PARAMETER SKIP_OPAM_MODIFICATIONS
+Input variable. If true (the default is false) then the opam root and switches will not be created or modified.
 
 .PARAMETER SECONDARY_SWITCH
 Input variable. If true then the secondary switch named 'two' is created.
@@ -132,7 +132,7 @@ param (
   [string]
   $DKML_COMPILER = "",
   [string]
-  $PRIMARY_SWITCH = "false",
+  $SKIP_OPAM_MODIFICATIONS = "false",
   [string]
   $SECONDARY_SWITCH = "false",
   [string]
@@ -195,7 +195,7 @@ $env:FDOPEN_OPAMEXE_BOOTSTRAP = $FDOPEN_OPAMEXE_BOOTSTRAP
 $env:CACHE_PREFIX = $CACHE_PREFIX
 $env:OCAML_COMPILER = $OCAML_COMPILER
 $env:DKML_COMPILER = $DKML_COMPILER
-$env:PRIMARY_SWITCH = $PRIMARY_SWITCH
+$env:SKIP_OPAM_MODIFICATIONS = $SKIP_OPAM_MODIFICATIONS
 $env:SECONDARY_SWITCH = $SECONDARY_SWITCH
 $env:PRIMARY_SWITCH_SKIP_INSTALL = $PRIMARY_SWITCH_SKIP_INSTALL
 $env:CONF_DKML_CROSS_TOOLCHAIN = $CONF_DKML_CROSS_TOOLCHAIN
@@ -600,7 +600,7 @@ fi
 
 section_begin setup-info "Summary: setup-dkml"
 
-PRIMARY_SWITCH=${PRIMARY_SWITCH:-true} # default is true
+SKIP_OPAM_MODIFICATIONS=${SKIP_OPAM_MODIFICATIONS:-false} # default is false
 
 # shellcheck disable=SC2154
 echo "
@@ -622,7 +622,7 @@ DISKUV_OPAM_REPOSITORY=${DISKUV_OPAM_REPOSITORY:-}
 DKML_COMPILER=${DKML_COMPILER:-}
 OCAML_COMPILER=${OCAML_COMPILER:-}
 CONF_DKML_CROSS_TOOLCHAIN=${CONF_DKML_CROSS_TOOLCHAIN:-}
-PRIMARY_SWITCH=${PRIMARY_SWITCH:-}
+SKIP_OPAM_MODIFICATIONS=${SKIP_OPAM_MODIFICATIONS:-}
 SECONDARY_SWITCH=${SECONDARY_SWITCH:-}
 PRIMARY_SWITCH_SKIP_INSTALL=${PRIMARY_SWITCH_SKIP_INSTALL:-}
 MANYLINUX=${MANYLINUX:-}
@@ -818,7 +818,7 @@ section_end bootstrap-opam
 #   We use .tar rather than .tar.gz/.tar.bz2 because we can repeatedly add to an uncompressed .tar. But we need to
 #   start with an empty tarball since some tar programs will only add ('tar rf xyz.tar') to an existing .tar.
 install -d .ci/sd4/dist
-tar cf .ci/sd4/dist/opam-with-env.tar -T /dev/null
+tar cf .ci/sd4/dist/run-with-env.tar -T /dev/null
 
 do_get_dockcross() {
     if [ -n "${dockcross_image:-}" ]; then
@@ -932,7 +932,7 @@ EOF
         chmod +x .ci/sd4/dockcross
 
         # Bundle for consumers of setup-dkml.yml
-        do_tar_rf .ci/sd4/dist/opam-with-env.tar .ci/sd4/dockcross .ci/sd4/dockcross-real
+        do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/dockcross .ci/sd4/dockcross-real
 
         section_end get-dockcross
     fi
@@ -973,7 +973,7 @@ fi
     # Bundle Opam prerequisites (ManyLinux or Linux Docker)
     if [ -n "${docker_runner:-}" ] || [ -n "${dockcross_image:-}" ]; then
         # Bundle for consumers of setup-dkml.yml
-        do_tar_rf .ci/sd4/dist/opam-with-env.tar .ci/sd4/bs/bin/rsync
+        do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/bs/bin/rsync
     fi
 }
 
@@ -1045,7 +1045,7 @@ printf "\nScroll up to see the [TROUBLESHOOTING] logs that begin at the [START O
 EOF
 
     chmod +x .ci/sd4/troubleshoot-opam.sh
-    do_tar_rf .ci/sd4/dist/opam-with-env.tar .ci/sd4/troubleshoot-opam.sh
+    do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/troubleshoot-opam.sh
 
     # ---------------
     # Create Opam support scripts (not needed for all platforms)
@@ -1069,7 +1069,7 @@ EOF
         validate_supports_docker() {
             true
         }
-        cat >.ci/sd4/opam-in-docker <<EOF
+        cat >.ci/sd4/run-in-docker <<EOF
 #!/bin/sh
 set -euf
 export PATH="/work/.ci/local/bin:/work/.ci/sd4/bs/bin:/work/.ci/sd4/opamexe:\$PATH"
@@ -1092,16 +1092,16 @@ if [ "\$#" -ge 1 ] && [ "\$1" = "--no-troubleshooting" ]; then
     troubleshooting=0
 fi
 
-echo "Running inside Docker container: opam \$*" >&2
+echo "Running inside Docker container: \$*" >&2
 set +e
-opam "\$@"
+"\$@"
 exitcode=\$?
-if [ \$troubleshooting = 1 ]; then
+if [ \$troubleshooting = 1 ] && [ \$1 = opam ]; then
     [ \$exitcode = 0 ] || "/work/.ci/sd4/troubleshoot-opam.sh" \$OPAMROOT
 fi
 exit \$exitcode
 EOF
-        chmod +x .ci/sd4/opam-in-docker
+        chmod +x .ci/sd4/run-in-docker
         ;;
     esac
 
@@ -1121,7 +1121,7 @@ EOF
     chmod +x .ci/sd4/deescalate
 
     # -----------------------------------
-    # Create opam-with-env
+    # Create run-with-env
     # -----------------------------------
 
     install -d .ci/sd4/dist
@@ -1133,7 +1133,7 @@ EOF
         # from https://github.com/dockcross/dockcross/blob/96d87416f639af0204bdd42553e4b99315ca8476/imagefiles/entrypoint.sh#L31-L32
         install -d .ci/sd4/edr
 
-        cat >.ci/sd4/opam-with-env <<EOF
+        cat >.ci/sd4/run-with-env <<EOF
 #!/bin/sh
 set -euf
 
@@ -1148,41 +1148,41 @@ if [ "\$#" -ge 1 ] && [ "\$1" = "-it" ]; then
     termargs=-it
 fi
 
-exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross --args "\${termargs} -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/opam-in-docker "\$@"
+exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross --args "\${termargs} -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
 EOF
-        chmod +x .ci/sd4/opam-with-env
+        chmod +x .ci/sd4/run-with-env
 
         validate_supports_docker
 
         # Bundle for consumers of setup-dkml.yml
-        echo '__ opam-in-docker __' >&2
-        cat .ci/sd4/opam-in-docker >&2
-        echo '________________________' >&2
-        do_tar_rf .ci/sd4/dist/opam-with-env.tar .ci/sd4/opam-with-env .ci/sd4/opam-in-docker .ci/sd4/edr
+        echo '__ run-in-docker __' >&2
+        cat .ci/sd4/run-in-docker >&2
+        echo '___________________' >&2
+        do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/run-with-env .ci/sd4/run-in-docker .ci/sd4/edr
 
     elif [ -n "${docker_runner:-}" ]; then
 
-        cat >.ci/sd4/opam-with-env <<EOF
+        cat >.ci/sd4/run-with-env <<EOF
 #!/bin/sh
 set -euf
-exec ${docker_runner:-} /work/.ci/sd4/deescalate /work/.ci/sd4/opam-in-docker "\$@"
+exec ${docker_runner:-} /work/.ci/sd4/deescalate /work/.ci/sd4/run-in-docker "\$@"
 EOF
-        chmod +x .ci/sd4/opam-with-env
+        chmod +x .ci/sd4/run-with-env
 
         validate_supports_docker
 
         # Bundle for consumers of setup-dkml.yml
-        echo '__ opam-in-docker __' >&2
-        cat .ci/sd4/opam-in-docker >&2
+        echo '__ run-in-docker __' >&2
+        cat .ci/sd4/run-in-docker >&2
         echo '________________________' >&2
         echo '__ deescalate __' >&2
         cat .ci/sd4/deescalate >&2
         echo '________________' >&2
-        do_tar_rf .ci/sd4/dist/opam-with-env.tar .ci/sd4/opam-with-env .ci/sd4/opam-in-docker .ci/sd4/deescalate
+        do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/run-with-env .ci/sd4/run-in-docker .ci/sd4/deescalate
 
     else
 
-        cat >.ci/sd4/opam-with-env <<EOF
+        cat >.ci/sd4/run-with-env <<EOF
 #!/bin/sh
 set -euf
 
@@ -1210,31 +1210,31 @@ if [ "\$#" -ge 1 ] && [ "\$1" = "--no-troubleshooting" ]; then
     troubleshooting=0
 fi
 
-echo "Running: opam \$*" >&2
+echo "Running: \$*" >&2
 set +e
-opam "\$@"
+"\$@"
 exitcode=\$?
-if [ \$troubleshooting = 1 ]; then
+if [ \$troubleshooting = 1 ] && [ \$1 = opam ]; then
     [ \$exitcode = 0 ] || "\${PROJECT_DIR}/.ci/sd4/troubleshoot-opam.sh" \$OPAMROOT
 fi
 exit \$exitcode
 EOF
-        chmod +x .ci/sd4/opam-with-env
+        chmod +x .ci/sd4/run-with-env
 
         # Bundle for consumers of setup-dkml.yml
-        do_tar_rf .ci/sd4/dist/opam-with-env.tar .ci/sd4/opam-with-env
+        do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/run-with-env
 
     fi
-    echo '__ opam-with-env __' >&2
-    cat .ci/sd4/opam-with-env >&2
-    echo '___________________' >&2
+    echo '__ run-with-env __' >&2
+    cat .ci/sd4/run-with-env >&2
+    echo '__________________' >&2
 
-    # -------
-    # opamrun
-    # -------
+    # ------
+    # cmdrun
+    # ------
 
     install -d .ci/sd4/opamrun
-    cat >.ci/sd4/opamrun/opamrun <<EOF
+    cat >.ci/sd4/opamrun/cmdrun <<EOF
 #!/bin/sh
 set -euf
 
@@ -1268,12 +1268,29 @@ if [ -n "\${COMSPEC:-}" ]; then
     PATH="/usr/bin:\$PATH"
 fi
 
-exec "\${PROJECT_DIR}/.ci/sd4/opam-with-env" "\$@"
+exec "\${PROJECT_DIR}/.ci/sd4/run-with-env" "\$@"
+EOF
+    chmod +x .ci/sd4/opamrun/cmdrun
+
+    # -------
+    # opamrun
+    # -------
+
+    install -d .ci/sd4/opamrun
+    cat >.ci/sd4/opamrun/opamrun <<EOF
+#!/bin/sh
+set -euf
+
+HERE=\$(dirname "\$0")
+HERE=\$(cd "\$HERE" && pwd)
+PROJECT_DIR=\$(cd "\$HERE"/../../.. && pwd)
+
+exec "\${PROJECT_DIR}/.ci/sd4/cmdrun" opam "\$@"
 EOF
     chmod +x .ci/sd4/opamrun/opamrun
 
     # Bundle for consumers of setup-dkml.yml
-    do_tar_rf .ci/sd4/dist/opam-with-env.tar .ci/sd4/opamrun
+    do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/opamrun
 }
 section_begin 'write-opam-scripts' 'Write opam scripts'
 do_write_opam_scripts
@@ -1300,7 +1317,7 @@ PATH="$setup_WORKSPACE/.ci/sd4/opamrun:$PATH"
 #      a PR!).
 #   2. We have to separate the Opam download cache from the other Opam
 #      caches
-if [ ! -s "$opam_root/.ci.root-init" ]; then # non-empty init file so can be cached irrespective of existence
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ] && [ ! -s "$opam_root/.ci.root-init" ]; then # non-empty init file so can be cached irrespective of existence
     section_begin opam-init 'Initialize opam root'
 
     # Clear any partial previous attempt
@@ -1327,9 +1344,11 @@ if [ ! -s "$opam_root/.ci.root-init" ]; then # non-empty init file so can be cac
     section_end opam-init
 fi
 
-section_begin opam-vars "Summary: opam global variables"
-opamrun --no-troubleshooting var --global || true
-section_end opam-vars
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
+    section_begin opam-vars "Summary: opam global variables"
+    opamrun --no-troubleshooting var --global || true
+    section_end opam-vars
+fi
 
 # Build OCaml
 
@@ -1361,27 +1380,19 @@ do_switch_create() {
     fi
     section_end "switch-create-$do_switch_create_NAME"
 }
-if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
     do_switch_create dkml
-else
-    section_begin "switch-create-dkml" "Create empty opam switch 'dkml'"
-    # Always create a primary switch ... just empty. Avoid problems with cache content missing
-    # and idempotency.
-    opamrun --no-troubleshooting switch remove dkml --yes || true
-    rm -rf "$opam_root/dkml"
-    opamrun switch create dkml --empty --yes
-    section_end "switch-create-dkml"
-fi
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_switch_create two
-else
-    section_begin "switch-create-two" "Create empty opam switch 'two'"
-    # Always create a secondary switch ... just empty. Avoid problems with cache content missing
-    # and idempotency.
-    opamrun --no-troubleshooting switch remove two --yes || true
-    rm -rf "$opam_root/two"
-    opamrun switch create two --empty --yes
-    section_end "switch-create-two"
+    if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+        do_switch_create two
+    else
+        section_begin "switch-create-two" "Create empty opam switch 'two'"
+        # Always create a secondary switch ... just empty. Avoid problems with cache content missing
+        # and idempotency.
+        opamrun --no-troubleshooting switch remove two --yes || true
+        rm -rf "$opam_root/two"
+        opamrun switch create two --empty --yes
+        section_end "switch-create-two"
+    fi
 fi
 
 do_switch_active() {
@@ -1389,9 +1400,9 @@ do_switch_active() {
     opamrun switch set dkml --yes
     section_end "switch-active"
 }
-#   We always set dkml as active, even when PRIMARY_SWITCH<>"true", because
-#   `opamrun exec --` should still work.
-do_switch_active
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
+    do_switch_active
+fi
 
 do_opam_repositories_add() {
     section_begin "opam-repo-add" "Add 'diskuv' opam repository"
@@ -1400,7 +1411,9 @@ do_opam_repositories_add() {
     fi
     section_end "opam-repo-add"
 }
-do_opam_repositories_add
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
+    do_opam_repositories_add
+fi
 
 do_opam_repositories_config() {
     do_opam_repositories_config_NAME=$1
@@ -1418,11 +1431,11 @@ do_opam_repositories_config() {
 
     section_end "opam-repo-$do_opam_repositories_config_NAME"
 }
-if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
     do_opam_repositories_config dkml
-fi
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_opam_repositories_config two
+    if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+        do_opam_repositories_config two
+    fi
 fi
 
 do_opam_repositories_update() {
@@ -1435,7 +1448,7 @@ do_opam_repositories_update() {
     opamrun update default diskuv
     section_end "opam-repo-update"
 }
-if [ "${PRIMARY_SWITCH:-}" = "true" ] || [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
     do_opam_repositories_update
 fi
 
@@ -1537,11 +1550,11 @@ do_pins() {
     section_end "opam-pins-$do_pins_NAME"
 }
 
-if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
     do_pins dkml
-fi
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_pins two
+    if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+        do_pins two
+    fi
 fi
 
 do_use_vsstudio() {
@@ -1610,11 +1623,11 @@ do_use_vsstudio() {
         ;;
     esac
 }
-if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
     do_use_vsstudio dkml
-fi
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_use_vsstudio two
+    if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+        do_use_vsstudio two
+    fi
 fi
 
 # Because dune.X.Y.Z+shim (and any user DKML packages) requires DKML installed (after all, it is just
@@ -1670,11 +1683,11 @@ do_setenv() {
     esac
     section_end "setenv-$do_setenv_SWITCH"
 }
-if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
     do_setenv dkml
-fi
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_setenv two
+    if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+        do_setenv two
+    fi
 fi
 
 do_install_compiler() {
@@ -1686,11 +1699,13 @@ do_install_compiler() {
     opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
     section_end "install-compiler-$do_install_compiler_NAME"
 }
-if [ "${PRIMARY_SWITCH:-}" = "true" ] && ! [ "${PRIMARY_SWITCH_SKIP_INSTALL:-}" = "true" ]; then
-    do_install_compiler dkml
-fi
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_install_compiler two
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
+    if ! [ "${PRIMARY_SWITCH_SKIP_INSTALL:-}" = "true" ]; then
+        do_install_compiler dkml
+    fi
+    if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+        do_install_compiler two
+    fi
 fi
 
 do_summary() {
@@ -1701,11 +1716,11 @@ do_summary() {
     opamrun exec --switch "$do_summary_NAME" -- ocamlc -config
     section_end "summary-$do_summary_NAME"
 }
-if [ "${PRIMARY_SWITCH:-}" = "true" ]; then
+if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
     do_summary dkml
-fi
-if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-    do_summary two
+    if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+        do_summary two
+    fi
 fi
 
 '@

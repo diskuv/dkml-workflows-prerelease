@@ -18,7 +18,7 @@ export FDOPEN_OPAMEXE_BOOTSTRAP=false
 export CACHE_PREFIX=v1
 export OCAML_COMPILER=
 export DKML_COMPILER=
-export PRIMARY_SWITCH=true
+export SKIP_OPAM_MODIFICATIONS=false
 export PRIMARY_SWITCH_SKIP_INSTALL=false
 export SECONDARY_SWITCH=false
 export CONF_DKML_CROSS_TOOLCHAIN=@repository@
@@ -39,7 +39,7 @@ usage() {
   echo "  --CACHE_PREFIX=<value>. Defaults to: ${CACHE_PREFIX}" >&2
   echo "  --OCAML_COMPILER=<value>. --DKML_COMPILER takes priority. If --DKML_COMPILER is not set and --OCAML_COMPILER is set, then the specified OCaml version tag of dkml-compiler (ex. 4.12.1) is used. Defaults to: ${OCAML_COMPILER}" >&2
   echo "  --DKML_COMPILER=<value>. Unspecified or blank is the latest from the default branch (main) of dkml-compiler. Defaults to: ${DKML_COMPILER}" >&2
-  echo "  --PRIMARY_SWITCH=true|false. If true then the primary switch named 'dkml' is created. Defaults to: ${PRIMARY_SWITCH}" >&2
+  echo "  --SKIP_OPAM_MODIFICATIONS=true|false. If true then the opam root and switches will not be created or modified. Defaults to: ${SKIP_OPAM_MODIFICATIONS}" >&2
   echo "  --SECONDARY_SWITCH=true|false. If true then the secondary switch named 'two' is created. Defaults to: ${SECONDARY_SWITCH}" >&2
   echo "  --PRIMARY_SWITCH_SKIP_INSTALL=true|false. If true no dkml-base-compiler will be installed in the 'dkml' switch. Defaults to: ${PRIMARY_SWITCH_SKIP_INSTALL}" >&2
   echo "  --CONF_DKML_CROSS_TOOLCHAIN=<value>. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam. Defaults to: ${CONF_DKML_CROSS_TOOLCHAIN}" >&2
@@ -70,8 +70,8 @@ while getopts :h-: option; do
     OCAML_COMPILER=*) OCAML_COMPILER=${OPTARG#*=} ;;
     DKML_COMPILER) fail "Option \"$OPTARG\" missing argument" ;;
     DKML_COMPILER=*) DKML_COMPILER=${OPTARG#*=} ;;
-    PRIMARY_SWITCH) fail "Option \"$OPTARG\" missing argument" ;;
-    PRIMARY_SWITCH=*) PRIMARY_SWITCH=${OPTARG#*=} ;;
+    SKIP_OPAM_MODIFICATIONS) fail "Option \"$OPTARG\" missing argument" ;;
+    SKIP_OPAM_MODIFICATIONS=*) SKIP_OPAM_MODIFICATIONS=${OPTARG#*=} ;;
     SECONDARY_SWITCH) fail "Option \"$OPTARG\" missing argument" ;;
     SECONDARY_SWITCH=*) SECONDARY_SWITCH=${OPTARG#*=} ;;
     PRIMARY_SWITCH_SKIP_INSTALL) fail "Option \"$OPTARG\" missing argument" ;;

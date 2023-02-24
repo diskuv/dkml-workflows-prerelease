@@ -6,8 +6,10 @@
   binaries
 - Bump opam on 2.2 trunk from `2.2.0-dkml20220801T155940Z` to
   `2.2.0-alpha-20221228`
-- New input variable `PRIMARY_SWITCH` will, when "false", will skip the
-  creation of the primary switch
+- New input variable `SKIP_OPAM_MODIFICATIONS` will, when "true", will skip the
+  creating or modifying the opam root and the switches.
+- Make `cmdrun` script that does not run opam automatically, especially when
+  using `SKIP_OPAM_MODIFICATIONS`
 - New input variable `PRIMARY_SWITCH_SKIP_INSTALL` will skip the install of
   the dkml-base-compiler but will still set up DKML pins and repositories
 

@@ -39,8 +39,8 @@ inputs:
     description: "Turn on verbose logging"
     required: false
     default: 'false'
-  PRIMARY_SWITCH:
-    description: "Turn on primary 'dkml' switch"
+  SKIP_OPAM_MODIFICATIONS:
+    description: "Disable the creation and updating of the opam root"
     required: false
     default: 'true'
   PRIMARY_SWITCH_SKIP_INSTALL:

@@ -486,9 +486,19 @@ variable will also be available to use as
 
 ### Job Inputs
 
-#### PRIMARY_SWITCH
+#### SKIP_OPAM_MODIFICATIONS
 
-When set to `true` (the default) the `dkml` switch will be installed.
+When set to `true` (the default is `false`) the opam root will not be
+created or modified.
+
+The `cmdrun` script will be available for you to create your
+own opam root and switches. The commands you run will have access to
+the correct `OPAMROOT` environment variable for the platform, and a proper
+MSVC environment on Windows, and run within a working dockcross container
+for Linux.
+
+The `opamrun` script will still be available, but it should only be used if
+you have already initialized (created) the opam root.
 
 #### SECONDARY_SWITCH
 

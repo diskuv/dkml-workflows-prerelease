@@ -9,7 +9,7 @@ variables:
   DKML_COMPILER: "" # "@repository@" = Opam ; "" = latest from default branch ("main") of git clone
   CONF_DKML_CROSS_TOOLCHAIN: "@repository@" # "@repository@" = Opam ; "" = latest from default branch of git clone
   DISKUV_OPAM_REPOSITORY: "" # DEFAULT_DISKUV_OPAM_REPOSITORY_TAG is used as default for empty strings
-  PRIMARY_SWITCH: "true"
+  SKIP_OPAM_MODIFICATIONS: "false"
   PRIMARY_SWITCH_SKIP_INSTALL: "false"
   SECONDARY_SWITCH: "false"
   VERBOSE: "false"
@@ -27,14 +27,14 @@ variables:
     expire_in: "1 days"
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "a_{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
+    - key: "a2_{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
       paths:
         - ${opam_root_cacheable}/download-cache
 
 .common:setup-dkml-cache:
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "b_{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
+    - key: "b2_{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
