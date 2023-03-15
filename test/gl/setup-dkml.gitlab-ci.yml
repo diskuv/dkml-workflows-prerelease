@@ -754,11 +754,13 @@ variables:
               # Confer: https://github.com/dockcross/dockcross/blob/96d87416f639af0204bdd42553e4b99315ca8476/imagefiles/entrypoint.sh#L21-L53
               #
               # So explicitly call the entrypoint if root!
-              case "$dkml_host_abi" in
-              #       https://github.com/dockcross/dockcross/blob/master/linux-x86/linux32-entrypoint.sh
-              linux_x86)  dockcross_entrypoint=/dockcross/linux32-entrypoint.sh ;;
-              *)          dockcross_entrypoint=/dockcross/entrypoint.sh ;;
-              esac
+              if echo "${dockcross_run_extra_args:-}" | grep -q linux/386; then
+                  # https://github.com/dockcross/dockcross/blob/master/linux-x86/linux32-entrypoint.sh
+                  # But only when `--platform linux/386` because the container image may be overridden.
+                  dockcross_entrypoint=/dockcross/linux32-entrypoint.sh
+              else
+                  dockcross_entrypoint=/dockcross/entrypoint.sh
+              fi
               cat > .ci/sd4/dockcross <<EOF
       #!/bin/bash
       set -euf
@@ -2632,11 +2634,13 @@ variables:
               # Confer: https://github.com/dockcross/dockcross/blob/96d87416f639af0204bdd42553e4b99315ca8476/imagefiles/entrypoint.sh#L21-L53
               #
               # So explicitly call the entrypoint if root!
-              case "$dkml_host_abi" in
-              #       https://github.com/dockcross/dockcross/blob/master/linux-x86/linux32-entrypoint.sh
-              linux_x86)  dockcross_entrypoint=/dockcross/linux32-entrypoint.sh ;;
-              *)          dockcross_entrypoint=/dockcross/entrypoint.sh ;;
-              esac
+              if echo "${dockcross_run_extra_args:-}" | grep -q linux/386; then
+                  # https://github.com/dockcross/dockcross/blob/master/linux-x86/linux32-entrypoint.sh
+                  # But only when `--platform linux/386` because the container image may be overridden.
+                  dockcross_entrypoint=/dockcross/linux32-entrypoint.sh
+              else
+                  dockcross_entrypoint=/dockcross/entrypoint.sh
+              fi
               cat > .ci/sd4/dockcross <<EOF
       #!/bin/bash
       set -euf
@@ -4290,11 +4294,13 @@ variables:
               # Confer: https://github.com/dockcross/dockcross/blob/96d87416f639af0204bdd42553e4b99315ca8476/imagefiles/entrypoint.sh#L21-L53
               #
               # So explicitly call the entrypoint if root!
-              case "$dkml_host_abi" in
-              #       https://github.com/dockcross/dockcross/blob/master/linux-x86/linux32-entrypoint.sh
-              linux_x86)  dockcross_entrypoint=/dockcross/linux32-entrypoint.sh ;;
-              *)          dockcross_entrypoint=/dockcross/entrypoint.sh ;;
-              esac
+              if echo "${dockcross_run_extra_args:-}" | grep -q linux/386; then
+                  # https://github.com/dockcross/dockcross/blob/master/linux-x86/linux32-entrypoint.sh
+                  # But only when `--platform linux/386` because the container image may be overridden.
+                  dockcross_entrypoint=/dockcross/linux32-entrypoint.sh
+              else
+                  dockcross_entrypoint=/dockcross/entrypoint.sh
+              fi
               cat > .ci/sd4/dockcross <<EOF
       #!/bin/bash
       set -euf
