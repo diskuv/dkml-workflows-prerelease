@@ -947,8 +947,10 @@ if [ -n "${dockcross_image:-}" ]; then
     if [ ! -e .ci/sd4/bs/bin/rsync ]; then
         section_begin get-opam-prereqs-in-dockcross 'Get Opam prerequisites (ManyLinux)'
         install -d .ci/sd4/bs/bin
+        # Install rsync with 'yum' (ManyLinux) or 'apt' (dockcross/linux-x64, etc.)
+        # if not present.
         #   shellcheck disable=SC2016
-        .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'sudo yum install -y rsync && install $(command -v rsync) .ci/sd4/bs/bin'
+        .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
         section_end get-opam-prereqs-in-dockcross
     fi
 fi

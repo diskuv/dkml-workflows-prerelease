@@ -762,8 +762,10 @@ runs:
             if [ ! -e .ci/sd4/bs/bin/rsync ]; then
                 section_begin get-opam-prereqs-in-dockcross 'Get Opam prerequisites (ManyLinux)'
                 install -d .ci/sd4/bs/bin
+                # Install rsync with 'yum' (ManyLinux) or 'apt' (dockcross/linux-x64, etc.)
+                # if not present.
                 #   shellcheck disable=SC2016
-                .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'sudo yum install -y rsync && install $(command -v rsync) .ci/sd4/bs/bin'
+                .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
                 section_end get-opam-prereqs-in-dockcross
             fi
         fi
@@ -1689,7 +1691,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '7f61c9-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '3214b0-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
