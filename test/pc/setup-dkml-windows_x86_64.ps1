@@ -1285,7 +1285,7 @@ HERE=\$(dirname "\$0")
 HERE=\$(cd "\$HERE" && pwd)
 PROJECT_DIR=\$(cd "\$HERE"/../../.. && pwd)
 
-exec "\${PROJECT_DIR}/.ci/sd4/cmdrun" opam "\$@"
+exec "\${PROJECT_DIR}/.ci/sd4/opamrun/cmdrun" opam "\$@"
 EOF
     chmod +x .ci/sd4/opamrun/opamrun
 
