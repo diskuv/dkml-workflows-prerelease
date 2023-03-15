@@ -526,12 +526,13 @@ install -d .ci/sd4/g
 
 #   For 'Diagnose Visual Studio environment variables (Windows)' we need dkml-runtime-distribution
 #   so that 'Import-Module Machine' and 'Get-VSSetupInstance' can be run.
-#   The version doesn't matter too much, as long as it has a functioning Get-VSSetupInstance.
-#   commit 1a3ec82dd851751a95e6a4797387a8163c51520e = tag v0.4.0-prerel20
+#   The version doesn't matter too much, as long as it has a functioning Get-VSSetupInstance
+#   that supports the Visual Studio versions of the latest GitLab CI and GitHub Actions machines.
+#   commit 4d6f1bfc3510c55ba4273cb240e43727854b5718 = WinSDK 19041 and VS 14.29
 case "$dkml_host_abi" in
 windows_*)
     section_begin checkout-dkml-runtime-distribution 'Checkout dkml-runtime-distribution'
-    git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "1a3ec82dd851751a95e6a4797387a8163c51520e"
+    git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "4d6f1bfc3510c55ba4273cb240e43727854b5718"
     section_end checkout-dkml-runtime-distribution
     ;;
 esac
