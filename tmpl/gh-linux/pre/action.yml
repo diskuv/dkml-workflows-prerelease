@@ -166,6 +166,7 @@ runs:
       with:
         path: |
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}{%- endraw %}/config
+          {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}{%- endraw %}/opam-init
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}{%- endraw %}/dkml
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}{%- endraw %}/two
           {% raw -%}${{ steps.full_matrix_vars.outputs.opam_root_cacheable }}{%- endraw %}/repo

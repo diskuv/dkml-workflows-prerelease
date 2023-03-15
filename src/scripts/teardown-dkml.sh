@@ -77,14 +77,14 @@ do_fill_skipped_cache_entries() {
         echo "Found vsenv.sh"
     fi
 
-    if [ ! -e msys64 ]; then
+    if [ ! -d msys64 ]; then
         rm -rf msys64
         install -d msys64
-        touch msys64/.keep
-        echo "Created empty msys64"
+        echo "Created empty msys64/"
     else
         echo "Found msys64/"
     fi
+    touch msys64/.keep
 
     if [ -s "$unix_opam_root_cacheable/.ci.dkml.repo-init" ]; then
         echo "Found non-empty $unix_opam_root_cacheable/.ci.dkml.repo-init"
@@ -99,6 +99,15 @@ do_fill_skipped_cache_entries() {
         touch "$unix_opam_root_cacheable/.ci.two.repo-init"
         echo "Created empty $unix_opam_root_cacheable/.ci.two.repo-init"
     fi
+
+    if [ -d "$unix_opam_root_cacheable/opam-init" ]; then
+        echo "Found $unix_opam_root_cacheable/opam-init/"
+    else
+        rm -rf "$unix_opam_root_cacheable/opam-init"
+        install -d "$unix_opam_root_cacheable/opam-init"
+        echo "Created empty $unix_opam_root_cacheable/opam-init/"
+    fi
+    touch "$unix_opam_root_cacheable/opam-init/.keep"
 
     section_end fill-skipped-cache-entries
 }

@@ -38,6 +38,7 @@ variables:
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
+        - ${opam_root_cacheable}/opam-init
         - ${opam_root_cacheable}/dkml/.dkml
         - ${opam_root_cacheable}/dkml/.opam-switch/config
         - ${opam_root_cacheable}/dkml/.opam-switch/install
