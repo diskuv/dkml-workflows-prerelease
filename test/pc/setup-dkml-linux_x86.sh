@@ -49,6 +49,20 @@ export PIN_OCP_INDENT='1.8.2-windowssupport'
 export PIN_PPX_EXPECT='v0.15.1'
 export PIN_WITH_DKML='1.2.1~prerel1'
 
+# Set matrix variables
+# autogen from pc_vars. only linux_x86
+export dkml_host_os="linux"
+export opam_root_cacheable=".ci/o"
+export abi_pattern="manylinux2014-linux_x86"
+export comment="(CentOS 7, etc.)"
+export bootstrap_opam_version="2.2.0-alpha-20221228"
+export dkml_host_abi="linux_x86"
+export opam_root=".ci/o"
+export in_docker="true"
+export dockcross_image="dockcross/manylinux2014-x86"
+export dockcross_run_extra_args="--platform linux/386"
+
+
 usage() {
   echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
   echo 'usage: setup-dkml-linux_x86.sh [options]' >&2
@@ -68,6 +82,9 @@ usage() {
   echo "  --CONF_DKML_CROSS_TOOLCHAIN=<value>. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam. Defaults to: ${CONF_DKML_CROSS_TOOLCHAIN}" >&2
   echo "  --DISKUV_OPAM_REPOSITORY=<value>. Defaults to the value of --DEFAULT_DISKUV_OPAM_REPOSITORY_TAG (see below)" >&2
   echo "  --DKML_HOME=<value>. then DiskuvOCamlHome, DiskuvOCamlBinaryPaths and DiskuvOCamlDeploymentId will be set, in addition to the always-present DiskuvOCamlVarsVersion and DiskuvOCamlVersion." >&2
+  echo "  --in_docker=true|false. When true, opamrun and cmdrun will launch commands inside a Docker container. Defaults to '${in_docker:-}'" >&2
+  echo "  --dockcross_image=<value>. When --in_docker=true, will be Docker container image. Defaults to '${dockcross_image:-}'" >&2
+  echo "  --dockcross_run_extra_args=<value>. When --in_docker=true, will be extra arguments passed to 'docker run'. Defaults to '${dockcross_run_extra_args:-}'" >&2
 
   # autogen from global_env_vars.
   echo "  --DEFAULT_DKML_COMPILER=<value>. Defaults to: ${DEFAULT_DKML_COMPILER}" >&2
@@ -128,6 +145,12 @@ while getopts :h-: option; do
     DISKUV_OPAM_REPOSITORY=*) DISKUV_OPAM_REPOSITORY=${OPTARG#*=} ;;
     DKML_HOME) fail "Option \"$OPTARG\" missing argument" ;;
     DKML_HOME=*) DKML_HOME=${OPTARG#*=} ;;
+    dockcross_image) fail "Option \"$OPTARG\" missing argument" ;;
+    dockcross_image=*) dockcross_image=${OPTARG#*=} ;;
+    dockcross_run_extra_args) fail "Option \"$OPTARG\" missing argument" ;;
+    dockcross_run_extra_args=*) dockcross_run_extra_args=${OPTARG#*=} ;;
+    in_docker) fail "Option \"$OPTARG\" missing argument" ;;
+    in_docker=*) in_docker=${OPTARG#*=} ;;
     # autogen from global_env_vars.
     DEFAULT_DKML_COMPILER) fail "Option \"$OPTARG\" missing argument" ;;
     DEFAULT_DKML_COMPILER=*) DEFAULT_DKML_COMPILER=${OPTARG#*=} ;;
@@ -185,20 +208,6 @@ while getopts :h-: option; do
   esac
 done
 shift $((OPTIND - 1))
-
-# Set matrix variables
-# autogen from pc_vars. only linux_x86
-export dkml_host_os="linux"
-export opam_root_cacheable=".ci/o"
-export abi_pattern="manylinux2014-linux_x86"
-export comment="(CentOS 7, etc.)"
-export bootstrap_opam_version="2.2.0-alpha-20221228"
-export dkml_host_abi="linux_x86"
-export opam_root=".ci/o"
-export in_docker="true"
-export dockcross_image="dockcross/manylinux2014-x86"
-export dockcross_run_extra_args="--platform linux/386"
-
 
 ########################### before_script ###############################
 

@@ -22,6 +22,9 @@ export DISKUV_OPAM_REPOSITORY=
 export DKML_HOME=
 # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}export {{ var.name }}='{{ var.value }}'{% endfor %}
 
+# Set matrix variables
+# autogen from pc_vars. only darwin_x86_64{{ nl }}{% for (name,value) in pc_vars.darwin_x86_64 %}export {{ name }}="{{ value }}"{{ nl }}{% endfor %}
+
 usage() {
   echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
   echo 'usage: setup-dkml-darwin_x86_64.sh [options]' >&2
@@ -41,6 +44,9 @@ usage() {
   echo "  --CONF_DKML_CROSS_TOOLCHAIN=<value>. Unspecified or blank is the latest from the default branch (main) of conf-dkml-cross-toolchain. @repository@ is the latest from Opam. Defaults to: ${CONF_DKML_CROSS_TOOLCHAIN}" >&2
   echo "  --DISKUV_OPAM_REPOSITORY=<value>. Defaults to the value of --DEFAULT_DISKUV_OPAM_REPOSITORY_TAG (see below)" >&2
   echo "  --DKML_HOME=<value>. then DiskuvOCamlHome, DiskuvOCamlBinaryPaths and DiskuvOCamlDeploymentId will be set, in addition to the always-present DiskuvOCamlVarsVersion and DiskuvOCamlVersion." >&2
+  echo "  --in_docker=true|false. When true, opamrun and cmdrun will launch commands inside a Docker container. Defaults to '${in_docker:-}'" >&2
+  echo "  --dockcross_image=<value>. When --in_docker=true, will be Docker container image. Defaults to '${dockcross_image:-}'" >&2
+  echo "  --dockcross_run_extra_args=<value>. When --in_docker=true, will be extra arguments passed to 'docker run'. Defaults to '${dockcross_run_extra_args:-}'" >&2
 
   # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}  echo "  --{{ var.name }}=<value>. Defaults to: $\{{{ var.name }}}" >&2{% endfor %}
   exit 2
@@ -78,6 +84,12 @@ while getopts :h-: option; do
     DISKUV_OPAM_REPOSITORY=*) DISKUV_OPAM_REPOSITORY=${OPTARG#*=} ;;
     DKML_HOME) fail "Option \"$OPTARG\" missing argument" ;;
     DKML_HOME=*) DKML_HOME=${OPTARG#*=} ;;
+    dockcross_image) fail "Option \"$OPTARG\" missing argument" ;;
+    dockcross_image=*) dockcross_image=${OPTARG#*=} ;;
+    dockcross_run_extra_args) fail "Option \"$OPTARG\" missing argument" ;;
+    dockcross_run_extra_args=*) dockcross_run_extra_args=${OPTARG#*=} ;;
+    in_docker) fail "Option \"$OPTARG\" missing argument" ;;
+    in_docker=*) in_docker=${OPTARG#*=} ;;
     # autogen from global_env_vars.{% for var in global_env_vars %}{{ nl }}    {{ var.name }}) fail "Option \"$OPTARG\" missing argument" ;;{{ nl }}    {{ var.name }}=*) {{ var.name }}=${OPTARG#*=} ;;{% endfor %}
     help) usage ;;
     help=*) fail "Option \"${OPTARG%%=*}\" has unexpected argument" ;;
@@ -89,9 +101,6 @@ while getopts :h-: option; do
   esac
 done
 shift $((OPTIND - 1))
-
-# Set matrix variables
-# autogen from pc_vars. only darwin_x86_64{{ nl }}{% for (name,value) in pc_vars.darwin_x86_64 %}export {{ name }}="{{ value }}"{{ nl }}{% endfor %}
 
 ########################### before_script ###############################
 
