@@ -994,18 +994,21 @@ unset CAML_LD_LIBRARY_PATH
 unset OCAMLLIB
 unset OCAML_TOPLEVEL_PATH
 
+prog=\$1
+shift
+
 # Optionally skip troubleshooting
 troubleshooting=1
-if [ "\$#" -ge 1 ] && [ "\$1" = "--no-troubleshooting" ]; then
+if [ "\$#" -ge 1 ] && [ "\$prog" = opam ] && [ "\$1" = "--no-troubleshooting" ]; then
     shift
     troubleshooting=0
 fi
 
-echo "Running inside Docker container: \$*" >&2
+echo "Running inside Docker container: \$prog \$*" >&2
 set +e
-"\$@"
+"\$prog" "\$@"
 exitcode=\$?
-if [ \$troubleshooting = 1 ] && [ \$1 = opam ]; then
+if [ \$troubleshooting = 1 ] && [ \$prog = opam ]; then
     [ \$exitcode = 0 ] || "/work/.ci/sd4/troubleshoot-opam.sh" \$OPAMROOT
 fi
 exit \$exitcode
@@ -1112,18 +1115,21 @@ unset CAML_LD_LIBRARY_PATH
 unset OCAMLLIB
 unset OCAML_TOPLEVEL_PATH
 
+prog=\$1
+shift
+
 # Optionally skip troubleshooting
 troubleshooting=1
-if [ "\$#" -ge 1 ] && [ "\$1" = "--no-troubleshooting" ]; then
+if [ "\$#" -ge 1 ] && [ "\$prog" = opam ] && [ "\$1" = "--no-troubleshooting" ]; then
     shift
     troubleshooting=0
 fi
 
-echo "Running: \$*" >&2
+echo "Running: \$prog \$*" >&2
 set +e
-"\$@"
+"\$prog" "\$@"
 exitcode=\$?
-if [ \$troubleshooting = 1 ] && [ \$1 = opam ]; then
+if [ \$troubleshooting = 1 ] && [ \$prog = opam ]; then
     [ \$exitcode = 0 ] || "\${PROJECT_DIR}/.ci/sd4/troubleshoot-opam.sh" \$OPAMROOT
 fi
 exit \$exitcode
