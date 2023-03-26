@@ -375,13 +375,66 @@ variables:
 
     - 'sh .ci/sd4/run-teardown-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
 
+# Everything except Docker-in-Docker based matrix
+.linux:setup-dkml-no-matrix:
+  extends: .common:setup-dkml
+  variables:
+    DEBIAN_FRONTEND: noninteractive # for apt-get
+  before_script:
+    - echo "Installing system packages ..."
+    # Packages
+    #   tar: GNU tar. BusyBox tar can't do 'tar r' replacements needed by setup-dkml.sh
+    #   bash: dockcross needs Bash
+    #   git: For checkout-code.sh, and for opam
+    #   wget or curl: For setup-dkml.sh, for do_bootstrap() of opam
+    # Distros
+    #   docker:20.10.16 (uses /sbin/apk)
+    #   debian:stable-slim (uses /usr/bin/apt-get)
+    - |
+      if [ -x /sbin/apk ]; then
+        /sbin/apk add tar bash git wget
+      elif [ -x /usr/bin/apt-get ]; then
+        /usr/bin/apt-get update -qq -o=Dpkg::Use-Pty=0
+        /usr/bin/apt-get install -qq -o=Dpkg::Use-Pty=0 -y --no-install-suggests tar bash git wget
+      fi
+    - echo "Writing pre scripts ..."
+    - |
+      install -d .ci/sd4
+
+      cat > .ci/sd4/common-values.sh <<'end_of_script'
+      {{ gl_common_values_script }}
+      end_of_script
+
+      cat > .ci/sd4/run-checkout-code.sh <<'end_of_script'
+      {{ gl_checkout_code_script }}
+      end_of_script
+
+      cat > .ci/sd4/run-setup-dkml.sh <<'end_of_script'
+      {{ gl_setup_dkml_script }}
+      end_of_script
+
+    - 'sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+    - 'sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+  script:
+    - 'printf "Override the .gitlab-ci.yml configuration ...\n  build_linux:\n    script:\nto configure your Linux build.\n"'
+  after_script:
+    - echo "Writing post scripts ..."
+    - |
+      install -d .ci/sd4
+
+      cat > .ci/sd4/run-teardown-dkml.sh <<'end_of_script'
+      {{ gl_teardown_dkml_script }}
+      end_of_script
+
+    - 'sh .ci/sd4/run-teardown-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+
 .linux:setup-dkml:
   # prettier-ignore
   parallel:
     matrix: [
       # autogen from gl_vars. only linux{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.dkml_host_os == "linux" -%}{{ nl }}      { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
     ]
-  extends: .common:setup-dkml
+  extends: .linux:setup-dkml-no-matrix
   #     ---------------
   #     Docker in Docker
   #       https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
@@ -431,39 +484,3 @@ variables:
     DOCKER_TLS_CERTDIR: "/certs"
     # GitLab CI uses Docker-in-Docker, so no need for a custom dockcross image
     dockcross_image_custom_prefix: ""
-  before_script:
-    - echo "Installing system packages ..."
-    #   tar: GNU tar. BusyBox tar can't do 'tar r' replacements needed by setup-dkml.sh
-    #   bash: dockcross needs Bash
-    #   git: For checkout-code.sh, and for opam
-    - apk add tar bash git
-    - echo "Writing pre scripts ..."
-    - |
-      install -d .ci/sd4
-
-      cat > .ci/sd4/common-values.sh <<'end_of_script'
-      {{ gl_common_values_script }}
-      end_of_script
-
-      cat > .ci/sd4/run-checkout-code.sh <<'end_of_script'
-      {{ gl_checkout_code_script }}
-      end_of_script
-
-      cat > .ci/sd4/run-setup-dkml.sh <<'end_of_script'
-      {{ gl_setup_dkml_script }}
-      end_of_script
-
-    - 'sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
-    - 'sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
-  script:
-    - 'printf "Override the .gitlab-ci.yml configuration ...\n  build_linux:\n    script:\nto configure your Linux build.\n"'
-  after_script:
-    - echo "Writing post scripts ..."
-    - |
-      install -d .ci/sd4
-
-      cat > .ci/sd4/run-teardown-dkml.sh <<'end_of_script'
-      {{ gl_teardown_dkml_script }}
-      end_of_script
-
-    - 'sh .ci/sd4/run-teardown-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'

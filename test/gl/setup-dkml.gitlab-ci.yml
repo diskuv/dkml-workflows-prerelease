@@ -642,7 +642,7 @@ variables:
 
               if [ ! -e version ] || [ "$(cat version)" != "$bootstrap_opam_version" ]; then
                   echo 'Bootstrap opam from historical release (non-Windows; Windows non-fdopen) ...'
-                  if command -v curl; then
+                  if command -v curl > /dev/null 2> /dev/null; then
                       curl -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
                   else
                       wget -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
@@ -675,7 +675,11 @@ variables:
               if [ ! -x .ci/sd4/bs/bin/opam ]; then
                   echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86) ...'
                   install -d .ci/sd4/bs/bin
-                  wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                  if command -v curl > /dev/null 2> /dev/null; then
+                      curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                  else
+                      wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                  fi
                   sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
                   if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
                       sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
@@ -694,7 +698,11 @@ variables:
               if [ ! -x .ci/sd4/bs/bin/opam ]; then
                   echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86_64) ...'
                   install -d .ci/sd4/bs/bin
-                  wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                  if command -v curl > /dev/null 2> /dev/null; then
+                      curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                  else
+                      wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                  fi
                   sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
                   if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
                       sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
@@ -850,7 +858,7 @@ variables:
               # Install rsync with 'yum' (ManyLinux) or 'apt' (dockcross/linux-x64, etc.)
               # if not present.
               #   shellcheck disable=SC2016
-              .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
+              .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
               section_end get-opam-prereqs-in-dockcross
           fi
       fi
@@ -864,8 +872,8 @@ variables:
                   section_begin get-opam-prereqs-in-docker 'Get Opam prerequisites (Linux Docker)'
                   install -d .ci/sd4/bs/bin
                   ${docker_runner} sh -c '
-                  apt-get update &&
-                  apt-get install -y rsync &&
+                  apt-get update -qq -o=Dpkg::Use-Pty=0 &&
+                  apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync &&
                   ldd /usr/bin/rsync &&
                   ls -l /lib/i386-linux-gnu/libpopt.so.0 /lib/i386-linux-gnu/libacl.so.1 /lib/i386-linux-gnu/libattr.so.1 &&
                   tar cCfhz / /work/.ci/sd4/bs/bin/deps.tar.gz /usr/bin/rsync /lib/i386-linux-gnu/libpopt.so.0
@@ -2524,7 +2532,7 @@ variables:
 
               if [ ! -e version ] || [ "$(cat version)" != "$bootstrap_opam_version" ]; then
                   echo 'Bootstrap opam from historical release (non-Windows; Windows non-fdopen) ...'
-                  if command -v curl; then
+                  if command -v curl > /dev/null 2> /dev/null; then
                       curl -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
                   else
                       wget -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
@@ -2557,7 +2565,11 @@ variables:
               if [ ! -x .ci/sd4/bs/bin/opam ]; then
                   echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86) ...'
                   install -d .ci/sd4/bs/bin
-                  wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                  if command -v curl > /dev/null 2> /dev/null; then
+                      curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                  else
+                      wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                  fi
                   sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
                   if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
                       sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
@@ -2576,7 +2588,11 @@ variables:
               if [ ! -x .ci/sd4/bs/bin/opam ]; then
                   echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86_64) ...'
                   install -d .ci/sd4/bs/bin
-                  wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                  if command -v curl > /dev/null 2> /dev/null; then
+                      curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                  else
+                      wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                  fi
                   sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
                   if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
                       sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
@@ -2732,7 +2748,7 @@ variables:
               # Install rsync with 'yum' (ManyLinux) or 'apt' (dockcross/linux-x64, etc.)
               # if not present.
               #   shellcheck disable=SC2016
-              .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
+              .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
               section_end get-opam-prereqs-in-dockcross
           fi
       fi
@@ -2746,8 +2762,8 @@ variables:
                   section_begin get-opam-prereqs-in-docker 'Get Opam prerequisites (Linux Docker)'
                   install -d .ci/sd4/bs/bin
                   ${docker_runner} sh -c '
-                  apt-get update &&
-                  apt-get install -y rsync &&
+                  apt-get update -qq -o=Dpkg::Use-Pty=0 &&
+                  apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync &&
                   ldd /usr/bin/rsync &&
                   ls -l /lib/i386-linux-gnu/libpopt.so.0 /lib/i386-linux-gnu/libacl.so.1 /lib/i386-linux-gnu/libattr.so.1 &&
                   tar cCfhz / /work/.ci/sd4/bs/bin/deps.tar.gz /usr/bin/rsync /lib/i386-linux-gnu/libpopt.so.0
@@ -3662,90 +3678,28 @@ variables:
 
     - 'sh .ci/sd4/run-teardown-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
 
-.linux:setup-dkml:
-  # prettier-ignore
-  parallel:
-    matrix: [
-      # autogen from gl_vars. only linux
-      { dkml_host_os: 'linux',
-        opam_root_cacheable: '.ci/o',
-        abi_pattern: 'manylinux2014-linux_x86',
-        comment: '(CentOS 7, etc.)',
-        bootstrap_opam_version: '2.2.0-alpha-20221228',
-        dkml_host_abi: 'linux_x86',
-        opam_root: '.ci/o',
-        in_docker: 'true',
-        dockcross_image: 'dockcross/manylinux2014-x86',
-        dockcross_run_extra_args: '--platform linux/386' },
-        
-      { dkml_host_os: 'linux',
-        opam_root_cacheable: '.ci/o',
-        abi_pattern: 'manylinux2014-linux_x86_64',
-        comment: '(CentOS 7, etc.)',
-        bootstrap_opam_version: '2.2.0-alpha-20221228',
-        dkml_host_abi: 'linux_x86_64',
-        opam_root: '.ci/o',
-        dockcross_image: 'dockcross/manylinux2014-x64',
-        dockcross_run_extra_args: '--platform linux/amd64',
-        in_docker: 'true' },
-        
-    ]
+# Everything except Docker-in-Docker based matrix
+.linux:setup-dkml-no-matrix:
   extends: .common:setup-dkml
-  #     ---------------
-  #     Docker in Docker
-  #       https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
-  #       We need it to do 'docker run' for the dockcross scripts
-  #     ---------------
-  #
-  #     Debugging on desktop? Get a shell session with:
-  #
-  #       docker network create gitlab-dind-network
-  #       docker volume create gitlab-dind-certs-ca
-  #       docker volume create gitlab-dind-certs-client
-  #
-  #       docker run --privileged --name gitlab-dind -d \
-  #           --network gitlab-dind-network --network-alias docker \
-  #           -e DOCKER_TLS_CERTDIR=/certs \
-  #           -v gitlab-dind-certs-ca:/certs/ca \
-  #           -v gitlab-dind-certs-client:/certs/client \
-  #       	  docker:20.10.16-dind
-  #
-  #       docker logs gitlab-dind
-  #
-  #       docker run -it --rm --network gitlab-dind-network \
-  #           -e DOCKER_TLS_CERTDIR=/certs \
-  #           -v gitlab-dind-certs-client:/certs/client:ro \
-  #           docker:20.10.16
-  image: docker:20.10.16
-  services:
-    - docker:20.10.16-dind
   variables:
-    # Whether to use the ManyLinux Docker container.
-    # Yes; we have Docker-in-Docker to support exactly this.
-    MANYLINUX: "true"
-    # When you use the dind service, you must instruct Docker to talk with
-    # the daemon started inside of the service. The daemon is available
-    # with a network connection instead of the default
-    # /var/run/docker.sock socket. Docker 19.03 does this automatically
-    # by setting the DOCKER_HOST in
-    # https://github.com/docker-library/docker/blob/d45051476babc297257df490d22cbd806f1b11e4/19.03/docker-entrypoint.sh#L23-L29
-    #
-    # The 'docker' hostname is the alias of the service container as described at
-    # https://docs.gitlab.com/ee/ci/services/#accessing-the-services.
-    #
-    # Specify to Docker where to create the certificates. Docker
-    # creates them automatically on boot, and creates
-    # `/certs/client` to share between the service and job
-    # container, thanks to volume mount from config.toml
-    DOCKER_TLS_CERTDIR: "/certs"
-    # GitLab CI uses Docker-in-Docker, so no need for a custom dockcross image
-    dockcross_image_custom_prefix: ""
+    DEBIAN_FRONTEND: noninteractive # for apt-get
   before_script:
     - echo "Installing system packages ..."
+    # Packages
     #   tar: GNU tar. BusyBox tar can't do 'tar r' replacements needed by setup-dkml.sh
     #   bash: dockcross needs Bash
     #   git: For checkout-code.sh, and for opam
-    - apk add tar bash git
+    #   wget or curl: For setup-dkml.sh, for do_bootstrap() of opam
+    # Distros
+    #   docker:20.10.16 (uses /sbin/apk)
+    #   debian:stable-slim (uses /usr/bin/apt-get)
+    - |
+      if [ -x /sbin/apk ]; then
+        /sbin/apk add tar bash git wget
+      elif [ -x /usr/bin/apt-get ]; then
+        /usr/bin/apt-get update -qq -o=Dpkg::Use-Pty=0
+        /usr/bin/apt-get install -qq -o=Dpkg::Use-Pty=0 -y --no-install-suggests tar bash git wget
+      fi
     - echo "Writing pre scripts ..."
     - |
       install -d .ci/sd4
@@ -4186,7 +4140,7 @@ variables:
 
               if [ ! -e version ] || [ "$(cat version)" != "$bootstrap_opam_version" ]; then
                   echo 'Bootstrap opam from historical release (non-Windows; Windows non-fdopen) ...'
-                  if command -v curl; then
+                  if command -v curl > /dev/null 2> /dev/null; then
                       curl -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
                   else
                       wget -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
@@ -4219,7 +4173,11 @@ variables:
               if [ ! -x .ci/sd4/bs/bin/opam ]; then
                   echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86) ...'
                   install -d .ci/sd4/bs/bin
-                  wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                  if command -v curl > /dev/null 2> /dev/null; then
+                      curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                  else
+                      wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                  fi
                   sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
                   if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
                       sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
@@ -4238,7 +4196,11 @@ variables:
               if [ ! -x .ci/sd4/bs/bin/opam ]; then
                   echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86_64) ...'
                   install -d .ci/sd4/bs/bin
-                  wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                  if command -v curl > /dev/null 2> /dev/null; then
+                      curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                  else
+                      wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                  fi
                   sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
                   if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
                       sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
@@ -4394,7 +4356,7 @@ variables:
               # Install rsync with 'yum' (ManyLinux) or 'apt' (dockcross/linux-x64, etc.)
               # if not present.
               #   shellcheck disable=SC2016
-              .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
+              .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
               section_end get-opam-prereqs-in-dockcross
           fi
       fi
@@ -4408,8 +4370,8 @@ variables:
                   section_begin get-opam-prereqs-in-docker 'Get Opam prerequisites (Linux Docker)'
                   install -d .ci/sd4/bs/bin
                   ${docker_runner} sh -c '
-                  apt-get update &&
-                  apt-get install -y rsync &&
+                  apt-get update -qq -o=Dpkg::Use-Pty=0 &&
+                  apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync &&
                   ldd /usr/bin/rsync &&
                   ls -l /lib/i386-linux-gnu/libpopt.so.0 /lib/i386-linux-gnu/libacl.so.1 /lib/i386-linux-gnu/libattr.so.1 &&
                   tar cCfhz / /work/.ci/sd4/bs/bin/deps.tar.gz /usr/bin/rsync /lib/i386-linux-gnu/libpopt.so.0
@@ -5323,3 +5285,82 @@ variables:
       end_of_script
 
     - 'sh .ci/sd4/run-teardown-dkml.sh CI_PROJECT_DIR "${CI_PROJECT_DIR}"'
+
+.linux:setup-dkml:
+  # prettier-ignore
+  parallel:
+    matrix: [
+      # autogen from gl_vars. only linux
+      { dkml_host_os: 'linux',
+        opam_root_cacheable: '.ci/o',
+        abi_pattern: 'manylinux2014-linux_x86',
+        comment: '(CentOS 7, etc.)',
+        bootstrap_opam_version: '2.2.0-alpha-20221228',
+        dkml_host_abi: 'linux_x86',
+        opam_root: '.ci/o',
+        in_docker: 'true',
+        dockcross_image: 'dockcross/manylinux2014-x86',
+        dockcross_run_extra_args: '--platform linux/386' },
+        
+      { dkml_host_os: 'linux',
+        opam_root_cacheable: '.ci/o',
+        abi_pattern: 'manylinux2014-linux_x86_64',
+        comment: '(CentOS 7, etc.)',
+        bootstrap_opam_version: '2.2.0-alpha-20221228',
+        dkml_host_abi: 'linux_x86_64',
+        opam_root: '.ci/o',
+        dockcross_image: 'dockcross/manylinux2014-x64',
+        dockcross_run_extra_args: '--platform linux/amd64',
+        in_docker: 'true' },
+        
+    ]
+  extends: .linux:setup-dkml-no-matrix
+  #     ---------------
+  #     Docker in Docker
+  #       https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#use-docker-in-docker
+  #       We need it to do 'docker run' for the dockcross scripts
+  #     ---------------
+  #
+  #     Debugging on desktop? Get a shell session with:
+  #
+  #       docker network create gitlab-dind-network
+  #       docker volume create gitlab-dind-certs-ca
+  #       docker volume create gitlab-dind-certs-client
+  #
+  #       docker run --privileged --name gitlab-dind -d \
+  #           --network gitlab-dind-network --network-alias docker \
+  #           -e DOCKER_TLS_CERTDIR=/certs \
+  #           -v gitlab-dind-certs-ca:/certs/ca \
+  #           -v gitlab-dind-certs-client:/certs/client \
+  #       	  docker:20.10.16-dind
+  #
+  #       docker logs gitlab-dind
+  #
+  #       docker run -it --rm --network gitlab-dind-network \
+  #           -e DOCKER_TLS_CERTDIR=/certs \
+  #           -v gitlab-dind-certs-client:/certs/client:ro \
+  #           docker:20.10.16
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  variables:
+    # Whether to use the ManyLinux Docker container.
+    # Yes; we have Docker-in-Docker to support exactly this.
+    MANYLINUX: "true"
+    # When you use the dind service, you must instruct Docker to talk with
+    # the daemon started inside of the service. The daemon is available
+    # with a network connection instead of the default
+    # /var/run/docker.sock socket. Docker 19.03 does this automatically
+    # by setting the DOCKER_HOST in
+    # https://github.com/docker-library/docker/blob/d45051476babc297257df490d22cbd806f1b11e4/19.03/docker-entrypoint.sh#L23-L29
+    #
+    # The 'docker' hostname is the alias of the service container as described at
+    # https://docs.gitlab.com/ee/ci/services/#accessing-the-services.
+    #
+    # Specify to Docker where to create the certificates. Docker
+    # creates them automatically on boot, and creates
+    # `/certs/client` to share between the service and job
+    # container, thanks to volume mount from config.toml
+    DOCKER_TLS_CERTDIR: "/certs"
+    # GitLab CI uses Docker-in-Docker, so no need for a custom dockcross image
+    dockcross_image_custom_prefix: ""

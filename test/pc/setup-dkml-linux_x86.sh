@@ -650,7 +650,7 @@ do_bootstrap() {
 
         if [ ! -e version ] || [ "$(cat version)" != "$bootstrap_opam_version" ]; then
             echo 'Bootstrap opam from historical release (non-Windows; Windows non-fdopen) ...'
-            if command -v curl; then
+            if command -v curl > /dev/null 2> /dev/null; then
                 curl -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
             else
                 wget -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
@@ -683,7 +683,11 @@ do_bootstrap() {
         if [ ! -x .ci/sd4/bs/bin/opam ]; then
             echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86) ...'
             install -d .ci/sd4/bs/bin
-            wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+            if command -v curl > /dev/null 2> /dev/null; then
+                curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+            else
+                wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+            fi
             sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
             if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
                 sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
@@ -702,7 +706,11 @@ do_bootstrap() {
         if [ ! -x .ci/sd4/bs/bin/opam ]; then
             echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86_64) ...'
             install -d .ci/sd4/bs/bin
-            wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+            if command -v curl > /dev/null 2> /dev/null; then
+                curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+            else
+                wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+            fi
             sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
             if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
                 sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
@@ -858,7 +866,7 @@ if [ -n "${dockcross_image:-}" ]; then
         # Install rsync with 'yum' (ManyLinux) or 'apt' (dockcross/linux-x64, etc.)
         # if not present.
         #   shellcheck disable=SC2016
-        .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
+        .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
         section_end get-opam-prereqs-in-dockcross
     fi
 fi
@@ -872,8 +880,8 @@ fi
             section_begin get-opam-prereqs-in-docker 'Get Opam prerequisites (Linux Docker)'
             install -d .ci/sd4/bs/bin
             ${docker_runner} sh -c '
-            apt-get update &&
-            apt-get install -y rsync &&
+            apt-get update -qq -o=Dpkg::Use-Pty=0 &&
+            apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync &&
             ldd /usr/bin/rsync &&
             ls -l /lib/i386-linux-gnu/libpopt.so.0 /lib/i386-linux-gnu/libacl.so.1 /lib/i386-linux-gnu/libattr.so.1 &&
             tar cCfhz / /work/.ci/sd4/bs/bin/deps.tar.gz /usr/bin/rsync /lib/i386-linux-gnu/libpopt.so.0
