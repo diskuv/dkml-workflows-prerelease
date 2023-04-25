@@ -4,7 +4,12 @@
   (setenv
    OCAMLRUNPARAM
    b
-   (run %{project_root}/src/gh_dkml_action_yml.exe --phase pre --output-windows %{target}))))
+   (run
+    %{project_root}/src/gh_dkml_action_yml.exe
+    --phase
+    pre
+    --output-windows
+    %{target}))))
 
 (rule
  (alias runtest)

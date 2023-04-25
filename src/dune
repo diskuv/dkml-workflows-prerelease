@@ -35,10 +35,7 @@
 
 (executables
  (names gh_dkml_action_yml gl_setup_dkml_yml pc_setup_dkml)
- (public_names
-  gh-dkml-action-yml
-  gl-setup-dkml-yml
-  pc-setup-dkml)
+ (public_names gh-dkml-action-yml gl-setup-dkml-yml pc-setup-dkml)
  (modules gh_dkml_action_yml gl_setup_dkml_yml pc_setup_dkml)
  (libraries jingoo workflow_arg workflow_content workflow_logic))
 

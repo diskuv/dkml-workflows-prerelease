@@ -4,7 +4,12 @@
   (setenv
    OCAMLRUNPARAM
    b
-   (run %{project_root}/src/gh_dkml_action_yml.exe --phase post --output-darwin %{target}))))
+   (run
+    %{project_root}/src/gh_dkml_action_yml.exe
+    --phase
+    post
+    --output-darwin
+    %{target}))))
 
 (rule
  (alias runtest)
