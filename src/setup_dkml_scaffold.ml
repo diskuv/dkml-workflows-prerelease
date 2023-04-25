@@ -34,6 +34,7 @@ let scaffold_gh ~output_dir () =
 (rule
   (alias gen-dkml)
   (target action.gen.yml)
+  (enabled_if %%{bin-available:gh-dkml-action-yml})
   (action
     (setenv
      OCAMLRUNPARAM
@@ -42,6 +43,7 @@ let scaffold_gh ~output_dir () =
 
 (rule
   (alias gen-dkml)
+  (enabled_if %%{bin-available:gh-dkml-action-yml})
   (action
     (diff action.yml action.gen.yml)))
 |}
@@ -85,6 +87,7 @@ let scaffold_gl ~output_dir () =
 (rule
   (target setup-dkml.gen.gitlab-ci.yml)
   (alias gen-dkml)
+  (enabled_if %%{bin-available:gl-setup-dkml-yml})
   (action
     (setenv
      OCAMLRUNPARAM
@@ -93,6 +96,7 @@ let scaffold_gl ~output_dir () =
 
 (rule
   (alias gen-dkml)
+  (enabled_if %%{bin-available:gl-setup-dkml-yml})
   (action
     (diff setup-dkml.gitlab-ci.yml setup-dkml.gen.gitlab-ci.yml)))
 |}
@@ -118,6 +122,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (target setup-dkml-windows_x86-gen.ps1)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (setenv
    OCAMLRUNPARAM
@@ -126,6 +131,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (alias gen-dkml)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (diff setup-dkml-windows_x86.ps1 setup-dkml-windows_x86-gen.ps1)))
 
@@ -133,6 +139,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (target setup-dkml-windows_x86_64-gen.ps1)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (setenv
    OCAMLRUNPARAM
@@ -141,6 +148,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (alias gen-dkml)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (diff setup-dkml-windows_x86_64.ps1 setup-dkml-windows_x86_64-gen.ps1)))
 
@@ -148,6 +156,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (target setup-dkml-darwin_x86_64-gen.sh)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (setenv
    OCAMLRUNPARAM
@@ -156,6 +165,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (alias gen-dkml)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (diff setup-dkml-darwin_x86_64.sh setup-dkml-darwin_x86_64-gen.sh)))
 
@@ -163,6 +173,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (target setup-dkml-linux_x86-gen.sh)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (setenv
    OCAMLRUNPARAM
@@ -171,6 +182,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (alias gen-dkml)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (diff setup-dkml-linux_x86.sh setup-dkml-linux_x86-gen.sh)))
 
@@ -178,6 +190,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (target setup-dkml-linux_x86_64-gen.sh)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (setenv
    OCAMLRUNPARAM
@@ -186,6 +199,7 @@ let scaffold_pc ~output_dir () =
 
 (rule
  (alias gen-dkml)
+ (enabled_if %%{bin-available:pc-setup-dkml})
  (action
   (diff setup-dkml-linux_x86_64.sh setup-dkml-linux_x86_64-gen.sh)))
 |}

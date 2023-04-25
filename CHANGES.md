@@ -14,6 +14,8 @@
   using `SKIP_OPAM_MODIFICATIONS`
 - New input variable `PRIMARY_SWITCH_SKIP_INSTALL` will skip the install of
   the dkml-base-compiler but will still set up DKML pins and repositories
+- Check if dkml-workflow binaries are present before enabling rules to
+  regenerate CI scripts from @gen-dkml target
 
 ## 1.2.0 (v1)
 
