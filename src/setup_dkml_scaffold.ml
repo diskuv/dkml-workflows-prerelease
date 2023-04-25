@@ -32,20 +32,20 @@ let scaffold_gh ~output_dir () =
           Printf.sprintf
             {|%s
 (rule
-  (alias gen-dkml)
-  (target action.gen.yml)
-  (enabled_if %%{bin-available:gh-dkml-action-yml})
-  (action
-    (setenv
-     OCAMLRUNPARAM
-     b
-    (run gh-dkml-action-yml --phase pre --output-%s %%{target}))))
+ (alias gen-dkml)
+ (target action.gen.yml)
+ (enabled_if %%{bin-available:gh-dkml-action-yml})
+ (action
+  (setenv
+   OCAMLRUNPARAM
+   b
+   (run gh-dkml-action-yml --phase pre --output-%s %%{target}))))
 
 (rule
-  (alias gen-dkml)
-  (enabled_if %%{bin-available:gh-dkml-action-yml})
-  (action
-    (diff action.yml action.gen.yml)))
+ (alias gen-dkml)
+ (enabled_if %%{bin-available:gh-dkml-action-yml})
+ (action
+  (diff action.yml action.gen.yml)))
 |}
             do_not_edit gh_output_option
         in
@@ -53,20 +53,20 @@ let scaffold_gh ~output_dir () =
           Printf.sprintf
             {|%s
 (rule
-  (alias gen-dkml)
-  (target action.gen.yml)
-  (enabled_if %%{bin-available:gh-dkml-action-yml})
-  (action
-    (setenv
-     OCAMLRUNPARAM
-     b
-    (run gh-dkml-action-yml --phase post --output-%s %%{target}))))
+ (alias gen-dkml)
+ (target action.gen.yml)
+ (enabled_if %%{bin-available:gh-dkml-action-yml})
+ (action
+  (setenv
+   OCAMLRUNPARAM
+   b
+   (run gh-dkml-action-yml --phase post --output-%s %%{target}))))
 
 (rule
-  (alias gen-dkml)
-  (enabled_if %%{bin-available:gh-dkml-action-yml})
-  (action
-    (diff action.yml action.gen.yml)))
+ (alias gen-dkml)
+ (enabled_if %%{bin-available:gh-dkml-action-yml})
+ (action
+  (diff action.yml action.gen.yml)))
 |}
             do_not_edit gh_output_option
         in
@@ -87,20 +87,20 @@ let scaffold_gl ~output_dir () =
     Printf.sprintf
       {|%s
 (rule
-  (target setup-dkml.gen.gitlab-ci.yml)
-  (alias gen-dkml)
-  (enabled_if %%{bin-available:gl-setup-dkml-yml})
-  (action
-    (setenv
-     OCAMLRUNPARAM
-     b
-    (run gl-setup-dkml-yml --output-file %%{target}))))
+ (target setup-dkml.gen.gitlab-ci.yml)
+ (alias gen-dkml)
+ (enabled_if %%{bin-available:gl-setup-dkml-yml})
+ (action
+  (setenv
+   OCAMLRUNPARAM
+   b
+   (run gl-setup-dkml-yml --output-file %%{target}))))
 
 (rule
-  (alias gen-dkml)
-  (enabled_if %%{bin-available:gl-setup-dkml-yml})
-  (action
-    (diff setup-dkml.gitlab-ci.yml setup-dkml.gen.gitlab-ci.yml)))
+ (alias gen-dkml)
+ (enabled_if %%{bin-available:gl-setup-dkml-yml})
+ (action
+  (diff setup-dkml.gitlab-ci.yml setup-dkml.gen.gitlab-ci.yml)))
 |}
       do_not_edit
   in
@@ -119,7 +119,6 @@ let scaffold_pc ~output_dir () =
   let dune_content =
     Printf.sprintf
       {|%s
-
 ; windows_x86
 
 (rule
