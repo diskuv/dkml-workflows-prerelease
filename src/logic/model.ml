@@ -219,7 +219,6 @@ let matrix =
     [
       ("abi_pattern", Jg_types.Tstr {|manylinux2014-linux_x86|});
       ("gh_os", Jg_types.Tstr "ubuntu-latest");
-      ("comment", Jg_types.Tstr {|(CentOS 7, etc.)|});
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86|});
@@ -233,7 +232,6 @@ let matrix =
     ]
     (* ("gh_os", ubuntu-latest
         ; ("abi_pattern", Jg_types.Tstr {|manylinux_2_24-linux_x86|})
-        ; ("comment", Jg_types.Tstr {|(glibc>=2.24, Debian 9, etc.)|})
         ; ("gh_unix_shell", Jg_types.Tstr {|sh|})
         ; ("bootstrap_opam_version", bootstrap_opam_version)
         ; ("dkml_host_abi", Jg_types.Tstr {|linux_x86|})
@@ -246,7 +244,6 @@ let matrix =
     [
       ("abi_pattern", Jg_types.Tstr {|manylinux2014-linux_x86_64|});
       ("gh_os", Jg_types.Tstr "ubuntu-latest");
-      ("comment", Jg_types.Tstr {|(CentOS 7, etc.)|});
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86_64|});

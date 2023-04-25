@@ -54,7 +54,6 @@ export PIN_WITH_DKML='1.2.1~prerel1'
 export dkml_host_os="linux"
 export opam_root_cacheable=".ci/o"
 export abi_pattern="manylinux2014-linux_x86"
-export comment="(CentOS 7, etc.)"
 export bootstrap_opam_version="2.2.0-alpha-20221228"
 export dkml_host_abi="linux_x86"
 export opam_root=".ci/o"

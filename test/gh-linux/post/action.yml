@@ -25,7 +25,6 @@ runs:
           opam_root_cacheable='.ci/o';
           abi_pattern='manylinux2014-linux_x86';
           gh_os='ubuntu-latest';
-          comment='(CentOS 7, etc.)';
           gh_unix_shell='sh';
           bootstrap_opam_version='2.2.0-alpha-20221228';
           dkml_host_abi='linux_x86';
@@ -39,7 +38,6 @@ runs:
           opam_root_cacheable='.ci/o';
           abi_pattern='manylinux2014-linux_x86_64';
           gh_os='ubuntu-latest';
-          comment='(CentOS 7, etc.)';
           gh_unix_shell='sh';
           bootstrap_opam_version='2.2.0-alpha-20221228';
           dkml_host_abi='linux_x86_64';
