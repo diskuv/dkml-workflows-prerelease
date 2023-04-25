@@ -55,6 +55,7 @@ let scaffold_gh ~output_dir () =
 (rule
   (alias gen-dkml)
   (target action.gen.yml)
+  (enabled_if %%{bin-available:gh-dkml-action-yml})
   (action
     (setenv
      OCAMLRUNPARAM
@@ -63,6 +64,7 @@ let scaffold_gh ~output_dir () =
 
 (rule
   (alias gen-dkml)
+  (enabled_if %%{bin-available:gh-dkml-action-yml})
   (action
     (diff action.yml action.gen.yml)))
 |}
