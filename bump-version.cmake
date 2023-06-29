@@ -7,4 +7,6 @@ endif()
 include(${DKML_RELEASE_PARTICIPANT_MODULE})
 
 DkMLReleaseParticipant_ModelReplace(src/logic/model.ml)
+DkMLReleaseParticipant_DuneProjectReplace(dune-project)
+DkMLReleaseParticipant_DuneBuildOpamFiles()
 DkMLReleaseParticipant_GitAddAndCommit()
