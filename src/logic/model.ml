@@ -41,6 +41,7 @@ let global_env_vars =
     ("PIN_DISKUVBOX", "0.2.0");
     ("PIN_DKML_APPS", "1.2.1~prerel10");
     ("PIN_DKML_BASE_COMPILER", "4.14.0~v1.2.1~prerel10");
+    ("PIN_DKML_BUILD_DESKTOP", "1.2.1~prerel10");
     ("PIN_DKML_C_PROBE", "3.0.0");
     ("PIN_DKML_COMPILER_ENV", "1.2.1~prerel10");
     ("PIN_DKML_EXE_LIB", "1.2.1~prerel10");
@@ -51,8 +52,8 @@ let global_env_vars =
     ("PIN_DKML_RUNTIMELIB", "1.2.1~prerel10");
     ("PIN_DKML_RUNTIMESCRIPTS", "1.2.1~prerel10");
     ("PIN_DUNE_ACTION_PLUGIN", "3.6.2");
-    ("PIN_DUNE_BUILD_INFO", "3.8.2");
-    ("PIN_DUNE_CONFIGURATOR", "3.8.2");
+    ("PIN_DUNE_BUILD_INFO", "3.8.3");
+    ("PIN_DUNE_CONFIGURATOR", "3.8.3");
     ("PIN_DUNE_GLOB", "3.6.2");
     ("PIN_DUNE_PRIVATE_LIBS", "3.6.2");
     ("PIN_DUNE_RPC_LWT", "3.6.2");
@@ -89,6 +90,7 @@ let global_env_vars =
     ("PIN_NUM", "1.4");
     ("PIN_OCAML_COMPILER_LIBS", "v0.12.4");
     ("PIN_OCAML_CONFIG", "3");
+    ("PIN_OCAML_LSP_SERVER", "1.12.2");
     ("PIN_OCAML_SYNTAX_SHIMS", "1.0.0");
     ("PIN_OCAML_VERSION", "3.5.0");
     ("PIN_OCAML", "4.14.0");
@@ -167,7 +169,7 @@ let global_env_vars =
     ("PIN_UUTF", "1.0.3");
     ("PIN_VARIANTSLIB", "v0.15.0");
     ("PIN_WITH_DKML", "1.2.1~prerel10");
-    ("PIN_XDG", "3.8.2");
+    ("PIN_XDG", "3.8.3");
     ("PIN_YOJSON", "2.1.0");
     ("PIN_ZED", "3.2.1");
     (* END pin-env-vars. DO NOT EDIT THE LINES ABOVE *)
