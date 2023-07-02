@@ -44,12 +44,17 @@ let global_env_vars =
     ("PIN_DKML_BUILD_DESKTOP", "1.2.1~prerel10");
     ("PIN_DKML_C_PROBE", "3.0.0");
     ("PIN_DKML_COMPILER_ENV", "1.2.1~prerel10");
+    ("PIN_DKML_COMPILER_SRC", "v1.2.1~prerel10");
+    ("PIN_DKML_COMPONENT_COMMON_DESKTOP", "1.2.1~prerel10");
+    ("PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL", "1.2.1~prerel10");
+    ("PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL", "1.2.1~prerel10");
     ("PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR", "1.2.1~prerel10");
+    ("PIN_DKML_COMPONENT_STAGING_OCAMLRUN", "4.14.0~v1.0.2~prerel33");
     ("PIN_DKML_COMPONENT_STAGING_WITHDKML", "1.2.1~prerel10");
     ("PIN_DKML_EXE_LIB", "1.2.1~prerel10");
     ("PIN_DKML_EXE", "1.2.1~prerel10");
     ("PIN_DKML_FLAVOR_FULL", "1.2.1~prerel10");
-    ("PIN_DKML_INSTALL", "0.3.1");
+    ("PIN_DKML_INSTALL", "0.4.0");
     ("PIN_DKML_RUNTIME_COMMON_NATIVE", "1.2.1~prerel10");
     ("PIN_DKML_RUNTIME_COMMON", "1.2.1~prerel10");
     ("PIN_DKML_RUNTIME_DISTRIBUTION", "1.2.1~prerel10");
