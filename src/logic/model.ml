@@ -91,6 +91,7 @@ let global_env_vars =
     ("PIN_JINGOO", "1.4.4");
     ("PIN_JSONRPC", "1.12.2");
     ("PIN_JST_CONFIG", "v0.16.0");
+    ("PIN_LAMBDA_TERM", "3.3.1");
     ("PIN_LOGS", "0.7.0");
     ("PIN_LSP", "1.12.2");
     ("PIN_LWT", "5.6.1");
@@ -168,6 +169,7 @@ let global_env_vars =
     ("PIN_TYPEREP", "v0.16.0");
     ("PIN_TYXML", "4.5.0");
     ("PIN_UCHAR", "0.0.2");
+    ("PIN_UTOP", "2.10.0");
     ("PIN_UUCP", "15.0.0");
     ("PIN_UUIDM", "0.9.8");
     ("PIN_UUSEG", "15.0.0");
@@ -176,6 +178,7 @@ let global_env_vars =
     ("PIN_WITH_DKML", "1.2.1~prerel10");
     ("PIN_XDG", "3.8.3");
     ("PIN_YOJSON", "2.1.0");
+    ("PIN_ZED", "3.2.1");
     (* END pin-env-vars. DO NOT EDIT THE LINES ABOVE *)
   ]
 
