@@ -25,29 +25,184 @@ export CONF_DKML_CROSS_TOOLCHAIN=@repository@
 export DISKUV_OPAM_REPOSITORY=
 export DKML_HOME=
 # autogen from global_env_vars.
-export DEFAULT_DKML_COMPILER='4.14.0-v1.1.0-prerel15'
-export PIN_ALCOTEST='1.6.0'
-export PIN_ALCOTEST_ASYNC='1.6.0'
-export PIN_ALCOTEST_JS='1.6.0'
-export PIN_ALCOTEST_LWT='1.6.0'
-export PIN_ALCOTEST_MIRAGE='1.6.0'
-export PIN_BASE='v0.15.1'
-export PIN_BASE_BIGSTRING='v0.15.0'
-export PIN_BIGSTRINGAF='0.9.0+msvc'
-export PIN_CORE='v0.15.1'
-export PIN_CORE_KERNEL='v0.15.0'
-export PIN_CTYPES_FOREIGN='0.19.2-windowssupport-r5'
-export PIN_CTYPES='0.19.2-windowssupport-r5'
-export PIN_CURLY='0.2.1-windows-env_r2'
-export PIN_DKML_APPS='1.2.1~prerel1'
-export PIN_DKML_EXE='1.2.1~prerel1'
-export PIN_DUNE='3.6.2'
+export DEFAULT_DKML_COMPILER='4.14.0-v1.2.1-10'
+export PIN_ALCOTEST='1.7.0'
+export PIN_ASTRING='0.8.5'
+export PIN_BASE='v0.16.1'
+export PIN_BASE64='3.5.1'
+export PIN_BIGARRAY_COMPAT='1.1.0'
+export PIN_BIGSTRINGAF='0.9.1'
+export PIN_BOS='0.2.1'
+export PIN_CAMLP_STREAMS='5.0.1'
+export PIN_CHECKSEUM='0.5.1'
+export PIN_CHROME_TRACE='3.9.0'
+export PIN_CMDLINER='1.2.0'
+export PIN_CONF_PKG_CONFIG='2+cpkgs'
+export PIN_CONF_WHICH='1'
+export PIN_CPPO='1.6.9'
+export PIN_CRUNCH='3.3.1'
+export PIN_CSEXP='1.5.2'
+export PIN_CSTRUCT='6.2.0'
+export PIN_CTYPES_FOREIGN='0.19.2-windowssupport-r6'
+export PIN_CTYPES='0.19.2-windowssupport-r6'
+export PIN_CUDF='0.10'
+export PIN_CURLY='0.3.0'
+export PIN_DIGESTIF='1.1.4'
+export PIN_DISKUVBOX='0.2.0'
+export PIN_DKML_APPS='1.2.1~prerel10'
+export PIN_DKML_BASE_COMPILER='4.14.0~v1.2.1~prerel10'
+export PIN_DKML_BUILD_DESKTOP='1.2.1~prerel10'
+export PIN_DKML_C_PROBE='3.0.0'
+export PIN_DKML_COMPILER_ENV='1.2.1~prerel10'
+export PIN_DKML_COMPILER_SRC='v1.2.1~prerel10'
+export PIN_DKML_COMPONENT_COMMON_DESKTOP='1.2.1~prerel10'
+export PIN_DKML_COMPONENT_COMMON_OPAM='2.2.0~alpha0~20221228'
+export PIN_DKML_COMPONENT_COMMON_UNIXUTILS='0.2.0'
+export PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER='4.14.0~v1.2.1~prerel10'
+export PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL='1.2.1~prerel10'
+export PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM='2.2.0~alpha0~20221228'
+export PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS='0.2.0'
+export PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL='1.2.1~prerel10'
+export PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR='1.2.1~prerel10'
+export PIN_DKML_COMPONENT_STAGING_OCAMLRUN='4.14.0~v1.2.1~prerel10'
+export PIN_DKML_COMPONENT_STAGING_OPAM32='2.2.0~alpha0~20221228'
+export PIN_DKML_COMPONENT_STAGING_OPAM64='2.2.0~alpha0~20221228'
+export PIN_DKML_COMPONENT_STAGING_UNIXUTILS='0.2.0'
+export PIN_DKML_COMPONENT_STAGING_WITHDKML='1.2.1~prerel10'
+export PIN_DKML_COMPONENT_XX_CONSOLE='0.1.1'
+export PIN_DKML_EXE_LIB='1.2.1~prerel10'
+export PIN_DKML_EXE='1.2.1~prerel10'
+export PIN_DKML_INSTALL_INSTALLER='0.4.0'
+export PIN_DKML_INSTALL_RUNNER='0.4.0'
+export PIN_DKML_INSTALL='0.4.0'
+export PIN_DKML_INSTALLER_NETWORK_OCAML='1.2.1~prerel10'
+export PIN_DKML_PACKAGE_CONSOLE='0.4.0'
+export PIN_DKML_RUNTIME_COMMON_NATIVE='1.2.1~prerel10'
+export PIN_DKML_RUNTIME_COMMON='1.2.1~prerel10'
+export PIN_DKML_RUNTIME_DISTRIBUTION='1.2.1~prerel10'
+export PIN_DKML_RUNTIMELIB='1.2.1~prerel10'
+export PIN_DKML_RUNTIMESCRIPTS='1.2.1~prerel10'
+export PIN_DKML_WORKFLOWS='1.2.1~prerel10'
+export PIN_DUNE_ACTION_PLUGIN='3.8.3'
+export PIN_DUNE_BUILD_INFO='3.8.3'
+export PIN_DUNE_CONFIGURATOR='3.8.3'
+export PIN_DUNE_GLOB='3.8.3'
+export PIN_DUNE_PRIVATE_LIBS='3.8.3'
+export PIN_DUNE_RPC_LWT='3.8.3'
+export PIN_DUNE_RPC='3.8.3'
+export PIN_DUNE_SITE='3.8.3'
+export PIN_DUNE='3.8.3'
+export PIN_DYN='3.8.3'
+export PIN_EITHER='1.0.0'
+export PIN_EQAF='0.9'
+export PIN_EXTLIB='1.7.9'
 export PIN_FEATHER='0.3.0'
-export PIN_OCAMLBUILD='0.14.0'
+export PIN_FIBER='3.7.0'
+export PIN_FIELDSLIB='v0.16.0'
+export PIN_FIX='20230505'
+export PIN_FMT='0.9.0'
+export PIN_FPATH='0.7.3'
+export PIN_INTEGERS='0.7.0'
+export PIN_JANE_STREET_HEADERS='v0.16.0'
+export PIN_JINGOO='1.4.4'
+export PIN_JSONRPC='1.16.2'
+export PIN_JST_CONFIG='v0.16.0'
+export PIN_LAMBDA_TERM='3.3.1'
+export PIN_LOGS='0.7.0'
+export PIN_LSP='1.16.2'
+export PIN_LWT='5.6.1'
+export PIN_LWT_REACT='1.2.0'
+export PIN_MCCS='1.1+13'
+export PIN_MDX='2.3.0'
+export PIN_MENHIR='20230608'
+export PIN_MENHIRLIB='20230608'
+export PIN_MENHIRSDK='20230608'
+export PIN_MERLIN_LIB='4.9-414'
+export PIN_METAPP='0.4.4+win'
+export PIN_METAQUOT='0.5.2'
+export PIN_MEW='0.1.0'
+export PIN_MEW_VI='0.5.0'
+export PIN_NUM='1.4'
+export PIN_OCAML_COMPILER_LIBS='v0.12.4'
+export PIN_OCAML_CONFIG='3'
+export PIN_OCAML_LSP_SERVER='1.16.2'
+export PIN_OCAML_SYNTAX_SHIMS='1.0.0'
+export PIN_OCAML_VERSION='3.5.0'
+export PIN_OCAML='4.14.0'
+export PIN_OCAMLBUILD='0.14.2+win'
+export PIN_OCAMLC_LOC='3.8.3'
 export PIN_OCAMLFIND='1.9.1'
+export PIN_OCAMLFORMAT_LIB='0.25.1'
+export PIN_OCAMLFORMAT_RPC_LIB='0.25.1'
+export PIN_OCAMLFORMAT='0.25.1'
 export PIN_OCP_INDENT='1.8.2-windowssupport'
-export PIN_PPX_EXPECT='v0.15.1'
-export PIN_WITH_DKML='1.2.1~prerel1'
+export PIN_OCPLIB_ENDIAN='1.2'
+export PIN_OCTAVIUS='1.2.2'
+export PIN_ODOC_PARSER='2.0.0'
+export PIN_ODOC='2.2.0'
+export PIN_OMD='1.3.1'
+export PIN_OPTINT='0.3.0'
+export PIN_ORDERING='3.8.3'
+export PIN_PARSEXP='v0.16.0'
+export PIN_PP='1.1.2'
+export PIN_PPX_ASSERT='v0.16.0'
+export PIN_PPX_BASE='v0.16.0'
+export PIN_PPX_COLD='v0.16.0'
+export PIN_PPX_COMPARE='v0.16.0'
+export PIN_PPX_DERIVERS='1.2.1'
+export PIN_PPX_DERIVING='5.2.1'
+export PIN_PPX_DISABLE_UNUSED_WARNINGS='v0.16.0'
+export PIN_PPX_ENUMERATE='v0.16.0'
+export PIN_PPX_EXPECT='v0.16.0'
+export PIN_PPX_FIELDS_CONV='v0.16.0'
+export PIN_PPX_FIXED_LITERAL='v0.16.0'
+export PIN_PPX_GLOBALIZE='v0.16.0'
+export PIN_PPX_HASH='v0.16.0'
+export PIN_PPX_HERE='v0.16.0'
+export PIN_PPX_IGNORE_INSTRUMENTATION='v0.16.0'
+export PIN_PPX_INLINE_TEST='v0.16.0'
+export PIN_PPX_LET='v0.16.0'
+export PIN_PPX_OPTCOMP='v0.16.0'
+export PIN_PPX_OPTIONAL='v0.16.0'
+export PIN_PPX_PIPEBANG='v0.16.0'
+export PIN_PPX_SEXP_CONV='v0.16.0'
+export PIN_PPX_STABLE='v0.16.0'
+export PIN_PPX_TYPEREP_CONV='v0.16.0'
+export PIN_PPX_YOJSON_CONV_LIB='v0.16.0'
+export PIN_PPXLIB='0.30.0'
+export PIN_PTIME='1.1.0'
+export PIN_RE='1.10.4'
+export PIN_REACT='1.2.2'
+export PIN_REFL='0.4.1'
+export PIN_RESULT='1.5'
+export PIN_RRESULT='0.7.0'
+export PIN_SEQ='base'
+export PIN_SEXPLIB='v0.16.0'
+export PIN_SEXPLIB0='v0.16.0'
+export PIN_SHA='1.15.4'
+export PIN_SPAWN='0.15.1+android'
+export PIN_STDCOMPAT='19+optautoconf'
+export PIN_STDIO='v0.16.0'
+export PIN_STDLIB_SHIMS='0.3.0'
+export PIN_STDUNE='3.8.3'
+export PIN_TIME_NOW='v0.16.0'
+export PIN_TOPKG='1.0.7'
+export PIN_TRAVERSE='0.3.0'
+export PIN_TRIE='1.0.0'
+export PIN_TSORT='2.1.0'
+export PIN_TYPEREP='v0.16.0'
+export PIN_TYXML='4.5.0'
+export PIN_UCHAR='0.0.2'
+export PIN_UTOP='2.12.1'
+export PIN_UUCP='15.0.0'
+export PIN_UUIDM='0.9.8'
+export PIN_UUSEG='15.0.0'
+export PIN_UUTF='1.0.3'
+export PIN_VARIANTSLIB='v0.16.0'
+export PIN_WITH_DKML='1.2.1~prerel10'
+export PIN_XDG='3.8.3'
+export PIN_YOJSON='2.1.0'
+export PIN_ZED='3.2.1'
 
 # Set matrix variables
 # autogen from pc_vars. only linux_x86
@@ -88,27 +243,182 @@ usage() {
   # autogen from global_env_vars.
   echo "  --DEFAULT_DKML_COMPILER=<value>. Defaults to: ${DEFAULT_DKML_COMPILER}" >&2
   echo "  --PIN_ALCOTEST=<value>. Defaults to: ${PIN_ALCOTEST}" >&2
-  echo "  --PIN_ALCOTEST_ASYNC=<value>. Defaults to: ${PIN_ALCOTEST_ASYNC}" >&2
-  echo "  --PIN_ALCOTEST_JS=<value>. Defaults to: ${PIN_ALCOTEST_JS}" >&2
-  echo "  --PIN_ALCOTEST_LWT=<value>. Defaults to: ${PIN_ALCOTEST_LWT}" >&2
-  echo "  --PIN_ALCOTEST_MIRAGE=<value>. Defaults to: ${PIN_ALCOTEST_MIRAGE}" >&2
+  echo "  --PIN_ASTRING=<value>. Defaults to: ${PIN_ASTRING}" >&2
   echo "  --PIN_BASE=<value>. Defaults to: ${PIN_BASE}" >&2
-  echo "  --PIN_BASE_BIGSTRING=<value>. Defaults to: ${PIN_BASE_BIGSTRING}" >&2
+  echo "  --PIN_BASE64=<value>. Defaults to: ${PIN_BASE64}" >&2
+  echo "  --PIN_BIGARRAY_COMPAT=<value>. Defaults to: ${PIN_BIGARRAY_COMPAT}" >&2
   echo "  --PIN_BIGSTRINGAF=<value>. Defaults to: ${PIN_BIGSTRINGAF}" >&2
-  echo "  --PIN_CORE=<value>. Defaults to: ${PIN_CORE}" >&2
-  echo "  --PIN_CORE_KERNEL=<value>. Defaults to: ${PIN_CORE_KERNEL}" >&2
+  echo "  --PIN_BOS=<value>. Defaults to: ${PIN_BOS}" >&2
+  echo "  --PIN_CAMLP_STREAMS=<value>. Defaults to: ${PIN_CAMLP_STREAMS}" >&2
+  echo "  --PIN_CHECKSEUM=<value>. Defaults to: ${PIN_CHECKSEUM}" >&2
+  echo "  --PIN_CHROME_TRACE=<value>. Defaults to: ${PIN_CHROME_TRACE}" >&2
+  echo "  --PIN_CMDLINER=<value>. Defaults to: ${PIN_CMDLINER}" >&2
+  echo "  --PIN_CONF_PKG_CONFIG=<value>. Defaults to: ${PIN_CONF_PKG_CONFIG}" >&2
+  echo "  --PIN_CONF_WHICH=<value>. Defaults to: ${PIN_CONF_WHICH}" >&2
+  echo "  --PIN_CPPO=<value>. Defaults to: ${PIN_CPPO}" >&2
+  echo "  --PIN_CRUNCH=<value>. Defaults to: ${PIN_CRUNCH}" >&2
+  echo "  --PIN_CSEXP=<value>. Defaults to: ${PIN_CSEXP}" >&2
+  echo "  --PIN_CSTRUCT=<value>. Defaults to: ${PIN_CSTRUCT}" >&2
   echo "  --PIN_CTYPES_FOREIGN=<value>. Defaults to: ${PIN_CTYPES_FOREIGN}" >&2
   echo "  --PIN_CTYPES=<value>. Defaults to: ${PIN_CTYPES}" >&2
+  echo "  --PIN_CUDF=<value>. Defaults to: ${PIN_CUDF}" >&2
   echo "  --PIN_CURLY=<value>. Defaults to: ${PIN_CURLY}" >&2
+  echo "  --PIN_DIGESTIF=<value>. Defaults to: ${PIN_DIGESTIF}" >&2
+  echo "  --PIN_DISKUVBOX=<value>. Defaults to: ${PIN_DISKUVBOX}" >&2
   echo "  --PIN_DKML_APPS=<value>. Defaults to: ${PIN_DKML_APPS}" >&2
+  echo "  --PIN_DKML_BASE_COMPILER=<value>. Defaults to: ${PIN_DKML_BASE_COMPILER}" >&2
+  echo "  --PIN_DKML_BUILD_DESKTOP=<value>. Defaults to: ${PIN_DKML_BUILD_DESKTOP}" >&2
+  echo "  --PIN_DKML_C_PROBE=<value>. Defaults to: ${PIN_DKML_C_PROBE}" >&2
+  echo "  --PIN_DKML_COMPILER_ENV=<value>. Defaults to: ${PIN_DKML_COMPILER_ENV}" >&2
+  echo "  --PIN_DKML_COMPILER_SRC=<value>. Defaults to: ${PIN_DKML_COMPILER_SRC}" >&2
+  echo "  --PIN_DKML_COMPONENT_COMMON_DESKTOP=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_DESKTOP}" >&2
+  echo "  --PIN_DKML_COMPONENT_COMMON_OPAM=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_OPAM}" >&2
+  echo "  --PIN_DKML_COMPONENT_COMMON_UNIXUTILS=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}" >&2
+  echo "  --PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER=<value>. Defaults to: ${PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER}" >&2
+  echo "  --PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL=<value>. Defaults to: ${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}" >&2
+  echo "  --PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM=<value>. Defaults to: ${PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM}" >&2
+  echo "  --PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS=<value>. Defaults to: ${PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_OCAMLRUN=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_OPAM32=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OPAM32}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_OPAM64=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OPAM64}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_UNIXUTILS=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_UNIXUTILS}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_WITHDKML=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_WITHDKML}" >&2
+  echo "  --PIN_DKML_COMPONENT_XX_CONSOLE=<value>. Defaults to: ${PIN_DKML_COMPONENT_XX_CONSOLE}" >&2
+  echo "  --PIN_DKML_EXE_LIB=<value>. Defaults to: ${PIN_DKML_EXE_LIB}" >&2
   echo "  --PIN_DKML_EXE=<value>. Defaults to: ${PIN_DKML_EXE}" >&2
+  echo "  --PIN_DKML_INSTALL_INSTALLER=<value>. Defaults to: ${PIN_DKML_INSTALL_INSTALLER}" >&2
+  echo "  --PIN_DKML_INSTALL_RUNNER=<value>. Defaults to: ${PIN_DKML_INSTALL_RUNNER}" >&2
+  echo "  --PIN_DKML_INSTALL=<value>. Defaults to: ${PIN_DKML_INSTALL}" >&2
+  echo "  --PIN_DKML_INSTALLER_NETWORK_OCAML=<value>. Defaults to: ${PIN_DKML_INSTALLER_NETWORK_OCAML}" >&2
+  echo "  --PIN_DKML_PACKAGE_CONSOLE=<value>. Defaults to: ${PIN_DKML_PACKAGE_CONSOLE}" >&2
+  echo "  --PIN_DKML_RUNTIME_COMMON_NATIVE=<value>. Defaults to: ${PIN_DKML_RUNTIME_COMMON_NATIVE}" >&2
+  echo "  --PIN_DKML_RUNTIME_COMMON=<value>. Defaults to: ${PIN_DKML_RUNTIME_COMMON}" >&2
+  echo "  --PIN_DKML_RUNTIME_DISTRIBUTION=<value>. Defaults to: ${PIN_DKML_RUNTIME_DISTRIBUTION}" >&2
+  echo "  --PIN_DKML_RUNTIMELIB=<value>. Defaults to: ${PIN_DKML_RUNTIMELIB}" >&2
+  echo "  --PIN_DKML_RUNTIMESCRIPTS=<value>. Defaults to: ${PIN_DKML_RUNTIMESCRIPTS}" >&2
+  echo "  --PIN_DKML_WORKFLOWS=<value>. Defaults to: ${PIN_DKML_WORKFLOWS}" >&2
+  echo "  --PIN_DUNE_ACTION_PLUGIN=<value>. Defaults to: ${PIN_DUNE_ACTION_PLUGIN}" >&2
+  echo "  --PIN_DUNE_BUILD_INFO=<value>. Defaults to: ${PIN_DUNE_BUILD_INFO}" >&2
+  echo "  --PIN_DUNE_CONFIGURATOR=<value>. Defaults to: ${PIN_DUNE_CONFIGURATOR}" >&2
+  echo "  --PIN_DUNE_GLOB=<value>. Defaults to: ${PIN_DUNE_GLOB}" >&2
+  echo "  --PIN_DUNE_PRIVATE_LIBS=<value>. Defaults to: ${PIN_DUNE_PRIVATE_LIBS}" >&2
+  echo "  --PIN_DUNE_RPC_LWT=<value>. Defaults to: ${PIN_DUNE_RPC_LWT}" >&2
+  echo "  --PIN_DUNE_RPC=<value>. Defaults to: ${PIN_DUNE_RPC}" >&2
+  echo "  --PIN_DUNE_SITE=<value>. Defaults to: ${PIN_DUNE_SITE}" >&2
   echo "  --PIN_DUNE=<value>. Defaults to: ${PIN_DUNE}" >&2
+  echo "  --PIN_DYN=<value>. Defaults to: ${PIN_DYN}" >&2
+  echo "  --PIN_EITHER=<value>. Defaults to: ${PIN_EITHER}" >&2
+  echo "  --PIN_EQAF=<value>. Defaults to: ${PIN_EQAF}" >&2
+  echo "  --PIN_EXTLIB=<value>. Defaults to: ${PIN_EXTLIB}" >&2
   echo "  --PIN_FEATHER=<value>. Defaults to: ${PIN_FEATHER}" >&2
+  echo "  --PIN_FIBER=<value>. Defaults to: ${PIN_FIBER}" >&2
+  echo "  --PIN_FIELDSLIB=<value>. Defaults to: ${PIN_FIELDSLIB}" >&2
+  echo "  --PIN_FIX=<value>. Defaults to: ${PIN_FIX}" >&2
+  echo "  --PIN_FMT=<value>. Defaults to: ${PIN_FMT}" >&2
+  echo "  --PIN_FPATH=<value>. Defaults to: ${PIN_FPATH}" >&2
+  echo "  --PIN_INTEGERS=<value>. Defaults to: ${PIN_INTEGERS}" >&2
+  echo "  --PIN_JANE_STREET_HEADERS=<value>. Defaults to: ${PIN_JANE_STREET_HEADERS}" >&2
+  echo "  --PIN_JINGOO=<value>. Defaults to: ${PIN_JINGOO}" >&2
+  echo "  --PIN_JSONRPC=<value>. Defaults to: ${PIN_JSONRPC}" >&2
+  echo "  --PIN_JST_CONFIG=<value>. Defaults to: ${PIN_JST_CONFIG}" >&2
+  echo "  --PIN_LAMBDA_TERM=<value>. Defaults to: ${PIN_LAMBDA_TERM}" >&2
+  echo "  --PIN_LOGS=<value>. Defaults to: ${PIN_LOGS}" >&2
+  echo "  --PIN_LSP=<value>. Defaults to: ${PIN_LSP}" >&2
+  echo "  --PIN_LWT=<value>. Defaults to: ${PIN_LWT}" >&2
+  echo "  --PIN_LWT_REACT=<value>. Defaults to: ${PIN_LWT_REACT}" >&2
+  echo "  --PIN_MCCS=<value>. Defaults to: ${PIN_MCCS}" >&2
+  echo "  --PIN_MDX=<value>. Defaults to: ${PIN_MDX}" >&2
+  echo "  --PIN_MENHIR=<value>. Defaults to: ${PIN_MENHIR}" >&2
+  echo "  --PIN_MENHIRLIB=<value>. Defaults to: ${PIN_MENHIRLIB}" >&2
+  echo "  --PIN_MENHIRSDK=<value>. Defaults to: ${PIN_MENHIRSDK}" >&2
+  echo "  --PIN_MERLIN_LIB=<value>. Defaults to: ${PIN_MERLIN_LIB}" >&2
+  echo "  --PIN_METAPP=<value>. Defaults to: ${PIN_METAPP}" >&2
+  echo "  --PIN_METAQUOT=<value>. Defaults to: ${PIN_METAQUOT}" >&2
+  echo "  --PIN_MEW=<value>. Defaults to: ${PIN_MEW}" >&2
+  echo "  --PIN_MEW_VI=<value>. Defaults to: ${PIN_MEW_VI}" >&2
+  echo "  --PIN_NUM=<value>. Defaults to: ${PIN_NUM}" >&2
+  echo "  --PIN_OCAML_COMPILER_LIBS=<value>. Defaults to: ${PIN_OCAML_COMPILER_LIBS}" >&2
+  echo "  --PIN_OCAML_CONFIG=<value>. Defaults to: ${PIN_OCAML_CONFIG}" >&2
+  echo "  --PIN_OCAML_LSP_SERVER=<value>. Defaults to: ${PIN_OCAML_LSP_SERVER}" >&2
+  echo "  --PIN_OCAML_SYNTAX_SHIMS=<value>. Defaults to: ${PIN_OCAML_SYNTAX_SHIMS}" >&2
+  echo "  --PIN_OCAML_VERSION=<value>. Defaults to: ${PIN_OCAML_VERSION}" >&2
+  echo "  --PIN_OCAML=<value>. Defaults to: ${PIN_OCAML}" >&2
   echo "  --PIN_OCAMLBUILD=<value>. Defaults to: ${PIN_OCAMLBUILD}" >&2
+  echo "  --PIN_OCAMLC_LOC=<value>. Defaults to: ${PIN_OCAMLC_LOC}" >&2
   echo "  --PIN_OCAMLFIND=<value>. Defaults to: ${PIN_OCAMLFIND}" >&2
+  echo "  --PIN_OCAMLFORMAT_LIB=<value>. Defaults to: ${PIN_OCAMLFORMAT_LIB}" >&2
+  echo "  --PIN_OCAMLFORMAT_RPC_LIB=<value>. Defaults to: ${PIN_OCAMLFORMAT_RPC_LIB}" >&2
+  echo "  --PIN_OCAMLFORMAT=<value>. Defaults to: ${PIN_OCAMLFORMAT}" >&2
   echo "  --PIN_OCP_INDENT=<value>. Defaults to: ${PIN_OCP_INDENT}" >&2
+  echo "  --PIN_OCPLIB_ENDIAN=<value>. Defaults to: ${PIN_OCPLIB_ENDIAN}" >&2
+  echo "  --PIN_OCTAVIUS=<value>. Defaults to: ${PIN_OCTAVIUS}" >&2
+  echo "  --PIN_ODOC_PARSER=<value>. Defaults to: ${PIN_ODOC_PARSER}" >&2
+  echo "  --PIN_ODOC=<value>. Defaults to: ${PIN_ODOC}" >&2
+  echo "  --PIN_OMD=<value>. Defaults to: ${PIN_OMD}" >&2
+  echo "  --PIN_OPTINT=<value>. Defaults to: ${PIN_OPTINT}" >&2
+  echo "  --PIN_ORDERING=<value>. Defaults to: ${PIN_ORDERING}" >&2
+  echo "  --PIN_PARSEXP=<value>. Defaults to: ${PIN_PARSEXP}" >&2
+  echo "  --PIN_PP=<value>. Defaults to: ${PIN_PP}" >&2
+  echo "  --PIN_PPX_ASSERT=<value>. Defaults to: ${PIN_PPX_ASSERT}" >&2
+  echo "  --PIN_PPX_BASE=<value>. Defaults to: ${PIN_PPX_BASE}" >&2
+  echo "  --PIN_PPX_COLD=<value>. Defaults to: ${PIN_PPX_COLD}" >&2
+  echo "  --PIN_PPX_COMPARE=<value>. Defaults to: ${PIN_PPX_COMPARE}" >&2
+  echo "  --PIN_PPX_DERIVERS=<value>. Defaults to: ${PIN_PPX_DERIVERS}" >&2
+  echo "  --PIN_PPX_DERIVING=<value>. Defaults to: ${PIN_PPX_DERIVING}" >&2
+  echo "  --PIN_PPX_DISABLE_UNUSED_WARNINGS=<value>. Defaults to: ${PIN_PPX_DISABLE_UNUSED_WARNINGS}" >&2
+  echo "  --PIN_PPX_ENUMERATE=<value>. Defaults to: ${PIN_PPX_ENUMERATE}" >&2
   echo "  --PIN_PPX_EXPECT=<value>. Defaults to: ${PIN_PPX_EXPECT}" >&2
+  echo "  --PIN_PPX_FIELDS_CONV=<value>. Defaults to: ${PIN_PPX_FIELDS_CONV}" >&2
+  echo "  --PIN_PPX_FIXED_LITERAL=<value>. Defaults to: ${PIN_PPX_FIXED_LITERAL}" >&2
+  echo "  --PIN_PPX_GLOBALIZE=<value>. Defaults to: ${PIN_PPX_GLOBALIZE}" >&2
+  echo "  --PIN_PPX_HASH=<value>. Defaults to: ${PIN_PPX_HASH}" >&2
+  echo "  --PIN_PPX_HERE=<value>. Defaults to: ${PIN_PPX_HERE}" >&2
+  echo "  --PIN_PPX_IGNORE_INSTRUMENTATION=<value>. Defaults to: ${PIN_PPX_IGNORE_INSTRUMENTATION}" >&2
+  echo "  --PIN_PPX_INLINE_TEST=<value>. Defaults to: ${PIN_PPX_INLINE_TEST}" >&2
+  echo "  --PIN_PPX_LET=<value>. Defaults to: ${PIN_PPX_LET}" >&2
+  echo "  --PIN_PPX_OPTCOMP=<value>. Defaults to: ${PIN_PPX_OPTCOMP}" >&2
+  echo "  --PIN_PPX_OPTIONAL=<value>. Defaults to: ${PIN_PPX_OPTIONAL}" >&2
+  echo "  --PIN_PPX_PIPEBANG=<value>. Defaults to: ${PIN_PPX_PIPEBANG}" >&2
+  echo "  --PIN_PPX_SEXP_CONV=<value>. Defaults to: ${PIN_PPX_SEXP_CONV}" >&2
+  echo "  --PIN_PPX_STABLE=<value>. Defaults to: ${PIN_PPX_STABLE}" >&2
+  echo "  --PIN_PPX_TYPEREP_CONV=<value>. Defaults to: ${PIN_PPX_TYPEREP_CONV}" >&2
+  echo "  --PIN_PPX_YOJSON_CONV_LIB=<value>. Defaults to: ${PIN_PPX_YOJSON_CONV_LIB}" >&2
+  echo "  --PIN_PPXLIB=<value>. Defaults to: ${PIN_PPXLIB}" >&2
+  echo "  --PIN_PTIME=<value>. Defaults to: ${PIN_PTIME}" >&2
+  echo "  --PIN_RE=<value>. Defaults to: ${PIN_RE}" >&2
+  echo "  --PIN_REACT=<value>. Defaults to: ${PIN_REACT}" >&2
+  echo "  --PIN_REFL=<value>. Defaults to: ${PIN_REFL}" >&2
+  echo "  --PIN_RESULT=<value>. Defaults to: ${PIN_RESULT}" >&2
+  echo "  --PIN_RRESULT=<value>. Defaults to: ${PIN_RRESULT}" >&2
+  echo "  --PIN_SEQ=<value>. Defaults to: ${PIN_SEQ}" >&2
+  echo "  --PIN_SEXPLIB=<value>. Defaults to: ${PIN_SEXPLIB}" >&2
+  echo "  --PIN_SEXPLIB0=<value>. Defaults to: ${PIN_SEXPLIB0}" >&2
+  echo "  --PIN_SHA=<value>. Defaults to: ${PIN_SHA}" >&2
+  echo "  --PIN_SPAWN=<value>. Defaults to: ${PIN_SPAWN}" >&2
+  echo "  --PIN_STDCOMPAT=<value>. Defaults to: ${PIN_STDCOMPAT}" >&2
+  echo "  --PIN_STDIO=<value>. Defaults to: ${PIN_STDIO}" >&2
+  echo "  --PIN_STDLIB_SHIMS=<value>. Defaults to: ${PIN_STDLIB_SHIMS}" >&2
+  echo "  --PIN_STDUNE=<value>. Defaults to: ${PIN_STDUNE}" >&2
+  echo "  --PIN_TIME_NOW=<value>. Defaults to: ${PIN_TIME_NOW}" >&2
+  echo "  --PIN_TOPKG=<value>. Defaults to: ${PIN_TOPKG}" >&2
+  echo "  --PIN_TRAVERSE=<value>. Defaults to: ${PIN_TRAVERSE}" >&2
+  echo "  --PIN_TRIE=<value>. Defaults to: ${PIN_TRIE}" >&2
+  echo "  --PIN_TSORT=<value>. Defaults to: ${PIN_TSORT}" >&2
+  echo "  --PIN_TYPEREP=<value>. Defaults to: ${PIN_TYPEREP}" >&2
+  echo "  --PIN_TYXML=<value>. Defaults to: ${PIN_TYXML}" >&2
+  echo "  --PIN_UCHAR=<value>. Defaults to: ${PIN_UCHAR}" >&2
+  echo "  --PIN_UTOP=<value>. Defaults to: ${PIN_UTOP}" >&2
+  echo "  --PIN_UUCP=<value>. Defaults to: ${PIN_UUCP}" >&2
+  echo "  --PIN_UUIDM=<value>. Defaults to: ${PIN_UUIDM}" >&2
+  echo "  --PIN_UUSEG=<value>. Defaults to: ${PIN_UUSEG}" >&2
+  echo "  --PIN_UUTF=<value>. Defaults to: ${PIN_UUTF}" >&2
+  echo "  --PIN_VARIANTSLIB=<value>. Defaults to: ${PIN_VARIANTSLIB}" >&2
   echo "  --PIN_WITH_DKML=<value>. Defaults to: ${PIN_WITH_DKML}" >&2
+  echo "  --PIN_XDG=<value>. Defaults to: ${PIN_XDG}" >&2
+  echo "  --PIN_YOJSON=<value>. Defaults to: ${PIN_YOJSON}" >&2
+  echo "  --PIN_ZED=<value>. Defaults to: ${PIN_ZED}" >&2
   exit 2
 }
 fail() {
@@ -155,48 +465,358 @@ while getopts :h-: option; do
     DEFAULT_DKML_COMPILER=*) DEFAULT_DKML_COMPILER=${OPTARG#*=} ;;
     PIN_ALCOTEST) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_ALCOTEST=*) PIN_ALCOTEST=${OPTARG#*=} ;;
-    PIN_ALCOTEST_ASYNC) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_ALCOTEST_ASYNC=*) PIN_ALCOTEST_ASYNC=${OPTARG#*=} ;;
-    PIN_ALCOTEST_JS) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_ALCOTEST_JS=*) PIN_ALCOTEST_JS=${OPTARG#*=} ;;
-    PIN_ALCOTEST_LWT) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_ALCOTEST_LWT=*) PIN_ALCOTEST_LWT=${OPTARG#*=} ;;
-    PIN_ALCOTEST_MIRAGE) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_ALCOTEST_MIRAGE=*) PIN_ALCOTEST_MIRAGE=${OPTARG#*=} ;;
+    PIN_ASTRING) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_ASTRING=*) PIN_ASTRING=${OPTARG#*=} ;;
     PIN_BASE) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_BASE=*) PIN_BASE=${OPTARG#*=} ;;
-    PIN_BASE_BIGSTRING) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_BASE_BIGSTRING=*) PIN_BASE_BIGSTRING=${OPTARG#*=} ;;
+    PIN_BASE64) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_BASE64=*) PIN_BASE64=${OPTARG#*=} ;;
+    PIN_BIGARRAY_COMPAT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_BIGARRAY_COMPAT=*) PIN_BIGARRAY_COMPAT=${OPTARG#*=} ;;
     PIN_BIGSTRINGAF) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_BIGSTRINGAF=*) PIN_BIGSTRINGAF=${OPTARG#*=} ;;
-    PIN_CORE) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_CORE=*) PIN_CORE=${OPTARG#*=} ;;
-    PIN_CORE_KERNEL) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_CORE_KERNEL=*) PIN_CORE_KERNEL=${OPTARG#*=} ;;
+    PIN_BOS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_BOS=*) PIN_BOS=${OPTARG#*=} ;;
+    PIN_CAMLP_STREAMS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CAMLP_STREAMS=*) PIN_CAMLP_STREAMS=${OPTARG#*=} ;;
+    PIN_CHECKSEUM) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CHECKSEUM=*) PIN_CHECKSEUM=${OPTARG#*=} ;;
+    PIN_CHROME_TRACE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CHROME_TRACE=*) PIN_CHROME_TRACE=${OPTARG#*=} ;;
+    PIN_CMDLINER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CMDLINER=*) PIN_CMDLINER=${OPTARG#*=} ;;
+    PIN_CONF_PKG_CONFIG) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CONF_PKG_CONFIG=*) PIN_CONF_PKG_CONFIG=${OPTARG#*=} ;;
+    PIN_CONF_WHICH) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CONF_WHICH=*) PIN_CONF_WHICH=${OPTARG#*=} ;;
+    PIN_CPPO) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CPPO=*) PIN_CPPO=${OPTARG#*=} ;;
+    PIN_CRUNCH) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CRUNCH=*) PIN_CRUNCH=${OPTARG#*=} ;;
+    PIN_CSEXP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CSEXP=*) PIN_CSEXP=${OPTARG#*=} ;;
+    PIN_CSTRUCT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CSTRUCT=*) PIN_CSTRUCT=${OPTARG#*=} ;;
     PIN_CTYPES_FOREIGN) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_CTYPES_FOREIGN=*) PIN_CTYPES_FOREIGN=${OPTARG#*=} ;;
     PIN_CTYPES) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_CTYPES=*) PIN_CTYPES=${OPTARG#*=} ;;
+    PIN_CUDF) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CUDF=*) PIN_CUDF=${OPTARG#*=} ;;
     PIN_CURLY) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_CURLY=*) PIN_CURLY=${OPTARG#*=} ;;
+    PIN_DIGESTIF) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DIGESTIF=*) PIN_DIGESTIF=${OPTARG#*=} ;;
+    PIN_DISKUVBOX) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DISKUVBOX=*) PIN_DISKUVBOX=${OPTARG#*=} ;;
     PIN_DKML_APPS) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_APPS=*) PIN_DKML_APPS=${OPTARG#*=} ;;
+    PIN_DKML_BASE_COMPILER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_BASE_COMPILER=*) PIN_DKML_BASE_COMPILER=${OPTARG#*=} ;;
+    PIN_DKML_BUILD_DESKTOP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_BUILD_DESKTOP=*) PIN_DKML_BUILD_DESKTOP=${OPTARG#*=} ;;
+    PIN_DKML_C_PROBE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_C_PROBE=*) PIN_DKML_C_PROBE=${OPTARG#*=} ;;
+    PIN_DKML_COMPILER_ENV) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPILER_ENV=*) PIN_DKML_COMPILER_ENV=${OPTARG#*=} ;;
+    PIN_DKML_COMPILER_SRC) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPILER_SRC=*) PIN_DKML_COMPILER_SRC=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_COMMON_DESKTOP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_COMMON_DESKTOP=*) PIN_DKML_COMPONENT_COMMON_DESKTOP=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_COMMON_OPAM) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_COMMON_OPAM=*) PIN_DKML_COMPONENT_COMMON_OPAM=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_COMMON_UNIXUTILS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_COMMON_UNIXUTILS=*) PIN_DKML_COMPONENT_COMMON_UNIXUTILS=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER=*) PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL=*) PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM=*) PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS=*) PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL=*) PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=*) PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_OCAMLRUN) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_OCAMLRUN=*) PIN_DKML_COMPONENT_STAGING_OCAMLRUN=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_OPAM32) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_OPAM32=*) PIN_DKML_COMPONENT_STAGING_OPAM32=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_OPAM64) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_OPAM64=*) PIN_DKML_COMPONENT_STAGING_OPAM64=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_UNIXUTILS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_UNIXUTILS=*) PIN_DKML_COMPONENT_STAGING_UNIXUTILS=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_WITHDKML) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_WITHDKML=*) PIN_DKML_COMPONENT_STAGING_WITHDKML=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_XX_CONSOLE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_XX_CONSOLE=*) PIN_DKML_COMPONENT_XX_CONSOLE=${OPTARG#*=} ;;
+    PIN_DKML_EXE_LIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_EXE_LIB=*) PIN_DKML_EXE_LIB=${OPTARG#*=} ;;
     PIN_DKML_EXE) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_EXE=*) PIN_DKML_EXE=${OPTARG#*=} ;;
+    PIN_DKML_INSTALL_INSTALLER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_INSTALL_INSTALLER=*) PIN_DKML_INSTALL_INSTALLER=${OPTARG#*=} ;;
+    PIN_DKML_INSTALL_RUNNER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_INSTALL_RUNNER=*) PIN_DKML_INSTALL_RUNNER=${OPTARG#*=} ;;
+    PIN_DKML_INSTALL) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_INSTALL=*) PIN_DKML_INSTALL=${OPTARG#*=} ;;
+    PIN_DKML_INSTALLER_NETWORK_OCAML) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_INSTALLER_NETWORK_OCAML=*) PIN_DKML_INSTALLER_NETWORK_OCAML=${OPTARG#*=} ;;
+    PIN_DKML_PACKAGE_CONSOLE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_PACKAGE_CONSOLE=*) PIN_DKML_PACKAGE_CONSOLE=${OPTARG#*=} ;;
+    PIN_DKML_RUNTIME_COMMON_NATIVE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_RUNTIME_COMMON_NATIVE=*) PIN_DKML_RUNTIME_COMMON_NATIVE=${OPTARG#*=} ;;
+    PIN_DKML_RUNTIME_COMMON) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_RUNTIME_COMMON=*) PIN_DKML_RUNTIME_COMMON=${OPTARG#*=} ;;
+    PIN_DKML_RUNTIME_DISTRIBUTION) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_RUNTIME_DISTRIBUTION=*) PIN_DKML_RUNTIME_DISTRIBUTION=${OPTARG#*=} ;;
+    PIN_DKML_RUNTIMELIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_RUNTIMELIB=*) PIN_DKML_RUNTIMELIB=${OPTARG#*=} ;;
+    PIN_DKML_RUNTIMESCRIPTS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_RUNTIMESCRIPTS=*) PIN_DKML_RUNTIMESCRIPTS=${OPTARG#*=} ;;
+    PIN_DKML_WORKFLOWS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_WORKFLOWS=*) PIN_DKML_WORKFLOWS=${OPTARG#*=} ;;
+    PIN_DUNE_ACTION_PLUGIN) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DUNE_ACTION_PLUGIN=*) PIN_DUNE_ACTION_PLUGIN=${OPTARG#*=} ;;
+    PIN_DUNE_BUILD_INFO) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DUNE_BUILD_INFO=*) PIN_DUNE_BUILD_INFO=${OPTARG#*=} ;;
+    PIN_DUNE_CONFIGURATOR) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DUNE_CONFIGURATOR=*) PIN_DUNE_CONFIGURATOR=${OPTARG#*=} ;;
+    PIN_DUNE_GLOB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DUNE_GLOB=*) PIN_DUNE_GLOB=${OPTARG#*=} ;;
+    PIN_DUNE_PRIVATE_LIBS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DUNE_PRIVATE_LIBS=*) PIN_DUNE_PRIVATE_LIBS=${OPTARG#*=} ;;
+    PIN_DUNE_RPC_LWT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DUNE_RPC_LWT=*) PIN_DUNE_RPC_LWT=${OPTARG#*=} ;;
+    PIN_DUNE_RPC) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DUNE_RPC=*) PIN_DUNE_RPC=${OPTARG#*=} ;;
+    PIN_DUNE_SITE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DUNE_SITE=*) PIN_DUNE_SITE=${OPTARG#*=} ;;
     PIN_DUNE) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DUNE=*) PIN_DUNE=${OPTARG#*=} ;;
+    PIN_DYN) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DYN=*) PIN_DYN=${OPTARG#*=} ;;
+    PIN_EITHER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_EITHER=*) PIN_EITHER=${OPTARG#*=} ;;
+    PIN_EQAF) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_EQAF=*) PIN_EQAF=${OPTARG#*=} ;;
+    PIN_EXTLIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_EXTLIB=*) PIN_EXTLIB=${OPTARG#*=} ;;
     PIN_FEATHER) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_FEATHER=*) PIN_FEATHER=${OPTARG#*=} ;;
+    PIN_FIBER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_FIBER=*) PIN_FIBER=${OPTARG#*=} ;;
+    PIN_FIELDSLIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_FIELDSLIB=*) PIN_FIELDSLIB=${OPTARG#*=} ;;
+    PIN_FIX) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_FIX=*) PIN_FIX=${OPTARG#*=} ;;
+    PIN_FMT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_FMT=*) PIN_FMT=${OPTARG#*=} ;;
+    PIN_FPATH) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_FPATH=*) PIN_FPATH=${OPTARG#*=} ;;
+    PIN_INTEGERS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_INTEGERS=*) PIN_INTEGERS=${OPTARG#*=} ;;
+    PIN_JANE_STREET_HEADERS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_JANE_STREET_HEADERS=*) PIN_JANE_STREET_HEADERS=${OPTARG#*=} ;;
+    PIN_JINGOO) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_JINGOO=*) PIN_JINGOO=${OPTARG#*=} ;;
+    PIN_JSONRPC) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_JSONRPC=*) PIN_JSONRPC=${OPTARG#*=} ;;
+    PIN_JST_CONFIG) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_JST_CONFIG=*) PIN_JST_CONFIG=${OPTARG#*=} ;;
+    PIN_LAMBDA_TERM) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_LAMBDA_TERM=*) PIN_LAMBDA_TERM=${OPTARG#*=} ;;
+    PIN_LOGS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_LOGS=*) PIN_LOGS=${OPTARG#*=} ;;
+    PIN_LSP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_LSP=*) PIN_LSP=${OPTARG#*=} ;;
+    PIN_LWT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_LWT=*) PIN_LWT=${OPTARG#*=} ;;
+    PIN_LWT_REACT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_LWT_REACT=*) PIN_LWT_REACT=${OPTARG#*=} ;;
+    PIN_MCCS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_MCCS=*) PIN_MCCS=${OPTARG#*=} ;;
+    PIN_MDX) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_MDX=*) PIN_MDX=${OPTARG#*=} ;;
+    PIN_MENHIR) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_MENHIR=*) PIN_MENHIR=${OPTARG#*=} ;;
+    PIN_MENHIRLIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_MENHIRLIB=*) PIN_MENHIRLIB=${OPTARG#*=} ;;
+    PIN_MENHIRSDK) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_MENHIRSDK=*) PIN_MENHIRSDK=${OPTARG#*=} ;;
+    PIN_MERLIN_LIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_MERLIN_LIB=*) PIN_MERLIN_LIB=${OPTARG#*=} ;;
+    PIN_METAPP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_METAPP=*) PIN_METAPP=${OPTARG#*=} ;;
+    PIN_METAQUOT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_METAQUOT=*) PIN_METAQUOT=${OPTARG#*=} ;;
+    PIN_MEW) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_MEW=*) PIN_MEW=${OPTARG#*=} ;;
+    PIN_MEW_VI) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_MEW_VI=*) PIN_MEW_VI=${OPTARG#*=} ;;
+    PIN_NUM) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_NUM=*) PIN_NUM=${OPTARG#*=} ;;
+    PIN_OCAML_COMPILER_LIBS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAML_COMPILER_LIBS=*) PIN_OCAML_COMPILER_LIBS=${OPTARG#*=} ;;
+    PIN_OCAML_CONFIG) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAML_CONFIG=*) PIN_OCAML_CONFIG=${OPTARG#*=} ;;
+    PIN_OCAML_LSP_SERVER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAML_LSP_SERVER=*) PIN_OCAML_LSP_SERVER=${OPTARG#*=} ;;
+    PIN_OCAML_SYNTAX_SHIMS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAML_SYNTAX_SHIMS=*) PIN_OCAML_SYNTAX_SHIMS=${OPTARG#*=} ;;
+    PIN_OCAML_VERSION) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAML_VERSION=*) PIN_OCAML_VERSION=${OPTARG#*=} ;;
+    PIN_OCAML) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAML=*) PIN_OCAML=${OPTARG#*=} ;;
     PIN_OCAMLBUILD) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_OCAMLBUILD=*) PIN_OCAMLBUILD=${OPTARG#*=} ;;
+    PIN_OCAMLC_LOC) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAMLC_LOC=*) PIN_OCAMLC_LOC=${OPTARG#*=} ;;
     PIN_OCAMLFIND) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_OCAMLFIND=*) PIN_OCAMLFIND=${OPTARG#*=} ;;
+    PIN_OCAMLFORMAT_LIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAMLFORMAT_LIB=*) PIN_OCAMLFORMAT_LIB=${OPTARG#*=} ;;
+    PIN_OCAMLFORMAT_RPC_LIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAMLFORMAT_RPC_LIB=*) PIN_OCAMLFORMAT_RPC_LIB=${OPTARG#*=} ;;
+    PIN_OCAMLFORMAT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAMLFORMAT=*) PIN_OCAMLFORMAT=${OPTARG#*=} ;;
     PIN_OCP_INDENT) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_OCP_INDENT=*) PIN_OCP_INDENT=${OPTARG#*=} ;;
+    PIN_OCPLIB_ENDIAN) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCPLIB_ENDIAN=*) PIN_OCPLIB_ENDIAN=${OPTARG#*=} ;;
+    PIN_OCTAVIUS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCTAVIUS=*) PIN_OCTAVIUS=${OPTARG#*=} ;;
+    PIN_ODOC_PARSER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_ODOC_PARSER=*) PIN_ODOC_PARSER=${OPTARG#*=} ;;
+    PIN_ODOC) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_ODOC=*) PIN_ODOC=${OPTARG#*=} ;;
+    PIN_OMD) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OMD=*) PIN_OMD=${OPTARG#*=} ;;
+    PIN_OPTINT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OPTINT=*) PIN_OPTINT=${OPTARG#*=} ;;
+    PIN_ORDERING) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_ORDERING=*) PIN_ORDERING=${OPTARG#*=} ;;
+    PIN_PARSEXP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PARSEXP=*) PIN_PARSEXP=${OPTARG#*=} ;;
+    PIN_PP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PP=*) PIN_PP=${OPTARG#*=} ;;
+    PIN_PPX_ASSERT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_ASSERT=*) PIN_PPX_ASSERT=${OPTARG#*=} ;;
+    PIN_PPX_BASE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_BASE=*) PIN_PPX_BASE=${OPTARG#*=} ;;
+    PIN_PPX_COLD) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_COLD=*) PIN_PPX_COLD=${OPTARG#*=} ;;
+    PIN_PPX_COMPARE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_COMPARE=*) PIN_PPX_COMPARE=${OPTARG#*=} ;;
+    PIN_PPX_DERIVERS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_DERIVERS=*) PIN_PPX_DERIVERS=${OPTARG#*=} ;;
+    PIN_PPX_DERIVING) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_DERIVING=*) PIN_PPX_DERIVING=${OPTARG#*=} ;;
+    PIN_PPX_DISABLE_UNUSED_WARNINGS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_DISABLE_UNUSED_WARNINGS=*) PIN_PPX_DISABLE_UNUSED_WARNINGS=${OPTARG#*=} ;;
+    PIN_PPX_ENUMERATE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_ENUMERATE=*) PIN_PPX_ENUMERATE=${OPTARG#*=} ;;
     PIN_PPX_EXPECT) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_PPX_EXPECT=*) PIN_PPX_EXPECT=${OPTARG#*=} ;;
+    PIN_PPX_FIELDS_CONV) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_FIELDS_CONV=*) PIN_PPX_FIELDS_CONV=${OPTARG#*=} ;;
+    PIN_PPX_FIXED_LITERAL) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_FIXED_LITERAL=*) PIN_PPX_FIXED_LITERAL=${OPTARG#*=} ;;
+    PIN_PPX_GLOBALIZE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_GLOBALIZE=*) PIN_PPX_GLOBALIZE=${OPTARG#*=} ;;
+    PIN_PPX_HASH) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_HASH=*) PIN_PPX_HASH=${OPTARG#*=} ;;
+    PIN_PPX_HERE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_HERE=*) PIN_PPX_HERE=${OPTARG#*=} ;;
+    PIN_PPX_IGNORE_INSTRUMENTATION) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_IGNORE_INSTRUMENTATION=*) PIN_PPX_IGNORE_INSTRUMENTATION=${OPTARG#*=} ;;
+    PIN_PPX_INLINE_TEST) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_INLINE_TEST=*) PIN_PPX_INLINE_TEST=${OPTARG#*=} ;;
+    PIN_PPX_LET) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_LET=*) PIN_PPX_LET=${OPTARG#*=} ;;
+    PIN_PPX_OPTCOMP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_OPTCOMP=*) PIN_PPX_OPTCOMP=${OPTARG#*=} ;;
+    PIN_PPX_OPTIONAL) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_OPTIONAL=*) PIN_PPX_OPTIONAL=${OPTARG#*=} ;;
+    PIN_PPX_PIPEBANG) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_PIPEBANG=*) PIN_PPX_PIPEBANG=${OPTARG#*=} ;;
+    PIN_PPX_SEXP_CONV) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_SEXP_CONV=*) PIN_PPX_SEXP_CONV=${OPTARG#*=} ;;
+    PIN_PPX_STABLE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_STABLE=*) PIN_PPX_STABLE=${OPTARG#*=} ;;
+    PIN_PPX_TYPEREP_CONV) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_TYPEREP_CONV=*) PIN_PPX_TYPEREP_CONV=${OPTARG#*=} ;;
+    PIN_PPX_YOJSON_CONV_LIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPX_YOJSON_CONV_LIB=*) PIN_PPX_YOJSON_CONV_LIB=${OPTARG#*=} ;;
+    PIN_PPXLIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PPXLIB=*) PIN_PPXLIB=${OPTARG#*=} ;;
+    PIN_PTIME) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_PTIME=*) PIN_PTIME=${OPTARG#*=} ;;
+    PIN_RE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_RE=*) PIN_RE=${OPTARG#*=} ;;
+    PIN_REACT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_REACT=*) PIN_REACT=${OPTARG#*=} ;;
+    PIN_REFL) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_REFL=*) PIN_REFL=${OPTARG#*=} ;;
+    PIN_RESULT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_RESULT=*) PIN_RESULT=${OPTARG#*=} ;;
+    PIN_RRESULT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_RRESULT=*) PIN_RRESULT=${OPTARG#*=} ;;
+    PIN_SEQ) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_SEQ=*) PIN_SEQ=${OPTARG#*=} ;;
+    PIN_SEXPLIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_SEXPLIB=*) PIN_SEXPLIB=${OPTARG#*=} ;;
+    PIN_SEXPLIB0) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_SEXPLIB0=*) PIN_SEXPLIB0=${OPTARG#*=} ;;
+    PIN_SHA) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_SHA=*) PIN_SHA=${OPTARG#*=} ;;
+    PIN_SPAWN) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_SPAWN=*) PIN_SPAWN=${OPTARG#*=} ;;
+    PIN_STDCOMPAT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_STDCOMPAT=*) PIN_STDCOMPAT=${OPTARG#*=} ;;
+    PIN_STDIO) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_STDIO=*) PIN_STDIO=${OPTARG#*=} ;;
+    PIN_STDLIB_SHIMS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_STDLIB_SHIMS=*) PIN_STDLIB_SHIMS=${OPTARG#*=} ;;
+    PIN_STDUNE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_STDUNE=*) PIN_STDUNE=${OPTARG#*=} ;;
+    PIN_TIME_NOW) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_TIME_NOW=*) PIN_TIME_NOW=${OPTARG#*=} ;;
+    PIN_TOPKG) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_TOPKG=*) PIN_TOPKG=${OPTARG#*=} ;;
+    PIN_TRAVERSE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_TRAVERSE=*) PIN_TRAVERSE=${OPTARG#*=} ;;
+    PIN_TRIE) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_TRIE=*) PIN_TRIE=${OPTARG#*=} ;;
+    PIN_TSORT) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_TSORT=*) PIN_TSORT=${OPTARG#*=} ;;
+    PIN_TYPEREP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_TYPEREP=*) PIN_TYPEREP=${OPTARG#*=} ;;
+    PIN_TYXML) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_TYXML=*) PIN_TYXML=${OPTARG#*=} ;;
+    PIN_UCHAR) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_UCHAR=*) PIN_UCHAR=${OPTARG#*=} ;;
+    PIN_UTOP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_UTOP=*) PIN_UTOP=${OPTARG#*=} ;;
+    PIN_UUCP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_UUCP=*) PIN_UUCP=${OPTARG#*=} ;;
+    PIN_UUIDM) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_UUIDM=*) PIN_UUIDM=${OPTARG#*=} ;;
+    PIN_UUSEG) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_UUSEG=*) PIN_UUSEG=${OPTARG#*=} ;;
+    PIN_UUTF) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_UUTF=*) PIN_UUTF=${OPTARG#*=} ;;
+    PIN_VARIANTSLIB) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_VARIANTSLIB=*) PIN_VARIANTSLIB=${OPTARG#*=} ;;
     PIN_WITH_DKML) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_WITH_DKML=*) PIN_WITH_DKML=${OPTARG#*=} ;;
+    PIN_XDG) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_XDG=*) PIN_XDG=${OPTARG#*=} ;;
+    PIN_YOJSON) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_YOJSON=*) PIN_YOJSON=${OPTARG#*=} ;;
+    PIN_ZED) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_ZED=*) PIN_ZED=${OPTARG#*=} ;;
     help) usage ;;
     help=*) fail "Option \"${OPTARG%%=*}\" has unexpected argument" ;;
     *) fail "Unknown long option \"${OPTARG%%=*}\"" ;;
@@ -566,29 +1186,9 @@ ocaml_options=${ocaml_options:-}
 ----
 Pins
 ----
-PIN_ALCOTEST=${PIN_ALCOTEST}
-PIN_ALCOTEST_ASYNC=${PIN_ALCOTEST_ASYNC}
-PIN_ALCOTEST_JS=${PIN_ALCOTEST_JS}
-PIN_ALCOTEST_LWT=${PIN_ALCOTEST_LWT}
-PIN_ALCOTEST_MIRAGE=${PIN_ALCOTEST_MIRAGE}
-PIN_BASE=${PIN_BASE}
-PIN_BASE_BIGSTRING=${PIN_BASE_BIGSTRING}
-PIN_BIGSTRINGAF=${PIN_BIGSTRINGAF}
-PIN_CORE=${PIN_CORE}
-PIN_CORE_KERNEL=${PIN_CORE_KERNEL}
-PIN_CTYPES_FOREIGN=${PIN_CTYPES_FOREIGN}
-PIN_CTYPES=${PIN_CTYPES}
-PIN_CURLY=${PIN_CURLY}
-PIN_DKML_APPS=${PIN_DKML_APPS}
-PIN_DKML_EXE=${PIN_DKML_EXE}
-PIN_DUNE=${PIN_DUNE}
-PIN_FEATHER=${PIN_FEATHER}
-PIN_OCAMLBUILD=${PIN_OCAMLBUILD}
-PIN_OCAMLFIND=${PIN_OCAMLFIND}
-PIN_OCP_INDENT=${PIN_OCP_INDENT}
-PIN_PPX_EXPECT=${PIN_PPX_EXPECT}
-PIN_WITH_DKML=${PIN_WITH_DKML}
-.
+"
+set | grep ^PIN_
+echo ".
 "
 case "$dkml_host_abi" in
 windows_*)
@@ -1416,63 +2016,187 @@ do_pins() {
         section_end checkout-conf-dkml-cross-toolchain
     fi
 
-    # patches necessary for Windows in diskuv-opam-repository
-    #
-    # - ocamlfind and ocamlbuild
-    #
-    # - dune-configurator (and hence Dune)
-    # Dune 2.9.1 and 3.0.2 will fail to build jst-config.v0.14.1 because for jst-config/discover/discover.ml Dune does:
-    #   cl -nologo -O2 -Gy- -MD    -I Z:/.opam_root-cached-8/installer-ocaml/lib/ocaml -o C:\Users\beckf\AppData\Local\Temp\build_f18aec_dune\ocaml-configurator4d3858\c-test-31\test.obj -c C:\Users\beckf\AppData\Local\Temp\build_f18aec_dune\ocaml-configurator4d3858\c-test-31\test.c advapi32.lib ws2_32.lib version.lib
-    # instead of
-    #   cl -nologo -O2 -Gy- -MD    -I Z:/.opam_root-cached-8/installer-ocaml/lib/ocaml /FoC:\Users\beckf\AppData\Local\Temp\build_f18aec_dune\ocaml-configurator4d3858\c-test-31\test.obj -c C:\Users\beckf\AppData\Local\Temp\build_f18aec_dune\ocaml-configurator4d3858\c-test-31\test.c advapi32.lib ws2_32.lib version.lib
-    # with the (irrelevant) test.c file:
-    #    #include <stdio.h>
-    #    #include <caml/config.h>
-    #
-    #    #ifdef ARCH_BIG_ENDIAN
-    #    const char *s0 = "BEGIN-0-true-END";
-    #    #else
-    #    const char *s0 = "BEGIN-0-false-END";
-    #    #endif
-    #
-    #    #ifdef ARCH_SIXTYFOUR
-    #    const char *s1 = "BEGIN-1-true-END";
-    #    #else
-    #    const char *s1 = "BEGIN-1-false-END";
-    #    #endif
-    #
-    # The actual problem is dune-configurator ... we only have patches in Diskuv
-    # repository up until 2.9.3. Need to upstream fix the problem.
-    #
-    # - ppx_expect; only patch is for v0.14.1. Need to upstream fix the problem.
-    # - base; patches for v0.14.1/2/3. Need to upstream fix the problem.
     section_begin "opam-pins-$do_pins_NAME" "Opam pins for $do_pins_NAME switch"
+    ### BEGIN pin-adds. DO NOT EDIT THE LINES IN THIS SECTION
+    # Managed by bump-packages.cmake
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest "${PIN_ALCOTEST}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest-async "${PIN_ALCOTEST_ASYNC}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest-js "${PIN_ALCOTEST_JS}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest-lwt "${PIN_ALCOTEST_LWT}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version alcotest-mirage "${PIN_ALCOTEST_MIRAGE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base_bigstring "${PIN_BASE_BIGSTRING}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigstringaf "${PIN_BIGSTRINGAF}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version core "${PIN_CORE}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version core_kernel "${PIN_CORE_KERNEL}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version checkseum "${PIN_CHECKSEUM}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version chrome-trace "${PIN_CHROME_TRACE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cmdliner "${PIN_CMDLINER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-pkg-config "${PIN_CONF_PKG_CONFIG}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-which "${PIN_CONF_WHICH}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cppo "${PIN_CPPO}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version crunch "${PIN_CRUNCH}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version csexp "${PIN_CSEXP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cstruct "${PIN_CSTRUCT}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes "${PIN_CTYPES}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes-foreign "${PIN_CTYPES_FOREIGN}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cudf "${PIN_CUDF}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version curly "${PIN_CURLY}"
-    opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action digestif # this used to be pinned, so any cached opamroot needs it unpinned
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version diskuvbox "${PIN_DISKUVBOX}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-base-compiler "${PIN_DKML_BASE_COMPILER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-build-desktop "${PIN_DKML_BUILD_DESKTOP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-c-probe "${PIN_DKML_C_PROBE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-env "${PIN_DKML_COMPILER_ENV}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-src "${PIN_DKML_COMPILER_SRC}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-opam "${PIN_DKML_COMPONENT_COMMON_OPAM}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-unixutils "${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-network-ocamlcompiler "${PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-desktop-full "${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-opamshim "${PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-unixutils "${PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-desktop-full "${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam32 "${PIN_DKML_COMPONENT_STAGING_OPAM32}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam64 "${PIN_DKML_COMPONENT_STAGING_OPAM64}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-unixutils "${PIN_DKML_COMPONENT_STAGING_UNIXUTILS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-xx-console "${PIN_DKML_COMPONENT_XX_CONSOLE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe-lib "${PIN_DKML_EXE_LIB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install "${PIN_DKML_INSTALL}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-network-ocaml "${PIN_DKML_INSTALLER_NETWORK_OCAML}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common-native "${PIN_DKML_RUNTIME_COMMON_NATIVE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-distribution "${PIN_DKML_RUNTIME_DISTRIBUTION}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtimelib "${PIN_DKML_RUNTIMELIB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtimescripts "${PIN_DKML_RUNTIMESCRIPTS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-workflows "${PIN_DKML_WORKFLOWS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune "${PIN_DUNE}"
-    opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action dune-configurator # this used to be pinned, so any cached opamroot needs it unpinned
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-action-plugin "${PIN_DUNE_ACTION_PLUGIN}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-build-info "${PIN_DUNE_BUILD_INFO}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-configurator "${PIN_DUNE_CONFIGURATOR}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-glob "${PIN_DUNE_GLOB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-private-libs "${PIN_DUNE_PRIVATE_LIBS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-rpc "${PIN_DUNE_RPC}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-rpc-lwt "${PIN_DUNE_RPC_LWT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-site "${PIN_DUNE_SITE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dyn "${PIN_DYN}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version either "${PIN_EITHER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version eqaf "${PIN_EQAF}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version extlib "${PIN_EXTLIB}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version feather "${PIN_FEATHER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fiber "${PIN_FIBER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fieldslib "${PIN_FIELDSLIB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fix "${PIN_FIX}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fmt "${PIN_FMT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fpath "${PIN_FPATH}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version integers "${PIN_INTEGERS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jane-street-headers "${PIN_JANE_STREET_HEADERS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jingoo "${PIN_JINGOO}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jsonrpc "${PIN_JSONRPC}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jst-config "${PIN_JST_CONFIG}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version lambda-term "${PIN_LAMBDA_TERM}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version logs "${PIN_LOGS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version lsp "${PIN_LSP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version lwt "${PIN_LWT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version lwt_react "${PIN_LWT_REACT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mccs "${PIN_MCCS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mdx "${PIN_MDX}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhir "${PIN_MENHIR}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirLib "${PIN_MENHIRLIB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirSdk "${PIN_MENHIRSDK}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version merlin-lib "${PIN_MERLIN_LIB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version metapp "${PIN_METAPP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version metaquot "${PIN_METAQUOT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mew "${PIN_MEW}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mew_vi "${PIN_MEW_VI}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version num "${PIN_NUM}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml "${PIN_OCAML}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml-compiler-libs "${PIN_OCAML_COMPILER_LIBS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml-config "${PIN_OCAML_CONFIG}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml-lsp-server "${PIN_OCAML_LSP_SERVER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml-syntax-shims "${PIN_OCAML_SYNTAX_SHIMS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml-version "${PIN_OCAML_VERSION}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlbuild "${PIN_OCAMLBUILD}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlc-loc "${PIN_OCAMLC_LOC}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlfind "${PIN_OCAMLFIND}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlformat "${PIN_OCAMLFORMAT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlformat-lib "${PIN_OCAMLFORMAT_LIB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlformat-rpc-lib "${PIN_OCAMLFORMAT_RPC_LIB}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocp-indent "${PIN_OCP_INDENT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocplib-endian "${PIN_OCPLIB_ENDIAN}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version octavius "${PIN_OCTAVIUS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version odoc "${PIN_ODOC}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version odoc-parser "${PIN_ODOC_PARSER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version omd "${PIN_OMD}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version optint "${PIN_OPTINT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ordering "${PIN_ORDERING}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version parsexp "${PIN_PARSEXP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version pp "${PIN_PP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_assert "${PIN_PPX_ASSERT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_base "${PIN_PPX_BASE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_cold "${PIN_PPX_COLD}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_compare "${PIN_PPX_COMPARE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_derivers "${PIN_PPX_DERIVERS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_deriving "${PIN_PPX_DERIVING}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_disable_unused_warnings "${PIN_PPX_DISABLE_UNUSED_WARNINGS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_enumerate "${PIN_PPX_ENUMERATE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_expect "${PIN_PPX_EXPECT}"
-    opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action ptime # this used to be pinned, so any cached opamroot needs it unpinned
-    opamrun pin remove --switch "$do_pins_NAME"  --yes --no-action time_now # this used to be pinned, so any cached opamroot needs it unpinned
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_fields_conv "${PIN_PPX_FIELDS_CONV}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_fixed_literal "${PIN_PPX_FIXED_LITERAL}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_globalize "${PIN_PPX_GLOBALIZE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_hash "${PIN_PPX_HASH}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_here "${PIN_PPX_HERE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_ignore_instrumentation "${PIN_PPX_IGNORE_INSTRUMENTATION}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_inline_test "${PIN_PPX_INLINE_TEST}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_let "${PIN_PPX_LET}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_optcomp "${PIN_PPX_OPTCOMP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_optional "${PIN_PPX_OPTIONAL}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_pipebang "${PIN_PPX_PIPEBANG}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_sexp_conv "${PIN_PPX_SEXP_CONV}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_stable "${PIN_PPX_STABLE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_typerep_conv "${PIN_PPX_TYPEREP_CONV}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_yojson_conv_lib "${PIN_PPX_YOJSON_CONV_LIB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppxlib "${PIN_PPXLIB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ptime "${PIN_PTIME}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version re "${PIN_RE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version react "${PIN_REACT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version refl "${PIN_REFL}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version result "${PIN_RESULT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version rresult "${PIN_RRESULT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version seq "${PIN_SEQ}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sexplib "${PIN_SEXPLIB}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sexplib0 "${PIN_SEXPLIB0}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sha "${PIN_SHA}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version spawn "${PIN_SPAWN}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version stdcompat "${PIN_STDCOMPAT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version stdio "${PIN_STDIO}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version stdlib-shims "${PIN_STDLIB_SHIMS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version stdune "${PIN_STDUNE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version time_now "${PIN_TIME_NOW}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version topkg "${PIN_TOPKG}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version traverse "${PIN_TRAVERSE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version trie "${PIN_TRIE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version tsort "${PIN_TSORT}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version typerep "${PIN_TYPEREP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version tyxml "${PIN_TYXML}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version uchar "${PIN_UCHAR}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version utop "${PIN_UTOP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version uucp "${PIN_UUCP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version uuidm "${PIN_UUIDM}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version uuseg "${PIN_UUSEG}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version uutf "${PIN_UUTF}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version variantslib "${PIN_VARIANTSLIB}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version with-dkml "${PIN_WITH_DKML}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version xdg "${PIN_XDG}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version yojson "${PIN_YOJSON}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version zed "${PIN_ZED}"
+    ### END pin-adds. DO NOT EDIT THE LINES ABOVE
     section_end "opam-pins-$do_pins_NAME"
 }
 
