@@ -1,7 +1,10 @@
 # Changes
 
-## Pending
+## Pending (1.2.1)
 
+> The minimum Dune language requirement is `(lang dune 3.0)`. Please update
+> your `dune-project`.
+  
 - Support WinSDK 19041 and Visual Studio 14.29
 - For non-Windows PC scripts, allow docker image to be overridden
 - Add `.ci/local/bin` to opamrun PATH so user workflow can add its own

@@ -19,6 +19,7 @@ Table of Contents:
     - [Distributing your Windows executables](#distributing-your-windows-executables)
   - [Advanced Usage](#advanced-usage)
     - [Job Inputs](#job-inputs)
+      - [SKIP\_OPAM\_MODIFICATIONS](#skip_opam_modifications)
       - [SECONDARY\_SWITCH](#secondary_switch)
       - [CACHE\_PREFIX](#cache_prefix)
       - [PRIMARY\_SWITCH\_SKIP\_INSTALL](#primary_switch_skip_install)
@@ -31,7 +32,7 @@ Table of Contents:
       - [vsstudio\_hostarch](#vsstudio_hostarch)
       - [vsstudio\_arch](#vsstudio_arch)
       - [vsstudio\_(others)](#vsstudio_others)
-      - [ocaml\_options:](#ocaml_options)
+      - [ocaml\_options](#ocaml_options)
   - [Sponsor](#sponsor)
 
 This project gives you "`setup-dkml`" scripts to build and automatically create
@@ -88,6 +89,8 @@ FIRST, add a dependency to `dkml-workflows` in your project.
   1. Add the following to `dune-project`:
 
      ```scheme
+     (lang dune 3.0)
+
      (package
        ; ...
        (dkml-workflows (and (>= 1.1.0) :build))
