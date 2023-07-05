@@ -108,11 +108,6 @@ let scaffold_gl ~output_dir () =
   let* () = OS.File.write gl_dune_file dune_content in
   Ok ()
 
-let encode encoder what =
-  match Uutf.encode encoder what with
-  | `Ok -> ()
-  | `Partial -> failwith "unexpected `Partial while writing Unicode"
-
 let scaffold_pc ~output_dir () =
   let pc_dir = Fpath.(output_dir / "pc") in
   let pc_dune_file = Fpath.(pc_dir / "dune") in
