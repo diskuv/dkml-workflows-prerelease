@@ -21,7 +21,7 @@ export CONF_DKML_CROSS_TOOLCHAIN=@repository@
 export DISKUV_OPAM_REPOSITORY=
 export DKML_HOME=
 # autogen from global_env_vars.
-export DEFAULT_DKML_COMPILER='4.14.0-v1.2.1-10'
+export DEFAULT_DKML_COMPILER='4.14.0-v1.2.1-12'
 export PIN_ASTRING='0.8.5'
 export PIN_BASE='v0.16.1'
 export PIN_BIGARRAY_COMPAT='1.1.0'
@@ -30,7 +30,6 @@ export PIN_CAMLP_STREAMS='5.0.1'
 export PIN_CHROME_TRACE='3.9.0'
 export PIN_CMDLINER='1.2.0'
 export PIN_CONF_PKG_CONFIG='2+cpkgs'
-export PIN_CONF_WHICH='1'
 export PIN_CPPO='1.6.9'
 export PIN_CRUNCH='3.3.1'
 export PIN_CSEXP='1.5.2'
@@ -38,37 +37,32 @@ export PIN_CTYPES_FOREIGN='0.19.2-windowssupport-r6'
 export PIN_CTYPES='0.19.2-windowssupport-r6'
 export PIN_CUDF='0.10'
 export PIN_DISKUVBOX='0.2.0'
-export PIN_DKML_APPS='1.2.1~prerel10'
-export PIN_DKML_BASE_COMPILER='4.14.0~v1.2.1~prerel10'
-export PIN_DKML_BUILD_DESKTOP='1.2.1~prerel10'
+export PIN_DKML_APPS='1.2.1~prerel12'
+export PIN_DKML_BASE_COMPILER='4.14.0~v1.2.1~prerel12'
+export PIN_DKML_BUILD_DESKTOP='1.2.1~prerel12'
 export PIN_DKML_C_PROBE='3.0.0'
-export PIN_DKML_COMPILER_ENV='1.2.1~prerel10'
-export PIN_DKML_COMPILER_SRC='v1.2.1~prerel10'
-export PIN_DKML_COMPONENT_COMMON_DESKTOP='1.2.1~prerel10'
-export PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR='1.2.1~prerel10'
-export PIN_DKML_COMPONENT_STAGING_OCAMLRUN='4.14.0~v1.2.1~prerel10'
-export PIN_DKML_COMPONENT_STAGING_WITHDKML='1.2.1~prerel10'
-export PIN_DKML_EXE_LIB='1.2.1~prerel10'
-export PIN_DKML_EXE='1.2.1~prerel10'
+export PIN_DKML_COMPILER_ENV='1.2.1~prerel12'
+export PIN_DKML_EXE_LIB='1.2.1~prerel12'
+export PIN_DKML_EXE='1.2.1~prerel12'
 export PIN_DKML_INSTALL_INSTALLER='0.4.0'
 export PIN_DKML_INSTALL_RUNNER='0.4.0'
 export PIN_DKML_INSTALL='0.4.0'
-export PIN_DKML_RUNTIME_COMMON_NATIVE='1.2.1~prerel10'
-export PIN_DKML_RUNTIME_COMMON='1.2.1~prerel10'
-export PIN_DKML_RUNTIME_DISTRIBUTION='1.2.1~prerel10'
-export PIN_DKML_RUNTIMELIB='1.2.1~prerel10'
-export PIN_DKML_RUNTIMESCRIPTS='1.2.1~prerel10'
-export PIN_DKML_WORKFLOWS='1.2.1~prerel10'
-export PIN_DUNE_ACTION_PLUGIN='3.8.3'
+export PIN_DKML_RUNTIME_COMMON_NATIVE='1.2.1~prerel12'
+export PIN_DKML_RUNTIME_COMMON='1.2.1~prerel12'
+export PIN_DKML_RUNTIME_DISTRIBUTION='1.2.1~prerel12'
+export PIN_DKML_RUNTIMELIB='1.2.1~prerel12'
+export PIN_DKML_RUNTIMESCRIPTS='1.2.1~prerel12'
+export PIN_DKML_WORKFLOWS='1.2.1~prerel12'
+export PIN_DUNE_ACTION_PLUGIN='3.9.0'
 export PIN_DUNE_BUILD_INFO='3.8.3'
 export PIN_DUNE_CONFIGURATOR='3.8.3'
-export PIN_DUNE_GLOB='3.8.3'
-export PIN_DUNE_PRIVATE_LIBS='3.8.3'
-export PIN_DUNE_RPC_LWT='3.8.3'
-export PIN_DUNE_RPC='3.8.3'
-export PIN_DUNE_SITE='3.8.3'
+export PIN_DUNE_GLOB='3.9.0'
+export PIN_DUNE_PRIVATE_LIBS='3.9.0'
+export PIN_DUNE_RPC_LWT='3.9.0'
+export PIN_DUNE_RPC='3.9.0'
+export PIN_DUNE_SITE='3.9.0'
 export PIN_DUNE='3.8.3'
-export PIN_DYN='3.8.3'
+export PIN_DYN='3.9.0'
 export PIN_EITHER='1.0.0'
 export PIN_EXTLIB='1.7.9'
 export PIN_FEATHER='0.3.0'
@@ -99,10 +93,11 @@ export PIN_MEW_VI='0.5.0'
 export PIN_NUM='1.4'
 export PIN_OCAML_COMPILER_LIBS='v0.12.4'
 export PIN_OCAML_CONFIG='3'
+export PIN_OCAML_LSP_SERVER='1.16.2'
 export PIN_OCAML_VERSION='3.6.1'
 export PIN_OCAML='4.14.0'
 export PIN_OCAMLBUILD='0.14.2+win'
-export PIN_OCAMLC_LOC='3.8.3'
+export PIN_OCAMLC_LOC='3.9.0'
 export PIN_OCAMLFIND='1.9.1'
 export PIN_OCAMLFORMAT_LIB='0.25.1'
 export PIN_OCAMLFORMAT_RPC_LIB='0.25.1'
@@ -111,8 +106,7 @@ export PIN_OCP_INDENT='1.8.2-windowssupport'
 export PIN_OCPLIB_ENDIAN='1.2'
 export PIN_ODOC_PARSER='2.0.0'
 export PIN_ODOC='2.2.0'
-export PIN_OMD='1.3.1'
-export PIN_ORDERING='3.8.3'
+export PIN_ORDERING='3.9.0'
 export PIN_PARSEXP='v0.16.0'
 export PIN_PP='1.1.2'
 export PIN_PPX_ASSERT='v0.16.0'
@@ -147,7 +141,7 @@ export PIN_SPAWN='v0.15.1'
 export PIN_STDCOMPAT='19+optautoconf'
 export PIN_STDIO='v0.16.0'
 export PIN_STDLIB_SHIMS='0.3.0'
-export PIN_STDUNE='3.8.3'
+export PIN_STDUNE='3.9.0'
 export PIN_TIME_NOW='v0.16.0'
 export PIN_TOPKG='1.0.7'
 export PIN_TRAVERSE='0.3.0'
@@ -160,7 +154,7 @@ export PIN_UUCP='15.0.0'
 export PIN_UUIDM='0.9.8'
 export PIN_UUSEG='15.0.0'
 export PIN_UUTF='1.0.3'
-export PIN_WITH_DKML='1.2.1~prerel10'
+export PIN_WITH_DKML='1.2.1~prerel12'
 export PIN_XDG='3.8.3'
 export PIN_YOJSON='2.1.0'
 export PIN_ZED='3.2.1'
@@ -208,7 +202,6 @@ usage() {
   echo "  --PIN_CHROME_TRACE=<value>. Defaults to: ${PIN_CHROME_TRACE}" >&2
   echo "  --PIN_CMDLINER=<value>. Defaults to: ${PIN_CMDLINER}" >&2
   echo "  --PIN_CONF_PKG_CONFIG=<value>. Defaults to: ${PIN_CONF_PKG_CONFIG}" >&2
-  echo "  --PIN_CONF_WHICH=<value>. Defaults to: ${PIN_CONF_WHICH}" >&2
   echo "  --PIN_CPPO=<value>. Defaults to: ${PIN_CPPO}" >&2
   echo "  --PIN_CRUNCH=<value>. Defaults to: ${PIN_CRUNCH}" >&2
   echo "  --PIN_CSEXP=<value>. Defaults to: ${PIN_CSEXP}" >&2
@@ -221,11 +214,6 @@ usage() {
   echo "  --PIN_DKML_BUILD_DESKTOP=<value>. Defaults to: ${PIN_DKML_BUILD_DESKTOP}" >&2
   echo "  --PIN_DKML_C_PROBE=<value>. Defaults to: ${PIN_DKML_C_PROBE}" >&2
   echo "  --PIN_DKML_COMPILER_ENV=<value>. Defaults to: ${PIN_DKML_COMPILER_ENV}" >&2
-  echo "  --PIN_DKML_COMPILER_SRC=<value>. Defaults to: ${PIN_DKML_COMPILER_SRC}" >&2
-  echo "  --PIN_DKML_COMPONENT_COMMON_DESKTOP=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_DESKTOP}" >&2
-  echo "  --PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}" >&2
-  echo "  --PIN_DKML_COMPONENT_STAGING_OCAMLRUN=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}" >&2
-  echo "  --PIN_DKML_COMPONENT_STAGING_WITHDKML=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_WITHDKML}" >&2
   echo "  --PIN_DKML_EXE_LIB=<value>. Defaults to: ${PIN_DKML_EXE_LIB}" >&2
   echo "  --PIN_DKML_EXE=<value>. Defaults to: ${PIN_DKML_EXE}" >&2
   echo "  --PIN_DKML_INSTALL_INSTALLER=<value>. Defaults to: ${PIN_DKML_INSTALL_INSTALLER}" >&2
@@ -277,6 +265,7 @@ usage() {
   echo "  --PIN_NUM=<value>. Defaults to: ${PIN_NUM}" >&2
   echo "  --PIN_OCAML_COMPILER_LIBS=<value>. Defaults to: ${PIN_OCAML_COMPILER_LIBS}" >&2
   echo "  --PIN_OCAML_CONFIG=<value>. Defaults to: ${PIN_OCAML_CONFIG}" >&2
+  echo "  --PIN_OCAML_LSP_SERVER=<value>. Defaults to: ${PIN_OCAML_LSP_SERVER}" >&2
   echo "  --PIN_OCAML_VERSION=<value>. Defaults to: ${PIN_OCAML_VERSION}" >&2
   echo "  --PIN_OCAML=<value>. Defaults to: ${PIN_OCAML}" >&2
   echo "  --PIN_OCAMLBUILD=<value>. Defaults to: ${PIN_OCAMLBUILD}" >&2
@@ -289,7 +278,6 @@ usage() {
   echo "  --PIN_OCPLIB_ENDIAN=<value>. Defaults to: ${PIN_OCPLIB_ENDIAN}" >&2
   echo "  --PIN_ODOC_PARSER=<value>. Defaults to: ${PIN_ODOC_PARSER}" >&2
   echo "  --PIN_ODOC=<value>. Defaults to: ${PIN_ODOC}" >&2
-  echo "  --PIN_OMD=<value>. Defaults to: ${PIN_OMD}" >&2
   echo "  --PIN_ORDERING=<value>. Defaults to: ${PIN_ORDERING}" >&2
   echo "  --PIN_PARSEXP=<value>. Defaults to: ${PIN_PARSEXP}" >&2
   echo "  --PIN_PP=<value>. Defaults to: ${PIN_PP}" >&2
@@ -402,8 +390,6 @@ while getopts :h-: option; do
     PIN_CMDLINER=*) PIN_CMDLINER=${OPTARG#*=} ;;
     PIN_CONF_PKG_CONFIG) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_CONF_PKG_CONFIG=*) PIN_CONF_PKG_CONFIG=${OPTARG#*=} ;;
-    PIN_CONF_WHICH) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_CONF_WHICH=*) PIN_CONF_WHICH=${OPTARG#*=} ;;
     PIN_CPPO) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_CPPO=*) PIN_CPPO=${OPTARG#*=} ;;
     PIN_CRUNCH) fail "Option \"$OPTARG\" missing argument" ;;
@@ -428,16 +414,6 @@ while getopts :h-: option; do
     PIN_DKML_C_PROBE=*) PIN_DKML_C_PROBE=${OPTARG#*=} ;;
     PIN_DKML_COMPILER_ENV) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPILER_ENV=*) PIN_DKML_COMPILER_ENV=${OPTARG#*=} ;;
-    PIN_DKML_COMPILER_SRC) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_DKML_COMPILER_SRC=*) PIN_DKML_COMPILER_SRC=${OPTARG#*=} ;;
-    PIN_DKML_COMPONENT_COMMON_DESKTOP) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_DKML_COMPONENT_COMMON_DESKTOP=*) PIN_DKML_COMPONENT_COMMON_DESKTOP=${OPTARG#*=} ;;
-    PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=*) PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=${OPTARG#*=} ;;
-    PIN_DKML_COMPONENT_STAGING_OCAMLRUN) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_DKML_COMPONENT_STAGING_OCAMLRUN=*) PIN_DKML_COMPONENT_STAGING_OCAMLRUN=${OPTARG#*=} ;;
-    PIN_DKML_COMPONENT_STAGING_WITHDKML) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_DKML_COMPONENT_STAGING_WITHDKML=*) PIN_DKML_COMPONENT_STAGING_WITHDKML=${OPTARG#*=} ;;
     PIN_DKML_EXE_LIB) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_EXE_LIB=*) PIN_DKML_EXE_LIB=${OPTARG#*=} ;;
     PIN_DKML_EXE) fail "Option \"$OPTARG\" missing argument" ;;
@@ -540,6 +516,8 @@ while getopts :h-: option; do
     PIN_OCAML_COMPILER_LIBS=*) PIN_OCAML_COMPILER_LIBS=${OPTARG#*=} ;;
     PIN_OCAML_CONFIG) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_OCAML_CONFIG=*) PIN_OCAML_CONFIG=${OPTARG#*=} ;;
+    PIN_OCAML_LSP_SERVER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_OCAML_LSP_SERVER=*) PIN_OCAML_LSP_SERVER=${OPTARG#*=} ;;
     PIN_OCAML_VERSION) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_OCAML_VERSION=*) PIN_OCAML_VERSION=${OPTARG#*=} ;;
     PIN_OCAML) fail "Option \"$OPTARG\" missing argument" ;;
@@ -564,8 +542,6 @@ while getopts :h-: option; do
     PIN_ODOC_PARSER=*) PIN_ODOC_PARSER=${OPTARG#*=} ;;
     PIN_ODOC) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_ODOC=*) PIN_ODOC=${OPTARG#*=} ;;
-    PIN_OMD) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_OMD=*) PIN_OMD=${OPTARG#*=} ;;
     PIN_ORDERING) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_ORDERING=*) PIN_ORDERING=${OPTARG#*=} ;;
     PIN_PARSEXP) fail "Option \"$OPTARG\" missing argument" ;;
@@ -1880,7 +1856,6 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version chrome-trace "${PIN_CHROME_TRACE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cmdliner "${PIN_CMDLINER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-pkg-config "${PIN_CONF_PKG_CONFIG}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-which "${PIN_CONF_WHICH}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cppo "${PIN_CPPO}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version crunch "${PIN_CRUNCH}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version csexp "${PIN_CSEXP}"
@@ -1893,11 +1868,6 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-build-desktop "${PIN_DKML_BUILD_DESKTOP}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-c-probe "${PIN_DKML_C_PROBE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-env "${PIN_DKML_COMPILER_ENV}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-src "${PIN_DKML_COMPILER_SRC}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe-lib "${PIN_DKML_EXE_LIB}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install "${PIN_DKML_INSTALL}"
@@ -1950,6 +1920,7 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml "${PIN_OCAML}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml-compiler-libs "${PIN_OCAML_COMPILER_LIBS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml-config "${PIN_OCAML_CONFIG}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml-lsp-server "${PIN_OCAML_LSP_SERVER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocaml-version "${PIN_OCAML_VERSION}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlbuild "${PIN_OCAMLBUILD}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocamlc-loc "${PIN_OCAMLC_LOC}"
@@ -1961,7 +1932,6 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ocplib-endian "${PIN_OCPLIB_ENDIAN}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version odoc "${PIN_ODOC}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version odoc-parser "${PIN_ODOC_PARSER}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version omd "${PIN_OMD}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ordering "${PIN_ORDERING}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version parsexp "${PIN_PARSEXP}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version pp "${PIN_PP}"
