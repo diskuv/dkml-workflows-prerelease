@@ -47,6 +47,11 @@ export PIN_DKML_BASE_COMPILER='4.14.0~v1.2.1~prerel10'
 export PIN_DKML_BUILD_DESKTOP='1.2.1~prerel10'
 export PIN_DKML_C_PROBE='3.0.0'
 export PIN_DKML_COMPILER_ENV='1.2.1~prerel10'
+export PIN_DKML_COMPILER_SRC='v1.2.1~prerel10'
+export PIN_DKML_COMPONENT_COMMON_DESKTOP='1.2.1~prerel10'
+export PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR='1.2.1~prerel10'
+export PIN_DKML_COMPONENT_STAGING_OCAMLRUN='4.14.0~v1.2.1~prerel10'
+export PIN_DKML_COMPONENT_STAGING_WITHDKML='1.2.1~prerel10'
 export PIN_DKML_EXE_LIB='1.2.1~prerel10'
 export PIN_DKML_EXE='1.2.1~prerel10'
 export PIN_DKML_INSTALL_INSTALLER='0.4.0'
@@ -223,6 +228,11 @@ usage() {
   echo "  --PIN_DKML_BUILD_DESKTOP=<value>. Defaults to: ${PIN_DKML_BUILD_DESKTOP}" >&2
   echo "  --PIN_DKML_C_PROBE=<value>. Defaults to: ${PIN_DKML_C_PROBE}" >&2
   echo "  --PIN_DKML_COMPILER_ENV=<value>. Defaults to: ${PIN_DKML_COMPILER_ENV}" >&2
+  echo "  --PIN_DKML_COMPILER_SRC=<value>. Defaults to: ${PIN_DKML_COMPILER_SRC}" >&2
+  echo "  --PIN_DKML_COMPONENT_COMMON_DESKTOP=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_DESKTOP}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_OCAMLRUN=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_WITHDKML=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_WITHDKML}" >&2
   echo "  --PIN_DKML_EXE_LIB=<value>. Defaults to: ${PIN_DKML_EXE_LIB}" >&2
   echo "  --PIN_DKML_EXE=<value>. Defaults to: ${PIN_DKML_EXE}" >&2
   echo "  --PIN_DKML_INSTALL_INSTALLER=<value>. Defaults to: ${PIN_DKML_INSTALL_INSTALLER}" >&2
@@ -425,6 +435,16 @@ while getopts :h-: option; do
     PIN_DKML_C_PROBE=*) PIN_DKML_C_PROBE=${OPTARG#*=} ;;
     PIN_DKML_COMPILER_ENV) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPILER_ENV=*) PIN_DKML_COMPILER_ENV=${OPTARG#*=} ;;
+    PIN_DKML_COMPILER_SRC) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPILER_SRC=*) PIN_DKML_COMPILER_SRC=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_COMMON_DESKTOP) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_COMMON_DESKTOP=*) PIN_DKML_COMPONENT_COMMON_DESKTOP=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=*) PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_OCAMLRUN) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_OCAMLRUN=*) PIN_DKML_COMPONENT_STAGING_OCAMLRUN=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_WITHDKML) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_WITHDKML=*) PIN_DKML_COMPONENT_STAGING_WITHDKML=${OPTARG#*=} ;;
     PIN_DKML_EXE_LIB) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_EXE_LIB=*) PIN_DKML_EXE_LIB=${OPTARG#*=} ;;
     PIN_DKML_EXE) fail "Option \"$OPTARG\" missing argument" ;;
@@ -1880,6 +1900,11 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-build-desktop "${PIN_DKML_BUILD_DESKTOP}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-c-probe "${PIN_DKML_C_PROBE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-env "${PIN_DKML_COMPILER_ENV}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-src "${PIN_DKML_COMPILER_SRC}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe-lib "${PIN_DKML_EXE_LIB}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install "${PIN_DKML_INSTALL}"

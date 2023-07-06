@@ -111,6 +111,21 @@ Environment variable.
 .PARAMETER PIN_DKML_COMPILER_ENV
 Environment variable.
 
+.PARAMETER PIN_DKML_COMPILER_SRC
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_COMMON_DESKTOP
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_OCAMLRUN
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_WITHDKML
+Environment variable.
+
 .PARAMETER PIN_DKML_EXE_LIB
 Environment variable.
 
@@ -518,6 +533,11 @@ param (
   ,[Parameter()] [string] $PIN_DKML_BUILD_DESKTOP = "1.2.1~prerel10"
   ,[Parameter()] [string] $PIN_DKML_C_PROBE = "3.0.0"
   ,[Parameter()] [string] $PIN_DKML_COMPILER_ENV = "1.2.1~prerel10"
+  ,[Parameter()] [string] $PIN_DKML_COMPILER_SRC = "v1.2.1~prerel10"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_DESKTOP = "1.2.1~prerel10"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR = "1.2.1~prerel10"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_OCAMLRUN = "4.14.0~v1.2.1~prerel10"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_WITHDKML = "1.2.1~prerel10"
   ,[Parameter()] [string] $PIN_DKML_EXE_LIB = "1.2.1~prerel10"
   ,[Parameter()] [string] $PIN_DKML_EXE = "1.2.1~prerel10"
   ,[Parameter()] [string] $PIN_DKML_INSTALL_INSTALLER = "0.4.0"
@@ -702,6 +722,11 @@ $env:PIN_DKML_BASE_COMPILER = $PIN_DKML_BASE_COMPILER
 $env:PIN_DKML_BUILD_DESKTOP = $PIN_DKML_BUILD_DESKTOP
 $env:PIN_DKML_C_PROBE = $PIN_DKML_C_PROBE
 $env:PIN_DKML_COMPILER_ENV = $PIN_DKML_COMPILER_ENV
+$env:PIN_DKML_COMPILER_SRC = $PIN_DKML_COMPILER_SRC
+$env:PIN_DKML_COMPONENT_COMMON_DESKTOP = $PIN_DKML_COMPONENT_COMMON_DESKTOP
+$env:PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR = $PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR
+$env:PIN_DKML_COMPONENT_STAGING_OCAMLRUN = $PIN_DKML_COMPONENT_STAGING_OCAMLRUN
+$env:PIN_DKML_COMPONENT_STAGING_WITHDKML = $PIN_DKML_COMPONENT_STAGING_WITHDKML
 $env:PIN_DKML_EXE_LIB = $PIN_DKML_EXE_LIB
 $env:PIN_DKML_EXE = $PIN_DKML_EXE
 $env:PIN_DKML_INSTALL_INSTALLER = $PIN_DKML_INSTALL_INSTALLER
@@ -2087,6 +2112,11 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-build-desktop "${PIN_DKML_BUILD_DESKTOP}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-c-probe "${PIN_DKML_C_PROBE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-env "${PIN_DKML_COMPILER_ENV}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-src "${PIN_DKML_COMPILER_SRC}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe-lib "${PIN_DKML_EXE_LIB}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install "${PIN_DKML_INSTALL}"
