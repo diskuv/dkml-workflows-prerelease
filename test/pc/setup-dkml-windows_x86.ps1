@@ -129,24 +129,6 @@ Environment variable.
 .PARAMETER PIN_DKML_COMPONENT_COMMON_UNIXUTILS
 Environment variable.
 
-.PARAMETER PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER
-Environment variable.
-
-.PARAMETER PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL
-Environment variable.
-
-.PARAMETER PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM
-Environment variable.
-
-.PARAMETER PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS
-Environment variable.
-
-.PARAMETER PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL
-Environment variable.
-
-.PARAMETER PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR
-Environment variable.
-
 .PARAMETER PIN_DKML_COMPONENT_STAGING_OCAMLRUN
 Environment variable.
 
@@ -154,12 +136,6 @@ Environment variable.
 Environment variable.
 
 .PARAMETER PIN_DKML_COMPONENT_STAGING_OPAM64
-Environment variable.
-
-.PARAMETER PIN_DKML_COMPONENT_STAGING_UNIXUTILS
-Environment variable.
-
-.PARAMETER PIN_DKML_COMPONENT_STAGING_WITHDKML
 Environment variable.
 
 .PARAMETER PIN_DKML_COMPONENT_XX_CONSOLE
@@ -178,12 +154,6 @@ Environment variable.
 Environment variable.
 
 .PARAMETER PIN_DKML_INSTALL
-Environment variable.
-
-.PARAMETER PIN_DKML_INSTALLER_NETWORK_OCAML
-Environment variable.
-
-.PARAMETER PIN_DKML_PACKAGE_CONSOLE
 Environment variable.
 
 .PARAMETER PIN_DKML_RUNTIME_COMMON_NATIVE
@@ -587,25 +557,15 @@ param (
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_DESKTOP = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_OPAM = "2.2.0~alpha0~20221228"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_UNIXUTILS = "0.2.0"
-  ,[Parameter()] [string] $PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER = "4.14.0~v1.2.1~prerel12"
-  ,[Parameter()] [string] $PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL = "1.2.1~prerel12"
-  ,[Parameter()] [string] $PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM = "2.2.0~alpha0~20221228"
-  ,[Parameter()] [string] $PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS = "0.2.0"
-  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL = "1.2.1~prerel12"
-  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_OCAMLRUN = "4.14.0~v1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_OPAM32 = "2.2.0~alpha0~20221228"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_OPAM64 = "2.2.0~alpha0~20221228"
-  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_UNIXUTILS = "0.2.0"
-  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_WITHDKML = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_XX_CONSOLE = "0.1.1"
   ,[Parameter()] [string] $PIN_DKML_EXE_LIB = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_EXE = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_INSTALL_INSTALLER = "0.4.0"
   ,[Parameter()] [string] $PIN_DKML_INSTALL_RUNNER = "0.4.0"
   ,[Parameter()] [string] $PIN_DKML_INSTALL = "0.4.0"
-  ,[Parameter()] [string] $PIN_DKML_INSTALLER_NETWORK_OCAML = "1.2.1~prerel12"
-  ,[Parameter()] [string] $PIN_DKML_PACKAGE_CONSOLE = "0.4.0"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON_NATIVE = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_DISTRIBUTION = "1.2.1~prerel12"
@@ -658,7 +618,7 @@ param (
   ,[Parameter()] [string] $PIN_OCAML = "4.14.0"
   ,[Parameter()] [string] $PIN_OCAMLBUILD = "0.14.2+win"
   ,[Parameter()] [string] $PIN_OCAMLC_LOC = "3.8.3"
-  ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.1"
+  ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.5"
   ,[Parameter()] [string] $PIN_OCAMLFORMAT_LIB = "0.25.1"
   ,[Parameter()] [string] $PIN_OCAMLFORMAT_RPC_LIB = "0.25.1"
   ,[Parameter()] [string] $PIN_OCAMLFORMAT = "0.25.1"
@@ -793,25 +753,15 @@ $env:PIN_DKML_COMPILER_SRC = $PIN_DKML_COMPILER_SRC
 $env:PIN_DKML_COMPONENT_COMMON_DESKTOP = $PIN_DKML_COMPONENT_COMMON_DESKTOP
 $env:PIN_DKML_COMPONENT_COMMON_OPAM = $PIN_DKML_COMPONENT_COMMON_OPAM
 $env:PIN_DKML_COMPONENT_COMMON_UNIXUTILS = $PIN_DKML_COMPONENT_COMMON_UNIXUTILS
-$env:PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER = $PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER
-$env:PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL = $PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL
-$env:PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM = $PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM
-$env:PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS = $PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS
-$env:PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL = $PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL
-$env:PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR = $PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR
 $env:PIN_DKML_COMPONENT_STAGING_OCAMLRUN = $PIN_DKML_COMPONENT_STAGING_OCAMLRUN
 $env:PIN_DKML_COMPONENT_STAGING_OPAM32 = $PIN_DKML_COMPONENT_STAGING_OPAM32
 $env:PIN_DKML_COMPONENT_STAGING_OPAM64 = $PIN_DKML_COMPONENT_STAGING_OPAM64
-$env:PIN_DKML_COMPONENT_STAGING_UNIXUTILS = $PIN_DKML_COMPONENT_STAGING_UNIXUTILS
-$env:PIN_DKML_COMPONENT_STAGING_WITHDKML = $PIN_DKML_COMPONENT_STAGING_WITHDKML
 $env:PIN_DKML_COMPONENT_XX_CONSOLE = $PIN_DKML_COMPONENT_XX_CONSOLE
 $env:PIN_DKML_EXE_LIB = $PIN_DKML_EXE_LIB
 $env:PIN_DKML_EXE = $PIN_DKML_EXE
 $env:PIN_DKML_INSTALL_INSTALLER = $PIN_DKML_INSTALL_INSTALLER
 $env:PIN_DKML_INSTALL_RUNNER = $PIN_DKML_INSTALL_RUNNER
 $env:PIN_DKML_INSTALL = $PIN_DKML_INSTALL
-$env:PIN_DKML_INSTALLER_NETWORK_OCAML = $PIN_DKML_INSTALLER_NETWORK_OCAML
-$env:PIN_DKML_PACKAGE_CONSOLE = $PIN_DKML_PACKAGE_CONSOLE
 $env:PIN_DKML_RUNTIME_COMMON_NATIVE = $PIN_DKML_RUNTIME_COMMON_NATIVE
 $env:PIN_DKML_RUNTIME_COMMON = $PIN_DKML_RUNTIME_COMMON
 $env:PIN_DKML_RUNTIME_DISTRIBUTION = $PIN_DKML_RUNTIME_DISTRIBUTION
@@ -2199,25 +2149,15 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-opam "${PIN_DKML_COMPONENT_COMMON_OPAM}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-unixutils "${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-network-ocamlcompiler "${PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-desktop-full "${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-opamshim "${PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-unixutils "${PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-desktop-full "${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam32 "${PIN_DKML_COMPONENT_STAGING_OPAM32}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam64 "${PIN_DKML_COMPONENT_STAGING_OPAM64}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-unixutils "${PIN_DKML_COMPONENT_STAGING_UNIXUTILS}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-xx-console "${PIN_DKML_COMPONENT_XX_CONSOLE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe-lib "${PIN_DKML_EXE_LIB}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install "${PIN_DKML_INSTALL}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-network-ocaml "${PIN_DKML_INSTALLER_NETWORK_OCAML}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common-native "${PIN_DKML_RUNTIME_COMMON_NATIVE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-distribution "${PIN_DKML_RUNTIME_DISTRIBUTION}"
