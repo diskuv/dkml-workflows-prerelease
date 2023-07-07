@@ -52,6 +52,7 @@ export PIN_DKML_COMPILER_ENV='1.2.1~prerel12'
 export PIN_DKML_COMPILER_SRC='1.2.1~prerel12'
 export PIN_DKML_COMPONENT_COMMON_OPAM='2.2.0~alpha0~20221228'
 export PIN_DKML_COMPONENT_COMMON_UNIXUTILS='0.2.0'
+export PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR='1.2.1~prerel12'
 export PIN_DKML_COMPONENT_STAGING_OCAMLRUN='4.14.0~v1.2.1~prerel12'
 export PIN_DKML_COMPONENT_STAGING_OPAM32='2.2.0~alpha0~20221228'
 export PIN_DKML_COMPONENT_STAGING_WITHDKML='1.2.1~prerel12'
@@ -239,6 +240,7 @@ usage() {
   echo "  --PIN_DKML_COMPILER_SRC=<value>. Defaults to: ${PIN_DKML_COMPILER_SRC}" >&2
   echo "  --PIN_DKML_COMPONENT_COMMON_OPAM=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_OPAM}" >&2
   echo "  --PIN_DKML_COMPONENT_COMMON_UNIXUTILS=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_OCAMLRUN=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_OPAM32=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OPAM32}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_WITHDKML=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_WITHDKML}" >&2
@@ -457,6 +459,8 @@ while getopts :h-: option; do
     PIN_DKML_COMPONENT_COMMON_OPAM=*) PIN_DKML_COMPONENT_COMMON_OPAM=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_COMMON_UNIXUTILS) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_COMMON_UNIXUTILS=*) PIN_DKML_COMPONENT_COMMON_UNIXUTILS=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=*) PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_STAGING_OCAMLRUN) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_STAGING_OCAMLRUN=*) PIN_DKML_COMPONENT_STAGING_OCAMLRUN=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_STAGING_OPAM32) fail "Option \"$OPTARG\" missing argument" ;;
@@ -1929,6 +1933,7 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-src "${PIN_DKML_COMPILER_SRC}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-opam "${PIN_DKML_COMPONENT_COMMON_OPAM}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-unixutils "${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam32 "${PIN_DKML_COMPONENT_STAGING_OPAM32}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
