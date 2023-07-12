@@ -145,7 +145,7 @@ variables:
   PIN_TSORT: '2.1.0'
   PIN_TYXML: '4.5.0'
   PIN_UCHAR: '0.0.2'
-  PIN_UTOP: '2.13.0+win32'
+  PIN_UTOP: '2.13.1'
   PIN_UUCP: '15.0.0'
   PIN_UUIDM: '0.9.8'
   PIN_UUSEG: '15.0.0'

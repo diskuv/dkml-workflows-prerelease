@@ -625,7 +625,7 @@ param (
   ,[Parameter()] [string] $PIN_TSORT = "2.1.0"
   ,[Parameter()] [string] $PIN_TYXML = "4.5.0"
   ,[Parameter()] [string] $PIN_UCHAR = "0.0.2"
-  ,[Parameter()] [string] $PIN_UTOP = "2.13.0+win32"
+  ,[Parameter()] [string] $PIN_UTOP = "2.13.1"
   ,[Parameter()] [string] $PIN_UUCP = "15.0.0"
   ,[Parameter()] [string] $PIN_UUIDM = "0.9.8"
   ,[Parameter()] [string] $PIN_UUSEG = "15.0.0"
