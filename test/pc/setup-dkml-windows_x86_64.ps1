@@ -129,9 +129,6 @@ Environment variable.
 .PARAMETER PIN_DKML_COMPONENT_COMMON_UNIXUTILS
 Environment variable.
 
-.PARAMETER PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER
-Environment variable.
-
 .PARAMETER PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON
 Environment variable.
 
@@ -593,7 +590,6 @@ param (
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_DESKTOP = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_OPAM = "2.2.0~alpha0~20221228"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_UNIXUTILS = "0.2.0"
-  ,[Parameter()] [string] $PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER = "4.14.0~v1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON = "4.14.0~v1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK = "4.14.0~v1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL = "1.2.1~prerel12"
@@ -800,7 +796,6 @@ $env:PIN_DKML_COMPILER_SRC = $PIN_DKML_COMPILER_SRC
 $env:PIN_DKML_COMPONENT_COMMON_DESKTOP = $PIN_DKML_COMPONENT_COMMON_DESKTOP
 $env:PIN_DKML_COMPONENT_COMMON_OPAM = $PIN_DKML_COMPONENT_COMMON_OPAM
 $env:PIN_DKML_COMPONENT_COMMON_UNIXUTILS = $PIN_DKML_COMPONENT_COMMON_UNIXUTILS
-$env:PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER = $PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER
 $env:PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON = $PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON
 $env:PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK = $PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK
 $env:PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL = $PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL
@@ -2208,7 +2203,6 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-opam "${PIN_DKML_COMPONENT_COMMON_OPAM}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-unixutils "${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-network-ocamlcompiler "${PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-common "${PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-network "${PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-desktop-full "${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}"
