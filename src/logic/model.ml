@@ -16,6 +16,7 @@ let global_env_vars =
     (* Managed by bump-packages.cmake *)
     ("PIN_ASTRING", "0.8.5");
     ("PIN_BASE", "v0.16.1");
+    ("PIN_BASE64", "3.5.1");
     ("PIN_BIGARRAY_COMPAT", "1.1.0");
     ("PIN_BOS", "0.2.1");
     ("PIN_CAMLP_STREAMS", "5.0.1");

@@ -19,6 +19,7 @@ variables:
   DEFAULT_DKML_COMPILER: '4.14.0-v1.2.1-12'
   PIN_ASTRING: '0.8.5'
   PIN_BASE: 'v0.16.1'
+  PIN_BASE64: '3.5.1'
   PIN_BIGARRAY_COMPAT: '1.1.0'
   PIN_BOS: '0.2.1'
   PIN_CAMLP_STREAMS: '5.0.1'
@@ -1526,6 +1527,7 @@ variables:
           # Managed by bump-packages.cmake
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"
@@ -3497,6 +3499,7 @@ variables:
           # Managed by bump-packages.cmake
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"
@@ -5186,6 +5189,7 @@ variables:
           # Managed by bump-packages.cmake
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"

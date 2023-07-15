@@ -54,6 +54,9 @@ Environment variable.
 .PARAMETER PIN_BASE
 Environment variable.
 
+.PARAMETER PIN_BASE64
+Environment variable.
+
 .PARAMETER PIN_BIGARRAY_COMPAT
 Environment variable.
 
@@ -550,6 +553,7 @@ param (
   ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.14.0-v1.2.1-12"
   ,[Parameter()] [string] $PIN_ASTRING = "0.8.5"
   ,[Parameter()] [string] $PIN_BASE = "v0.16.1"
+  ,[Parameter()] [string] $PIN_BASE64 = "3.5.1"
   ,[Parameter()] [string] $PIN_BIGARRAY_COMPAT = "1.1.0"
   ,[Parameter()] [string] $PIN_BOS = "0.2.1"
   ,[Parameter()] [string] $PIN_CAMLP_STREAMS = "5.0.1"
@@ -752,6 +756,7 @@ $env:ocaml_options = "ocaml-option-32bit"
 $env:DEFAULT_DKML_COMPILER = $DEFAULT_DKML_COMPILER
 $env:PIN_ASTRING = $PIN_ASTRING
 $env:PIN_BASE = $PIN_BASE
+$env:PIN_BASE64 = $PIN_BASE64
 $env:PIN_BIGARRAY_COMPAT = $PIN_BIGARRAY_COMPAT
 $env:PIN_BOS = $PIN_BOS
 $env:PIN_CAMLP_STREAMS = $PIN_CAMLP_STREAMS
@@ -2154,6 +2159,7 @@ do_pins() {
     # Managed by bump-packages.cmake
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"

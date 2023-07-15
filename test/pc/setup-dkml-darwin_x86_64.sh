@@ -24,6 +24,7 @@ export DKML_HOME=
 export DEFAULT_DKML_COMPILER='4.14.0-v1.2.1-12'
 export PIN_ASTRING='0.8.5'
 export PIN_BASE='v0.16.1'
+export PIN_BASE64='3.5.1'
 export PIN_BIGARRAY_COMPAT='1.1.0'
 export PIN_BOS='0.2.1'
 export PIN_CAMLP_STREAMS='5.0.1'
@@ -214,6 +215,7 @@ usage() {
   echo "  --DEFAULT_DKML_COMPILER=<value>. Defaults to: ${DEFAULT_DKML_COMPILER}" >&2
   echo "  --PIN_ASTRING=<value>. Defaults to: ${PIN_ASTRING}" >&2
   echo "  --PIN_BASE=<value>. Defaults to: ${PIN_BASE}" >&2
+  echo "  --PIN_BASE64=<value>. Defaults to: ${PIN_BASE64}" >&2
   echo "  --PIN_BIGARRAY_COMPAT=<value>. Defaults to: ${PIN_BIGARRAY_COMPAT}" >&2
   echo "  --PIN_BOS=<value>. Defaults to: ${PIN_BOS}" >&2
   echo "  --PIN_CAMLP_STREAMS=<value>. Defaults to: ${PIN_CAMLP_STREAMS}" >&2
@@ -414,6 +416,8 @@ while getopts :h-: option; do
     PIN_ASTRING=*) PIN_ASTRING=${OPTARG#*=} ;;
     PIN_BASE) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_BASE=*) PIN_BASE=${OPTARG#*=} ;;
+    PIN_BASE64) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_BASE64=*) PIN_BASE64=${OPTARG#*=} ;;
     PIN_BIGARRAY_COMPAT) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_BIGARRAY_COMPAT=*) PIN_BIGARRAY_COMPAT=${OPTARG#*=} ;;
     PIN_BOS) fail "Option \"$OPTARG\" missing argument" ;;
@@ -1922,6 +1926,7 @@ do_pins() {
     # Managed by bump-packages.cmake
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"
