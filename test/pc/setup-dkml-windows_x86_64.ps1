@@ -54,6 +54,9 @@ Environment variable.
 .PARAMETER PIN_BASE
 Environment variable.
 
+.PARAMETER PIN_BASE64
+Environment variable.
+
 .PARAMETER PIN_BIGARRAY_COMPAT
 Environment variable.
 
@@ -81,6 +84,9 @@ Environment variable.
 .PARAMETER PIN_CSEXP
 Environment variable.
 
+.PARAMETER PIN_CSTRUCT
+Environment variable.
+
 .PARAMETER PIN_CTYPES_FOREIGN
 Environment variable.
 
@@ -88,6 +94,9 @@ Environment variable.
 Environment variable.
 
 .PARAMETER PIN_CUDF
+Environment variable.
+
+.PARAMETER PIN_DIGESTIF
 Environment variable.
 
 .PARAMETER PIN_DISKUVBOX
@@ -108,6 +117,54 @@ Environment variable.
 .PARAMETER PIN_DKML_COMPILER_ENV
 Environment variable.
 
+.PARAMETER PIN_DKML_COMPILER_SRC
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_COMMON_DESKTOP
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_COMMON_OPAM
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_COMMON_UNIXUTILS
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_OCAMLRUN
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_OPAM32
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_OPAM64
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_UNIXUTILS
+Environment variable.
+
+.PARAMETER PIN_DKML_COMPONENT_STAGING_WITHDKML
+Environment variable.
+
 .PARAMETER PIN_DKML_COMPONENT_XX_CONSOLE
 Environment variable.
 
@@ -124,6 +181,9 @@ Environment variable.
 Environment variable.
 
 .PARAMETER PIN_DKML_INSTALL
+Environment variable.
+
+.PARAMETER PIN_DKML_PACKAGE_CONSOLE
 Environment variable.
 
 .PARAMETER PIN_DKML_RUNTIME_COMMON_NATIVE
@@ -175,6 +235,9 @@ Environment variable.
 Environment variable.
 
 .PARAMETER PIN_EITHER
+Environment variable.
+
+.PARAMETER PIN_EQAF
 Environment variable.
 
 .PARAMETER PIN_EXTLIB
@@ -502,6 +565,7 @@ param (
   ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.14.0-v1.2.1-12"
   ,[Parameter()] [string] $PIN_ASTRING = "0.8.5"
   ,[Parameter()] [string] $PIN_BASE = "v0.16.1"
+  ,[Parameter()] [string] $PIN_BASE64 = "3.5.1"
   ,[Parameter()] [string] $PIN_BIGARRAY_COMPAT = "1.1.0"
   ,[Parameter()] [string] $PIN_BOS = "0.2.1"
   ,[Parameter()] [string] $PIN_CAMLP_STREAMS = "5.0.1"
@@ -511,38 +575,58 @@ param (
   ,[Parameter()] [string] $PIN_CPPO = "1.6.9"
   ,[Parameter()] [string] $PIN_CRUNCH = "3.3.1"
   ,[Parameter()] [string] $PIN_CSEXP = "1.5.2"
+  ,[Parameter()] [string] $PIN_CSTRUCT = "6.2.0"
   ,[Parameter()] [string] $PIN_CTYPES_FOREIGN = "0.19.2-windowssupport-r6"
   ,[Parameter()] [string] $PIN_CTYPES = "0.19.2-windowssupport-r6"
   ,[Parameter()] [string] $PIN_CUDF = "0.10"
+  ,[Parameter()] [string] $PIN_DIGESTIF = "1.1.4"
   ,[Parameter()] [string] $PIN_DISKUVBOX = "0.2.0"
   ,[Parameter()] [string] $PIN_DKML_APPS = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_BASE_COMPILER = "4.14.0~v1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_BUILD_DESKTOP = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_C_PROBE = "3.0.0"
   ,[Parameter()] [string] $PIN_DKML_COMPILER_ENV = "1.2.1~prerel12"
+  ,[Parameter()] [string] $PIN_DKML_COMPILER_SRC = "1.2.1~prerel12"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_DESKTOP = "1.2.1~prerel12"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_OPAM = "2.2.0~alpha0~20221228"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_COMMON_UNIXUTILS = "0.2.0"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON = "4.14.0~v1.2.1~prerel12"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK = "4.14.0~v1.2.1~prerel12"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL = "1.2.1~prerel12"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM = "2.2.0~alpha0~20221228"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS = "0.2.0"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL = "1.2.1~prerel12"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR = "1.2.1~prerel12"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_OCAMLRUN = "4.14.0~v1.2.1~prerel12"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_OPAM32 = "2.2.0~alpha0~20221228"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_OPAM64 = "2.2.0~alpha0~20221228"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_UNIXUTILS = "0.2.0"
+  ,[Parameter()] [string] $PIN_DKML_COMPONENT_STAGING_WITHDKML = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_COMPONENT_XX_CONSOLE = "0.1.1"
   ,[Parameter()] [string] $PIN_DKML_EXE_LIB = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_EXE = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_INSTALL_INSTALLER = "0.4.0"
   ,[Parameter()] [string] $PIN_DKML_INSTALL_RUNNER = "0.4.0"
   ,[Parameter()] [string] $PIN_DKML_INSTALL = "0.4.0"
+  ,[Parameter()] [string] $PIN_DKML_PACKAGE_CONSOLE = "0.4.0"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON_NATIVE = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_DISTRIBUTION = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_RUNTIMELIB = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_RUNTIMESCRIPTS = "1.2.1~prerel12"
   ,[Parameter()] [string] $PIN_DKML_WORKFLOWS = "1.2.1~prerel12"
-  ,[Parameter()] [string] $PIN_DUNE_ACTION_PLUGIN = "3.9.1"
+  ,[Parameter()] [string] $PIN_DUNE_ACTION_PLUGIN = "3.8.3"
   ,[Parameter()] [string] $PIN_DUNE_BUILD_INFO = "3.8.3"
   ,[Parameter()] [string] $PIN_DUNE_CONFIGURATOR = "3.8.3"
-  ,[Parameter()] [string] $PIN_DUNE_GLOB = "3.9.1"
-  ,[Parameter()] [string] $PIN_DUNE_PRIVATE_LIBS = "3.9.1"
-  ,[Parameter()] [string] $PIN_DUNE_RPC_LWT = "3.9.1"
-  ,[Parameter()] [string] $PIN_DUNE_RPC = "3.9.1"
-  ,[Parameter()] [string] $PIN_DUNE_SITE = "3.9.1"
+  ,[Parameter()] [string] $PIN_DUNE_GLOB = "3.8.3"
+  ,[Parameter()] [string] $PIN_DUNE_PRIVATE_LIBS = "3.8.3"
+  ,[Parameter()] [string] $PIN_DUNE_RPC_LWT = "3.8.3"
+  ,[Parameter()] [string] $PIN_DUNE_RPC = "3.8.3"
+  ,[Parameter()] [string] $PIN_DUNE_SITE = "3.8.3"
   ,[Parameter()] [string] $PIN_DUNE = "3.8.3"
-  ,[Parameter()] [string] $PIN_DYN = "3.9.1"
+  ,[Parameter()] [string] $PIN_DYN = "3.8.3"
   ,[Parameter()] [string] $PIN_EITHER = "1.0.0"
+  ,[Parameter()] [string] $PIN_EQAF = "0.9"
   ,[Parameter()] [string] $PIN_EXTLIB = "1.7.9"
   ,[Parameter()] [string] $PIN_FEATHER = "0.3.0"
   ,[Parameter()] [string] $PIN_FIBER = "3.7.0"
@@ -577,7 +661,7 @@ param (
   ,[Parameter()] [string] $PIN_OCAML_VERSION = "3.6.1"
   ,[Parameter()] [string] $PIN_OCAML = "4.14.0"
   ,[Parameter()] [string] $PIN_OCAMLBUILD = "0.14.2+win"
-  ,[Parameter()] [string] $PIN_OCAMLC_LOC = "3.9.1"
+  ,[Parameter()] [string] $PIN_OCAMLC_LOC = "3.8.3"
   ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.5"
   ,[Parameter()] [string] $PIN_OCAMLFORMAT_LIB = "0.25.1"
   ,[Parameter()] [string] $PIN_OCAMLFORMAT_RPC_LIB = "0.25.1"
@@ -586,7 +670,7 @@ param (
   ,[Parameter()] [string] $PIN_OCPLIB_ENDIAN = "1.2"
   ,[Parameter()] [string] $PIN_ODOC_PARSER = "2.0.0"
   ,[Parameter()] [string] $PIN_ODOC = "2.2.0"
-  ,[Parameter()] [string] $PIN_ORDERING = "3.9.1"
+  ,[Parameter()] [string] $PIN_ORDERING = "3.8.3"
   ,[Parameter()] [string] $PIN_PARSEXP = "v0.16.0"
   ,[Parameter()] [string] $PIN_PP = "1.1.2"
   ,[Parameter()] [string] $PIN_PPX_ASSERT = "v0.16.0"
@@ -621,7 +705,7 @@ param (
   ,[Parameter()] [string] $PIN_STDCOMPAT = "19+optautoconf"
   ,[Parameter()] [string] $PIN_STDIO = "v0.16.0"
   ,[Parameter()] [string] $PIN_STDLIB_SHIMS = "0.3.0"
-  ,[Parameter()] [string] $PIN_STDUNE = "3.9.1"
+  ,[Parameter()] [string] $PIN_STDUNE = "3.8.3"
   ,[Parameter()] [string] $PIN_TIME_NOW = "v0.16.0"
   ,[Parameter()] [string] $PIN_TOPKG = "1.0.7"
   ,[Parameter()] [string] $PIN_TRAVERSE = "0.3.0"
@@ -687,6 +771,7 @@ $env:vsstudio_arch = "x64"
 $env:DEFAULT_DKML_COMPILER = $DEFAULT_DKML_COMPILER
 $env:PIN_ASTRING = $PIN_ASTRING
 $env:PIN_BASE = $PIN_BASE
+$env:PIN_BASE64 = $PIN_BASE64
 $env:PIN_BIGARRAY_COMPAT = $PIN_BIGARRAY_COMPAT
 $env:PIN_BOS = $PIN_BOS
 $env:PIN_CAMLP_STREAMS = $PIN_CAMLP_STREAMS
@@ -696,21 +781,40 @@ $env:PIN_CONF_PKG_CONFIG = $PIN_CONF_PKG_CONFIG
 $env:PIN_CPPO = $PIN_CPPO
 $env:PIN_CRUNCH = $PIN_CRUNCH
 $env:PIN_CSEXP = $PIN_CSEXP
+$env:PIN_CSTRUCT = $PIN_CSTRUCT
 $env:PIN_CTYPES_FOREIGN = $PIN_CTYPES_FOREIGN
 $env:PIN_CTYPES = $PIN_CTYPES
 $env:PIN_CUDF = $PIN_CUDF
+$env:PIN_DIGESTIF = $PIN_DIGESTIF
 $env:PIN_DISKUVBOX = $PIN_DISKUVBOX
 $env:PIN_DKML_APPS = $PIN_DKML_APPS
 $env:PIN_DKML_BASE_COMPILER = $PIN_DKML_BASE_COMPILER
 $env:PIN_DKML_BUILD_DESKTOP = $PIN_DKML_BUILD_DESKTOP
 $env:PIN_DKML_C_PROBE = $PIN_DKML_C_PROBE
 $env:PIN_DKML_COMPILER_ENV = $PIN_DKML_COMPILER_ENV
+$env:PIN_DKML_COMPILER_SRC = $PIN_DKML_COMPILER_SRC
+$env:PIN_DKML_COMPONENT_COMMON_DESKTOP = $PIN_DKML_COMPONENT_COMMON_DESKTOP
+$env:PIN_DKML_COMPONENT_COMMON_OPAM = $PIN_DKML_COMPONENT_COMMON_OPAM
+$env:PIN_DKML_COMPONENT_COMMON_UNIXUTILS = $PIN_DKML_COMPONENT_COMMON_UNIXUTILS
+$env:PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON = $PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON
+$env:PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK = $PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK
+$env:PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL = $PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL
+$env:PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM = $PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM
+$env:PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS = $PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS
+$env:PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL = $PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL
+$env:PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR = $PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR
+$env:PIN_DKML_COMPONENT_STAGING_OCAMLRUN = $PIN_DKML_COMPONENT_STAGING_OCAMLRUN
+$env:PIN_DKML_COMPONENT_STAGING_OPAM32 = $PIN_DKML_COMPONENT_STAGING_OPAM32
+$env:PIN_DKML_COMPONENT_STAGING_OPAM64 = $PIN_DKML_COMPONENT_STAGING_OPAM64
+$env:PIN_DKML_COMPONENT_STAGING_UNIXUTILS = $PIN_DKML_COMPONENT_STAGING_UNIXUTILS
+$env:PIN_DKML_COMPONENT_STAGING_WITHDKML = $PIN_DKML_COMPONENT_STAGING_WITHDKML
 $env:PIN_DKML_COMPONENT_XX_CONSOLE = $PIN_DKML_COMPONENT_XX_CONSOLE
 $env:PIN_DKML_EXE_LIB = $PIN_DKML_EXE_LIB
 $env:PIN_DKML_EXE = $PIN_DKML_EXE
 $env:PIN_DKML_INSTALL_INSTALLER = $PIN_DKML_INSTALL_INSTALLER
 $env:PIN_DKML_INSTALL_RUNNER = $PIN_DKML_INSTALL_RUNNER
 $env:PIN_DKML_INSTALL = $PIN_DKML_INSTALL
+$env:PIN_DKML_PACKAGE_CONSOLE = $PIN_DKML_PACKAGE_CONSOLE
 $env:PIN_DKML_RUNTIME_COMMON_NATIVE = $PIN_DKML_RUNTIME_COMMON_NATIVE
 $env:PIN_DKML_RUNTIME_COMMON = $PIN_DKML_RUNTIME_COMMON
 $env:PIN_DKML_RUNTIME_DISTRIBUTION = $PIN_DKML_RUNTIME_DISTRIBUTION
@@ -728,6 +832,7 @@ $env:PIN_DUNE_SITE = $PIN_DUNE_SITE
 $env:PIN_DUNE = $PIN_DUNE
 $env:PIN_DYN = $PIN_DYN
 $env:PIN_EITHER = $PIN_EITHER
+$env:PIN_EQAF = $PIN_EQAF
 $env:PIN_EXTLIB = $PIN_EXTLIB
 $env:PIN_FEATHER = $PIN_FEATHER
 $env:PIN_FIBER = $PIN_FIBER
@@ -2073,6 +2178,7 @@ do_pins() {
     # Managed by bump-packages.cmake
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"
@@ -2082,21 +2188,40 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cppo "${PIN_CPPO}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version crunch "${PIN_CRUNCH}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version csexp "${PIN_CSEXP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cstruct "${PIN_CSTRUCT}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes "${PIN_CTYPES}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes-foreign "${PIN_CTYPES_FOREIGN}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cudf "${PIN_CUDF}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version diskuvbox "${PIN_DISKUVBOX}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-base-compiler "${PIN_DKML_BASE_COMPILER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-build-desktop "${PIN_DKML_BUILD_DESKTOP}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-c-probe "${PIN_DKML_C_PROBE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-env "${PIN_DKML_COMPILER_ENV}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-src "${PIN_DKML_COMPILER_SRC}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-opam "${PIN_DKML_COMPONENT_COMMON_OPAM}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-unixutils "${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-common "${PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-network "${PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-desktop-full "${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-opamshim "${PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-unixutils "${PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-desktop-full "${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam32 "${PIN_DKML_COMPONENT_STAGING_OPAM32}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam64 "${PIN_DKML_COMPONENT_STAGING_OPAM64}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-unixutils "${PIN_DKML_COMPONENT_STAGING_UNIXUTILS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-xx-console "${PIN_DKML_COMPONENT_XX_CONSOLE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe-lib "${PIN_DKML_EXE_LIB}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install "${PIN_DKML_INSTALL}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common-native "${PIN_DKML_RUNTIME_COMMON_NATIVE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-distribution "${PIN_DKML_RUNTIME_DISTRIBUTION}"
@@ -2114,6 +2239,7 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-site "${PIN_DUNE_SITE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dyn "${PIN_DYN}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version either "${PIN_EITHER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version eqaf "${PIN_EQAF}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version extlib "${PIN_EXTLIB}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version feather "${PIN_FEATHER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fiber "${PIN_FIBER}"
