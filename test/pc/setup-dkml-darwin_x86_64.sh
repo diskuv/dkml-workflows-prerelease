@@ -49,12 +49,11 @@ export PIN_DKML_COMPILER_SRC='1.2.1~prerel12'
 export PIN_DKML_COMPONENT_COMMON_DESKTOP='1.2.1~prerel12'
 export PIN_DKML_COMPONENT_COMMON_OPAM='2.2.0~alpha0~20221228'
 export PIN_DKML_COMPONENT_COMMON_UNIXUTILS='0.2.0'
+export PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER='4.14.0~v1.2.1~prerel12'
 export PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON='4.14.0~v1.2.1~prerel12'
 export PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK='4.14.0~v1.2.1~prerel12'
-export PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL='1.2.1~prerel12'
 export PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM='2.2.0~alpha0~20221228'
 export PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS='0.2.0'
-export PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL='1.2.1~prerel12'
 export PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR='1.2.1~prerel12'
 export PIN_DKML_COMPONENT_STAGING_OCAMLRUN='4.14.0~v1.2.1~prerel12'
 export PIN_DKML_COMPONENT_STAGING_OPAM32='2.2.0~alpha0~20221228'
@@ -172,7 +171,7 @@ export PIN_TRIE='1.0.0'
 export PIN_TSORT='2.1.0'
 export PIN_TYXML='4.5.0'
 export PIN_UCHAR='0.0.2'
-export PIN_UTOP='2.13.1'
+export PIN_UTOP='2.13.0+win32'
 export PIN_UUCP='15.0.0'
 export PIN_UUIDM='0.9.8'
 export PIN_UUSEG='15.0.0'
@@ -244,12 +243,11 @@ usage() {
   echo "  --PIN_DKML_COMPONENT_COMMON_DESKTOP=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_DESKTOP}" >&2
   echo "  --PIN_DKML_COMPONENT_COMMON_OPAM=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_OPAM}" >&2
   echo "  --PIN_DKML_COMPONENT_COMMON_UNIXUTILS=<value>. Defaults to: ${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}" >&2
+  echo "  --PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER=<value>. Defaults to: ${PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER}" >&2
   echo "  --PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON=<value>. Defaults to: ${PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON}" >&2
   echo "  --PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK=<value>. Defaults to: ${PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK}" >&2
-  echo "  --PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL=<value>. Defaults to: ${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}" >&2
   echo "  --PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM=<value>. Defaults to: ${PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM}" >&2
   echo "  --PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS=<value>. Defaults to: ${PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS}" >&2
-  echo "  --PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_OCAMLRUN=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_OPAM32=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OPAM32}" >&2
@@ -474,18 +472,16 @@ while getopts :h-: option; do
     PIN_DKML_COMPONENT_COMMON_OPAM=*) PIN_DKML_COMPONENT_COMMON_OPAM=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_COMMON_UNIXUTILS) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_COMMON_UNIXUTILS=*) PIN_DKML_COMPONENT_COMMON_UNIXUTILS=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER=*) PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON=*) PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK=*) PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK=${OPTARG#*=} ;;
-    PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL=*) PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM=*) PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS=*) PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS=${OPTARG#*=} ;;
-    PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL=*) PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=*) PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_STAGING_OCAMLRUN) fail "Option \"$OPTARG\" missing argument" ;;
@@ -1967,12 +1963,11 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-opam "${PIN_DKML_COMPONENT_COMMON_OPAM}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-unixutils "${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-network-ocamlcompiler "${PIN_DKML_COMPONENT_NETWORK_OCAMLCOMPILER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-common "${PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-network "${PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-desktop-full "${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-opamshim "${PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-unixutils "${PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-desktop-full "${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam32 "${PIN_DKML_COMPONENT_STAGING_OPAM32}"
