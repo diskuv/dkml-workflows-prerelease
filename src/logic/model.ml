@@ -10,7 +10,7 @@ open Jingoo
 
 let global_env_vars =
   [
-    ("DEFAULT_DKML_COMPILER", "4.14.0-v2.0.0");
+    ("DEFAULT_DKML_COMPILER", "4.14.0-v2.0.1");
 
     (* BEGIN pin-env-vars. DO NOT EDIT THE LINES IN THIS SECTION *)
     (* Managed by bump-packages.cmake *)
