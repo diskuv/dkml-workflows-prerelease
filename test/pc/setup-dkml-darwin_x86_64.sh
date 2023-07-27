@@ -70,6 +70,7 @@ export PIN_DKML_EXE='2.0.2'
 export PIN_DKML_INSTALL_INSTALLER='0.5.0'
 export PIN_DKML_INSTALL_RUNNER='0.5.0'
 export PIN_DKML_INSTALL='0.5.0'
+export PIN_DKML_INSTALLER_OCAML_COMMON='2.0.2'
 export PIN_DKML_PACKAGE_CONSOLE='0.5.0'
 export PIN_DKML_RUNTIME_COMMON_NATIVE='2.0.2'
 export PIN_DKML_RUNTIME_COMMON='2.0.2'
@@ -271,6 +272,7 @@ usage() {
   echo "  --PIN_DKML_INSTALL_INSTALLER=<value>. Defaults to: ${PIN_DKML_INSTALL_INSTALLER}" >&2
   echo "  --PIN_DKML_INSTALL_RUNNER=<value>. Defaults to: ${PIN_DKML_INSTALL_RUNNER}" >&2
   echo "  --PIN_DKML_INSTALL=<value>. Defaults to: ${PIN_DKML_INSTALL}" >&2
+  echo "  --PIN_DKML_INSTALLER_OCAML_COMMON=<value>. Defaults to: ${PIN_DKML_INSTALLER_OCAML_COMMON}" >&2
   echo "  --PIN_DKML_PACKAGE_CONSOLE=<value>. Defaults to: ${PIN_DKML_PACKAGE_CONSOLE}" >&2
   echo "  --PIN_DKML_RUNTIME_COMMON_NATIVE=<value>. Defaults to: ${PIN_DKML_RUNTIME_COMMON_NATIVE}" >&2
   echo "  --PIN_DKML_RUNTIME_COMMON=<value>. Defaults to: ${PIN_DKML_RUNTIME_COMMON}" >&2
@@ -528,6 +530,8 @@ while getopts :h-: option; do
     PIN_DKML_INSTALL_RUNNER=*) PIN_DKML_INSTALL_RUNNER=${OPTARG#*=} ;;
     PIN_DKML_INSTALL) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_INSTALL=*) PIN_DKML_INSTALL=${OPTARG#*=} ;;
+    PIN_DKML_INSTALLER_OCAML_COMMON) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_INSTALLER_OCAML_COMMON=*) PIN_DKML_INSTALLER_OCAML_COMMON=${OPTARG#*=} ;;
     PIN_DKML_PACKAGE_CONSOLE) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_PACKAGE_CONSOLE=*) PIN_DKML_PACKAGE_CONSOLE=${OPTARG#*=} ;;
     PIN_DKML_RUNTIME_COMMON_NATIVE) fail "Option \"$OPTARG\" missing argument" ;;
@@ -2012,6 +2016,7 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install "${PIN_DKML_INSTALL}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-common "${PIN_DKML_INSTALLER_OCAML_COMMON}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common-native "${PIN_DKML_RUNTIME_COMMON_NATIVE}"
