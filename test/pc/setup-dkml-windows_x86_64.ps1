@@ -192,6 +192,9 @@ Environment variable.
 .PARAMETER PIN_DKML_INSTALL
 Environment variable.
 
+.PARAMETER PIN_DKML_PACKAGE_CONSOLE
+Environment variable.
+
 .PARAMETER PIN_DKML_RUNTIME_COMMON_NATIVE
 Environment variable.
 
@@ -626,6 +629,7 @@ param (
   ,[Parameter()] [string] $PIN_DKML_INSTALL_INSTALLER = "0.5.0"
   ,[Parameter()] [string] $PIN_DKML_INSTALL_RUNNER = "0.5.0"
   ,[Parameter()] [string] $PIN_DKML_INSTALL = "0.5.0"
+  ,[Parameter()] [string] $PIN_DKML_PACKAGE_CONSOLE = "0.5.0"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON_NATIVE = "2.0.2"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON = "2.0.2"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_DISTRIBUTION = "2.0.2"
@@ -837,6 +841,7 @@ $env:PIN_DKML_EXE = $PIN_DKML_EXE
 $env:PIN_DKML_INSTALL_INSTALLER = $PIN_DKML_INSTALL_INSTALLER
 $env:PIN_DKML_INSTALL_RUNNER = $PIN_DKML_INSTALL_RUNNER
 $env:PIN_DKML_INSTALL = $PIN_DKML_INSTALL
+$env:PIN_DKML_PACKAGE_CONSOLE = $PIN_DKML_PACKAGE_CONSOLE
 $env:PIN_DKML_RUNTIME_COMMON_NATIVE = $PIN_DKML_RUNTIME_COMMON_NATIVE
 $env:PIN_DKML_RUNTIME_COMMON = $PIN_DKML_RUNTIME_COMMON
 $env:PIN_DKML_RUNTIME_DISTRIBUTION = $PIN_DKML_RUNTIME_DISTRIBUTION
@@ -2249,6 +2254,7 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install "${PIN_DKML_INSTALL}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common-native "${PIN_DKML_RUNTIME_COMMON_NATIVE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-distribution "${PIN_DKML_RUNTIME_DISTRIBUTION}"
