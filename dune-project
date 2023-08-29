@@ -2,7 +2,7 @@
 
 (name dkml-workflows)
 
-(version 2.0.2)
+(version 2.0.3)
 
 (generate_opam_files true)
 
