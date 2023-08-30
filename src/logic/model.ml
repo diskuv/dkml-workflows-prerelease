@@ -10,6 +10,9 @@ open Jingoo
 
 let global_env_vars =
   [
+    (* Edited by bump-version.cmake *)
+    ("DKML_VERSION", "2.0.2");
+    ("DEFAULT_DISKUV_OPAM_REPOSITORY_TAG", "2.0.2");
     ("DEFAULT_DKML_COMPILER", "2.0.2");
 
     (* BEGIN pin-env-vars. DO NOT EDIT THE LINES IN THIS SECTION *)
