@@ -80,7 +80,7 @@ runs:
         _STUB_FOR_AUTOGEN: "ON" # 
 
         # autogen from global_env_vars.
-        DEFAULT_DKML_COMPILER: '4.14.0-v2.0.2'
+        DEFAULT_DKML_COMPILER: '2.0.2'
         PIN_ASTRING: '0.8.5'
         PIN_BASE: 'v0.16.1'
         PIN_BASE64: '3.5.1'

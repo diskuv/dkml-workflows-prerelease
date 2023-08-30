@@ -25,7 +25,7 @@ export CONF_DKML_CROSS_TOOLCHAIN=@repository@
 export DISKUV_OPAM_REPOSITORY=
 export DKML_HOME=
 # autogen from global_env_vars.
-export DEFAULT_DKML_COMPILER='4.14.0-v2.0.2'
+export DEFAULT_DKML_COMPILER='2.0.2'
 export PIN_ASTRING='0.8.5'
 export PIN_BASE='v0.16.1'
 export PIN_BASE64='3.5.1'

@@ -262,7 +262,7 @@ name: Build with DKML compiler
 env:
   OPAM_PACKAGE: "your_example"
   EXECUTABLE_NAME: "your_example"
-  DKML_COMPILER: "" # You can override the dkml-compiler package version. Example: 4.12.1-v1.0.2, 4.14.0-v1.1.0-prerel1
+  DKML_COMPILER: "" # You can override the dkml-compiler package version. Example: 2.0.2
 
 on:
   push:

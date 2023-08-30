@@ -589,7 +589,7 @@ param (
 
   # Environment variables (can be overridden on command line)
   # autogen from global_env_vars.
-  ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "4.14.0-v2.0.2"
+  ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "2.0.2"
   ,[Parameter()] [string] $PIN_ASTRING = "0.8.5"
   ,[Parameter()] [string] $PIN_BASE = "v0.16.1"
   ,[Parameter()] [string] $PIN_BASE64 = "3.5.1"
