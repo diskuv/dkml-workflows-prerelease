@@ -45,6 +45,12 @@ Input variables. If specified then DiskuvOCamlHome, DiskuvOCamlBinaryPaths and D
 and DiskuvOCamlMSYS2Dir.
 
 # autogen from global_env_vars.
+.PARAMETER DKML_VERSION
+Environment variable.
+
+.PARAMETER DEFAULT_DISKUV_OPAM_REPOSITORY_TAG
+Environment variable.
+
 .PARAMETER DEFAULT_DKML_COMPILER
 Environment variable.
 
@@ -589,6 +595,8 @@ param (
     
   # Environment variables (can be overridden on command line)
   # autogen from global_env_vars.
+  ,[Parameter()] [string] $DKML_VERSION = "2.0.2"
+  ,[Parameter()] [string] $DEFAULT_DISKUV_OPAM_REPOSITORY_TAG = "2.0.2"
   ,[Parameter()] [string] $DEFAULT_DKML_COMPILER = "2.0.2"
   ,[Parameter()] [string] $PIN_ASTRING = "0.8.5"
   ,[Parameter()] [string] $PIN_BASE = "v0.16.1"
@@ -805,6 +813,8 @@ $env:ocaml_options = "ocaml-option-32bit"
 
 # Set environment variables
 # autogen from global_env_vars.
+$env:DKML_VERSION = $DKML_VERSION
+$env:DEFAULT_DISKUV_OPAM_REPOSITORY_TAG = $DEFAULT_DISKUV_OPAM_REPOSITORY_TAG
 $env:DEFAULT_DKML_COMPILER = $DEFAULT_DKML_COMPILER
 $env:PIN_ASTRING = $PIN_ASTRING
 $env:PIN_BASE = $PIN_BASE
@@ -1278,10 +1288,6 @@ set -euf
 
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
-#   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=315a344b354e883c0884eefdb7869a20d1ef5803
-# Constants
-DKML_VERSION=1.2.1-prerel1
 
 setup_WORKSPACE_VARNAME=$1
 shift

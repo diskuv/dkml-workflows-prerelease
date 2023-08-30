@@ -51,6 +51,8 @@ runs:
         _STUB_FOR_AUTOGEN: "ON" # 
 
         # autogen from global_env_vars.
+        DKML_VERSION: '2.0.2'
+        DEFAULT_DISKUV_OPAM_REPOSITORY_TAG: '2.0.2'
         DEFAULT_DKML_COMPILER: '2.0.2'
         PIN_ASTRING: '0.8.5'
         PIN_BASE: 'v0.16.1'

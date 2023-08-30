@@ -25,6 +25,8 @@ export CONF_DKML_CROSS_TOOLCHAIN=@repository@
 export DISKUV_OPAM_REPOSITORY=
 export DKML_HOME=
 # autogen from global_env_vars.
+export DKML_VERSION='2.0.2'
+export DEFAULT_DISKUV_OPAM_REPOSITORY_TAG='2.0.2'
 export DEFAULT_DKML_COMPILER='2.0.2'
 export PIN_ASTRING='0.8.5'
 export PIN_BASE='v0.16.1'
@@ -232,6 +234,8 @@ usage() {
   echo "  --dockcross_run_extra_args=<value>. When --in_docker=true, will be extra arguments passed to 'docker run'. Defaults to '${dockcross_run_extra_args:-}'" >&2
 
   # autogen from global_env_vars.
+  echo "  --DKML_VERSION=<value>. Defaults to: ${DKML_VERSION}" >&2
+  echo "  --DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=<value>. Defaults to: ${DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" >&2
   echo "  --DEFAULT_DKML_COMPILER=<value>. Defaults to: ${DEFAULT_DKML_COMPILER}" >&2
   echo "  --PIN_ASTRING=<value>. Defaults to: ${PIN_ASTRING}" >&2
   echo "  --PIN_BASE=<value>. Defaults to: ${PIN_BASE}" >&2
@@ -443,6 +447,10 @@ while getopts :h-: option; do
     in_docker) fail "Option \"$OPTARG\" missing argument" ;;
     in_docker=*) in_docker=${OPTARG#*=} ;;
     # autogen from global_env_vars.
+    DKML_VERSION) fail "Option \"$OPTARG\" missing argument" ;;
+    DKML_VERSION=*) DKML_VERSION=${OPTARG#*=} ;;
+    DEFAULT_DISKUV_OPAM_REPOSITORY_TAG) fail "Option \"$OPTARG\" missing argument" ;;
+    DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=*) DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=${OPTARG#*=} ;;
     DEFAULT_DKML_COMPILER) fail "Option \"$OPTARG\" missing argument" ;;
     DEFAULT_DKML_COMPILER=*) DEFAULT_DKML_COMPILER=${OPTARG#*=} ;;
     PIN_ASTRING) fail "Option \"$OPTARG\" missing argument" ;;
@@ -1039,10 +1047,6 @@ set -euf
 
 # Constants
 SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
-#   Edited by https://gitlab.com/diskuv/diskuv-ocaml/contributors/release.sh
-DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=315a344b354e883c0884eefdb7869a20d1ef5803
-# Constants
-DKML_VERSION=1.2.1-prerel1
 
 setup_WORKSPACE_VARNAME=$1
 shift
