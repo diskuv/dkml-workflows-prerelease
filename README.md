@@ -116,7 +116,18 @@ Create the file if it doesn't already exist:
 /msys64/
 ```
 
-THIRD, create the scaffolding files with one of the following options:
+THIRD, add the following lines to your `.gitattributes` in your project.
+Create the file if it doesn't already exist:
+
+```sh
+# https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-7.1
+*.ps1 text working-tree-encoding=UTF-16 eol=crlf
+*.psm1 text working-tree-encoding=UTF-16 eol=crlf
+# Other file types that must be CRLF
+*.sln text eol=crlf
+```
+
+FOURTH, create the scaffolding files with one of the following options:
 
 ```sh
 # Let's get help to see what will happen
