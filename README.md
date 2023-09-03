@@ -101,7 +101,22 @@ FIRST, if you do not have `./dk` in your project, let's install it.
 
 And then commit the new files that were created.
 
-SECOND, create the scaffolding files with one of the following options:
+SECOND, add the following lines to your `.gitignore` in your project.
+Create the file if it doesn't already exist:
+
+```sh
+# CI using dkml-workflows' DkML compilers.
+#   DkML compilers populate the .opam folder.
+/.opam/
+#   GitHub, unlike GitLab, does not need its CI files to exist
+#   before referencing them. That means the GitHub scripts do not need
+#   to be checked in.
+/.ci/dkml-compilers/gh-*
+#   Desktop testing on Windows uses MSYS2.
+/msys64/
+```
+
+THIRD, create the scaffolding files with one of the following options:
 
 ```sh
 # Let's get help to see what will happen
