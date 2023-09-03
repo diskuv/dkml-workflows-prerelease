@@ -1,14 +1,12 @@
 # dkml-workflows
 
-GitLab CI/CD, GitHub Actions and desktop scripts to setup Diskuv OCaml
-(DKML) compilers. DKML helps you distribute native OCaml applications on the
-most common operating systems.
+GitLab CI/CD, GitHub Actions and desktop scripts to setup DkML compilers. DkML helps you distribute native OCaml applications on the most common operating systems.
 
 Table of Contents:
 
 - [dkml-workflows](#dkml-workflows)
   - [Configure your project](#configure-your-project)
-  - [Create `ci/build-test.sh`](#create-cibuild-testsh)
+    - [`ci/build-test.sh`](#cibuild-testsh)
   - [Examples](#examples)
   - [Using the GitLab CI/CD backend](#using-the-gitlab-cicd-backend)
   - [Using the GitHub Actions backend](#using-the-github-actions-backend)
@@ -49,7 +47,7 @@ In contrast to the conventional [setup-ocaml](https://github.com/marketplace/act
 | MSVC + MSYS2                         | GCC + Cygwin              | On Windows `setup-dkml` can let your native code use ordinary Windows libraries without ABI conflicts. You can also distribute your executables without the license headache of redistributing or statically linking `libgcc_s_seh` and `libstdc++`                                                         |
 | dkml-base-compiler                   | ocaml-base-compiler       | On macOS, `setup-dkml` cross-compiles to ARM64 with `dune -x darwin_arm64`                                                                                                                                                                                                                                  |
 | CentOS 7 and Linux distros from 2014 | Latest Ubuntu             | On Linux, `setup-dkml` builds with an old GLIBC. `setup-dkml` dynamically linked Linux executables will be highly portable as GLIBC compatibility issues should be rare, and compatible with the unmodified LGPL license used by common OCaml dependencies like [GNU MP](https://gmplib.org/manual/Copying) |
-| 0 yrs                                | 4 yrs                     | `setup-ocaml` is officially supported and well-tested.                                                                                                                                                                                                                                                      |
+| 1 yrs                                | 4 yrs                     | `setup-ocaml` is officially supported and well-tested.                                                                                                                                                                                                                                                      |
 | Some pinned packages                 | No packages pinned        | `setup-dkml`, for some packages, must pin the version so that cross-platform patches (especially for Windows) are available. With `setup-ocaml` you are free to use any version of any package                                                                                                              |
 | diskuv/diskuv-opam-repository        | fdopen/opam-repository    | Custom patches for Windows are sometimes needed. `setup-dkml` uses a much smaller set of patches. `setup-ocaml` uses a large but deprecated set of patches.                                                                                                                                                 |
 
@@ -78,130 +76,54 @@ You can follow the sections on this page, or you can copy one of the examples:
 | [dkml-workflows-monorepo-example](https://github.com/diskuv/dkml-workflows-monorepo-example) | **Not ready for public use yet!**<br>You want to cross-compile ARM64 on Mac Intel.<br>You are building [Mirage unikernels](https://mirage.io/). |
 | [dkml-workflows-regular-example](https://github.com/diskuv/dkml-workflows-regular-example)   | Everybody else                                                                                                                                  |
 
-For news about Diskuv OCaml,
+For news about DkML,
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/diskuv.svg?style=social&label=Follow%20%40diskuv)](https://twitter.com/diskuv) on Twitter.
 
 ## Configure your project
 
-FIRST, add a dependency to `dkml-workflows` in your project.
+FIRST, if you do not have `./dk` in your project, let's install it.
 
-- For projects using `dune-project`:
-  1. Add the following to `dune-project`:
+- In Windows PowerShell, macOS and desktop Linux:
 
-     ```scheme
-     (lang dune 3.0)
+  ```sh
+  git clone https://gitlab.com/diskuv/dktool.git
+  dktool/dk user.dkml.wrapper.upgrade HERE
+  ./dk dkml.wrapper.upgrade DONE
+  ```
 
-     (package
-       ; ...
-       (dkml-workflows (and (>= 1.1.0) :build))
-       ...
-     )
-     ```
+- Or in Windows Command Prompt:
 
-  2. Then do `dune build *.opam`
-- For projects not using `dune-project`:
-  1. Add the following to your `<project>.opam`:
+  ```dosbatch
+  git clone https://gitlab.com/diskuv/dktool.git
+  dktool\dk user.dkml.wrapper.upgrade HERE
+  .\dk dkml.wrapper.upgrade DONE
+  ```
 
-     ```text
-     # ...
-     depends: [
-       "ocaml"
-       "dune" {>= "2.9"}
-       "dkml-workflows" {>= "1.1.0" & build}
-     ]
-     # ...
-     ```
+And then commit the new files that were created.
 
-SECOND, update your Opam switch with the new `dkml-workflows` dependency:
+SECOND, create the scaffolding files with one of the following options:
 
 ```sh
-git commit -a -m 'Add dkml-workflows@v1'
-opam install . --deps-only
+# Let's get help to see what will happen
+./dk dkml.workflow.compilers HELP
+
+# If you want GitHub and Desktop scripts
+./dk dkml.workflow.compilers CI GitHub Desktop
+
+# If you want GitHub and Desktop scripts, but only for Windows CI
+./dk dkml.workflow.compilers CI GitHub Desktop OS Windows
+
+# If you want just GitLab and Desktop script
+./dk dkml.workflow.compilers CI GitLab Desktop
 ```
 
-THIRD, create or edit your `.gitattributes` in your project root directory
-so that Windows scripts are encoded correctly. `.gitattributes` should contain
-at least the following:
+And then commit the new files that were created.
 
-```properties
-# Set the default behavior, in case people don't have core.autocrlf set.
-# This is critical for Windows and UNIX interoperability.
-* text=auto
+### `ci/build-test.sh`
 
-# Declare files that will always have LF line endings on checkout.
-.gitattributes text eol=lf
+Your build logic will be inside the `ci/build-test.sh` POSIX shell script. This will work even on Windows; just be careful on Windows that you save the shell script with LF line endings (not CRLF), and use UTF-8 encoding.
 
-# https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-7.1
-# > Creating PowerShell scripts on a Unix-like platform or using a cross-platform editor on Windows, such as Visual Studio Code,
-# >   results in a file encoded using UTF8NoBOM. These files work fine on PowerShell Core, but may break in Windows PowerShell if
-# >   the file contains non-Ascii characters.
-# > In general, Windows PowerShell uses the Unicode UTF-16LE encoding by default.
-# > Using any Unicode encoding, except UTF7, always creates a BOM.
-#
-# Hint: If a file is causing you problems (ex. `fatal: BOM is required in ... if encoded as UTF-16`) use
-#       "View > Change File Encoding > Save with Encoding > UTF-16LE" in Visual Studio Code to save the file correctly.
-*.ps1 text working-tree-encoding=UTF-16 eol=crlf
-```
-
-FOURTH, generate scaffolding files:
-
-```sh
-opam exec -- generate-setup-dkml-scaffold
-opam exec -- dune build '@gen-dkml' --auto-promote
-```
-
-FIFTH, add the scaffolding files to your source control. Assuming you use git, it would be:
-
-```sh
-git add ci/setup-dkml
-```
-
-## Create `ci/build-test.sh`
-
-Your build logic will be inside a POSIX shell script. This will work even on Windows; just be careful on Windows
-that you save the shell script with LF line endings (not CRLF), and use UTF-8 encoding.
-
-You don't need to name the file `ci/build-test.sh` however the
-documentation assumes that filename.
-
-At minimum the file should contain:
-
-```bash
-#!/bin/sh
-set -euf
-
-# Set project directory
-if [ -n "${CI_PROJECT_DIR:-}" ]; then
-    PROJECT_DIR="$CI_PROJECT_DIR"
-elif [ -n "${PC_PROJECT_DIR:-}" ]; then
-    PROJECT_DIR="$PC_PROJECT_DIR"
-elif [ -n "${GITHUB_WORKSPACE:-}" ]; then
-    PROJECT_DIR="$GITHUB_WORKSPACE"
-else
-    PROJECT_DIR="$PWD"
-fi
-if [ -x /usr/bin/cygpath ]; then
-    PROJECT_DIR=$(/usr/bin/cygpath -au "$PROJECT_DIR")
-fi
-
-# PATH. Add opamrun
-export PATH="$PROJECT_DIR/.ci/sd4/opamrun:$PATH"
-
-# Initial Diagnostics (optional but useful)
-opamrun switch
-opamrun list
-opamrun var
-opamrun config report
-opamrun option
-opamrun exec -- ocamlc -config
-
-# Update
-opamrun update
-
-# Make your own build logic! It may look like ...
-opamrun install . --deps-only --with-test
-opamrun exec -- dune runtest
-```
+You don't need to name the file `ci/build-test.sh` however the documentation and the auto-generated scripts (which you can change) assumes that filename.
 
 ## Examples
 
@@ -219,136 +141,12 @@ The full list of examples is:
 > <https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues/new>. More details are
 > available at <https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/blob/main/README.md>
 >
-> This documentation assumes you have not been approved. There will be callouts
-> for where to edit once you have been approved for macOS.
-
-Create a `.gitlab-ci.yml` in the project root directory that contains
-at least:
-
-```yaml
-include:
-  - local: 'ci/setup-dkml/gl/setup-dkml.gitlab-ci.yml'
-
-linux:build:
-  extends: .linux:setup-dkml
-  script:
-    - sh ci/build-test.sh
-
-win32:build:
-  extends: .win32:setup-dkml
-  script:
-    - msys64\usr\bin\bash -lc "ci/build-test.sh"
-
-# Uncomment macOS when you have a https://gitlab.com/gitlab-com/runner-saas-macos-access-requests/-/issues
-# approved!
-#
-# macos:build:
-#   extends: .macos:setup-dkml
-#   script:
-#     - sh ci/build-test.sh --opam-package "$THE_OPAM_PACKAGE" --executable-name "$THE_EXECUTABLE_NAME"
-```
+> This documentation assumes you have not been approved. Look inside .gitlab-ci.yml
+> and uncomment the macos:build section once you have been approved for macOS.
 
 The [Examples](#examples) include more features, like the uploading and releasing of your built artifacts.
 
 ## Using the GitHub Actions backend
-
-Create a GitHub workflow file in `.github/workflows` that contains at least:
-
-```yaml
-# Suggested filename: .github/workflows/build-with-dkml.yml
-
-name: Build with DKML compiler
-
-env:
-  OPAM_PACKAGE: "your_example"
-  EXECUTABLE_NAME: "your_example"
-  DKML_COMPILER: "" # You can override the dkml-compiler package version. Example: 2.0.2
-
-on:
-  push:
-    branches:
-      - main
-      - v*
-    tags:
-      - v*
-  # ... or trigger manually from GitHub web interface
-  workflow_dispatch:
-
-jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - gh_os: windows-2019
-            abi_pattern: win32-windows_x86
-            dkml_host_abi: windows_x86
-          - gh_os: windows-2019
-            abi_pattern: win32-windows_x86_64
-            dkml_host_abi: windows_x86_64
-          - gh_os: ubuntu-latest
-            abi_pattern: manylinux2014-linux_x86
-            dkml_host_abi: linux_x86
-          - gh_os: ubuntu-latest
-            abi_pattern: manylinux2014-linux_x86_64
-            dkml_host_abi: linux_x86_64
-          - gh_os: macos-latest
-            abi_pattern: macos-darwin_all
-            dkml_host_abi: darwin_x86_64
-
-    runs-on: ${{ matrix.gh_os }}
-    name: build / ${{ matrix.abi_pattern }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # The Setup DKML action will create the environment variables:
-      #   opam_root, exe_ext, dkml_host_abi, abi_pattern (and many more)
-
-      - name: Setup DKML on a Windows host
-        if: startsWith(matrix.dkml_host_abi, 'windows_')
-        uses: ./ci/setup-dkml/gh-windows/pre
-        with:
-          DKML_COMPILER: ${{ env.DKML_COMPILER }}
-
-      - name: Setup DKML on a Darwin host
-        if: startsWith(matrix.dkml_host_abi, 'darwin_')
-        uses: ./ci/setup-dkml/gh-darwin/pre
-        with:
-          DKML_COMPILER: ${{ env.DKML_COMPILER }}
-
-      - name: Setup DKML on a Linux host
-        if: startsWith(matrix.dkml_host_abi, 'linux_')
-        uses: ./ci/setup-dkml/gh-linux/pre
-        with:
-          DKML_COMPILER: ${{ env.DKML_COMPILER }}
-
-      # This section is for your own build logic which you should place in ci/build-test.sh or a similar file
-
-      - name: Build and test the package on Windows host
-        if: startsWith(matrix.dkml_host_abi, 'windows_')
-        shell: msys2 {0}
-        run: ci/build-test.sh --opam-package ${{ env.OPAM_PACKAGE }} --executable-name ${{ env.EXECUTABLE_NAME }}
-
-      - name: Build and test the package on non-Windows host
-        if: "!startsWith(matrix.dkml_host_abi, 'windows_')"
-        run: ci/build-test.sh --opam-package ${{ env.OPAM_PACKAGE }} --executable-name ${{ env.EXECUTABLE_NAME }}
-
-      # The Teardown DKML action will finalize caching, etc.
-
-      - name: Teardown DKML on a Windows host
-        if: startsWith(matrix.dkml_host_abi, 'windows_')
-        uses: ./ci/setup-dkml/gh-windows/post
-
-      - name: Teardown DKML on a Darwin host
-        if: startsWith(matrix.dkml_host_abi, 'darwin_')
-        uses: ./ci/setup-dkml/gh-darwin/post
-
-      - name: Teardown DKML on a Linux host
-        if: startsWith(matrix.dkml_host_abi, 'linux_')
-        uses: ./ci/setup-dkml/gh-linux/post
-```
 
 The [Examples](#examples) include more features, like the uploading and releasing of your built artifacts.
 
@@ -395,7 +193,7 @@ sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh
 #   - Running this from macOS/Intel with Docker or macOS/Silicon with Docker will also work
 #   - Running this using with-dkml.exe on Windows with Docker will also work
 #     (the normal Linux containers host, not the Windows containers host). The
-#     easiest is using 'with-dkml sh ...' if you have Diskuv OCaml. You can also
+#     easiest is using 'with-dkml sh ...' if you have DkML. You can also
 #     download MSYS2 from https://www.msys2.org/#installation, or Cygwin, and then
 #     run MSYS2 or Cygwin, but you must make sure that 'docker' is in your PATH
 #     (ex. export PATH='/c/Program Files/Docker/Docker/resources/bin':"$PATH").
@@ -582,7 +380,7 @@ Confer: <https://docs.microsoft.com/en-us/cpp/build/building-on-the-command-line
 
 #### vsstudio_(others)
 
-Hardcodes details about Visual Studio rather than let DKML discover
+Hardcodes details about Visual Studio rather than let DkML discover
 a compatible Visual Studio installation.
 
 Example:
@@ -611,5 +409,6 @@ chosen when the target ABI ends with x86.
 <a href="https://ocaml-sf.org">
 <img align="left" alt="OCSF logo" src="https://ocaml-sf.org/assets/ocsf_logo.svg"/>
 </a>
+
 Thanks to the [OCaml Software Foundation](https://ocaml-sf.org)
-for economic support to the development of Diskuv OCaml.
+for economic support to the development of DkML.
