@@ -1943,40 +1943,6 @@ do_pins() {
     do_pins_NAME=$1
     shift
 
-    # dkml-base-compiler
-
-    if [ "${DKML_COMPILER:-}" != '@repository@' ] && [ -z "${DKML_COMPILER:-}" ] && [ -z "${OCAML_COMPILER:-}" ]; then
-        section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler to default ${DEFAULT_DKML_COMPILER} (neither dkml-base-compiler nor OCAML_COMPILER specified) for $do_pins_NAME switch"
-        opamrun pin add --switch "$do_pins_NAME" --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DEFAULT_DKML_COMPILER}"
-        section_end checkout-dkml-base-compiler
-    elif [ "${DKML_COMPILER:-}" != '@repository@' ] && [ -n "${DKML_COMPILER:-}" ] && [ -z "${OCAML_COMPILER:-}" ]; then
-        section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler to $DKML_COMPILER (dkml-base-compiler specified; no OCAML_COMPILER specified) for $do_pins_NAME switch"
-        opamrun pin add --switch "$do_pins_NAME" --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DKML_COMPILER}"
-        section_end checkout-dkml-base-compiler
-    elif [ -n "${OCAML_COMPILER:-}" ]; then
-        # Validate OCAML_COMPILER (OCAML_COMPILER specified)
-        case "${OCAML_COMPILER:-}" in
-        4.12.1) true ;;
-        4.14.0) true ;;
-        *)
-            echo "OCAML_COMPILER version ${OCAML_COMPILER:-} is not supported" >&2
-            exit 109
-            ;;
-        esac
-
-        section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler (OCAML_COMPILER specified) for $do_pins_NAME switch"
-        opamrun pin add --switch "$do_pins_NAME" --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${OCAML_COMPILER}-v${DKML_VERSION}"
-        section_end checkout-dkml-base-compiler
-    fi
-
-    # conf-dkml-cross-toolchain
-
-    if [ "${CONF_DKML_CROSS_TOOLCHAIN:-}" != '@repository@' ]; then
-        section_begin checkout-conf-dkml-cross-toolchain "Pin conf-dkml-cross-toolchain for $do_pins_NAME switch"
-        opamrun pin add --switch "$do_pins_NAME" --yes --no-action conf-dkml-cross-toolchain "https://github.com/diskuv/conf-dkml-cross-toolchain.git#$CONF_DKML_CROSS_TOOLCHAIN"
-        section_end checkout-conf-dkml-cross-toolchain
-    fi
-
     section_begin "opam-pins-$do_pins_NAME" "Opam pins for $do_pins_NAME switch"
     ### BEGIN pin-adds. DO NOT EDIT THE LINES IN THIS SECTION
     # Managed by bump-packages.cmake
@@ -2150,6 +2116,47 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version zed "${PIN_ZED}"
     ### END pin-adds. DO NOT EDIT THE LINES ABOVE
     section_end "opam-pins-$do_pins_NAME"
+
+    # --------------
+    # REMAINING PINS
+    # --------------
+
+    # These come after [pin-adds] section since [pin-adds] may need to be overridden by
+    # users' choice.
+
+    # dkml-base-compiler
+
+    if [ "${DKML_COMPILER:-}" != '@repository@' ] && [ -z "${DKML_COMPILER:-}" ] && [ -z "${OCAML_COMPILER:-}" ]; then
+        section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler to default ${DEFAULT_DKML_COMPILER} (neither dkml-base-compiler nor OCAML_COMPILER specified) for $do_pins_NAME switch"
+        opamrun pin add --switch "$do_pins_NAME" --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DEFAULT_DKML_COMPILER}"
+        section_end checkout-dkml-base-compiler
+    elif [ "${DKML_COMPILER:-}" != '@repository@' ] && [ -n "${DKML_COMPILER:-}" ] && [ -z "${OCAML_COMPILER:-}" ]; then
+        section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler to $DKML_COMPILER (dkml-base-compiler specified; no OCAML_COMPILER specified) for $do_pins_NAME switch"
+        opamrun pin add --switch "$do_pins_NAME" --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${DKML_COMPILER}"
+        section_end checkout-dkml-base-compiler
+    elif [ -n "${OCAML_COMPILER:-}" ]; then
+        # Validate OCAML_COMPILER (OCAML_COMPILER specified)
+        case "${OCAML_COMPILER:-}" in
+        4.12.1) true ;;
+        4.14.0) true ;;
+        *)
+            echo "OCAML_COMPILER version ${OCAML_COMPILER:-} is not supported" >&2
+            exit 109
+            ;;
+        esac
+
+        section_begin checkout-dkml-base-compiler "Pin dkml-base-compiler (OCAML_COMPILER specified) for $do_pins_NAME switch"
+        opamrun pin add --switch "$do_pins_NAME" --yes --no-action dkml-base-compiler "https://github.com/diskuv/dkml-compiler.git#${OCAML_COMPILER}-v${DKML_VERSION}"
+        section_end checkout-dkml-base-compiler
+    fi
+
+    # conf-dkml-cross-toolchain
+
+    if [ "${CONF_DKML_CROSS_TOOLCHAIN:-}" != '@repository@' ]; then
+        section_begin checkout-conf-dkml-cross-toolchain "Pin conf-dkml-cross-toolchain for $do_pins_NAME switch"
+        opamrun pin add --switch "$do_pins_NAME" --yes --no-action conf-dkml-cross-toolchain "https://github.com/diskuv/conf-dkml-cross-toolchain.git#$CONF_DKML_CROSS_TOOLCHAIN"
+        section_end checkout-conf-dkml-cross-toolchain
+    fi
 }
 
 if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
