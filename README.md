@@ -127,7 +127,7 @@ Create the file if it doesn't already exist:
 *.sln text eol=crlf
 ```
 
-FOURTH, create the scaffolding files with one of the following options:
+FOURTH, create the scaffolding files with **one** of the following options:
 
 ```sh
 # Let's get help to see what will happen
@@ -143,13 +143,23 @@ FOURTH, create the scaffolding files with one of the following options:
 ./dk dkml.workflow.compilers CI GitLab Desktop
 ```
 
-And then commit the new files that were created.
+And then commit the new files that were created:
+
+```sh
+git add -A
+git update-index --chmod=+x ./dk ci/build-test.sh
+git commit -m "ci: DkML compilers"
+```
 
 ### `ci/build-test.sh`
 
-Your build logic will be inside the `ci/build-test.sh` POSIX shell script. This will work even on Windows; just be careful on Windows that you save the shell script with LF line endings (not CRLF), and use UTF-8 encoding.
+The `./dk dkml.workflow.compilers ...` command will have created a `ci/build-test.sh` POSIX shell script for you if it wasn't present already.
 
-You don't need to name the file `ci/build-test.sh` however the documentation and the auto-generated scripts (which you can change) assumes that filename.
+Your build logic will be inside the `ci/build-test.sh` script. This will work even on Windows; just be careful on Windows that you save the shell script with **LF line endings (not CRLF), and use UTF-8 encoding**.
+
+The [Examples](#examples) section has comprehensive examples.
+
+*The script does not need to be named `ci/build-test.sh`. However the documentation and the auto-generated scripts (which you can change) assumes that filename.*
 
 ## Examples
 
