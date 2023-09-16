@@ -81,27 +81,7 @@ For news about DkML,
 
 ## Configure your project
 
-FIRST, if you do not have `./dk` in your project, let's install it.
-
-- In Windows PowerShell, macOS and desktop Linux:
-
-  ```sh
-  git clone https://gitlab.com/diskuv/dktool.git
-  dktool/dk user.dkml.wrapper.upgrade HERE
-  ./dk dkml.wrapper.upgrade DONE
-  ```
-
-- Or in Windows Command Prompt:
-
-  ```dosbatch
-  git clone https://gitlab.com/diskuv/dktool.git
-  dktool\dk user.dkml.wrapper.upgrade HERE
-  .\dk dkml.wrapper.upgrade DONE
-  ```
-
-And then commit the new files that were created.
-
-SECOND, add the following lines to your `.gitignore` in your project.
+FIRST, add the following lines to your `.gitignore` in your project.
 Create the file if it doesn't already exist:
 
 ```sh
@@ -116,7 +96,7 @@ Create the file if it doesn't already exist:
 /msys64/
 ```
 
-THIRD, add the following lines to your `.gitattributes` in your project.
+SECOND, add the following lines to your `.gitattributes` in your project.
 Create the file if it doesn't already exist:
 
 ```sh
@@ -127,11 +107,29 @@ Create the file if it doesn't already exist:
 *.sln text eol=crlf
 ```
 
-FOURTH, create the scaffolding files with **one** of the following options:
+THIRD, let's ensure you have a `./dk` in your project ...
+
+- On Windows **PowerShell**, macOS and desktop Linux:
+
+  ```sh
+  git clone https://gitlab.com/diskuv/dktool.git
+  dktool/dk user.dkml.wrapper.upgrade HERE
+  ./dk dkml.wrapper.upgrade DONE
+  ```
+
+- Or in Windows **Command Prompt**:
+
+  ```dosbatch
+  git clone https://gitlab.com/diskuv/dktool.git
+  dktool\dk user.dkml.wrapper.upgrade HERE
+  .\dk dkml.wrapper.upgrade DONE
+  ```
+
+and then create the scaffolding files with **one** of the following options ...
 
 ```sh
-# Let's get help to see what will happen
-./dk dkml.workflow.compilers HELP
+# FYI: You can get help to see what will happen with:
+#         ./dk dkml.workflow.compilers HELP
 
 # If you want GitHub and Desktop scripts
 ./dk dkml.workflow.compilers CI GitHub Desktop
@@ -143,7 +141,7 @@ FOURTH, create the scaffolding files with **one** of the following options:
 ./dk dkml.workflow.compilers CI GitLab Desktop
 ```
 
-And then commit the new files that were created:
+and then commit the new files that were created ....
 
 ```sh
 git add -A
