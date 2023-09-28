@@ -224,7 +224,8 @@ Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.bat" -Encoding Default -Value
 
 msys64\usr\bin\bash -lc "sh .ci/sd4/run-checkout-code.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
 if ($LASTEXITCODE -ne 0) {
-  throw "run-checkout-code.sh failed"
+  Write-Error "run-checkout-code.sh failed"
+  Exit 79
 }
 
 # Diagnose Visual Studio environment variables (Windows)
@@ -257,7 +258,8 @@ msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
 msys64\usr\bin\bash -lc "sh .ci/sd4/run-setup-dkml.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
 if ($LASTEXITCODE -ne 0) {
-  throw "run-setup-dkml.sh failed"
+  Write-Error "run-setup-dkml.sh failed"
+  Exit 79
 }
 
 ########################### script ###############################
