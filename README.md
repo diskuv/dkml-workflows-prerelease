@@ -83,33 +83,7 @@ For news about DkML,
 
 ## Configure your project
 
-FIRST, add the following lines to your `.gitignore` in your project.
-Create the file if it doesn't already exist:
-
-```sh
-# CI using dkml-workflows' DkML compilers.
-#   DkML compilers populate the .opam folder.
-/.opam/
-#   GitHub, unlike GitLab, does not need its CI files to exist
-#   before referencing them. That means the GitHub scripts do not need
-#   to be checked in.
-/.ci/dkml-compilers/gh-*
-#   Desktop testing on Windows uses MSYS2.
-/msys64/
-```
-
-SECOND, add the following lines to your `.gitattributes` in your project.
-Create the file if it doesn't already exist:
-
-```sh
-# https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-7.1
-*.ps1 text working-tree-encoding=UTF-16 eol=crlf
-*.psm1 text working-tree-encoding=UTF-16 eol=crlf
-# Other file types that must be CRLF
-*.sln text eol=crlf
-```
-
-THIRD, let's ensure you have a `./dk` in your project ...
+FIRST, let's ensure you have a `./dk` in your project ...
 
 - On Windows **PowerShell**, macOS and desktop Linux:
 
@@ -127,20 +101,20 @@ THIRD, let's ensure you have a `./dk` in your project ...
   .\dk dkml.wrapper.upgrade DONE
   ```
 
-and then create the scaffolding files with **one** of the following options ...
+SECOND, create the scaffolding files with **one** of the following options ...
 
 ```sh
 # FYI: You can get help to see what will happen with:
 #         ./dk dkml.workflow.compilers HELP
 
-# If you want GitHub and Desktop scripts
-./dk dkml.workflow.compilers CI GitHub Desktop
+# If you want GitHub scripts
+./dk dkml.workflow.compilers CI GitHub
 
-# If you want GitHub and Desktop scripts, but only for Windows CI
-./dk dkml.workflow.compilers CI GitHub Desktop OS Windows
+# If you want GitHub scripts, but only for Windows CI
+./dk dkml.workflow.compilers CI GitHub OS Windows
 
-# If you want just GitLab and Desktop script
-./dk dkml.workflow.compilers CI GitLab Desktop
+# If you want just GitLab script
+./dk dkml.workflow.compilers CI GitLab
 ```
 
 and then commit the new files that were created ....
