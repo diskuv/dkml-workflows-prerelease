@@ -162,6 +162,11 @@ msys64\usr\bin\bash -lc 'set -x; pacman -Sy --noconfirm --needed ${msys2_package
 Write-Host "Uninstall MSYS2 conflicting executables ..."
 msys64\usr\bin\bash -lc 'rm -vf /usr/bin/link.exe' # link.exe interferes with MSVC's link.exe
 
+# Avoid https://microsoft.github.io/PSRule/v2/troubleshooting/#windows-powershell-is-in-noninteractive-mode
+# during `Install-Module VSSetup`.
+Write-Host "Installing NuGet ..."
+if ($Null -eq (Get-PackageProvider -Name NuGet -ErrorAction Ignore)) { Install-PackageProvider -Name NuGet -Force -Scope CurrentUser; }
+
 Write-Host "Installing VSSetup for the Get-VSSetupInstance function ..."
 Install-Module VSSetup -Scope CurrentUser -Force
 

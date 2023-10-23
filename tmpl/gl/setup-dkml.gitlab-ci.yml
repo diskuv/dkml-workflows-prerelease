@@ -164,6 +164,26 @@ variables:
     # ------------------ SECTION BEGIN Install VSSetup
     - Write-Host "${esc}[0Ksection_start:$(Get-CurrentEpochSecs):install-vssetup[collapsed=true]${cr}${esc}[0K"$TXT_SECTION"Install VSSetup"
 
+    # Avoid https://microsoft.github.io/PSRule/v2/troubleshooting/#windows-powershell-is-in-noninteractive-mode
+    # during `Install-Module VSSetup`:
+    #     Exception calling "ShouldContinue" with "2" argument(s): "Windows PowerShell is in NonInteractive mode. Read and
+    #     Prompt functionality is not available."
+    #     At C:\Program Files\WindowsPowerShell\Modules\PowerShellGet\1.0.0.1\PSModule.psm1:7455 char:8
+    #     +     if($Force -or $psCmdlet.ShouldContinue($shouldContinueQueryMessag ...
+    #     +        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #         + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException
+    #         + FullyQualifiedErrorId : PSInvalidOperationException
+    #
+    #     Install-Module : NuGet provider is required to interact with NuGet-based repositories. Please ensure that '2.8.5.201'
+    #     or newer version of NuGet provider is installed.
+    #     At line:705 char:1
+    #     + Install-Module VSSetup -Scope CurrentUser -Force
+    #     + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #         + CategoryInfo          : InvalidOperation: (:) [Install-Module], InvalidOperationException
+    #         + FullyQualifiedErrorId : CouldNotInstallNuGetProvider,Install-Module
+    - Write-Host "Installing NuGet ..."
+    - if ($Null -eq (Get-PackageProvider -Name NuGet -ErrorAction Ignore)) { Install-PackageProvider -Name NuGet -Force -Scope CurrentUser; }
+
     - Write-Host "Installing VSSetup for the Get-VSSetupInstance function ..."
     - Install-Module VSSetup -Scope CurrentUser -Force
 

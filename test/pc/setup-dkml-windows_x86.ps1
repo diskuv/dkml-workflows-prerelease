@@ -1,6 +1,6 @@
 # setup-dkml
 #   Short form: sd4
-  
+
 <#
 .SYNOPSIS
 
@@ -565,7 +565,7 @@ param (
   [Parameter(HelpMessage='Defaults to the current directory')]
   [string]
   $PC_PROJECT_DIR = $PWD,
-  
+
   # Input variables
   [string]
   $FDOPEN_OPAMEXE_BOOTSTRAP = "false",
@@ -592,7 +592,7 @@ param (
   # [Parameter()]
   # [string]
   # $VERBOSE = "false"
-    
+
   # Environment variables (can be overridden on command line)
   # autogen from global_env_vars.
   ,[Parameter()] [string] $DKML_VERSION = "2.0.3"
@@ -1030,6 +1030,11 @@ msys64\usr\bin\bash -lc 'set -x; pacman -Sy --noconfirm --needed ${msys2_package
 
 Write-Host "Uninstall MSYS2 conflicting executables ..."
 msys64\usr\bin\bash -lc 'rm -vf /usr/bin/link.exe' # link.exe interferes with MSVC's link.exe
+
+# Avoid https://microsoft.github.io/PSRule/v2/troubleshooting/#windows-powershell-is-in-noninteractive-mode
+# during `Install-Module VSSetup`.
+Write-Host "Installing NuGet ..."
+if ($Null -eq (Get-PackageProvider -Name NuGet -ErrorAction Ignore)) { Install-PackageProvider -Name NuGet -Force -Scope CurrentUser; }
 
 Write-Host "Installing VSSetup for the Get-VSSetupInstance function ..."
 Install-Module VSSetup -Scope CurrentUser -Force
@@ -2753,7 +2758,7 @@ Get-Content .ci/sd4/vsenv.ps1
 # Capture Visual Studio compiler environment
 & .ci\sd4\vsenv.ps1
 & .ci\sd4\get-msvcpath-into-msys2.bat
-msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"    
+msys64\usr\bin\bash -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"
 msys64\usr\bin\bash -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
 msys64\usr\bin\bash -lc "sh .ci/sd4/run-setup-dkml.sh PC_PROJECT_DIR '${env:PC_PROJECT_DIR}'"
