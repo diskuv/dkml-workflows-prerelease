@@ -7,4 +7,5 @@ $ opam install . --deps-only --yes
 $ opam install ocaml-lsp-server ocamlformat.0.19.0 ocamlformat-rpc.0.19.0 --yes
 
 $ dune runtest
+$ dune runtest --auto-promote
 ```

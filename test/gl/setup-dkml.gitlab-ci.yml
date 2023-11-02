@@ -444,7 +444,9 @@ variables:
           install -d "$transfer_dir_DST"
           rm -rf "$transfer_dir_DST"
           # Move
-          mv "$transfer_dir_SRC" "$transfer_dir_DST"
+          if [ -d "$transfer_dir_SRC" ]; then
+              mv "$transfer_dir_SRC" "$transfer_dir_DST"
+          fi
       }
 
       # Set TEMP variable which is used, among other things, for OCaml's
@@ -2283,7 +2285,7 @@ variables:
       vsstudio_hostarch: 'x64',
       vsstudio_arch: 'x86',
       ocaml_options: 'ocaml-option-32bit' }
-
+      
 
 # Advanced job: Typically you use .win32:setup-dkml
 .win32-windows_x86_64:setup-dkml-allplusmincache:
@@ -2303,7 +2305,7 @@ variables:
       opam_root: 'C:/o',
       vsstudio_hostarch: 'x64',
       vsstudio_arch: 'x64' }
-
+      
 
 .win32:setup-dkml:
   extends:
@@ -2326,7 +2328,7 @@ variables:
         vsstudio_hostarch: 'x64',
         vsstudio_arch: 'x86',
         ocaml_options: 'ocaml-option-32bit' },
-
+        
       { dkml_host_os: 'windows',
         opam_root_cacheable: '${CI_PROJECT_DIR}/.ci/o',
         abi_pattern: 'win32-windows_x86_64',
@@ -2339,7 +2341,7 @@ variables:
         opam_root: 'C:/o',
         vsstudio_hostarch: 'x64',
         vsstudio_arch: 'x64' },
-
+        
     ]
 
 .macos:setup-dkml:
@@ -2354,7 +2356,7 @@ variables:
         bootstrap_opam_version: '2.2.0-alpha-20221228',
         dkml_host_abi: 'darwin_x86_64',
         opam_root: '${CI_PROJECT_DIR}/.ci/o' },
-
+        
     ]
   image: $gl_image
   tags: [shared-macos-amd64]
@@ -2438,7 +2440,9 @@ variables:
           install -d "$transfer_dir_DST"
           rm -rf "$transfer_dir_DST"
           # Move
-          mv "$transfer_dir_SRC" "$transfer_dir_DST"
+          if [ -d "$transfer_dir_SRC" ]; then
+              mv "$transfer_dir_SRC" "$transfer_dir_DST"
+          fi
       }
 
       # Set TEMP variable which is used, among other things, for OCaml's
@@ -4144,7 +4148,9 @@ variables:
           install -d "$transfer_dir_DST"
           rm -rf "$transfer_dir_DST"
           # Move
-          mv "$transfer_dir_SRC" "$transfer_dir_DST"
+          if [ -d "$transfer_dir_SRC" ]; then
+              mv "$transfer_dir_SRC" "$transfer_dir_DST"
+          fi
       }
 
       # Set TEMP variable which is used, among other things, for OCaml's
@@ -5763,7 +5769,7 @@ variables:
         in_docker: 'true',
         dockcross_image: 'dockcross/manylinux2014-x86',
         dockcross_run_extra_args: '--platform linux/386' },
-
+        
       { dkml_host_os: 'linux',
         opam_root_cacheable: '.ci/o',
         abi_pattern: 'manylinux2014-linux_x86_64',
@@ -5773,7 +5779,7 @@ variables:
         dockcross_image: 'dockcross/manylinux2014-x64',
         dockcross_run_extra_args: '--platform linux/amd64',
         in_docker: 'true' },
-
+        
     ]
   extends: .linux:setup-dkml-no-matrix
   #     ---------------

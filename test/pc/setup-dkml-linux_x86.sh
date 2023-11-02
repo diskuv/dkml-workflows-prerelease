@@ -880,7 +880,9 @@ transfer_dir() {
     install -d "$transfer_dir_DST"
     rm -rf "$transfer_dir_DST"
     # Move
-    mv "$transfer_dir_SRC" "$transfer_dir_DST"
+    if [ -d "$transfer_dir_SRC" ]; then
+        mv "$transfer_dir_SRC" "$transfer_dir_DST"
+    fi
 }
 
 # Set TEMP variable which is used, among other things, for OCaml's
