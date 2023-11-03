@@ -86,6 +86,7 @@ do_fill_skipped_cache_entries() {
     fi
     touch msys64/.keep
 
+    install -d "$unix_opam_root_cacheable"
     if [ -s "$unix_opam_root_cacheable/.ci.dkml.repo-init" ]; then
         echo "Found non-empty $unix_opam_root_cacheable/.ci.dkml.repo-init"
     else
