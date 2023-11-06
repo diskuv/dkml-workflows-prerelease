@@ -1268,18 +1268,18 @@ section_end checkout-info
 
 install -d .ci/sd4/g
 
-# dkml-runtime-distribution
+# dkml-component-ocamlcompiler
 
-#   For 'Diagnose Visual Studio environment variables (Windows)' we need dkml-runtime-distribution
+#   For 'Diagnose Visual Studio environment variables (Windows)' we need dkml-component-ocamlcompiler
 #   so that 'Import-Module Machine' and 'Get-VSSetupInstance' can be run.
 #   The version doesn't matter too much, as long as it has a functioning Get-VSSetupInstance
 #   that supports the Visual Studio versions of the latest GitLab CI and GitHub Actions machines.
 #   commit 4d6f1bfc3510c55ba4273cb240e43727854b5718 = WinSDK 19041 and VS 14.29
 case "$dkml_host_abi" in
 windows_*)
-    section_begin checkout-dkml-runtime-distribution 'Checkout dkml-runtime-distribution'
-    git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "4d6f1bfc3510c55ba4273cb240e43727854b5718"
-    section_end checkout-dkml-runtime-distribution
+    section_begin checkout-dkml-component-ocamlcompiler 'Checkout dkml-component-ocamlcompiler'
+    git_checkout dkml-component-ocamlcompiler https://github.com/diskuv/dkml-component-ocamlcompiler.git "b9142380b0b8771a0d02f8b88ea786152a6e3d09"
+    section_end checkout-dkml-component-ocamlcompiler
     ;;
 esac
 
@@ -2631,7 +2631,7 @@ if ( "${env:VERBOSE}" -eq "true" ) {
         Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\Extension SDKs\WindowsDesktop"
     }
 
-    $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
+    $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-component-ocamlcompiler\assets\staging-files\win32\SingletonInstall"
     Import-Module Machine
 
     $allinstances = Get-VSSetupInstance
@@ -2656,7 +2656,7 @@ if (("${env:GITLAB_CI}" -eq "true") -or ("${env:PC_CI}" -eq "true")) {
 
 # Locate Visual Studio (Windows)
 if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv${ExportExt}) -or !(Test-Path -Path .ci/sd4/vsenv.ps1))) {
-    $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
+    $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-component-ocamlcompiler\assets\staging-files\win32\SingletonInstall"
     Import-Module Machine
 
     $CompatibleVisualStudios = Get-CompatibleVisualStudios -ErrorIfNotFound
@@ -2746,7 +2746,7 @@ If ( "${env:VERBOSE}" -eq "true" ) {
     Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\Extension SDKs\WindowsDesktop"
   }
 
-  $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
+  $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-component-ocamlcompiler\assets\staging-files\win32\SingletonInstall"
   Import-Module Machine
 
   $allinstances = Get-VSSetupInstance
