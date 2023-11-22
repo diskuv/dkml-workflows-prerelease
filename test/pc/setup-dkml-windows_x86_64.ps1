@@ -198,9 +198,6 @@ Environment variable.
 .PARAMETER PIN_DKML_INSTALLER_OCAML_COMMON
 Environment variable.
 
-.PARAMETER PIN_DKML_INSTALLER_OCAML_NETWORK
-Environment variable.
-
 .PARAMETER PIN_DKML_INSTALLER_OCAML_OFFLINE
 Environment variable.
 
@@ -646,7 +643,6 @@ param (
   ,[Parameter()] [string] $PIN_DKML_INSTALL_RUNNER = "0.5.2"
   ,[Parameter()] [string] $PIN_DKML_INSTALL = "0.5.2"
   ,[Parameter()] [string] $PIN_DKML_INSTALLER_OCAML_COMMON = "2.1.0"
-  ,[Parameter()] [string] $PIN_DKML_INSTALLER_OCAML_NETWORK = "2.1.0"
   ,[Parameter()] [string] $PIN_DKML_INSTALLER_OCAML_OFFLINE = "2.1.0"
   ,[Parameter()] [string] $PIN_DKML_PACKAGE_CONSOLE = "0.5.2"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON_NATIVE = "2.1.0"
@@ -863,7 +859,6 @@ $env:PIN_DKML_INSTALL_INSTALLER = $PIN_DKML_INSTALL_INSTALLER
 $env:PIN_DKML_INSTALL_RUNNER = $PIN_DKML_INSTALL_RUNNER
 $env:PIN_DKML_INSTALL = $PIN_DKML_INSTALL
 $env:PIN_DKML_INSTALLER_OCAML_COMMON = $PIN_DKML_INSTALLER_OCAML_COMMON
-$env:PIN_DKML_INSTALLER_OCAML_NETWORK = $PIN_DKML_INSTALLER_OCAML_NETWORK
 $env:PIN_DKML_INSTALLER_OCAML_OFFLINE = $PIN_DKML_INSTALLER_OCAML_OFFLINE
 $env:PIN_DKML_PACKAGE_CONSOLE = $PIN_DKML_PACKAGE_CONSOLE
 $env:PIN_DKML_RUNTIME_COMMON_NATIVE = $PIN_DKML_RUNTIME_COMMON_NATIVE
@@ -2248,7 +2243,6 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-common "${PIN_DKML_INSTALLER_OCAML_COMMON}"
-    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-network "${PIN_DKML_INSTALLER_OCAML_NETWORK}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-offline "${PIN_DKML_INSTALLER_OCAML_OFFLINE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
