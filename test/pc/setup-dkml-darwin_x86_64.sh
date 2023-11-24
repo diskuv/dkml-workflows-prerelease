@@ -1420,7 +1420,7 @@ EOF
 }
 do_get_dockcross
 
-if [ -n "${dockcross_image:-}" ]; then
+if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     # rsync needs to be available, even after Docker container disappears
     if [ ! -e .ci/sd4/bs/bin/rsync ]; then
         section_begin get-opam-prereqs-in-dockcross 'Get Opam prerequisites (ManyLinux)'
@@ -1436,7 +1436,7 @@ fi
 # Opam prerequisites for using opam (not for installing opam)
 
 {
-    if [ -n "${docker_runner:-}" ]; then
+    if [ "${in_docker:-}" = "true" ] && [ -n "${docker_runner:-}" ]; then
         # rsync needs to be available, even after Docker container disappears
         if [ ! -e .ci/sd4/bs/bin/rsync.deps ]; then
             section_begin get-opam-prereqs-in-docker 'Get Opam prerequisites (Linux Docker)'
@@ -1454,9 +1454,11 @@ fi
     fi
 
     # Bundle Opam prerequisites (ManyLinux or Linux Docker)
-    if [ -n "${docker_runner:-}" ] || [ -n "${dockcross_image:-}" ]; then
-        # Bundle for consumers of setup-dkml.yml
-        do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/bs/bin/rsync
+    if [ "${in_docker:-}" = "true" ]; then
+        if [ -n "${docker_runner:-}" ] || [ -n "${dockcross_image:-}" ]; then
+            # Bundle for consumers of setup-dkml.yml
+            do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/bs/bin/rsync
+        fi
     fi
 }
 
@@ -1646,7 +1648,7 @@ EOF
         echo '___________________' >&2
         do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/run-with-env .ci/sd4/run-in-docker .ci/sd4/edr
 
-    elif [ -n "${docker_runner:-}" ]; then
+    elif [ "${in_docker:-}" = "true" ] && [ -n "${docker_runner:-}" ]; then
 
         cat >.ci/sd4/run-with-env <<EOF
 #!/bin/sh
