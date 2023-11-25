@@ -58,7 +58,7 @@ if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     install -d .ci/sd4/docker-image
     printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE dkml-dockcross\nRUN if command -v apt-get; then apt-get install -y rsync %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum install -y rsync %s && yum clean all && rm -rf /var/cache/yum; fi" \
         "${dockcross_image_custom_prefix:-}${dockcross_image:-}" "${dockcross_packages_apt:-}" "${dockcross_packages_yum:-}" >.ci/sd4/docker-image/Dockerfile
-    docker build -t dkml-dockcross .ci/sd4/docker-image
+    docker build -t dkml-dockcross:latest .ci/sd4/docker-image
 
     section_end docker-build
 fi
@@ -281,7 +281,7 @@ do_get_dockcross() {
         section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
         install -d .ci/sd4
         #   shellcheck disable=SC2086
-        docker run ${dockcross_run_extra_args:-} --rm dkml-dockcross >.ci/sd4/dockcross.gen
+        docker run ${dockcross_run_extra_args:-} --rm dkml-dockcross:latest >.ci/sd4/dockcross.gen
 
         # PROBLEM 1
         # ---------
