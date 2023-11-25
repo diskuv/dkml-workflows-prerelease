@@ -1099,12 +1099,12 @@ fi
 # Extend dockcross. https://github.com/dockcross/dockcross#how-to-extend-dockcross-images
 if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     echo "Doing docker build"
-    section_begin docker-build "Summary: docker build -t dkml-dockcross"
+    section_begin docker-build "Summary: docker build -t ${docker_fqin_preusername}dkml-workflows/dockcross"
 
     install -d .ci/sd4/docker-image
-    printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE dkml-dockcross:latest\nRUN if command -v apt-get; then apt-get install -y rsync %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum install -y rsync %s && yum clean all && rm -rf /var/cache/yum; fi" \
-        "${dockcross_image_custom_prefix:-}${dockcross_image:-}" "${dockcross_packages_apt:-}" "${dockcross_packages_yum:-}" >.ci/sd4/docker-image/Dockerfile
-    docker build -t dkml-dockcross:latest .ci/sd4/docker-image
+    printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE %sdkml-workflows/dockcross:latest\nRUN if command -v apt-get; then apt-get install -y rsync %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum install -y rsync %s && yum clean all && rm -rf /var/cache/yum; fi" \
+        "${dockcross_image:-}" "${docker_fqin_preusername}" "${dockcross_packages_apt:-}" "${dockcross_packages_yum:-}" >.ci/sd4/docker-image/Dockerfile
+    docker build -t "${docker_fqin_preusername}dkml-workflows/dockcross:latest" .ci/sd4/docker-image
 
     section_end docker-build
 fi
@@ -1161,8 +1161,8 @@ original_opam_root=${original_opam_root}
 original_opam_root_cacheable=${original_opam_root_cacheable}
 unix_opam_root=${unix_opam_root}
 unix_opam_root_cacheable=${unix_opam_root_cacheable}
+docker_registry=${docker_registry:-}
 dockcross_image=${dockcross_image:-}
-dockcross_image_custom_prefix=${dockcross_image_custom_prefix:-}
 dockcross_run_extra_args=${dockcross_run_extra_args:-}
 docker_runner=${docker_runner:-}
 in_docker=${in_docker:-}
@@ -1192,6 +1192,11 @@ VS_CMAKEGENERATOR=$VS_CMAKEGENERATOR
     ;;
 esac
 section_end setup-info
+
+docker_fqin_preusername= # fully qualified image name (hostname[:port]/username/reponame[:tag]), the parts before the username (hostname[:port]/)
+if [ -n "$docker_registry" ]; then
+    docker_fqin_preusername="$docker_registry/"
+fi
 
 do_bootstrap() {
     # Bootstrap from historical release
@@ -1327,7 +1332,7 @@ do_get_dockcross() {
         section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
         install -d .ci/sd4
         #   shellcheck disable=SC2086
-        docker run ${dockcross_run_extra_args:-} --rm dkml-dockcross:latest >.ci/sd4/dockcross.gen
+        docker run ${dockcross_run_extra_args:-} --rm "${docker_fqin_preusername}dkml-workflows/dockcross:latest" >.ci/sd4/dockcross.gen
 
         # PROBLEM 1
         # ---------
@@ -1425,7 +1430,7 @@ if [ "\$BUILDER_UID" = 0 ] && [ "\$BUILDER_GID" = 0 ]; then
         --rm \
         \${ARGS:-} \
          -v "\$HOST_PWD":/work \
-        dkml-dockcross ${dockcross_entrypoint} "\$@"
+        "${docker_fqin_preusername}dkml-workflows/dockcross" ${dockcross_entrypoint} "\$@"
 else
     HERE=\$(dirname "\$0")
     HERE=\$(cd "\$HERE" && pwd)
