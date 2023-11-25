@@ -194,8 +194,16 @@ export PIN_YOJSON='2.1.1'
 export PIN_ZED='3.2.2'
 
 # Set matrix variables
-# autogen from pc_vars. only darwin_x86_64
+#   nit: We use darwin_arm64 settings from gh/ and gl/, and then override to darwin_x86_64 since gh + gl only have darwin_arm64 settings.
+# autogen from pc_vars. only darwin_arm64
+export dkml_host_os="darwin"
+export opam_root_cacheable="${PC_PROJECT_DIR}/.ci/o"
+export abi_pattern="macos-darwin_all"
+export bootstrap_opam_version="2.2.0-alpha-20221228"
+export dkml_host_abi="darwin_arm64"
+export opam_root="${PC_PROJECT_DIR}/.ci/o"
 
+export dkml_host_abi="darwin_x86_64"
 
 usage() {
   echo 'Setup DkML compiler on a desktop PC.' >&2
