@@ -194,12 +194,18 @@ export PIN_YOJSON='2.1.1'
 export PIN_ZED='3.2.2'
 
 # Set matrix variables
-# autogen from pc_vars. only darwin_x86_64
+# autogen from pc_vars. only darwin_arm64
+export dkml_host_os="darwin"
+export opam_root_cacheable="${PC_PROJECT_DIR}/.ci/o"
+export abi_pattern="macos-darwin_all"
+export bootstrap_opam_version="2.2.0-alpha-20221228"
+export dkml_host_abi="darwin_arm64"
+export opam_root="${PC_PROJECT_DIR}/.ci/o"
 
 
 usage() {
   echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
-  echo 'usage: setup-dkml-darwin_x86_64.sh [options]' >&2
+  echo 'usage: setup-dkml-darwin_arm64.sh [options]' >&2
   echo 'Options:' >&2
 
   # Context variables

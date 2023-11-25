@@ -43,6 +43,21 @@
  (action
   (diff setup-dkml-darwin_x86_64.sh setup-dkml-darwin_x86_64-gen.sh)))
 
+; darwin_arm64
+
+(rule
+ (target setup-dkml-darwin_arm64-gen.sh)
+ (action
+  (setenv
+   OCAMLRUNPARAM
+   b
+   (run ../../src/pc_setup_dkml.exe --output-darwin_arm64 %{target}))))
+
+(rule
+ (alias runtest)
+ (action
+  (diff setup-dkml-darwin_arm64.sh setup-dkml-darwin_arm64-gen.sh)))
+
 ; linux_x86
 
 (rule

@@ -198,6 +198,8 @@ Run one of:
 ```bash
 # macOS/Intel (or macOS/ARM64 with Rosetta emulator)
 sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh
+# -or- macOS/ARM64
+sh ci/setup-dkml/pc/setup-dkml-darwin_arm64.sh
 
 # Linux on 64-bit Intel/AMD. Docker is required.
 #   - Running this from macOS/Intel with Docker or macOS/Silicon with Docker will also work

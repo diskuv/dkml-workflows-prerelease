@@ -311,10 +311,10 @@ let matrix =
     [
       ("abi_pattern", Jg_types.Tstr {|macos-darwin_all|});
       ("gh_os", Jg_types.Tstr "macos-latest");
-      ("gl_image", Jg_types.Tstr "macos-11-xcode-12");
+      ("gl_image", Jg_types.Tstr "macos-12-xcode-14");
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
-      ("dkml_host_abi", Jg_types.Tstr {|darwin_x86_64|});
+      ("dkml_host_abi", Jg_types.Tstr {|darwin_arm64|});
       ("gh_opam_root", Jg_types.Tstr {|/Users/runner/.opam|});
       ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.ci/o|});

@@ -1,5 +1,10 @@
 # Changes
 
+## 2.1.0
+
+- Support macOS ARM64
+- Bump GitLab SaaS hardware from `macos-11-xcode-12` (x86_64) to `macos-12-xcode-14` (arm64)
+
 ## Pending (1.2.1)
 
 > The minimum Dune language requirement is `(lang dune 3.0)`. Please update

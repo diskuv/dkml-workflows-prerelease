@@ -41,7 +41,7 @@ let () =
   let usage =
     Printf.sprintf
       "%s [--output-windows_x86 OUTPUT_FILE.ps1] [--output-windows_x86_64 \
-       OUTPUT_FILE.ps1] [--output-darwin_x86_64 OUTPUT_FILE.sh] \
+       OUTPUT_FILE.ps1] [--output-darwin_x86_64 OUTPUT_FILE.sh] [--output-darwin_arm64 OUTPUT_FILE.sh] \
        [--output-linux_x86 OUTPUT_FILE.sh] [--output-linux_x86_64 \
        OUTPUT_FILE.sh]\n\
        At least one --output-<ABI> option must be selected." exe_name
@@ -74,6 +74,8 @@ let () =
         "Output Powershell script for Windows 64-bit" );
       output_unix_abi_arg ~dkml_host_abi:"darwin_x86_64"
         ~descr:"macOS/Intel (or macOS/ARM64 with Rosetta emulator)";
+      output_unix_abi_arg ~dkml_host_abi:"darwin_arm64"
+        ~descr:"macOS/ARM64";
       output_unix_abi_arg ~dkml_host_abi:"linux_x86"
         ~descr:"Linux on 32-bit Intel/AMD";
       output_unix_abi_arg ~dkml_host_abi:"linux_x86_64"

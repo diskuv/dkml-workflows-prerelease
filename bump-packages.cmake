@@ -25,6 +25,7 @@ DkMLBumpPackagesParticipant_TestPromote(REL_FILENAMES
     test/gh-windows/pre/action.yml
     test/gl/setup-dkml.gitlab-ci.yml
     test/pc/setup-dkml-darwin_x86_64.sh
+    test/pc/setup-dkml-darwin_arm64.sh
     test/pc/setup-dkml-linux_x86.sh
     test/pc/setup-dkml-linux_x86_64.sh
     test/pc/setup-dkml-windows_x86.ps1

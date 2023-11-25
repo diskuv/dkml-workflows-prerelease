@@ -165,6 +165,23 @@ let scaffold_pc ~output_dir () =
  (action
   (diff setup-dkml-darwin_x86_64.sh setup-dkml-darwin_x86_64-gen.sh)))
 
+; darwin_arm64
+
+(rule
+ (target setup-dkml-darwin_arm64-gen.sh)
+ (enabled_if %%{bin-available:pc-setup-dkml})
+ (action
+  (setenv
+   OCAMLRUNPARAM
+   b
+   (run pc-setup-dkml --output-darwin_arm64 %%{target}))))
+
+(rule
+ (alias gen-dkml)
+ (enabled_if %%{bin-available:pc-setup-dkml})
+ (action
+  (diff setup-dkml-darwin_arm64.sh setup-dkml-darwin_arm64-gen.sh)))
+
 ; linux_x86
 
 (rule
