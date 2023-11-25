@@ -85,8 +85,9 @@ runs:
         add docker_runner "${docker_runner:-}"
         add in_docker "${in_docker:-}"
 
-        #   GitHub Actions uses Docker Buildx, so use custom 'dkml-dockcross/*' cached image which speeds up builds
-        add dockcross_image_custom_prefix "dkml-"
+        #   GitHub Actions uses Docker Buildx and a local registry.
+        #   cf: https://docs.docker.com/build/ci/github-actions/local-registry/
+        add docker_registry "localhost:5000"
 
     - name: Write POSIX shell and AWK scripts
       shell: bash
