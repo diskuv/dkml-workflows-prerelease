@@ -1571,13 +1571,19 @@ section_end bootstrap-opam
 install -d .ci/sd4/dist
 tar cf .ci/sd4/dist/run-with-env.tar -T /dev/null
 
+# docker run --pull=never ...:
+#   Speeds up each command, and makes far less verbose, and makes build repeatable (no races condition). And necessary
+#   for GitHub Actions so that the local registry can be pulled _once_ into the local image cache using custom options (outside of .ci/sd4/dockcross).
+# (Also contained later in [.ci/sd4/run-with-env])
+
 do_get_dockcross() {
     if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
         # The dockcross script is super-slow
         section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
         install -d .ci/sd4
+        docker pull "${docker_fqin_preusername}dkml-workflows/dockcross:latest"
         #   shellcheck disable=SC2086
-        docker run ${dockcross_run_extra_args:-} --rm "${docker_fqin_preusername}dkml-workflows/dockcross:latest" >.ci/sd4/dockcross.gen
+        docker run --pull=never ${dockcross_run_extra_args:-} --rm "${docker_fqin_preusername}dkml-workflows/dockcross:latest" >.ci/sd4/dockcross.gen
 
         # PROBLEM 1
         # ---------
@@ -1691,48 +1697,6 @@ EOF
     fi
 }
 do_get_dockcross
-
-if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
-    # rsync needs to be available, even after Docker container disappears
-    if [ ! -e .ci/sd4/bs/bin/rsync ]; then
-        section_begin get-opam-prereqs-in-dockcross 'Get Opam prerequisites (ManyLinux)'
-        install -d .ci/sd4/bs/bin
-        # Install rsync with 'yum' (ManyLinux) or 'apt' (dockcross/linux-x64, etc.)
-        # if not present.
-        #   shellcheck disable=SC2016
-        .ci/sd4/dockcross --args "${dockcross_run_extra_args:-}" sh -c 'if ! command -v rsync; then if command -v yum; then sudo yum install -y rsync; else sudo apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync; fi; fi && install $(command -v rsync) .ci/sd4/bs/bin'
-        section_end get-opam-prereqs-in-dockcross
-    fi
-fi
-
-# Opam prerequisites for using opam (not for installing opam)
-
-{
-    if [ "${in_docker:-}" = "true" ] && [ -n "${docker_runner:-}" ]; then
-        # rsync needs to be available, even after Docker container disappears
-        if [ ! -e .ci/sd4/bs/bin/rsync.deps ]; then
-            section_begin get-opam-prereqs-in-docker 'Get Opam prerequisites (Linux Docker)'
-            install -d .ci/sd4/bs/bin
-            ${docker_runner} sh -c '
-            apt-get update -qq -o=Dpkg::Use-Pty=0 &&
-            apt-get install -qq -o=Dpkg::Use-Pty=0 -y rsync &&
-            ldd /usr/bin/rsync &&
-            ls -l /lib/i386-linux-gnu/libpopt.so.0 /lib/i386-linux-gnu/libacl.so.1 /lib/i386-linux-gnu/libattr.so.1 &&
-            tar cCfhz / /work/.ci/sd4/bs/bin/deps.tar.gz /usr/bin/rsync /lib/i386-linux-gnu/libpopt.so.0
-        '
-            touch .ci/sd4/bs/bin/rsync.deps
-            section_end get-opam-prereqs-in-docker
-        fi
-    fi
-
-    # Bundle Opam prerequisites (ManyLinux or Linux Docker)
-    if [ "${in_docker:-}" = "true" ]; then
-        if [ -n "${docker_runner:-}" ] || [ -n "${dockcross_image:-}" ]; then
-            # Bundle for consumers of setup-dkml.yml
-            do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/bs/bin/rsync
-        fi
-    fi
-}
 
 # Get Opam Cache
 do_get_opam_cache() {
@@ -1908,7 +1872,7 @@ if [ "\$#" -ge 1 ] && [ "\$1" = "-it" ]; then
     termargs=-it
 fi
 
-exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross --args "\${termargs} -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
+exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross --args "\${termargs} --pull=never -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
 EOF
         chmod +x .ci/sd4/run-with-env
 

@@ -280,13 +280,19 @@ section_end bootstrap-opam
 install -d .ci/sd4/dist
 tar cf .ci/sd4/dist/run-with-env.tar -T /dev/null
 
+# docker run --pull=never ...:
+#   Speeds up each command, and makes far less verbose, and makes build repeatable (no races condition). And necessary
+#   for GitHub Actions so that the local registry can be pulled _once_ into the local image cache using custom options (outside of .ci/sd4/dockcross).
+# (Also contained later in [.ci/sd4/run-with-env])
+
 do_get_dockcross() {
     if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
         # The dockcross script is super-slow
         section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
         install -d .ci/sd4
+        docker pull "${docker_fqin_preusername}dkml-workflows/dockcross:latest"
         #   shellcheck disable=SC2086
-        docker run ${dockcross_run_extra_args:-} --rm "${docker_fqin_preusername}dkml-workflows/dockcross:latest" >.ci/sd4/dockcross.gen
+        docker run --pull=never ${dockcross_run_extra_args:-} --rm "${docker_fqin_preusername}dkml-workflows/dockcross:latest" >.ci/sd4/dockcross.gen
 
         # PROBLEM 1
         # ---------
@@ -575,7 +581,7 @@ if [ "\$#" -ge 1 ] && [ "\$1" = "-it" ]; then
     termargs=-it
 fi
 
-exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross --args "\${termargs} -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
+exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross --args "\${termargs} --pull=never -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
 EOF
         chmod +x .ci/sd4/run-with-env
 
