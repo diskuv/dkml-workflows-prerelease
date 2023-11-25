@@ -147,7 +147,7 @@ runs:
 
     # Checkout code
 
-    - name: Checkout DKML code
+    - name: Checkout DkML code
       shell: bash
       env:
         # Push down inputs variables for GitHub/GitLab portable scripts

@@ -18,9 +18,9 @@
 (package
  (name dkml-workflows)
  (synopsis
-  "GitLab CI/CD and GitHub Action workflows used by and with Diskuv OCaml (DKML) tooling")
+  "GitLab CI/CD and GitHub Action workflows used by and with DkML tooling")
  (description
-  "GitLab CI/CD and GitHub Action workflows used by and with Diskuv OCaml (DKML) tooling.")
+  "GitLab CI/CD and GitHub Action workflows used by and with DkML tooling.")
  (depends
   dune
   (astring

@@ -4,11 +4,11 @@
 <#
 .SYNOPSIS
 
-Setup Diskuv OCaml (DKML) compiler on a desktop PC.
+Setup DkML compiler on a desktop PC.
 
 .DESCRIPTION
 
-Setup Diskuv OCaml (DKML) compiler on a desktop PC.
+Setup DkML compiler on a desktop PC.
 
 .PARAMETER PC_PROJECT_DIR
 Context variable for the project directory. Defaults to the current directory.

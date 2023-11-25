@@ -1219,8 +1219,8 @@ if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
     fi
 fi
 
-# Because dune.X.Y.Z+shim (and any user DKML packages) requires DKML installed (after all, it is just
-# a with-dkml.exe shim), we need either dkmlvars-v2.sexp or DKML environment
+# Because dune.X.Y.Z+shim (and any user DkML packages) requires DkML installed (after all, it is just
+# a with-dkml.exe shim), we need either dkmlvars-v2.sexp or DkML environment
 # variables. Confer: Dkml_runtimelib.Dkml_context.get_dkmlversion
 #
 # grep matches either:

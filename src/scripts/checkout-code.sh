@@ -10,7 +10,7 @@
 # dockcross (used by Linux) since a Docker-in-Docker container can have
 # difficulties doing a git checkout (the Git credentials for any private
 # repositories are likely not present). We don't care about any private
-# repositories for DKML but any code that extends this (ex. DKSDK) may
+# repositories for DkML but any code that extends this (ex. DKSDK) may
 # need to use private repositories.
 
 set -euf

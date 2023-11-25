@@ -40,33 +40,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # The Setup DKML action will create the environment variables:
+      # The Setup DkML action will create the environment variables:
       #   opam_root, exe_ext, dkml_host_abi, abi_pattern (and many more)
 
-      - name: Setup DKML on a Windows host
+      - name: Setup DkML on a Windows host
         if: startsWith(matrix.dkml_host_abi, 'windows_')
         uses: ./test/gh-windows/pre
 
-      - name: Setup DKML on a Darwin host
+      - name: Setup DkML on a Darwin host
         if: startsWith(matrix.dkml_host_abi, 'darwin_')
         uses: ./test/gh-darwin/pre
 
-      - name: Setup DKML on a Linux host
+      - name: Setup DkML on a Linux host
         if: startsWith(matrix.dkml_host_abi, 'linux_')
         uses: ./test/gh-linux/pre
     
       # This is the spot for custom build logic
 
-      # The Teardown DKML action will finalize caching, etc.
+      # The Teardown DkML action will finalize caching, etc.
 
-      - name: Teardown DKML on a Windows host
+      - name: Teardown DkML on a Windows host
         if: startsWith(matrix.dkml_host_abi, 'windows_')
         uses: ./test/gh-windows/post
 
-      - name: Teardown DKML on a Darwin host
+      - name: Teardown DkML on a Darwin host
         if: startsWith(matrix.dkml_host_abi, 'darwin_')
         uses: ./test/gh-darwin/post
 
-      - name: Teardown DKML on a Linux host
+      - name: Teardown DkML on a Linux host
         if: startsWith(matrix.dkml_host_abi, 'linux_')
         uses: ./test/gh-linux/post

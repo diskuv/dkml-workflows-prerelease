@@ -26,7 +26,7 @@ export DKML_HOME=
 # autogen from pc_vars. only darwin_x86_64{{ nl }}{% for (name,value) in pc_vars.darwin_x86_64 %}export {{ name }}="{{ value }}"{{ nl }}{% endfor %}
 
 usage() {
-  echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
+  echo 'Setup DkML compiler on a desktop PC.' >&2
   echo 'usage: setup-dkml-darwin_x86_64.sh [options]' >&2
   echo 'Options:' >&2
 

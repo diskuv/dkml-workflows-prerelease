@@ -211,7 +211,7 @@ export dockcross_run_extra_args="--platform linux/386"
 
 
 usage() {
-  echo 'Setup Diskuv OCaml (DKML) compiler on a desktop PC.' >&2
+  echo 'Setup DkML compiler on a desktop PC.' >&2
   echo 'usage: setup-dkml-linux_x86.sh [options]' >&2
   echo 'Options:' >&2
 
@@ -943,7 +943,7 @@ cat > .ci/sd4/run-checkout-code.sh <<'end_of_script'
 # dockcross (used by Linux) since a Docker-in-Docker container can have
 # difficulties doing a git checkout (the Git credentials for any private
 # repositories are likely not present). We don't care about any private
-# repositories for DKML but any code that extends this (ex. DKSDK) may
+# repositories for DkML but any code that extends this (ex. DKSDK) may
 # need to use private repositories.
 
 set -euf
@@ -2265,8 +2265,8 @@ if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
     fi
 fi
 
-# Because dune.X.Y.Z+shim (and any user DKML packages) requires DKML installed (after all, it is just
-# a with-dkml.exe shim), we need either dkmlvars-v2.sexp or DKML environment
+# Because dune.X.Y.Z+shim (and any user DkML packages) requires DkML installed (after all, it is just
+# a with-dkml.exe shim), we need either dkmlvars-v2.sexp or DkML environment
 # variables. Confer: Dkml_runtimelib.Dkml_context.get_dkmlversion
 #
 # grep matches either:

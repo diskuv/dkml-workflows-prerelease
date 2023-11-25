@@ -45,7 +45,7 @@ runs:
         add bootstrap_opam_version "${bootstrap_opam_version:-}"
         add ocaml_options "${ocaml_options:-}"
 
-    - name: Teardown DKML build apparatus
+    - name: Teardown DkML build apparatus
       shell: bash
       env:
         _STUB_FOR_AUTOGEN: "ON" # 

@@ -2,9 +2,9 @@
 opam-version: "2.0"
 version: "2.1.0"
 synopsis:
-  "GitLab CI/CD and GitHub Action workflows used by and with Diskuv OCaml (DKML) tooling"
+  "GitLab CI/CD and GitHub Action workflows used by and with DkML tooling"
 description:
-  "GitLab CI/CD and GitHub Action workflows used by and with Diskuv OCaml (DKML) tooling."
+  "GitLab CI/CD and GitHub Action workflows used by and with DkML tooling."
 maintainer: ["opensource+diskuv-ocaml@support.diskuv.com"]
 authors: ["Diskuv, Inc. <opensource+diskuv-ocaml@support.diskuv.com>"]
 license: "Apache-2.0"
