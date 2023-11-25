@@ -395,7 +395,7 @@ if [ "\$BUILDER_UID" = 0 ] && [ "\$BUILDER_GID" = 0 ]; then
 else
     HERE=\$(dirname "\$0")
     HERE=\$(cd "\$HERE" && pwd)
-    exec "\$HERE/dockcross-real" "\$@"
+    exec bash -x "\$HERE/dockcross-real" "\$@"
 fi
 EOF
         chmod +x .ci/sd4/dockcross
