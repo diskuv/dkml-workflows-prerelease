@@ -14,7 +14,7 @@ on:
 jobs:
   setup:
     strategy:
-      fail-fast: true
+      fail-fast: false # until finished testing darwin_arm64
       matrix:
         include:
           - gh_os: windows-2019

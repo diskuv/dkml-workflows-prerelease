@@ -47,7 +47,7 @@ jobs:
 
   setup-macos:
     strategy:
-      fail-fast: true
+      fail-fast: false # until finished testing darwin_arm64
       matrix:
         include:
           - dkml_host_abi: darwin_x86_64
