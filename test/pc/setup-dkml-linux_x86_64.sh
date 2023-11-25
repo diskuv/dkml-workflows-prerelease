@@ -1338,10 +1338,8 @@ do_get_dockcross() {
         # The dockcross script is super-slow
         section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
         install -d .ci/sd4
-        set -x
         #   shellcheck disable=SC2086
         docker run ${dockcross_run_extra_args:-} --rm "${dockcross_image_id}" >.ci/sd4/dockcross.gen
-        set +x
 
         # PROBLEM 1
         # ---------
@@ -1630,7 +1628,7 @@ if [ "\$#" -ge 1 ] && [ "\$1" = "-it" ]; then
     termargs=-it
 fi
 
-exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross ${dockcross_cli_image_args} --args "\${termargs} -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
+exec bash -x "\${PROJECT_DIR}"/.ci/sd4/dockcross ${dockcross_cli_image_args} --args "\${termargs} -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
 EOF
         chmod +x .ci/sd4/run-with-env
 
