@@ -45,13 +45,29 @@ jobs:
       - name: Run test/pc/setup-dkml-${{ matrix.dkml_host_abi }}.sh
         run: sh test/pc/setup-dkml-${{ matrix.dkml_host_abi }}.sh
 
-  setup-macos:
+  setup-macos-intel:
     strategy:
       fail-fast: true
       matrix:
         dkml_host_abi:
           - darwin_x86_64
     runs-on: macos-latest
+    name: build / ${{ matrix.dkml_host_abi }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run test/pc/setup-dkml-${{ matrix.dkml_host_abi }}.sh
+        run: sh test/pc/setup-dkml-${{ matrix.dkml_host_abi }}.sh
+
+  setup-macos-silicon:
+    strategy:
+      fail-fast: true
+      matrix:
+        dkml_host_abi:
+          - darwin_arm64
+    runs-on: macos-13-xlarge # Apple Silicon. https://github.blog/2023-10-02-introducing-the-new-apple-silicon-powered-m1-macos-larger-runner-for-github-actions/
     name: build / ${{ matrix.dkml_host_abi }}
 
     steps:

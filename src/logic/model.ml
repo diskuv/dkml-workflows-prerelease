@@ -310,8 +310,8 @@ let matrix =
         *);
     [
       ("abi_pattern", Jg_types.Tstr {|macos-darwin_all|});
-      ("gh_os", Jg_types.Tstr "macos-latest");
-      ("gl_image", Jg_types.Tstr "macos-12-xcode-14");
+      ("gh_os", Jg_types.Tstr "macos-13-xlarge"); (* Apple Silicon: https://github.blog/2023-10-02-introducing-the-new-apple-silicon-powered-m1-macos-larger-runner-for-github-actions/ *)
+      ("gl_image", Jg_types.Tstr "macos-13-xcode-14"); (* Keep in sync with GitHub for coherence when same projects builds in both GitLab and GitHub *)
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|darwin_arm64|});
