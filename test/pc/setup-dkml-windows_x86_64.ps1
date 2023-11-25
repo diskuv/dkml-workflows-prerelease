@@ -1687,7 +1687,7 @@ else
     HERE=\$(dirname "\$0")
     HERE=\$(cd "\$HERE" && pwd)
     export OCI_EXE=docker # default to podman if available, which breaks complaining about HTTPS vs HTTP on GitHub Actions communicating to http (docker) local registry.
-    exec bash -x "\$HERE/dockcross-real" "\$@"
+    exec "\$HERE/dockcross-real" "\$@"
 fi
 EOF
         chmod +x .ci/sd4/dockcross
@@ -1874,7 +1874,7 @@ if [ "\$#" -ge 1 ] && [ "\$1" = "-it" ]; then
     termargs=-it
 fi
 
-exec bash -x "\${PROJECT_DIR}"/.ci/sd4/dockcross ${dockcross_cli_image_args} --args "\${termargs} -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
+exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross ${dockcross_cli_image_args} --args "\${termargs} -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
 EOF
         chmod +x .ci/sd4/run-with-env
 
