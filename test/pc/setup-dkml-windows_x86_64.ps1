@@ -1686,6 +1686,7 @@ if [ "\$BUILDER_UID" = 0 ] && [ "\$BUILDER_GID" = 0 ]; then
 else
     HERE=\$(dirname "\$0")
     HERE=\$(cd "\$HERE" && pwd)
+    export OCI_EXE=docker # default to podman if available, which breaks complaining about HTTPS vs HTTP on GitHub Actions communicating to http (docker) local registry.
     exec bash -x "\$HERE/dockcross-real" "\$@"
 fi
 EOF
