@@ -1095,6 +1095,7 @@ if [ -n "${docker_registry:-}" ]; then
 fi
 
 # Extend dockcross. https://github.com/dockcross/dockcross#how-to-extend-dockcross-images
+dockcross_image_id=
 dockcross_cli_image_args=
 if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     echo "Doing docker build"
@@ -1107,7 +1108,8 @@ if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
 
     # Save image id to re-use for all remaining dockcross invocations
     docker images --format "{{.ID}} {{.CreatedAt}}" | sort -rk 2 | awk 'NR==1{print $1}' | tee .ci/sd4/docker-image-id
-    dockcross_cli_image_args="--image $(cat .ci/sd4/docker-image-id)"
+    dockcross_image_id=$(cat .ci/sd4/docker-image-id)
+    dockcross_cli_image_args="--image $dockcross_image_id"
 
     section_end docker-build
 fi
@@ -1324,19 +1326,15 @@ section_end bootstrap-opam
 install -d .ci/sd4/dist
 tar cf .ci/sd4/dist/run-with-env.tar -T /dev/null
 
-# docker run --pull=never ...:
-#   Speeds up each command, and makes far less verbose, and makes build repeatable (no races condition). And necessary
-#   for GitHub Actions so that the local registry can be pulled _once_ into the local image cache using custom options (outside of .ci/sd4/dockcross).
-# (Also contained later in [.ci/sd4/run-with-env])
-
 do_get_dockcross() {
     if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
         # The dockcross script is super-slow
         section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
         install -d .ci/sd4
-        docker pull "${docker_fqin_preusername}dkml-workflows/dockcross:latest"
+        set -x
         #   shellcheck disable=SC2086
-        docker run --pull=never ${dockcross_run_extra_args:-} --rm "${docker_fqin_preusername}dkml-workflows/dockcross:latest" >.ci/sd4/dockcross.gen
+        docker run ${dockcross_run_extra_args:-} --rm "${dockcross_image_id}" >.ci/sd4/dockcross.gen
+        set +x
 
         # PROBLEM 1
         # ---------
@@ -1434,7 +1432,7 @@ if [ "\$BUILDER_UID" = 0 ] && [ "\$BUILDER_GID" = 0 ]; then
         --rm \
         \${ARGS:-} \
          -v "\$HOST_PWD":/work \
-        "${docker_fqin_preusername}dkml-workflows/dockcross" ${dockcross_entrypoint} "\$@"
+        "${dockcross_image_id}" ${dockcross_entrypoint} "\$@"
 else
     HERE=\$(dirname "\$0")
     HERE=\$(cd "\$HERE" && pwd)
