@@ -60,17 +60,17 @@ runs:
       run: |
         # Select correct Darwin matrix variables
         
-        dkml_host_os='darwin';
-        opam_root_cacheable='/Users/runner/.opam';
-        abi_pattern='macos-darwin_all';
-        gh_os='macos-13-xlarge';
-        gh_unix_shell='sh';
-        bootstrap_opam_version='2.2.0-alpha-20221228';
-        dkml_host_abi='darwin_arm64';
-        opam_root='/Users/runner/.opam' ;;
+        dkml_host_os='darwin'
+        opam_root_cacheable='/Users/runner/.opam'
+        abi_pattern='macos-darwin_all'
+        gh_os='macos-13-xlarge'
+        gh_unix_shell='sh'
+        bootstrap_opam_version='2.2.0-alpha-20221228'
+        dkml_host_abi='darwin_arm64'
+        opam_root='/Users/runner/.opam'
         #
-        #   note: All Darwin machines can cross-compile so are the same except dkml_host_abi.
-        dkml_host_abi='${{ matrix.dkml_host_abi }}';
+        #   note: All Darwin machines can cross-compile so they are equal except [dkml_host_abi].
+        dkml_host_abi='${{ matrix.dkml_host_abi }}'
 
         add() {
           echo "$1=$2" | tee -a $GITHUB_OUTPUT | tee -a $GITHUB_ENV

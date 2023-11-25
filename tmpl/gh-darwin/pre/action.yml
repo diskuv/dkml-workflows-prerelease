@@ -59,9 +59,9 @@ runs:
       id: full_matrix_vars
       run: |
         # Select correct Darwin matrix variables
-        {% for (abi,abi_vars) in gh_vars %}{%- if abi_vars.dkml_host_os == "darwin" -%}{{ nl }}        {% for (name,value) in abi_vars %}{{ name }}={{ squot }}{{ value }}{{ squot }} {%- if loop.last %} ;; {%- else -%} ; {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}#
+        {% for (abi,abi_vars) in gh_vars %}{%- if abi_vars.dkml_host_os == "darwin" -%}{{ nl }}        {% for (name,value) in abi_vars %}{{ name }}={{ squot }}{{ value }}{{ squot }} {%- if loop.last %} {%- else -%} {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}#
         #   note: All Darwin machines can cross-compile so they are equal except [dkml_host_abi].
-        dkml_host_abi='{% raw -%}${{ matrix.dkml_host_abi }}{%- endraw %}';
+        dkml_host_abi='{% raw -%}${{ matrix.dkml_host_abi }}{%- endraw %}'
 
         add() {
           echo "$1=$2" | tee -a $GITHUB_OUTPUT | tee -a $GITHUB_ENV
