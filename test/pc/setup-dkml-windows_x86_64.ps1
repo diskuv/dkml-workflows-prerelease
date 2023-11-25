@@ -1341,6 +1341,11 @@ fi
 
 # -------------------------------------------------------------------
 
+docker_fqin_preusername= # fully qualified image name (hostname[:port]/username/reponame[:tag]), the parts before the username (hostname[:port]/)
+if [ -n "${docker_registry:-}" ]; then
+    docker_fqin_preusername="$docker_registry/"
+fi
+
 # Extend dockcross. https://github.com/dockcross/dockcross#how-to-extend-dockcross-images
 if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     echo "Doing docker build"
@@ -1437,11 +1442,6 @@ VS_CMAKEGENERATOR=$VS_CMAKEGENERATOR
     ;;
 esac
 section_end setup-info
-
-docker_fqin_preusername= # fully qualified image name (hostname[:port]/username/reponame[:tag]), the parts before the username (hostname[:port]/)
-if [ -n "$docker_registry" ]; then
-    docker_fqin_preusername="$docker_registry/"
-fi
 
 do_bootstrap() {
     # Bootstrap from historical release

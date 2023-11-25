@@ -380,6 +380,11 @@ runs:
 
         # -------------------------------------------------------------------
 
+        docker_fqin_preusername= # fully qualified image name (hostname[:port]/username/reponame[:tag]), the parts before the username (hostname[:port]/)
+        if [ -n "${docker_registry:-}" ]; then
+            docker_fqin_preusername="$docker_registry/"
+        fi
+
         # Extend dockcross. https://github.com/dockcross/dockcross#how-to-extend-dockcross-images
         if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
             echo "Doing docker build"
@@ -476,11 +481,6 @@ runs:
             ;;
         esac
         section_end setup-info
-
-        docker_fqin_preusername= # fully qualified image name (hostname[:port]/username/reponame[:tag]), the parts before the username (hostname[:port]/)
-        if [ -n "$docker_registry" ]; then
-            docker_fqin_preusername="$docker_registry/"
-        fi
 
         do_bootstrap() {
             # Bootstrap from historical release
@@ -1790,7 +1790,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo 'a427b6-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '1e3097-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
