@@ -1095,6 +1095,7 @@ if [ -n "${docker_registry:-}" ]; then
 fi
 
 # Extend dockcross. https://github.com/dockcross/dockcross#how-to-extend-dockcross-images
+dockcross_cli_image_args=
 if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     echo "Doing docker build"
     section_begin docker-build "Summary: docker build -t ${docker_fqin_preusername}dkml-workflows/dockcross"
@@ -1103,6 +1104,10 @@ if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE %sdkml-workflows/dockcross:latest\nRUN if command -v apt-get; then apt-get install -y rsync %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum install -y rsync %s && yum clean all && rm -rf /var/cache/yum; fi" \
         "${dockcross_image:-}" "${docker_fqin_preusername}" "${dockcross_packages_apt:-}" "${dockcross_packages_yum:-}" >.ci/sd4/docker-image/Dockerfile
     docker build -t "${docker_fqin_preusername}dkml-workflows/dockcross:latest" .ci/sd4/docker-image
+
+    # Save image id to re-use for all remaining dockcross invocations
+    docker images --format "{{.ID}} {{.CreatedAt}}" | sort -rk 2 | awk 'NR==1{print $1}' | tee .ci/sd4/docker-image-id
+    dockcross_cli_image_args="--image $(cat .ci/sd4/docker-image-id)"
 
     section_end docker-build
 fi
@@ -1620,7 +1625,7 @@ if [ "\$#" -ge 1 ] && [ "\$1" = "-it" ]; then
     termargs=-it
 fi
 
-exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross --args "\${termargs} --pull=never -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
+exec bash "\${PROJECT_DIR}"/.ci/sd4/dockcross ${dockcross_cli_image_args} --args "\${termargs} -v \${PROJECT_DIR}/.ci/sd4/edr:/home/root ${dockcross_run_extra_args:-}" /work/.ci/sd4/run-in-docker "\$@"
 EOF
         chmod +x .ci/sd4/run-with-env
 
