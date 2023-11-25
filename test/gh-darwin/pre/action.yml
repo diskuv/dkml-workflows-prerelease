@@ -382,6 +382,21 @@ runs:
 
         # -------------------------------------------------------------------
 
+        # Extend dockcross. https://github.com/dockcross/dockcross#how-to-extend-dockcross-images
+        if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
+            echo "Doing docker build"
+            section_begin docker-build "Summary: docker build -t dkml-dockcross"
+
+            install -d .ci/sd4/docker-image
+            printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE dkml-dockcross\nRUN if command -v apt-get; then apt-get install -y rsync %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum install -y rsync %s && yum clean all && rm -rf /var/cache/yum; fi" \
+                "${dockcross_image_custom_prefix:-}${dockcross_image:-}" "${dockcross_packages_apt:-}" "${dockcross_packages_yum:-}" >.ci/sd4/docker-image/Dockerfile
+            docker build -t dkml-dockcross .ci/sd4/docker-image
+
+            section_end docker-build
+        fi
+
+        # -------------------------------------------------------------------
+
         section_begin setup-info "Summary: setup-dkml"
 
         SKIP_OPAM_MODIFICATIONS=${SKIP_OPAM_MODIFICATIONS:-false} # default is false
@@ -598,7 +613,7 @@ runs:
                 section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
                 install -d .ci/sd4
                 #   shellcheck disable=SC2086
-                docker run ${dockcross_run_extra_args:-} --rm "${dockcross_image_custom_prefix:-}${dockcross_image:-}" >.ci/sd4/dockcross.gen
+                docker run ${dockcross_run_extra_args:-} --rm dkml-dockcross >.ci/sd4/dockcross.gen
 
                 # PROBLEM 1
                 # ---------
@@ -696,7 +711,7 @@ runs:
                 --rm \
                 \${ARGS:-} \
                  -v "\$HOST_PWD":/work \
-                ${dockcross_image_custom_prefix:-}${dockcross_image:-} ${dockcross_entrypoint} "\$@"
+                dkml-dockcross ${dockcross_entrypoint} "\$@"
         else
             HERE=\$(dirname "\$0")
             HERE=\$(cd "\$HERE" && pwd)
@@ -1772,7 +1787,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '29fc4e-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
+        echo '1b508c-${{ inputs.FDOPEN_OPAMEXE_BOOTSTRAP }}-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}-${{ steps.full_matrix_vars.outputs.bootstrap_opam_version }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 
