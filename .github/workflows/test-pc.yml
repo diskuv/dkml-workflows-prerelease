@@ -21,13 +21,6 @@ jobs:
           - windows_x86_64
     runs-on: windows-2019
     name: build / ${{ matrix.dkml_host_abi }}
-    services:
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
-    env:
-      docker_registry: localhost:5000
 
     steps:
       - name: Checkout code
@@ -44,13 +37,6 @@ jobs:
           - linux_x86_64
     runs-on: ubuntu-latest
     name: build / ${{ matrix.dkml_host_abi }}
-    services:
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
-    env:
-      docker_registry: localhost:5000
 
     steps:
       - name: Checkout code
@@ -70,13 +56,6 @@ jobs:
             runs-on: macos-13-xlarge # Apple Silicon. https://github.blog/2023-10-02-introducing-the-new-apple-silicon-powered-m1-macos-larger-runner-for-github-actions/
     runs-on: ${{ matrix.runs-on }}
     name: build / ${{ matrix.dkml_host_abi }}
-    services:
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
-    env:
-      docker_registry: localhost:5000
 
     steps:
       - name: Checkout code
