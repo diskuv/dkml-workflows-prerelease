@@ -39,6 +39,12 @@ jobs:
     runs-on: ${{ matrix.gh_os }}
     name: build / ${{ matrix.abi_pattern }}
 
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

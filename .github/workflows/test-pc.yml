@@ -50,7 +50,9 @@ jobs:
       registry:
         image: registry:2
         ports:
-          - 5000:5000    
+          - 5000:5000
+    env:
+      docker_registry: localhost:5000
     strategy:
       fail-fast: true
       matrix:
