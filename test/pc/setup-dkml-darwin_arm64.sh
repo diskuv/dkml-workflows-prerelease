@@ -1095,7 +1095,7 @@ if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     section_begin docker-build "Summary: docker build -t dkml-dockcross"
 
     install -d .ci/sd4/docker-image
-    printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE dkml-dockcross\nRUN if command -v apt-get; then apt-get install -y rsync %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum install -y rsync %s && yum clean all && rm -rf /var/cache/yum; fi" \
+    printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE dkml-dockcross:latest\nRUN if command -v apt-get; then apt-get install -y rsync %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum install -y rsync %s && yum clean all && rm -rf /var/cache/yum; fi" \
         "${dockcross_image_custom_prefix:-}${dockcross_image:-}" "${dockcross_packages_apt:-}" "${dockcross_packages_yum:-}" >.ci/sd4/docker-image/Dockerfile
     docker build -t dkml-dockcross:latest .ci/sd4/docker-image
 
