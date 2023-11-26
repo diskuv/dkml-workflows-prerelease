@@ -22,5 +22,5 @@ let parse exe_name =
     ]
     anon exe_name;
   if String.equal "" !output_file then failwith usage;
-  let filter_dkml_host_abi abi = not (List.mem abi !exclusions) in
-  (filter_dkml_host_abi, !output_file)
+  let allow_dkml_host_abi abi = not (List.mem abi !exclusions) in
+  (allow_dkml_host_abi, !output_file)

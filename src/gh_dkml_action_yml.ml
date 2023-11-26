@@ -8,7 +8,7 @@ let action ~ofile ~tmpl ~phase =
   let tmpl = Workflow_content.Tmpl_common.get_template_file ~tmpl_file in
   let models =
     Workflow_logic.Model.model
-      ~filter_dkml_host_abi:(fun _s -> true)
+      ~allow_dkml_host_abi:(fun _s -> true)
       ~read_script:Workflow_content.Scripts.read
   in
   let oc = open_out_bin ofile in

@@ -1,9 +1,9 @@
 (* Useful `dune utop` expressions:
 
 
-   Workflow_logic.Model.vars_as_object ~filter_dkml_host_abi:(fun _s -> true) ~rewrite_name_value:Workflow_logic.Model.gl_rewrite_name_value ;;
+   Workflow_logic.Model.vars_as_object ~allow_dkml_host_abi:(fun _s -> true) ~rewrite_name_value:Workflow_logic.Model.gl_rewrite_name_value ;;
 
-   Workflow_logic.Model.full_matrix_as_list ~filter_dkml_host_abi:(fun _s -> true) ~rewrite_name_value:Workflow_logic.Model.gl_rewrite_name_value ;;
+   Workflow_logic.Model.full_matrix_as_list ~allow_dkml_host_abi:(fun _s -> true) ~rewrite_name_value:Workflow_logic.Model.gl_rewrite_name_value ;;
 *)
 open Astring
 open Jingoo
@@ -186,7 +186,7 @@ let global_env_vars =
     ("PIN_YOJSON", "2.1.1");
     ("PIN_ZED", "3.2.2");
     (* END pin-env-vars. DO NOT EDIT THE LINES ABOVE *)
-  ]
+  ] [@@ocamlformat "disable"]
 
 let required_msys2_packages =
   (*
@@ -309,13 +309,25 @@ let matrix =
           ]
         *);
     [
-      ("abi_pattern", Jg_types.Tstr {|macos-darwin_all|});
-      ("gh_os", Jg_types.Tstr "macos-13-xlarge"); (* Apple Silicon: https://github.blog/2023-10-02-introducing-the-new-apple-silicon-powered-m1-macos-larger-runner-for-github-actions/ *)
-      ("gl_image", Jg_types.Tstr "macos-13-xcode-14"); (* Keep in sync with GitHub for coherence when same projects builds in both GitLab and GitHub *)
+      ("abi_pattern", Jg_types.Tstr {|macos-darwin_all-intel|});
+      (* [no_gl] since no macOS x86_64 machines in GitLab SaaS *)
+      ("no_gl", Jg_types.Tstr "true");
+      ("gh_os", Jg_types.Tstr "macos-latest");
+      (* macos-13-xlarge is Apple Silicon. BUT NOT FREE: https://github.blog/2023-10-02-introducing-the-new-apple-silicon-powered-m1-macos-larger-runner-for-github-actions/ *)
+      ("gh_unix_shell", Jg_types.Tstr {|sh|});
+      ("bootstrap_opam_version", bootstrap_opam_version);
+      ("dkml_host_abi", Jg_types.Tstr {|darwin_x86_64|});
+      ("gh_opam_root", Jg_types.Tstr {|/Users/runner/.opam|});
+      ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.ci/o|});
+    ];
+    [
+      ("abi_pattern", Jg_types.Tstr {|macos-darwin_all-silicon|});
+      (* [no_gh] since no _free_ macOS ARM64 machines in GitHub Actions *)
+      ("no_gh", Jg_types.Tstr "true");
+      ("gl_image", Jg_types.Tstr "macos-13-xcode-14");
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|darwin_arm64|});
-      ("gh_opam_root", Jg_types.Tstr {|/Users/runner/.opam|});
       ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.ci/o|});
     ]
@@ -408,6 +420,8 @@ module Aggregate = struct
     mutable dkml_host_abi_opt : string option;
     mutable opam_root_opt : string option;
     mutable opam_root_cacheable_opt : string option;
+    mutable supports_gh : bool;
+    mutable supports_gl : bool;
   }
 
   let create () =
@@ -416,6 +430,8 @@ module Aggregate = struct
       dkml_host_abi_opt = None;
       opam_root_opt = None;
       opam_root_cacheable_opt = None;
+      supports_gh = true;
+      supports_gl = true;
     }
 
   let capture ~name ~value t =
@@ -430,6 +446,8 @@ module Aggregate = struct
     | "dkml_host_abi" -> t.dkml_host_abi_opt <- value_as_string
     | "opam_root" -> t.opam_root_opt <- value_as_string
     | "opam_root_cacheable" -> t.opam_root_cacheable_opt <- value_as_string
+    | "no_gh" -> t.supports_gh <- false
+    | "no_gl" -> t.supports_gl <- false
     | _ -> ());
     (* Capture dkml_host_os *)
     match (name, Option.map (String.cuts ~sep:"_") value_as_string) with
@@ -438,10 +456,10 @@ module Aggregate = struct
     | _ -> ()
 
   let dkml_host_abi_opt t = t.dkml_host_abi_opt
-
   let opam_root_opt t = t.opam_root_opt
-
   let opam_root_cacheable_opt t = t.opam_root_cacheable_opt
+  let supports_gl t = t.supports_gl
+  let supports_gh t = t.supports_gh
 
   let dump t =
     match
@@ -503,7 +521,8 @@ end
       opam_root_cacheable: "${CI_PROJECT_DIR}/.ci/o",
   v}
 *)
-let full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value =
+let full_matrix_as_list ?must_support_gl ?must_support_gh ~allow_dkml_host_abi
+    ~rewrite_name_value () =
   List.filter_map
     (fun matrix_item ->
       let aggregate = Aggregate.create () in
@@ -526,10 +545,20 @@ let full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value =
              matrix_item)
       in
       match Aggregate.dkml_host_abi_opt aggregate with
-      | Some dkml_host_abi ->
-          if filter_dkml_host_abi dkml_host_abi then
-            Some (Jg_types.Tobj ([ ("vars", vars) ] @ Aggregate.dump aggregate))
-          else None
+      | Some dkml_host_abi -> (
+          match
+            ( must_support_gh,
+              Aggregate.supports_gh aggregate,
+              must_support_gl,
+              Aggregate.supports_gl aggregate )
+          with
+          | Some (), false, _, _ -> None
+          | _, _, Some (), false -> None
+          | _ ->
+              if allow_dkml_host_abi dkml_host_abi then
+                Some
+                  (Jg_types.Tobj ([ ("vars", vars) ] @ Aggregate.dump aggregate))
+              else None)
       | None -> None)
     matrix
 
@@ -551,8 +580,12 @@ let full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value =
       ocaml_options: 'ocaml-option-32bit' }
   v}
 *)
-let vars_as_object ~filter_dkml_host_abi ~rewrite_name_value =
-  let matrix = full_matrix_as_list ~filter_dkml_host_abi ~rewrite_name_value in
+let vars_as_object ?must_support_gl ?must_support_gh ~allow_dkml_host_abi
+    ~rewrite_name_value () =
+  let matrix =
+    full_matrix_as_list ?must_support_gl ?must_support_gh ~allow_dkml_host_abi
+      ~rewrite_name_value ()
+  in
   let filter_vars f (vars : Jg_types.tvalue list) : Jg_types.tvalue list =
     List.filter
       (function
@@ -644,7 +677,7 @@ let pc_rewrite_name_value ~name ~value () =
   | "pc_opam_root_cacheable", _ -> Some ("opam_root_cacheable", value)
   | _ -> Some (name, value)
 
-let model ~filter_dkml_host_abi ~read_script =
+let model ~allow_dkml_host_abi ~read_script =
   [
     ( "global_env_vars",
       Jg_types.Tlist
@@ -655,29 +688,28 @@ let model ~filter_dkml_host_abi ~read_script =
            global_env_vars) );
     ( "gh_matrix",
       Jg_types.Tlist
-        (full_matrix_as_list ~filter_dkml_host_abi
-           ~rewrite_name_value:gh_rewrite_name_value) );
+        (full_matrix_as_list ~allow_dkml_host_abi ~must_support_gh:()
+           ~rewrite_name_value:gh_rewrite_name_value ()) );
     ( "gh_vars",
-      vars_as_object ~filter_dkml_host_abi
-        ~rewrite_name_value:gh_rewrite_name_value );
+      vars_as_object ~allow_dkml_host_abi ~must_support_gh:()
+        ~rewrite_name_value:gh_rewrite_name_value () );
     ( "gl_matrix",
       Jg_types.Tlist
-        (full_matrix_as_list ~filter_dkml_host_abi
-           ~rewrite_name_value:gl_rewrite_name_value) );
+        (full_matrix_as_list ~allow_dkml_host_abi ~must_support_gl:()
+           ~rewrite_name_value:gl_rewrite_name_value ()) );
     ( "gl_vars",
-      vars_as_object ~filter_dkml_host_abi
-        ~rewrite_name_value:gl_rewrite_name_value );
+      vars_as_object ~allow_dkml_host_abi ~must_support_gl:()
+        ~rewrite_name_value:gl_rewrite_name_value () );
     ( "pc_matrix",
       Jg_types.Tlist
-        (full_matrix_as_list ~filter_dkml_host_abi
-           ~rewrite_name_value:pc_rewrite_name_value) );
+        (full_matrix_as_list ~allow_dkml_host_abi
+           ~rewrite_name_value:pc_rewrite_name_value ()) );
     ( "pc_vars",
-      vars_as_object ~filter_dkml_host_abi
-        ~rewrite_name_value:pc_rewrite_name_value );
+      vars_as_object ~allow_dkml_host_abi
+        ~rewrite_name_value:pc_rewrite_name_value () );
     ("required_msys2_packages", required_msys2_packages);
   ]
   @ Scripts.to_vars read_script
-  @ Typography.vars
-  @ Caching.static_vars
+  @ Typography.vars @ Caching.static_vars
   @ Caching.gh_cachekeys read_script
   @ Caching.gl_cachekeys read_script

@@ -198,7 +198,8 @@ export PIN_ZED='3.2.2'
 # autogen from pc_vars. only darwin_arm64
 export dkml_host_os="darwin"
 export opam_root_cacheable="${PC_PROJECT_DIR}/.ci/o"
-export abi_pattern="macos-darwin_all"
+export abi_pattern="macos-darwin_all-silicon"
+export no_gh="true"
 export bootstrap_opam_version="2.2.0-alpha-20221228"
 export dkml_host_abi="darwin_arm64"
 export opam_root="${PC_PROJECT_DIR}/.ci/o"

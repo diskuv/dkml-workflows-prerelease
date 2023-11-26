@@ -18,7 +18,7 @@ let env = { Jg_types.std_env with autoescape = false }
 
 let models =
   Workflow_logic.Model.model
-    ~filter_dkml_host_abi:(fun _s -> true)
+    ~allow_dkml_host_abi:(fun _s -> true)
     ~read_script:Workflow_content.Scripts.read
 
 let windows_action ~dkml_host_abi filename =

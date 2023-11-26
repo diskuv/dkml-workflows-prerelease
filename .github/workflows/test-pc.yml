@@ -52,8 +52,9 @@ jobs:
         include:
           - dkml_host_abi: darwin_x86_64
             runs-on: macos-latest
-          - dkml_host_abi: darwin_arm64
-            runs-on: macos-13-xlarge # Apple Silicon. https://github.blog/2023-10-02-introducing-the-new-apple-silicon-powered-m1-macos-larger-runner-for-github-actions/
+          # macos-13-xlarge is NOT FREE even for Public projects as of 2023-11-25.
+          # - dkml_host_abi: darwin_arm64
+          #   runs-on: macos-13-xlarge # Apple Silicon. https://github.blog/2023-10-02-introducing-the-new-apple-silicon-powered-m1-macos-larger-runner-for-github-actions/
     runs-on: ${{ matrix.runs-on }}
     name: build / ${{ matrix.dkml_host_abi }}
 
