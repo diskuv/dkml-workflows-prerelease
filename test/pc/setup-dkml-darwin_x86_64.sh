@@ -2301,15 +2301,6 @@ do_install_compiler() {
     opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
     section_end "install-compiler-$do_install_compiler_NAME"
 }
-if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
-    if ! [ "${PRIMARY_SWITCH_SKIP_INSTALL:-}" = "true" ]; then
-        do_install_compiler dkml
-    fi
-    if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
-        do_install_compiler two
-    fi
-fi
-
 do_summary() {
     do_summary_NAME=$1
     shift
@@ -2319,7 +2310,15 @@ do_summary() {
     section_end "summary-$do_summary_NAME"
 }
 if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
-    do_summary dkml
+    if ! [ "${PRIMARY_SWITCH_SKIP_INSTALL:-}" = "true" ]; then
+        do_install_compiler dkml
+    fi
+    if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
+        do_install_compiler two
+    fi
+    if ! [ "${PRIMARY_SWITCH_SKIP_INSTALL:-}" = "true" ]; then
+        do_summary dkml
+    fi
     if [ "${SECONDARY_SWITCH:-}" = "true" ]; then
         do_summary two
     fi
