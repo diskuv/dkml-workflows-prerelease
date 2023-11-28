@@ -198,6 +198,12 @@ Environment variable.
 .PARAMETER PIN_DKML_INSTALLER_OCAML_COMMON
 Environment variable.
 
+.PARAMETER PIN_DKML_INSTALLER_OCAML_NETWORK
+Environment variable.
+
+.PARAMETER PIN_DKML_INSTALLER_OCAML_OFFLINE
+Environment variable.
+
 .PARAMETER PIN_DKML_PACKAGE_CONSOLE
 Environment variable.
 
@@ -640,6 +646,8 @@ param (
   ,[Parameter()] [string] $PIN_DKML_INSTALL_RUNNER = "0.5.2"
   ,[Parameter()] [string] $PIN_DKML_INSTALL = "0.5.2"
   ,[Parameter()] [string] $PIN_DKML_INSTALLER_OCAML_COMMON = "2.1.0"
+  ,[Parameter()] [string] $PIN_DKML_INSTALLER_OCAML_NETWORK = "2.1.0"
+  ,[Parameter()] [string] $PIN_DKML_INSTALLER_OCAML_OFFLINE = "2.1.0"
   ,[Parameter()] [string] $PIN_DKML_PACKAGE_CONSOLE = "0.5.2"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON_NATIVE = "2.1.0"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON = "2.1.0"
@@ -647,16 +655,16 @@ param (
   ,[Parameter()] [string] $PIN_DKML_RUNTIMELIB = "2.1.0"
   ,[Parameter()] [string] $PIN_DKML_RUNTIMESCRIPTS = "2.1.0"
   ,[Parameter()] [string] $PIN_DKML_WORKFLOWS = "2.1.0"
-  ,[Parameter()] [string] $PIN_DUNE_ACTION_PLUGIN = "3.11.1"
+  ,[Parameter()] [string] $PIN_DUNE_ACTION_PLUGIN = "3.8.3"
   ,[Parameter()] [string] $PIN_DUNE_BUILD_INFO = "3.8.3"
   ,[Parameter()] [string] $PIN_DUNE_CONFIGURATOR = "3.8.3"
-  ,[Parameter()] [string] $PIN_DUNE_GLOB = "3.11.1"
-  ,[Parameter()] [string] $PIN_DUNE_PRIVATE_LIBS = "3.11.1"
-  ,[Parameter()] [string] $PIN_DUNE_RPC_LWT = "3.11.1"
-  ,[Parameter()] [string] $PIN_DUNE_RPC = "3.11.1"
-  ,[Parameter()] [string] $PIN_DUNE_SITE = "3.11.1"
+  ,[Parameter()] [string] $PIN_DUNE_GLOB = "3.8.3"
+  ,[Parameter()] [string] $PIN_DUNE_PRIVATE_LIBS = "3.8.3"
+  ,[Parameter()] [string] $PIN_DUNE_RPC_LWT = "3.8.3"
+  ,[Parameter()] [string] $PIN_DUNE_RPC = "3.8.3"
+  ,[Parameter()] [string] $PIN_DUNE_SITE = "3.8.3"
   ,[Parameter()] [string] $PIN_DUNE = "3.8.3"
-  ,[Parameter()] [string] $PIN_DYN = "3.11.1"
+  ,[Parameter()] [string] $PIN_DYN = "3.8.3"
   ,[Parameter()] [string] $PIN_EITHER = "1.0.0"
   ,[Parameter()] [string] $PIN_EQAF = "0.9"
   ,[Parameter()] [string] $PIN_EXTLIB = "1.7.9"
@@ -695,7 +703,7 @@ param (
   ,[Parameter()] [string] $PIN_OCAML_VERSION = "3.6.2"
   ,[Parameter()] [string] $PIN_OCAML = "4.14.0"
   ,[Parameter()] [string] $PIN_OCAMLBUILD = "0.14.2+win+unix"
-  ,[Parameter()] [string] $PIN_OCAMLC_LOC = "3.11.1"
+  ,[Parameter()] [string] $PIN_OCAMLC_LOC = "3.8.3"
   ,[Parameter()] [string] $PIN_OCAMLFIND = "1.9.5"
   ,[Parameter()] [string] $PIN_OCAMLFORMAT_LIB = "0.25.1"
   ,[Parameter()] [string] $PIN_OCAMLFORMAT_RPC_LIB = "0.25.1"
@@ -704,7 +712,7 @@ param (
   ,[Parameter()] [string] $PIN_OCPLIB_ENDIAN = "1.2"
   ,[Parameter()] [string] $PIN_ODOC_PARSER = "2.0.0"
   ,[Parameter()] [string] $PIN_ODOC = "2.2.0"
-  ,[Parameter()] [string] $PIN_ORDERING = "3.11.1"
+  ,[Parameter()] [string] $PIN_ORDERING = "3.8.3"
   ,[Parameter()] [string] $PIN_PARSEXP = "v0.16.0"
   ,[Parameter()] [string] $PIN_PP = "1.2.0"
   ,[Parameter()] [string] $PIN_PPX_ASSERT = "v0.16.0"
@@ -741,7 +749,7 @@ param (
   ,[Parameter()] [string] $PIN_STDCOMPAT = "19+optautoconf"
   ,[Parameter()] [string] $PIN_STDIO = "v0.16.0"
   ,[Parameter()] [string] $PIN_STDLIB_SHIMS = "0.3.0"
-  ,[Parameter()] [string] $PIN_STDUNE = "3.11.1"
+  ,[Parameter()] [string] $PIN_STDUNE = "3.8.3"
   ,[Parameter()] [string] $PIN_TIME_NOW = "v0.16.0"
   ,[Parameter()] [string] $PIN_TOPKG = "1.0.7"
   ,[Parameter()] [string] $PIN_TRAVERSE = "0.3.0"
@@ -856,6 +864,8 @@ $env:PIN_DKML_INSTALL_INSTALLER = $PIN_DKML_INSTALL_INSTALLER
 $env:PIN_DKML_INSTALL_RUNNER = $PIN_DKML_INSTALL_RUNNER
 $env:PIN_DKML_INSTALL = $PIN_DKML_INSTALL
 $env:PIN_DKML_INSTALLER_OCAML_COMMON = $PIN_DKML_INSTALLER_OCAML_COMMON
+$env:PIN_DKML_INSTALLER_OCAML_NETWORK = $PIN_DKML_INSTALLER_OCAML_NETWORK
+$env:PIN_DKML_INSTALLER_OCAML_OFFLINE = $PIN_DKML_INSTALLER_OCAML_OFFLINE
 $env:PIN_DKML_PACKAGE_CONSOLE = $PIN_DKML_PACKAGE_CONSOLE
 $env:PIN_DKML_RUNTIME_COMMON_NATIVE = $PIN_DKML_RUNTIME_COMMON_NATIVE
 $env:PIN_DKML_RUNTIME_COMMON = $PIN_DKML_RUNTIME_COMMON
@@ -2227,6 +2237,8 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-common "${PIN_DKML_INSTALLER_OCAML_COMMON}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-network "${PIN_DKML_INSTALLER_OCAML_NETWORK}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-offline "${PIN_DKML_INSTALLER_OCAML_OFFLINE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common-native "${PIN_DKML_RUNTIME_COMMON_NATIVE}"
