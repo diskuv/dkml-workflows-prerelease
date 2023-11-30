@@ -55,6 +55,7 @@ export PIN_DKML_COMPONENT_COMMON_UNIXUTILS='0.2.0'
 export PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL='2.1.0'
 export PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR='2.1.0'
 export PIN_DKML_COMPONENT_STAGING_OPAM32='2.2.0~alpha0~20221228'
+export PIN_DKML_COMPONENT_STAGING_OPAM64='2.2.0~alpha0~20221228'
 export PIN_DKML_COMPONENT_STAGING_UNIXUTILS='0.2.0'
 export PIN_DKML_COMPONENT_STAGING_WITHDKML='2.1.0'
 export PIN_DKML_COMPONENT_XX_CONSOLE='0.1.1'
@@ -254,6 +255,7 @@ usage() {
   echo "  --PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_OPAM32=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OPAM32}" >&2
+  echo "  --PIN_DKML_COMPONENT_STAGING_OPAM64=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_OPAM64}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_UNIXUTILS=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_UNIXUTILS}" >&2
   echo "  --PIN_DKML_COMPONENT_STAGING_WITHDKML=<value>. Defaults to: ${PIN_DKML_COMPONENT_STAGING_WITHDKML}" >&2
   echo "  --PIN_DKML_COMPONENT_XX_CONSOLE=<value>. Defaults to: ${PIN_DKML_COMPONENT_XX_CONSOLE}" >&2
@@ -491,6 +493,8 @@ while getopts :h-: option; do
     PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=*) PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_STAGING_OPAM32) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_STAGING_OPAM32=*) PIN_DKML_COMPONENT_STAGING_OPAM32=${OPTARG#*=} ;;
+    PIN_DKML_COMPONENT_STAGING_OPAM64) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_COMPONENT_STAGING_OPAM64=*) PIN_DKML_COMPONENT_STAGING_OPAM64=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_STAGING_UNIXUTILS) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_COMPONENT_STAGING_UNIXUTILS=*) PIN_DKML_COMPONENT_STAGING_UNIXUTILS=${OPTARG#*=} ;;
     PIN_DKML_COMPONENT_STAGING_WITHDKML) fail "Option \"$OPTARG\" missing argument" ;;
@@ -1930,6 +1934,7 @@ do_pins() {
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-desktop-full "${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam32 "${PIN_DKML_COMPONENT_STAGING_OPAM32}"
+    opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam64 "${PIN_DKML_COMPONENT_STAGING_OPAM64}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-unixutils "${PIN_DKML_COMPONENT_STAGING_UNIXUTILS}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
     opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-xx-console "${PIN_DKML_COMPONENT_XX_CONSOLE}"
