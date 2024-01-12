@@ -888,8 +888,8 @@ export_temp_for_windows() {
             TEMP=$(cygpath -am "$RUNNER_TEMP")
         else
             # GitLab CI/CD or desktop
-            install -d .ci/tmp
-            TEMP=$(cygpath -am ".ci/tmp")
+            install -d .ci/sd4/tmp
+            TEMP=$(cygpath -am ".ci/sd4/tmp")
         fi
         export TEMP
     fi

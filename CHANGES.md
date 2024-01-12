@@ -2,8 +2,8 @@
 
 ## Pending
 
-- Docfixes: Using PC backends uses new `.ci/dkml-compilers` folder, and is self-contained with
-  an initial `CI Desktop` step.
+- Docfixes: Using PC backends uses new `.ci/dkml-compilers` folder, and is self-contained with an initial `CI Desktop` step.
+- Change GitLab Desktop script temporary directory to `.ci/sd4/tmp` so part of .gitignore created by `./dk dkml.workflow.compilers CI Desktop`.
 
 ## 2.1.0
 
