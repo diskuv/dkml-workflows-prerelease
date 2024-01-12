@@ -12,7 +12,8 @@ Table of Contents:
   - [Using the GitHub Actions backend](#using-the-github-actions-backend)
   - [Using the Personal Computer backend](#using-the-personal-computer-backend)
     - [Windows backend](#windows-backend)
-    - [macOS and Linux backends](#macos-and-linux-backends)
+    - [macOS backend](#macos-backend)
+    - [Linux backends](#linux-backends)
   - [Distributing your executable](#distributing-your-executable)
     - [Distributing your Windows executables](#distributing-your-windows-executables)
   - [Advanced Usage](#advanced-usage)
@@ -34,7 +35,8 @@ Table of Contents:
   - [Sponsor](#sponsor)
 
 This project gives you:
-* "`compilers`" workflow scripts to build and automatically create releases of OCaml native executables
+
+- "`compilers`" workflow scripts to build and automatically create releases of OCaml native executables
 
 Other types of workflow scripts may be added in the future.
 
@@ -173,10 +175,11 @@ backend fails to build your code. You can do the build locally!
 On Windows in PowerShell run:
 
 ```powershell
-& ci\setup-dkml\pc\setup-dkml-windows_x86_64.ps1
+./dk dkml.workflow.compilers CI Desktop OS Windows
+& .ci\dkml-compilers\pc\setup-dkml-windows_x86_64.ps1
 ```
 
-You can use `& ci\setup-dkml\pc\setup-dkml-windows_x86.ps1` for 32-bit Windows
+You can use `& .ci\dkml-compilers\pc\setup-dkml-windows_x86.ps1` for 32-bit Windows
 builds.
 
 After running the `.ps1` script you will see instructions for running
@@ -185,23 +188,44 @@ Opam commands in your PowerShell terminal.
 To see all of the advanced options that can be set, use:
 
 ```powershell
-get-help ci\setup-dkml\pc\setup-dkml-windows_x86_64.ps1 -Full
+get-help .ci\dkml-compilers\pc\setup-dkml-windows_x86_64.ps1 -Full
 ```
 
 See [Advanced Usage: Job Inputs](#job-inputs) for some of the advanced options that
 can be set.
 
-### macOS and Linux backends
+### macOS backend
+
+Run:
+
+```bash
+./dk dkml.workflow.compilers CI Desktop OS Darwin
+
+# PICK EITHER:
+#      macOS/Intel (or macOS/ARM64 with Rosetta emulator)
+sh .ci/dkml-compilers/pc/setup-dkml-darwin_x86_64.sh
+# -OR- macOS/ARM64
+sh .ci/dkml-compilers/pc/setup-dkml-darwin_arm64.sh
+```
+
+To see all of the advanced options that can be set, use:
+
+```powershell
+sh .ci/dkml-compilers/pc/setup-dkml-darwin_arm64.sh -h
+```
+
+See [Advanced Usage: Job Inputs](#job-inputs) for some of the advanced options that
+can be set.
+
+### Linux backends
 
 Run one of:
 
 ```bash
-# macOS/Intel (or macOS/ARM64 with Rosetta emulator)
-sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh
-# -or- macOS/ARM64
-sh ci/setup-dkml/pc/setup-dkml-darwin_arm64.sh
+./dk dkml.workflow.compilers CI Desktop OS Linux
 
-# Linux on 64-bit Intel/AMD. Docker is required.
+# PICK EITHER:
+#   Linux on 64-bit Intel/AMD. Docker is required.
 #   - Running this from macOS/Intel with Docker or macOS/Silicon with Docker will also work
 #   - Running this using with-dkml.exe on Windows with Docker will also work
 #     (the normal Linux containers host, not the Windows containers host). The
@@ -209,19 +233,19 @@ sh ci/setup-dkml/pc/setup-dkml-darwin_arm64.sh
 #     download MSYS2 from https://www.msys2.org/#installation, or Cygwin, and then
 #     run MSYS2 or Cygwin, but you must make sure that 'docker' is in your PATH
 #     (ex. export PATH='/c/Program Files/Docker/Docker/resources/bin':"$PATH").
-sh ci/setup-dkml/pc/setup-dkml-linux_x86_64.sh
-
-# Linux on 32-bit Intel/AMD. Docker is required.
+sh .ci/dkml-compilers/pc/setup-dkml-linux_x86_64.sh
+# -OR-
+#   Linux on 32-bit Intel/AMD. Docker is required.
 #   - Running this from macOS/Intel should also work (not tested). macOS/Silicon will not work.
 #   - Running this on Windows should also work using the same guidance as
 #     on Linux 64-bit. Has not been tested
-sh ci/setup-dkml/pc/setup-dkml-linux_x86.sh
+sh .ci/dkml-compilers/pc/setup-dkml-linux_x86.sh
 ```
 
 To see all of the advanced options that can be set, use:
 
 ```powershell
-sh ci/setup-dkml/pc/setup-dkml-darwin_x86_64.sh -h
+sh .ci/dkml-compilers/pc/setup-dkml-linux_x86_64.sh -h
 ```
 
 See [Advanced Usage: Job Inputs](#job-inputs) for some of the advanced options that
