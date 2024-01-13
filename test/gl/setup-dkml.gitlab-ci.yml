@@ -2348,7 +2348,7 @@ variables:
         
     ]
   image: $gl_image
-  tags: [shared-macos-amd64]
+  tags: [saas-macos-medium-m1]
   extends: .common:setup-dkml
   before_script:
     - echo "Writing pre scripts ..."

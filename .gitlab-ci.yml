@@ -57,7 +57,7 @@ test-pc-windows:
 #       - dkml_host_abi: darwin_x86_64
 #
 #   tags:
-#    - shared-macos-amd64
+#    - saas-macos-medium-m1
 #
 #   script:
 #     - sh test/pc/setup-dkml-${dkml_host_abi}.sh

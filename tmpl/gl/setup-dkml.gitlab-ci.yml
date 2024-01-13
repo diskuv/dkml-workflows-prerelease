@@ -363,7 +363,7 @@ variables:
       # autogen from gl_vars. only darwin{% for (abi,abi_vars) in gl_vars %}{%- if abi_vars.dkml_host_os == "darwin" -%}{{ nl }}      { {% for (name,value) in abi_vars %}{{ name }}: {{ squot }}{{ value }}{{ squot }} {%- if loop.last %} }, {%- else -%} , {%- endif %}{{ nl }}        {% endfor %}{%- endif %}{% endfor %}
     ]
   image: $gl_image
-  tags: [shared-macos-amd64]
+  tags: [saas-macos-medium-m1]
   extends: .common:setup-dkml
   before_script:
     - echo "Writing pre scripts ..."
