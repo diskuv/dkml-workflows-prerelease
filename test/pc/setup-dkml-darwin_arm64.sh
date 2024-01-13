@@ -1561,7 +1561,7 @@ EOF
     case "${opam_root}" in
     /* | ?:*) # /a/b/c or C:\Windows
         validate_supports_docker() {
-            echo "Docker only supported with relative paths for the opam root, not: ${opam_root}" >&2
+            echo "Docker only supported with relative paths for the opam root, not: ${opam_root}"
             exit 3
         }
         ;;
@@ -1658,9 +1658,9 @@ EOF
         validate_supports_docker
 
         # Bundle for consumers of setup-dkml.yml
-        echo '__ run-in-docker __' >&2
-        cat .ci/sd4/run-in-docker >&2
-        echo '___________________' >&2
+        echo '__ run-in-docker __'
+        cat .ci/sd4/run-in-docker
+        echo '___________________'
         do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/run-with-env .ci/sd4/run-in-docker .ci/sd4/edr
 
     elif [ "${in_docker:-}" = "true" ] && [ -n "${docker_runner:-}" ]; then
@@ -1675,12 +1675,12 @@ EOF
         validate_supports_docker
 
         # Bundle for consumers of setup-dkml.yml
-        echo '__ run-in-docker __' >&2
-        cat .ci/sd4/run-in-docker >&2
-        echo '________________________' >&2
-        echo '__ deescalate __' >&2
-        cat .ci/sd4/deescalate >&2
-        echo '________________' >&2
+        echo '__ run-in-docker __'
+        cat .ci/sd4/run-in-docker
+        echo '________________________'
+        echo '__ deescalate __'
+        cat .ci/sd4/deescalate
+        echo '________________'
         do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/run-with-env .ci/sd4/run-in-docker .ci/sd4/deescalate
 
     else
@@ -1731,9 +1731,9 @@ EOF
         do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/run-with-env
 
     fi
-    echo '__ run-with-env __' >&2
-    cat .ci/sd4/run-with-env >&2
-    echo '__________________' >&2
+    echo '__ run-with-env __'
+    cat .ci/sd4/run-with-env
+    echo '__________________'
 
     # ------
     # cmdrun
@@ -1777,9 +1777,9 @@ fi
 exec "\${PROJECT_DIR}/.ci/sd4/run-with-env" "\$@"
 EOF
     chmod +x .ci/sd4/opamrun/cmdrun
-    echo '__ cmdrun __' >&2
-    cat .ci/sd4/opamrun/cmdrun >&2
-    echo '____________' >&2
+    echo '__ cmdrun __'
+    cat .ci/sd4/opamrun/cmdrun
+    echo '____________'
 
     # -------
     # opamrun
@@ -1797,9 +1797,9 @@ PROJECT_DIR=\$(cd "\$HERE"/../../.. && pwd)
 exec "\${PROJECT_DIR}/.ci/sd4/opamrun/cmdrun" opam "\$@"
 EOF
     chmod +x .ci/sd4/opamrun/opamrun
-    echo '__ opamrun __' >&2
-    cat .ci/sd4/opamrun/opamrun >&2
-    echo '_____________' >&2
+    echo '__ opamrun __'
+    cat .ci/sd4/opamrun/opamrun
+    echo '_____________'
 
     # Bundle for consumers of setup-dkml.yml
     do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/opamrun
@@ -2165,7 +2165,7 @@ do_pins() {
         4.12.1) true ;;
         4.14.0) true ;;
         *)
-            echo "OCAML_COMPILER version ${OCAML_COMPILER:-} is not supported" >&2
+            echo "OCAML_COMPILER version ${OCAML_COMPILER:-} is not supported"
             exit 109
             ;;
         esac
@@ -2234,7 +2234,7 @@ do_use_vsstudio() {
             echo "  [DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\"]" >>"$OPSC"
             echo "  [DKML_HOST_ABI = \"${dkml_host_abi}\"]" >>"$OPSC"
             echo ']' >>"$OPSC"
-            cat "$OPSC" >&2 # print
+            cat "$OPSC" # print
             ;;
         *)
             opamrun option --switch "$do_use_vsstudio_NAME" setenv= # reset
@@ -2308,7 +2308,7 @@ do_setenv() {
                 MSYS2_DIR_NATIVE=$(/usr/bin/cygpath -aw /)
             else
                 # If we are already inside MSYS2 then MSYSTEM_PREFIX should be set. But cygpath should be there as well!!
-                echo "FATAL: Could not locate MSYS2: there was no cygpath" >&2
+                echo "FATAL: Could not locate MSYS2: there was no cygpath"
                 exit 3
             fi
             MSYS2_DIR_NATIVE_ESCAPED=$(printf "%s" "$MSYS2_DIR_NATIVE" | sed 's/\\/\\\\/g')
