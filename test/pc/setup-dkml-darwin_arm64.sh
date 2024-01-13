@@ -1426,12 +1426,40 @@ if [ "\$BUILDER_UID" = 0 ] && [ "\$BUILDER_GID" = 0 ]; then
         shift
     fi
 
+    # Handle: dockcross --args "-v X:Y --platform P" --image "..." --
+    # Confer: https://github.com/dockcross/dockcross/blob/96d87416f639af0204bdd42553e4b99315ca8476/imagefiles/dockcross#L97C1-L134
+    ARG_ARGS=
+    ARG_IMAGE="${dockcross_image_id}"
+    while [[ \$# != 0 ]]; do
+        case \$1 in
+            --)
+                shift
+                break
+                ;;
+            --args|-a)
+                ARG_ARGS="\$2"
+                shift 2
+                ;;
+            --image|-i)
+                ARG_IMAGE="\$2"
+                shift 2
+                ;;
+            -*)
+                echo Unknown option \"\$1\" >&2
+                exit 67
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
     # Directly invoke entrypoint
     exec docker run --entrypoint /bin/bash \
         --rm \
-        \${ARGS:-} \
+        \${ARG_ARGS} \
          -v "\$HOST_PWD":/work \
-        "${dockcross_image_id}" ${dockcross_entrypoint} "\$@"
+        "\${ARG_IMAGE}" ${dockcross_entrypoint} "\$@"
 else
     HERE=\$(dirname "\$0")
     HERE=\$(cd "\$HERE" && pwd)
@@ -1749,6 +1777,9 @@ fi
 exec "\${PROJECT_DIR}/.ci/sd4/run-with-env" "\$@"
 EOF
     chmod +x .ci/sd4/opamrun/cmdrun
+    echo '__ cmdrun __' >&2
+    cat .ci/sd4/opamrun/cmdrun >&2
+    echo '____________' >&2
 
     # -------
     # opamrun
@@ -1766,6 +1797,9 @@ PROJECT_DIR=\$(cd "\$HERE"/../../.. && pwd)
 exec "\${PROJECT_DIR}/.ci/sd4/opamrun/cmdrun" opam "\$@"
 EOF
     chmod +x .ci/sd4/opamrun/opamrun
+    echo '__ opamrun __' >&2
+    cat .ci/sd4/opamrun/opamrun >&2
+    echo '_____________' >&2
 
     # Bundle for consumers of setup-dkml.yml
     do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/opamrun
