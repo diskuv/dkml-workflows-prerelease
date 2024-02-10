@@ -4105,7 +4105,7 @@ variables:
     #   git: For checkout-code.sh, and for opam
     #   wget or curl: For setup-dkml.sh, for do_bootstrap() of opam
     # Distros
-    #   docker:20.10.16 (uses /sbin/apk)
+    #   docker:25.0.3 (uses /sbin/apk)
     #   debian:stable-slim (uses /usr/bin/apt-get)
     - |
       if [ -x /sbin/apk ]; then
@@ -5866,17 +5866,17 @@ variables:
   #           -e DOCKER_TLS_CERTDIR=/certs \
   #           -v gitlab-dind-certs-ca:/certs/ca \
   #           -v gitlab-dind-certs-client:/certs/client \
-  #       	  docker:20.10.16-dind
+  #       	  docker:25.0.3-dind
   #
   #       docker logs gitlab-dind
   #
   #       docker run -it --rm --network gitlab-dind-network \
   #           -e DOCKER_TLS_CERTDIR=/certs \
   #           -v gitlab-dind-certs-client:/certs/client:ro \
-  #           docker:20.10.16
-  image: docker:20.10.16
+  #           docker:25.0.3
+  image: docker:25.0.3
   services:
-    - docker:20.10.16-dind
+    - docker:25.0.3-dind
   variables:
     # Whether to use the ManyLinux Docker container.
     # Yes; we have Docker-in-Docker to support exactly this.

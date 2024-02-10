@@ -6,6 +6,7 @@
 - Change GitLab Desktop script temporary directory to `.ci/sd4/tmp` so part of .gitignore created by `./dk dkml.workflow.compilers CI Desktop`.
 - Change GitLab macOS tags to `saas-macos-medium-m1` from `shared-macos-amd64`
 - Lessen verbosity of logs
+- Upgrade GitLab Docker-in-Docker image from 20.10.16 to 25.0.3
 
 ## 2.1.0
 
