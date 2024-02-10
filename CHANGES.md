@@ -5,6 +5,7 @@
 - Docfixes: Using PC backends uses new `.ci/dkml-compilers` folder, and is self-contained with an initial `CI Desktop` step.
 - Change GitLab Desktop script temporary directory to `.ci/sd4/tmp` so part of .gitignore created by `./dk dkml.workflow.compilers CI Desktop`.
 - Change GitLab macOS tags to `saas-macos-medium-m1` from `shared-macos-amd64`
+- Lessen verbosity of logs
 
 ## 2.1.0
 

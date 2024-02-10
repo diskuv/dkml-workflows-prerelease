@@ -1463,16 +1463,16 @@ do_bootstrap() {
             windows_*)
                 echo 'Bootstrap opam from fdopen (Windows) ...'
                 install -d .ci/sd4/bs/bin
-                wget -O "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz https://github.com/fdopen/opam-repository-mingw/releases/download/0.0.0.2/opam64.tar.xz
+                wget -q -O "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz https://github.com/fdopen/opam-repository-mingw/releases/download/0.0.0.2/opam64.tar.xz
 
-                # this stalls: tar xvCfJ "$setup_WORKSPACE"/.ci/sd4 "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz
-                xz -v -d "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz
-                tar xvCf .ci/sd4 .ci/sd4/opam64.tar
+                # this stalls: tar xCfJ "$setup_WORKSPACE"/.ci/sd4 "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz
+                xz -d "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz
+                tar xCf .ci/sd4 .ci/sd4/opam64.tar
 
                 rm -rf "$setup_WORKSPACE"/.ci/sd4/bs/bin/Opam.Runtime.amd64
-                mv -v "$setup_WORKSPACE"/.ci/sd4/opam64/bin/Opam.Runtime.amd64/ "$setup_WORKSPACE"/.ci/sd4/bs/bin/
-                mv -v "$setup_WORKSPACE"/.ci/sd4/opam64/bin/opam.exe "$setup_WORKSPACE"/.ci/sd4/bs/bin/
-                mv -v "$setup_WORKSPACE"/.ci/sd4/opam64/bin/opam-installer.exe "$setup_WORKSPACE"/.ci/sd4/bs/bin/
+                mv "$setup_WORKSPACE"/.ci/sd4/opam64/bin/Opam.Runtime.amd64/ "$setup_WORKSPACE"/.ci/sd4/bs/bin/
+                mv "$setup_WORKSPACE"/.ci/sd4/opam64/bin/opam.exe "$setup_WORKSPACE"/.ci/sd4/bs/bin/
+                mv "$setup_WORKSPACE"/.ci/sd4/opam64/bin/opam-installer.exe "$setup_WORKSPACE"/.ci/sd4/bs/bin/
 
                 # diagnostics
                 ldd "$setup_WORKSPACE"/.ci/sd4/bs/bin/opam.exe
@@ -1492,11 +1492,11 @@ do_bootstrap() {
         if [ ! -e version ] || [ "$(cat version)" != "$bootstrap_opam_version" ]; then
             echo 'Bootstrap opam from historical release (non-Windows; Windows non-fdopen) ...'
             if command -v curl > /dev/null 2> /dev/null; then
-                curl -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
+                curl -s -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
             else
-                wget -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
+                wget -q -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
             fi
-            tar tvfz opam.tar.gz
+            tar tfz opam.tar.gz
             tar xfz opam.tar.gz "./staging-files/${dkml_host_abi}/"
             rm -rf bin/
             mv "staging-files/${dkml_host_abi}/bin" .
@@ -1513,7 +1513,7 @@ do_bootstrap() {
     #   Bootstrap from package manager or GitHub ocaml/opam release
     case "$runit_BOOTSTRAPPED,$bootstrap_opam_version,$dkml_host_abi" in
     0,os,darwin_*)
-        if ! command -v opam; then
+        if ! command -v opam > /dev/null 2> /dev/null; then
             echo 'Bootstrap opam from package manager (macOS) ...'
             brew install gpatch
             brew install opam
@@ -1525,9 +1525,9 @@ do_bootstrap() {
             echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86) ...'
             install -d .ci/sd4/bs/bin
             if command -v curl > /dev/null 2> /dev/null; then
-                curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                curl -s -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
             else
-                wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
+                wget -q -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
             fi
             sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
             if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
@@ -1548,9 +1548,9 @@ do_bootstrap() {
             echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86_64) ...'
             install -d .ci/sd4/bs/bin
             if command -v curl > /dev/null 2> /dev/null; then
-                curl -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                curl -s -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
             else
-                wget -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
+                wget -q -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
             fi
             sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
             if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
