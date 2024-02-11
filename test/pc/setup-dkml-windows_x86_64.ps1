@@ -1351,12 +1351,12 @@ dockcross_image_id=
 dockcross_cli_image_args=
 if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     echo "Doing docker build"
-    section_begin docker-build "Summary: docker build -t ${docker_fqin_preusername}dkml-workflows/dockcross"
+    section_begin docker-build "Summary: docker build --quiet --tag ${docker_fqin_preusername}dkml-workflows/dockcross"
 
     install -d .ci/sd4/docker-image
     printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE %sdkml-workflows/dockcross:latest\nRUN if command -v apt-get; then apt-get install -y rsync %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum install -y rsync %s && yum clean all && rm -rf /var/cache/yum; fi" \
         "${dockcross_image:-}" "${docker_fqin_preusername}" "${dockcross_packages_apt:-}" "${dockcross_packages_yum:-}" >.ci/sd4/docker-image/Dockerfile
-    docker build -t "${docker_fqin_preusername}dkml-workflows/dockcross:latest" .ci/sd4/docker-image
+    docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/dockcross:latest" .ci/sd4/docker-image
 
     # Save image id to re-use for all remaining dockcross invocations
     docker images --format "{{.ID}} {{.CreatedAt}}" | sort -rk 2 | awk 'NR==1{print $1}' | tee .ci/sd4/docker-image-id
@@ -2024,6 +2024,9 @@ if [ -n "\${COMSPEC:-}" ]; then
     # tar.exe is used instead of Windows tar.exe.
     PATH="/usr/bin:\$PATH"
 fi
+
+# Propagate important CI environment variables
+export CI='${CI:-}'
 
 exec "\${PROJECT_DIR}/.ci/sd4/run-with-env" "\$@"
 EOF

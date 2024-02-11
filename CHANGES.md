@@ -7,6 +7,7 @@
 - Change GitLab macOS tags to `saas-macos-medium-m1` from `shared-macos-amd64`
 - Lessen verbosity of logs
 - Upgrade GitLab Docker-in-Docker image from 20.10.16 to 25.0.3
+- Propagate `CI` environment variable into Docker-in-Docker
 
 ## 2.1.0
 
