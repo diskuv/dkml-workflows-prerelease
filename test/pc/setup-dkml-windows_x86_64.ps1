@@ -2207,7 +2207,7 @@ fi
 do_opam_repositories_update() {
     section_begin "opam-repo-update" "Update opam repositories"
     # The default repository may be the initial 'eor' (empty) repository
-    opamrun repository set-url default https://opam.ocaml.org --yes
+    opamrun repository set-url default git+https://github.com/ocaml/opam-repository.git --yes
     # Always set the `diskuv` repository url since it can change
     opamrun repository set-url diskuv "git+https://github.com/diskuv/diskuv-opam-repository.git#${DISKUV_OPAM_REPOSITORY:-$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" --yes --dont-select
     # Update both `default` and `diskuv` Opam repositories
