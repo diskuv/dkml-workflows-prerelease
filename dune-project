@@ -11,9 +11,9 @@
 
 (license Apache-2.0)
 
-(authors "Diskuv, Inc. <opensource+diskuv-ocaml@support.diskuv.com>")
+(authors "Diskuv, Inc. <opamsource+dkml@support.diskuv.com>")
 
-(maintainers "opensource+diskuv-ocaml@support.diskuv.com")
+(maintainers "opamsource+dkml@support.diskuv.com")
 
 (package
  (name dkml-workflows)

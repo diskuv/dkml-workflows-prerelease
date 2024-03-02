@@ -5,8 +5,8 @@ synopsis:
   "GitLab CI/CD and GitHub Action workflows used by and with DkML tooling"
 description:
   "GitLab CI/CD and GitHub Action workflows used by and with DkML tooling."
-maintainer: ["opensource+diskuv-ocaml@support.diskuv.com"]
-authors: ["Diskuv, Inc. <opensource+diskuv-ocaml@support.diskuv.com>"]
+maintainer: ["opamsource+dkml@support.diskuv.com"]
+authors: ["Diskuv, Inc. <opamsource+dkml@support.diskuv.com>"]
 license: "Apache-2.0"
 homepage: "https://github.com/diskuv/dkml-workflows"
 bug-reports: "https://github.com/diskuv/dkml-workflows/issues"
