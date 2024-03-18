@@ -252,7 +252,7 @@ variables:
 
       REM * We can't use `bash -lc` directly to query for all MSVC environment variables
       REM   because it stomps over the PATH. So we are inside a Batch script to do the query.
-      "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .ci/sd4/msvcenv"
+      "%MSYS2_BASEDIR%\msys64\usr\bin\bash" -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .ci/sd4/msvcenv"
       '@
       Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.bat" -Encoding Default -Value $Content
 
