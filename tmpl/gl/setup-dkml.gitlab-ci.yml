@@ -93,6 +93,9 @@ variables:
   tags: [shared-windows, windows, windows-1809]
   timeout: 2h
   before_script:
+    # For dos2unix and any other direct MSYS2 invocation that does not go through `bash -lc` first.
+    - $env:LANG = "en_US.UTF-8"
+
     # ------------------
     # Section formatting
     # ------------------
