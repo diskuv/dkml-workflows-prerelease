@@ -10,6 +10,7 @@
 - Propagate `CI` environment variable into Docker-in-Docker
 - Switch to git-based opam repository. Now `opam update` takes 8.5min rather than 12min on Windows GitHub Actions.
 - Upgrade to MSYS2 20240113
+- Allow pre-existing MSYS2 in a `MSYS2_BASEDIR` environment variable which must have an `msys64\` subfolder.
 
 ## 2.1.0
 

@@ -14,7 +14,7 @@ variables:
   SECONDARY_SWITCH: "false"
   VERBOSE: "false"
   DKML_HOME: ""
-  MSYS2_HOME: "msys64"
+  MSYS2_BASEDIR: "." # The msys64 is automatically appended
 
   # autogen from global_env_vars.
   DKML_VERSION: '2.1.0'
@@ -294,14 +294,14 @@ variables:
     - If ( "${env:VERBOSE}" -eq "true" ) { dir 'env:' }
 
     - |
-      if ( Test-Path -Path "${env:MSYS2_HOME}\usr\bin\pacman.exe" ) {
+      if ( Test-Path -Path "${env:MSYS2_BASEDIR}\msys64\usr\bin\pacman.exe" ) {
         Write-Host "Re-using MSYS2 from cache."
       } else {
           Write-Host "Download the archive ..."
-          If ( !(Test-Path -Path "${env:MSYS2_HOME}" ) ) { New-Item "${env:MSYS2_HOME}" -ItemType Directory | Out-Null }
-          If ( !(Test-Path -Path "${env:MSYS2_HOME}\msys2.exe" ) ) {
-              Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2024-01-13/msys2-base-x86_64-20240113.sfx.exe" -outfile "${env:MSYS2_HOME}\msys2.exe"
-              $Msys2ActualHash = (Get-FileHash -Algorithm SHA256 "${env:MSYS2_HOME}\msys2.exe").Hash
+          If ( !(Test-Path -Path "${env:MSYS2_BASEDIR}\msys64" ) ) { New-Item "${env:MSYS2_BASEDIR}\msys64" -ItemType Directory | Out-Null }
+          If ( !(Test-Path -Path "${env:MSYS2_BASEDIR}\msys64\msys2.exe" ) ) {
+              Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2024-01-13/msys2-base-x86_64-20240113.sfx.exe" -outfile "${env:MSYS2_BASEDIR}\msys64\msys2.exe"
+              $Msys2ActualHash = (Get-FileHash -Algorithm SHA256 "${env:MSYS2_BASEDIR}\msys64\msys2.exe").Hash
               if ("$Msys2ActualHash" -ne "DBA7E6D27E6A9AB850F502DA44F6BFCD16D4D7B175FC2B25BEE37207335CB12F") {
                   Write-Error "The MSYS2 installer was corrupted. You will need to retry the CI job. If that fails contact MSYS2 (file an issue) for why their installer executable changed"
                   Exit 79
@@ -309,28 +309,28 @@ variables:
           }
 
           Write-Host "Extract the archive ..."
-          & "${env:MSYS2_HOME}\msys2.exe" -y # Extract to ${env:MSYS2_HOME}
-          Remove-Item "${env:MSYS2_HOME}\msys2.exe" # Delete the archive again
-          ((Get-Content -path "${env:MSYS2_HOME}\etc\post-install\07-pacman-key.post" -Raw) -replace '--refresh-keys', '--version') | Set-Content -Path "${env:MSYS2_HOME}\etc\post-install\07-pacman-key.post"
-          & "${env:MSYS2_HOME}\usr\bin\bash" -lc "sed -i 's/^CheckSpace/#CheckSpace/g' /etc/pacman.conf"
+          & "${env:MSYS2_BASEDIR}\msys64\msys2.exe" -y "-o${env:MSYS2_BASEDIR}"
+          Remove-Item "${env:MSYS2_BASEDIR}\msys64\msys2.exe" # Delete the archive again
+          ((Get-Content -path "${env:MSYS2_BASEDIR}\msys64\etc\post-install\07-pacman-key.post" -Raw) -replace '--refresh-keys', '--version') | Set-Content -Path "${env:MSYS2_BASEDIR}\msys64\etc\post-install\07-pacman-key.post"
+          & "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "sed -i 's/^CheckSpace/#CheckSpace/g' /etc/pacman.conf"
 
           Write-Host "Run for the first time ..."
-          & "${env:MSYS2_HOME}\usr\bin\bash" -lc ' '
+          & "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc ' '
       }
     - Write-Host "Update MSYS2 ..."
-    - '& "${env:MSYS2_HOME}\usr\bin\bash" -lc "pacman --noconfirm -Syuu"' # Core update (in case any core packages are outdated)
-    - '& "${env:MSYS2_HOME}\usr\bin\bash" -lc "pacman --noconfirm -Syuu"' # Normal update
+    - '& "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "pacman --noconfirm -Syuu"' # Core update (in case any core packages are outdated)
+    - '& "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "pacman --noconfirm -Syuu"' # Normal update
     - taskkill /F /FI "MODULES eq msys-2.0.dll"
 
     - Write-Host "Install matrix, required and CI packages ..."
     #   Packages for GitLab CI:
     #     dos2unix (used to translate PowerShell written files below in this CI .yml into MSYS2 scripts)
     - |
-      & "${env:MSYS2_HOME}\usr\bin\bash" -lc 'set -x; pacman -Sy --noconfirm --needed ${msys2_packages}  wget make rsync diffutils patch unzip git tar xz dos2unix'
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc 'set -x; pacman -Sy --noconfirm --needed ${msys2_packages}  wget make rsync diffutils patch unzip git tar xz dos2unix'
 
     - Write-Host "Uninstall MSYS2 conflicting executables ..."
     - |
-      & "${env:MSYS2_HOME}\usr\bin\bash" -lc 'rm -vf /usr/bin/link.exe' # link.exe interferes with MSVC's link.exe
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc 'rm -vf /usr/bin/link.exe' # link.exe interferes with MSVC's link.exe
 
     # ------------------ SECTION END Install MSYS2
     - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):install-msys2${cr}${esc}[0K"
@@ -497,7 +497,7 @@ variables:
       }
       '@
       Set-Content -Path ".ci\sd4\common-values.sh" -Encoding Unicode -Value $Content
-      & "${env:MSYS2_HOME}\usr\bin\dos2unix" .ci/sd4/common-values.sh
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\dos2unix" .ci/sd4/common-values.sh
 
     - |
       $Content = @'
@@ -613,7 +613,7 @@ variables:
 
       '@
       Set-Content -Path ".ci\sd4\run-checkout-code.sh" -Encoding Unicode -Value $Content
-      & "${env:MSYS2_HOME}\usr\bin\dos2unix" .ci/sd4/run-checkout-code.sh
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\dos2unix" .ci/sd4/run-checkout-code.sh
 
     - |
       $Content = @'
@@ -1945,7 +1945,7 @@ variables:
 
       '@
       Set-Content -Path ".ci\sd4\run-setup-dkml.sh" -Encoding Unicode -Value $Content
-      & "${env:MSYS2_HOME}\usr\bin\dos2unix" .ci/sd4/run-setup-dkml.sh
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\dos2unix" .ci/sd4/run-setup-dkml.sh
 
     - |
       $Content = @'
@@ -1960,7 +1960,7 @@ variables:
 
       '@
       Set-Content -Path ".ci\sd4\msvcenv.awk" -Encoding Unicode -Value $Content
-      & "${env:MSYS2_HOME}\usr\bin\dos2unix" .ci/sd4/msvcenv.awk
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\dos2unix" .ci/sd4/msvcenv.awk
 
     - |
       $Content = @'
@@ -1973,7 +1973,7 @@ variables:
       }
       '@
       Set-Content -Path ".ci\sd4\msvcpath.awk" -Encoding Unicode -Value $Content
-      & "${env:MSYS2_HOME}\usr\bin\dos2unix" .ci/sd4/msvcpath.awk
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\dos2unix" .ci/sd4/msvcpath.awk
 
     #   PowerShell (UTF-16) and Batch (ANSI) scripts
 
@@ -2083,7 +2083,7 @@ variables:
 
       REM * We can't use `bash -lc` directly to query for all MSVC environment variables
       REM   because it stomps over the PATH. So we are inside a Batch script to do the query.
-      "${env:MSYS2_HOME}\usr\bin\bash" -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .ci/sd4/msvcenv"
+      "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "set | grep -v '^PATH=' | awk -f .ci/sd4/msvcenv.awk > .ci/sd4/msvcenv"
       '@
       Set-Content -Path ".ci\sd4\get-msvcpath-into-msys2.bat" -Encoding Default -Value $Content
 
@@ -2091,7 +2091,7 @@ variables:
     - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):write-pre-scripts${cr}${esc}[0K"
 
     - |
-      & "${env:MSYS2_HOME}\usr\bin\bash" -lc "sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "sh .ci/sd4/run-checkout-code.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
 
     # ------------------ SECTION BEGIN Detect Visual Studio
     - Write-Host "${esc}[0Ksection_start:$(Get-CurrentEpochSecs):detect-vs[collapsed=true]${cr}${esc}[0K"$TXT_SECTION"Detect Visual Studio"
@@ -2115,7 +2115,7 @@ variables:
       }
     - .ci\sd4\config-vsstudio.ps1
     - |
-      & "${env:MSYS2_HOME}\usr\bin\bash" -lc "dos2unix .ci/sd4/vsenv.sh"
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\dos2unix" .ci/sd4/vsenv.sh
     - Get-Content .ci/sd4/vsenv.sh
     - Get-Content .ci/sd4/vsenv.ps1
 
@@ -2123,15 +2123,15 @@ variables:
     - '& .ci\sd4\vsenv.ps1'
     - '& .ci\sd4\get-msvcpath-into-msys2.bat'
     - |
-      & "${env:MSYS2_HOME}\usr\bin\bash" -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "cat .ci/sd4/msvcpath | tr -d '\r' | cygpath --path -f - | awk -f .ci/sd4/msvcpath.awk >> .ci/sd4/msvcenv"
     - |
-      & "${env:MSYS2_HOME}\usr\bin\bash" -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "tail -n100 .ci/sd4/msvcpath .ci/sd4/msvcenv"
 
     # ------------------ SECTION END Detect Visual Studio
     - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):detect-vs${cr}${esc}[0K"
 
     - |
-      & "${env:MSYS2_HOME}\usr\bin\bash" -lc "sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "sh .ci/sd4/run-setup-dkml.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
   script:
     - 'Write-Host "Override the .gitlab-ci.yml configuration ...`n  build_win32:`n    script:`nto configure your Windows build."'
   after_script:
@@ -2289,13 +2289,13 @@ variables:
 
       '@
       Set-Content -Path ".ci\sd4\run-teardown-dkml.sh" -Encoding Unicode -Value $Content
-    - if (Test-Path -Path "${env:MSYS2_HOME}\usr\bin\dos2unix.exe") { & "${env:MSYS2_HOME}\usr\bin\dos2unix" .ci/sd4/run-teardown-dkml.sh }
+    - if (Test-Path -Path "${env:MSYS2_BASEDIR}\msys64\usr\bin\dos2unix.exe") { & "${env:MSYS2_BASEDIR}\msys64\usr\bin\dos2unix" .ci/sd4/run-teardown-dkml.sh }
 
     # ------------------ SECTION END Write post scripts
     - Write-Host "${esc}[0Ksection_end:$(Get-CurrentEpochSecs):write-post-scripts${cr}${esc}[0K"
 
     - |
-      & "${env:MSYS2_HOME}\usr\bin\bash" -lc "sh .ci/sd4/run-teardown-dkml.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
+      & "${env:MSYS2_BASEDIR}\msys64\usr\bin\bash" -lc "sh .ci/sd4/run-teardown-dkml.sh CI_PROJECT_DIR '${env:CI_PROJECT_DIR}'"
 
 # Advanced job: Typically you use .win32:setup-dkml, but sometimes you have to
 # work around GitLab bugs with declaring dependencies on parallel jobs, where
