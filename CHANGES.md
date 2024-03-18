@@ -9,6 +9,7 @@
 - Upgrade GitLab Docker-in-Docker image from 20.10.16 to 25.0.3
 - Propagate `CI` environment variable into Docker-in-Docker
 - Switch to git-based opam repository. Now `opam update` takes 8.5min rather than 12min on Windows GitHub Actions.
+- Upgrade to MSYS2 20240113
 
 ## 2.1.0
 

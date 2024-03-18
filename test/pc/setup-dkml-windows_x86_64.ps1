@@ -1006,7 +1006,7 @@ if ( Test-Path -Path msys64\usr\bin\pacman.exe ) {
 else {
   Write-Host "Download the archive ..."
   If ( !(Test-Path -Path msys64\var\cache ) ) { New-Item msys64\var\cache -ItemType Directory | Out-Null }
-  If ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) { Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2022-09-04/msys2-base-x86_64-20220904.sfx.exe" -outfile "msys64\var\cache\msys2.exe" }
+  If ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) { Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2024-01-13/msys2-base-x86_64-20240113.sfx.exe" -outfile "msys64\var\cache\msys2.exe" }
 
   Write-Host "Extract the archive ..."
   msys64\var\cache\msys2.exe -y # Extract to .\msys64

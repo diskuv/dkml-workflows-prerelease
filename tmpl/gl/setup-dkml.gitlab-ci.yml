@@ -128,9 +128,9 @@ variables:
           Write-Host "Download the archive ..."
           If ( !(Test-Path -Path msys64\var\cache ) ) { New-Item msys64\var\cache -ItemType Directory | Out-Null }
           If ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) {
-              Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2022-10-28/msys2-base-x86_64-20221028.sfx.exe" -outfile "msys64\var\cache\msys2.exe"
+              Invoke-WebRequest "https://github.com/msys2/msys2-installer/releases/download/2024-01-13/msys2-base-x86_64-20240113.sfx.exe" -outfile "msys64\var\cache\msys2.exe"
               $Msys2ActualHash = (Get-FileHash -Algorithm SHA256 "msys64\var\cache\msys2.exe").Hash
-              if ("$Msys2ActualHash" -ne "E365B79B4B30B6F4BAF34BD93F3D2A41C0A92801C7A96D79CDDBFCA1090A0554") {
+              if ("$Msys2ActualHash" -ne "DBA7E6D27E6A9AB850F502DA44F6BFCD16D4D7B175FC2B25BEE37207335CB12F") {
                   Write-Error "The MSYS2 installer was corrupted. You will need to retry the CI job. If that fails contact MSYS2 (file an issue) for why their installer executable changed"
                   Exit 79
               }
