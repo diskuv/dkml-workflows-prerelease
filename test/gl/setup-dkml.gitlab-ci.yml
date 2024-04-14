@@ -17,125 +17,105 @@ variables:
   MSYS2_BASEDIR: "." # The msys64 is automatically appended
 
   # autogen from global_env_vars.
-  DKML_VERSION: '2.1.0'
-  DEFAULT_DISKUV_OPAM_REPOSITORY_TAG: '2.1.0'
-  DEFAULT_DKML_COMPILER: '2.1.0'
+  DKML_VERSION: '2.1.1'
+  DEFAULT_DISKUV_OPAM_REPOSITORY_TAG: '2.1.1'
+  DEFAULT_DKML_COMPILER: '2.1.1'
   PIN_ASTRING: '0.8.5'
   PIN_BASE: 'v0.16.1'
-  PIN_BASE64: '3.5.1'
   PIN_BIGARRAY_COMPAT: '1.1.0'
   PIN_BOS: '0.2.1'
   PIN_CAMLP_STREAMS: '5.0.1'
-  PIN_CHROME_TRACE: '3.12.1'
+  PIN_CHROME_TRACE: '3.15.0'
   PIN_CMDLINER: '1.2.0'
+  PIN_CONF_BASH: '1'
+  PIN_CONF_C++: '1.0'
   PIN_CONF_DKML_SYS_OPAM: '1'
+  PIN_CONF_LIBX11: '1'
   PIN_CONF_PKG_CONFIG: '2+cpkgs'
   PIN_CONF_SQLITE3: '3.1+cpkgs'
   PIN_CPPO: '1.6.9'
   PIN_CRUNCH: '3.3.1'
   PIN_CSEXP: '1.5.2'
-  PIN_CSTRUCT: '6.2.0'
   PIN_CTYPES_FOREIGN: '0.19.2-windowssupport-r7'
   PIN_CTYPES: '0.19.2-windowssupport-r7'
   PIN_CUDF: '0.10'
-  PIN_DIGESTIF: '1.1.4'
   PIN_DISKUVBOX: '0.2.0'
-  PIN_DKML_APPS: '2.1.0'
-  PIN_DKML_BASE_COMPILER: '4.14.0~v2.1.0'
-  PIN_DKML_BUILD_DESKTOP: '2.1.0'
+  PIN_DKML_APPS: '2.1.1'
+  PIN_DKML_BASE_COMPILER: '4.14.2~v2.1.1'
+  PIN_DKML_BUILD_DESKTOP: '2.1.1'
   PIN_DKML_C_PROBE: '3.0.0'
-  PIN_DKML_COMPILER_SRC: '2.1.0'
-  PIN_DKML_COMPONENT_COMMON_DESKTOP: '2.1.0'
-  PIN_DKML_COMPONENT_COMMON_OPAM: '2.2.0~alpha0~20221228'
-  PIN_DKML_COMPONENT_COMMON_UNIXUTILS: '0.2.0'
-  PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON: '4.14.0~v2.1.0'
-  PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK: '4.14.0~v2.1.0'
-  PIN_DKML_COMPONENT_OCAMLCOMPILER_OFFLINE: '4.14.0~v2.1.0'
-  PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL: '2.1.0'
-  PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM: '2.2.0~alpha0~20221228'
-  PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS: '0.2.0'
-  PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL: '2.1.0'
-  PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR: '2.1.0'
-  PIN_DKML_COMPONENT_STAGING_OCAMLRUN: '4.14.0~v2.1.0'
-  PIN_DKML_COMPONENT_STAGING_OPAM32: '2.2.0~alpha0~20221228'
-  PIN_DKML_COMPONENT_STAGING_OPAM64: '2.2.0~alpha0~20221228'
-  PIN_DKML_COMPONENT_STAGING_UNIXUTILS: '0.2.0'
-  PIN_DKML_COMPONENT_STAGING_WITHDKML: '2.1.0'
+  PIN_DKML_COMPILER_SRC: '2.1.1'
   PIN_DKML_COMPONENT_XX_CONSOLE: '0.1.1'
-  PIN_DKML_EXE_LIB: '2.1.0'
-  PIN_DKML_EXE: '2.1.0'
+  PIN_DKML_EXE_LIB: '2.1.1'
+  PIN_DKML_EXE: '2.1.1'
   PIN_DKML_INSTALL_INSTALLER: '0.5.2'
   PIN_DKML_INSTALL_RUNNER: '0.5.2'
   PIN_DKML_INSTALL: '0.5.2'
   PIN_DKML_INSTALLER_OCAML_COMMON: '2.1.0'
-  PIN_DKML_INSTALLER_OCAML_NETWORK: '2.1.0'
-  PIN_DKML_INSTALLER_OCAML_OFFLINE: '2.1.0'
   PIN_DKML_PACKAGE_CONSOLE: '0.5.2'
-  PIN_DKML_RUNTIME_COMMON_NATIVE: '2.1.0'
-  PIN_DKML_RUNTIME_COMMON: '2.1.0'
-  PIN_DKML_RUNTIME_DISTRIBUTION: '2.1.0'
-  PIN_DKML_RUNTIMELIB: '2.1.0'
-  PIN_DKML_RUNTIMESCRIPTS: '2.1.0'
-  PIN_DKML_WORKFLOWS: '2.1.0'
-  PIN_DUNE_ACTION_PLUGIN: '3.12.1'
-  PIN_DUNE_BUILD_INFO: '3.12.1'
-  PIN_DUNE_CONFIGURATOR: '3.12.1'
-  PIN_DUNE_GLOB: '3.12.1'
-  PIN_DUNE_PRIVATE_LIBS: '3.12.1'
-  PIN_DUNE_RPC_LWT: '3.12.1'
-  PIN_DUNE_RPC: '3.12.1'
-  PIN_DUNE_SITE: '3.12.1'
-  PIN_DUNE: '3.12.1'
-  PIN_DYN: '3.12.1'
+  PIN_DKML_RUNTIME_COMMON_NATIVE: '2.1.1'
+  PIN_DKML_RUNTIME_COMMON: '2.1.1'
+  PIN_DKML_RUNTIME_DISTRIBUTION: '2.1.1'
+  PIN_DKML_RUNTIMELIB: '2.1.1'
+  PIN_DKML_RUNTIMESCRIPTS: '2.1.1'
+  PIN_DKML_WORKFLOWS: '2.1.1'
+  PIN_DUNE_ACTION_PLUGIN: '3.15.0'
+  PIN_DUNE_BUILD_INFO: '3.15.0'
+  PIN_DUNE_CONFIGURATOR: '3.15.0'
+  PIN_DUNE_GLOB: '3.15.0'
+  PIN_DUNE_PRIVATE_LIBS: '3.15.0'
+  PIN_DUNE_RPC_LWT: '3.15.0'
+  PIN_DUNE_RPC: '3.15.0'
+  PIN_DUNE_SITE: '3.15.0'
+  PIN_DUNE: '3.15.0'
+  PIN_DYN: '3.15.0'
   PIN_EITHER: '1.0.0'
-  PIN_EQAF: '0.9'
   PIN_EXTLIB: '1.7.9'
-  PIN_EZJSONM: '1.3.0'
   PIN_FEATHER: '0.3.0'
   PIN_FIBER: '3.7.0'
   PIN_FIX: '20230505'
   PIN_FMT: '0.9.0'
   PIN_FPATH: '0.7.3'
   PIN_GRAPHICS: '5.1.2'
-  PIN_HEX: '1.5.0'
   PIN_INTEGERS: '0.7.0'
   PIN_JANE_STREET_HEADERS: 'v0.16.0'
   PIN_JINGOO: '1.5.0'
-  PIN_JSONM: '1.0.2'
-  PIN_JSONRPC: '1.16.2'
+  PIN_JSONRPC: '1.17.0'
   PIN_JST_CONFIG: 'v0.16.0'
   PIN_LAMBDA_TERM: '3.3.2'
   PIN_LOGS: '0.7.0'
-  PIN_LSP: '1.16.2'
+  PIN_LSP: '1.17.0'
   PIN_LWT: '5.7.0'
   PIN_LWT_REACT: '1.2.0'
   PIN_MCCS: '1.1+13'
-  PIN_MDX: '2.3.0'
-  PIN_MENHIR: '20230608'
-  PIN_MENHIRLIB: '20230608'
-  PIN_MENHIRSDK: '20230608'
-  PIN_MERLIN_LIB: '4.12-414'
+  PIN_MDX: '2.4.1'
+  PIN_MENHIR: '20231231'
+  PIN_MENHIRCST: '20231231'
+  PIN_MENHIRLIB: '20231231'
+  PIN_MENHIRSDK: '20231231'
+  PIN_MERLIN_LIB: '4.14-414'
   PIN_METAPP: '0.4.4+win'
   PIN_METAQUOT: '0.5.2'
   PIN_MEW: '0.1.0'
   PIN_MEW_VI: '0.5.0'
-  PIN_NUM: '1.4'
+  PIN_NUM: '1.5'
   PIN_OCAML_COMPILER_LIBS: 'v0.12.4'
-  PIN_OCAML_LSP_SERVER: '1.16.2'
-  PIN_OCAML_VERSION: '3.6.2'
-  PIN_OCAML: '4.14.0'
+  PIN_OCAML_LSP_SERVER: '1.17.0'
+  PIN_OCAML_VERSION: '3.6.5'
+  PIN_OCAML: '4.14.2'
   PIN_OCAMLBUILD: '0.14.2+win+unix'
-  PIN_OCAMLC_LOC: '3.12.1'
+  PIN_OCAMLC_LOC: '3.15.0'
   PIN_OCAMLFIND: '1.9.5'
-  PIN_OCAMLFORMAT_LIB: '0.25.1'
-  PIN_OCAMLFORMAT_RPC_LIB: '0.25.1'
-  PIN_OCAMLFORMAT: '0.25.1'
+  PIN_OCAMLFORMAT_LIB: '0.26.1'
+  PIN_OCAMLFORMAT_RPC_LIB: '0.26.1'
+  PIN_OCAMLFORMAT: '0.26.1'
   PIN_OCP_INDENT: '1.8.2-windowssupport'
   PIN_OCPLIB_ENDIAN: '1.2'
-  PIN_ODOC_PARSER: '2.0.0'
-  PIN_ODOC: '2.2.0'
-  PIN_ORDERING: '3.12.1'
+  PIN_ODOC_PARSER: '2.4.1'
+  PIN_ODOC: '2.4.1'
+  PIN_ORDERING: '3.15.0'
   PIN_PARSEXP: 'v0.16.0'
+  PIN_POSIXAT: 'v0.16.0'
   PIN_PP: '1.2.0'
   PIN_PPX_ASSERT: 'v0.16.0'
   PIN_PPX_BASE: 'v0.16.0'
@@ -166,12 +146,13 @@ variables:
   PIN_SEXPLIB: 'v0.16.0'
   PIN_SEXPLIB0: 'v0.16.0'
   PIN_SHA: '1.15.4'
+  PIN_SHEXP: 'v0.16.0'
   PIN_SPAWN: 'v0.15.1'
   PIN_SQLITE3: '5.1.0+msvc'
   PIN_STDCOMPAT: '19+optautoconf'
   PIN_STDIO: 'v0.16.0'
   PIN_STDLIB_SHIMS: '0.3.0'
-  PIN_STDUNE: '3.12.1'
+  PIN_STDUNE: '3.15.0'
   PIN_TIME_NOW: 'v0.16.0'
   PIN_TOPKG: '1.0.7'
   PIN_TRAVERSE: '0.3.0'
@@ -184,8 +165,8 @@ variables:
   PIN_UUIDM: '0.9.8'
   PIN_UUSEG: '15.0.0'
   PIN_UUTF: '1.0.3'
-  PIN_WITH_DKML: '2.1.0'
-  PIN_XDG: '3.12.1'
+  PIN_WITH_DKML: '2.1.1'
+  PIN_XDG: '3.15.0'
   PIN_YOJSON: '2.1.2'
   PIN_ZED: '3.2.3'
 
@@ -199,14 +180,14 @@ variables:
     expire_in: "1 days"
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "a2_1_${CACHE_PREFIX}-2_1_0-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
+    - key: "a2_1_${CACHE_PREFIX}-2_1_1-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
       paths:
         - ${opam_root_cacheable}/download-cache
 
 .common:setup-dkml-cache:
   # Only 4 caches allowed in GitLab CI
   cache:
-    - key: "b2_1_${CACHE_PREFIX}-2_1_0-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
+    - key: "b2_1_${CACHE_PREFIX}-2_1_1-${abi_pattern}-${CI_COMMIT_REF_SLUG}"
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
@@ -1563,45 +1544,29 @@ variables:
           # Managed by bump-packages.cmake
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version chrome-trace "${PIN_CHROME_TRACE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cmdliner "${PIN_CMDLINER}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-bash "${PIN_CONF_BASH}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-c++ "${PIN_CONF_C++}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-dkml-sys-opam "${PIN_CONF_DKML_SYS_OPAM}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-libX11 "${PIN_CONF_LIBX11}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-pkg-config "${PIN_CONF_PKG_CONFIG}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-sqlite3 "${PIN_CONF_SQLITE3}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cppo "${PIN_CPPO}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version crunch "${PIN_CRUNCH}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version csexp "${PIN_CSEXP}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cstruct "${PIN_CSTRUCT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes "${PIN_CTYPES}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes-foreign "${PIN_CTYPES_FOREIGN}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cudf "${PIN_CUDF}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version diskuvbox "${PIN_DISKUVBOX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-base-compiler "${PIN_DKML_BASE_COMPILER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-build-desktop "${PIN_DKML_BUILD_DESKTOP}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-c-probe "${PIN_DKML_C_PROBE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-src "${PIN_DKML_COMPILER_SRC}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-opam "${PIN_DKML_COMPONENT_COMMON_OPAM}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-unixutils "${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-common "${PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-network "${PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-offline "${PIN_DKML_COMPONENT_OCAMLCOMPILER_OFFLINE}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-desktop-full "${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-opamshim "${PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-unixutils "${PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-desktop-full "${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam32 "${PIN_DKML_COMPONENT_STAGING_OPAM32}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam64 "${PIN_DKML_COMPONENT_STAGING_OPAM64}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-unixutils "${PIN_DKML_COMPONENT_STAGING_UNIXUTILS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-xx-console "${PIN_DKML_COMPONENT_XX_CONSOLE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe-lib "${PIN_DKML_EXE_LIB}"
@@ -1609,8 +1574,6 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-common "${PIN_DKML_INSTALLER_OCAML_COMMON}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-network "${PIN_DKML_INSTALLER_OCAML_NETWORK}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-offline "${PIN_DKML_INSTALLER_OCAML_OFFLINE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common-native "${PIN_DKML_RUNTIME_COMMON_NATIVE}"
@@ -1629,20 +1592,16 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-site "${PIN_DUNE_SITE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dyn "${PIN_DYN}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version either "${PIN_EITHER}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version eqaf "${PIN_EQAF}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version extlib "${PIN_EXTLIB}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ezjsonm "${PIN_EZJSONM}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version feather "${PIN_FEATHER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fiber "${PIN_FIBER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fix "${PIN_FIX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fmt "${PIN_FMT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fpath "${PIN_FPATH}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version graphics "${PIN_GRAPHICS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version hex "${PIN_HEX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version integers "${PIN_INTEGERS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jane-street-headers "${PIN_JANE_STREET_HEADERS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jingoo "${PIN_JINGOO}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jsonm "${PIN_JSONM}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jsonrpc "${PIN_JSONRPC}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jst-config "${PIN_JST_CONFIG}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version lambda-term "${PIN_LAMBDA_TERM}"
@@ -1653,6 +1612,7 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mccs "${PIN_MCCS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mdx "${PIN_MDX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhir "${PIN_MENHIR}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirCST "${PIN_MENHIRCST}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirLib "${PIN_MENHIRLIB}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirSdk "${PIN_MENHIRSDK}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version merlin-lib "${PIN_MERLIN_LIB}"
@@ -1677,6 +1637,7 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version odoc-parser "${PIN_ODOC_PARSER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ordering "${PIN_ORDERING}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version parsexp "${PIN_PARSEXP}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version posixat "${PIN_POSIXAT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version pp "${PIN_PP}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_assert "${PIN_PPX_ASSERT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_base "${PIN_PPX_BASE}"
@@ -1707,6 +1668,7 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sexplib "${PIN_SEXPLIB}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sexplib0 "${PIN_SEXPLIB0}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sha "${PIN_SHA}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version shexp "${PIN_SHEXP}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version spawn "${PIN_SPAWN}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sqlite3 "${PIN_SQLITE3}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version stdcompat "${PIN_STDCOMPAT}"
@@ -3588,45 +3550,29 @@ variables:
           # Managed by bump-packages.cmake
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version chrome-trace "${PIN_CHROME_TRACE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cmdliner "${PIN_CMDLINER}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-bash "${PIN_CONF_BASH}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-c++ "${PIN_CONF_C++}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-dkml-sys-opam "${PIN_CONF_DKML_SYS_OPAM}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-libX11 "${PIN_CONF_LIBX11}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-pkg-config "${PIN_CONF_PKG_CONFIG}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-sqlite3 "${PIN_CONF_SQLITE3}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cppo "${PIN_CPPO}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version crunch "${PIN_CRUNCH}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version csexp "${PIN_CSEXP}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cstruct "${PIN_CSTRUCT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes "${PIN_CTYPES}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes-foreign "${PIN_CTYPES_FOREIGN}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cudf "${PIN_CUDF}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version diskuvbox "${PIN_DISKUVBOX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-base-compiler "${PIN_DKML_BASE_COMPILER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-build-desktop "${PIN_DKML_BUILD_DESKTOP}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-c-probe "${PIN_DKML_C_PROBE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-src "${PIN_DKML_COMPILER_SRC}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-opam "${PIN_DKML_COMPONENT_COMMON_OPAM}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-unixutils "${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-common "${PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-network "${PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-offline "${PIN_DKML_COMPONENT_OCAMLCOMPILER_OFFLINE}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-desktop-full "${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-opamshim "${PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-unixutils "${PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-desktop-full "${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam32 "${PIN_DKML_COMPONENT_STAGING_OPAM32}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam64 "${PIN_DKML_COMPONENT_STAGING_OPAM64}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-unixutils "${PIN_DKML_COMPONENT_STAGING_UNIXUTILS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-xx-console "${PIN_DKML_COMPONENT_XX_CONSOLE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe-lib "${PIN_DKML_EXE_LIB}"
@@ -3634,8 +3580,6 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-common "${PIN_DKML_INSTALLER_OCAML_COMMON}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-network "${PIN_DKML_INSTALLER_OCAML_NETWORK}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-offline "${PIN_DKML_INSTALLER_OCAML_OFFLINE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common-native "${PIN_DKML_RUNTIME_COMMON_NATIVE}"
@@ -3654,20 +3598,16 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-site "${PIN_DUNE_SITE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dyn "${PIN_DYN}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version either "${PIN_EITHER}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version eqaf "${PIN_EQAF}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version extlib "${PIN_EXTLIB}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ezjsonm "${PIN_EZJSONM}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version feather "${PIN_FEATHER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fiber "${PIN_FIBER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fix "${PIN_FIX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fmt "${PIN_FMT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fpath "${PIN_FPATH}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version graphics "${PIN_GRAPHICS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version hex "${PIN_HEX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version integers "${PIN_INTEGERS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jane-street-headers "${PIN_JANE_STREET_HEADERS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jingoo "${PIN_JINGOO}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jsonm "${PIN_JSONM}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jsonrpc "${PIN_JSONRPC}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jst-config "${PIN_JST_CONFIG}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version lambda-term "${PIN_LAMBDA_TERM}"
@@ -3678,6 +3618,7 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mccs "${PIN_MCCS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mdx "${PIN_MDX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhir "${PIN_MENHIR}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirCST "${PIN_MENHIRCST}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirLib "${PIN_MENHIRLIB}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirSdk "${PIN_MENHIRSDK}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version merlin-lib "${PIN_MERLIN_LIB}"
@@ -3702,6 +3643,7 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version odoc-parser "${PIN_ODOC_PARSER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ordering "${PIN_ORDERING}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version parsexp "${PIN_PARSEXP}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version posixat "${PIN_POSIXAT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version pp "${PIN_PP}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_assert "${PIN_PPX_ASSERT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_base "${PIN_PPX_BASE}"
@@ -3732,6 +3674,7 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sexplib "${PIN_SEXPLIB}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sexplib0 "${PIN_SEXPLIB0}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sha "${PIN_SHA}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version shexp "${PIN_SHEXP}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version spawn "${PIN_SPAWN}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sqlite3 "${PIN_SQLITE3}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version stdcompat "${PIN_STDCOMPAT}"
@@ -5326,45 +5269,29 @@ variables:
           # Managed by bump-packages.cmake
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version astring "${PIN_ASTRING}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base "${PIN_BASE}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version base64 "${PIN_BASE64}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bigarray-compat "${PIN_BIGARRAY_COMPAT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version bos "${PIN_BOS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version camlp-streams "${PIN_CAMLP_STREAMS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version chrome-trace "${PIN_CHROME_TRACE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cmdliner "${PIN_CMDLINER}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-bash "${PIN_CONF_BASH}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-c++ "${PIN_CONF_C++}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-dkml-sys-opam "${PIN_CONF_DKML_SYS_OPAM}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-libX11 "${PIN_CONF_LIBX11}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-pkg-config "${PIN_CONF_PKG_CONFIG}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-sqlite3 "${PIN_CONF_SQLITE3}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cppo "${PIN_CPPO}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version crunch "${PIN_CRUNCH}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version csexp "${PIN_CSEXP}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cstruct "${PIN_CSTRUCT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes "${PIN_CTYPES}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ctypes-foreign "${PIN_CTYPES_FOREIGN}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cudf "${PIN_CUDF}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version digestif "${PIN_DIGESTIF}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version diskuvbox "${PIN_DISKUVBOX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-apps "${PIN_DKML_APPS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-base-compiler "${PIN_DKML_BASE_COMPILER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-build-desktop "${PIN_DKML_BUILD_DESKTOP}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-c-probe "${PIN_DKML_C_PROBE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-compiler-src "${PIN_DKML_COMPILER_SRC}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-desktop "${PIN_DKML_COMPONENT_COMMON_DESKTOP}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-opam "${PIN_DKML_COMPONENT_COMMON_OPAM}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-common-unixutils "${PIN_DKML_COMPONENT_COMMON_UNIXUTILS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-common "${PIN_DKML_COMPONENT_OCAMLCOMPILER_COMMON}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-network "${PIN_DKML_COMPONENT_OCAMLCOMPILER_NETWORK}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-ocamlcompiler-offline "${PIN_DKML_COMPONENT_OCAMLCOMPILER_OFFLINE}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-desktop-full "${PIN_DKML_COMPONENT_OFFLINE_DESKTOP_FULL}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-opamshim "${PIN_DKML_COMPONENT_OFFLINE_OPAMSHIM}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-offline-unixutils "${PIN_DKML_COMPONENT_OFFLINE_UNIXUTILS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-desktop-full "${PIN_DKML_COMPONENT_STAGING_DESKTOP_FULL}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-dkmlconfdir "${PIN_DKML_COMPONENT_STAGING_DKMLCONFDIR}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-ocamlrun "${PIN_DKML_COMPONENT_STAGING_OCAMLRUN}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam32 "${PIN_DKML_COMPONENT_STAGING_OPAM32}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-opam64 "${PIN_DKML_COMPONENT_STAGING_OPAM64}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-unixutils "${PIN_DKML_COMPONENT_STAGING_UNIXUTILS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-staging-withdkml "${PIN_DKML_COMPONENT_STAGING_WITHDKML}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-component-xx-console "${PIN_DKML_COMPONENT_XX_CONSOLE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe "${PIN_DKML_EXE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-exe-lib "${PIN_DKML_EXE_LIB}"
@@ -5372,8 +5299,6 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-common "${PIN_DKML_INSTALLER_OCAML_COMMON}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-network "${PIN_DKML_INSTALLER_OCAML_NETWORK}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-installer-ocaml-offline "${PIN_DKML_INSTALLER_OCAML_OFFLINE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dkml-runtime-common-native "${PIN_DKML_RUNTIME_COMMON_NATIVE}"
@@ -5392,20 +5317,16 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dune-site "${PIN_DUNE_SITE}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version dyn "${PIN_DYN}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version either "${PIN_EITHER}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version eqaf "${PIN_EQAF}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version extlib "${PIN_EXTLIB}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ezjsonm "${PIN_EZJSONM}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version feather "${PIN_FEATHER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fiber "${PIN_FIBER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fix "${PIN_FIX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fmt "${PIN_FMT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version fpath "${PIN_FPATH}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version graphics "${PIN_GRAPHICS}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version hex "${PIN_HEX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version integers "${PIN_INTEGERS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jane-street-headers "${PIN_JANE_STREET_HEADERS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jingoo "${PIN_JINGOO}"
-          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jsonm "${PIN_JSONM}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jsonrpc "${PIN_JSONRPC}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version jst-config "${PIN_JST_CONFIG}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version lambda-term "${PIN_LAMBDA_TERM}"
@@ -5416,6 +5337,7 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mccs "${PIN_MCCS}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version mdx "${PIN_MDX}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhir "${PIN_MENHIR}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirCST "${PIN_MENHIRCST}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirLib "${PIN_MENHIRLIB}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version menhirSdk "${PIN_MENHIRSDK}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version merlin-lib "${PIN_MERLIN_LIB}"
@@ -5440,6 +5362,7 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version odoc-parser "${PIN_ODOC_PARSER}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ordering "${PIN_ORDERING}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version parsexp "${PIN_PARSEXP}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version posixat "${PIN_POSIXAT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version pp "${PIN_PP}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_assert "${PIN_PPX_ASSERT}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version ppx_base "${PIN_PPX_BASE}"
@@ -5470,6 +5393,7 @@ variables:
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sexplib "${PIN_SEXPLIB}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sexplib0 "${PIN_SEXPLIB0}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sha "${PIN_SHA}"
+          opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version shexp "${PIN_SHEXP}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version spawn "${PIN_SPAWN}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version sqlite3 "${PIN_SQLITE3}"
           opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version stdcompat "${PIN_STDCOMPAT}"
