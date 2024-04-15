@@ -26,7 +26,7 @@ let global_env_vars =
     ("PIN_CHROME_TRACE", "3.15.0");
     ("PIN_CMDLINER", "1.2.0");
     ("PIN_CONF_BASH", "1");
-    ("PIN_CONF_C++", "1.0");
+    ("PIN_CONF_CPLUSPLUS", "1.0");
     ("PIN_CONF_DKML_SYS_OPAM", "1");
     ("PIN_CONF_LIBX11", "1");
     ("PIN_CONF_PKG_CONFIG", "2+cpkgs");

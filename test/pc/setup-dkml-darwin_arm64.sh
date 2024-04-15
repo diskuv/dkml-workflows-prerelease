@@ -33,7 +33,7 @@ export PIN_CAMLP_STREAMS='5.0.1'
 export PIN_CHROME_TRACE='3.15.0'
 export PIN_CMDLINER='1.2.0'
 export PIN_CONF_BASH='1'
-export PIN_CONF_C++='1.0'
+export PIN_CONF_CPLUSPLUS='1.0'
 export PIN_CONF_DKML_SYS_OPAM='1'
 export PIN_CONF_LIBX11='1'
 export PIN_CONF_PKG_CONFIG='2+cpkgs'
@@ -246,7 +246,7 @@ usage() {
   echo "  --PIN_CHROME_TRACE=<value>. Defaults to: ${PIN_CHROME_TRACE}" >&2
   echo "  --PIN_CMDLINER=<value>. Defaults to: ${PIN_CMDLINER}" >&2
   echo "  --PIN_CONF_BASH=<value>. Defaults to: ${PIN_CONF_BASH}" >&2
-  echo "  --PIN_CONF_C++=<value>. Defaults to: ${PIN_CONF_C++}" >&2
+  echo "  --PIN_CONF_CPLUSPLUS=<value>. Defaults to: ${PIN_CONF_CPLUSPLUS}" >&2
   echo "  --PIN_CONF_DKML_SYS_OPAM=<value>. Defaults to: ${PIN_CONF_DKML_SYS_OPAM}" >&2
   echo "  --PIN_CONF_LIBX11=<value>. Defaults to: ${PIN_CONF_LIBX11}" >&2
   echo "  --PIN_CONF_PKG_CONFIG=<value>. Defaults to: ${PIN_CONF_PKG_CONFIG}" >&2
@@ -477,8 +477,8 @@ while getopts :h-: option; do
     PIN_CMDLINER=*) PIN_CMDLINER=${OPTARG#*=} ;;
     PIN_CONF_BASH) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_CONF_BASH=*) PIN_CONF_BASH=${OPTARG#*=} ;;
-    PIN_CONF_C++) fail "Option \"$OPTARG\" missing argument" ;;
-    PIN_CONF_C++=*) PIN_CONF_C++=${OPTARG#*=} ;;
+    PIN_CONF_CPLUSPLUS) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_CONF_CPLUSPLUS=*) PIN_CONF_CPLUSPLUS=${OPTARG#*=} ;;
     PIN_CONF_DKML_SYS_OPAM) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_CONF_DKML_SYS_OPAM=*) PIN_CONF_DKML_SYS_OPAM=${OPTARG#*=} ;;
     PIN_CONF_LIBX11) fail "Option \"$OPTARG\" missing argument" ;;

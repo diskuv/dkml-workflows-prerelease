@@ -81,7 +81,7 @@ Environment variable.
 .PARAMETER PIN_CONF_BASH
 Environment variable.
 
-.PARAMETER PIN_CONF_C++
+.PARAMETER PIN_CONF_CPLUSPLUS
 Environment variable.
 
 .PARAMETER PIN_CONF_DKML_SYS_OPAM
@@ -625,7 +625,7 @@ param (
   ,[Parameter()] [string] $PIN_CHROME_TRACE = "3.15.0"
   ,[Parameter()] [string] $PIN_CMDLINER = "1.2.0"
   ,[Parameter()] [string] $PIN_CONF_BASH = "1"
-  ,[Parameter()] [string] $PIN_CONF_C++ = "1.0"
+  ,[Parameter()] [string] $PIN_CONF_CPLUSPLUS = "1.0"
   ,[Parameter()] [string] $PIN_CONF_DKML_SYS_OPAM = "1"
   ,[Parameter()] [string] $PIN_CONF_LIBX11 = "1"
   ,[Parameter()] [string] $PIN_CONF_PKG_CONFIG = "2+cpkgs"
@@ -849,7 +849,7 @@ $env:PIN_CAMLP_STREAMS = $PIN_CAMLP_STREAMS
 $env:PIN_CHROME_TRACE = $PIN_CHROME_TRACE
 $env:PIN_CMDLINER = $PIN_CMDLINER
 $env:PIN_CONF_BASH = $PIN_CONF_BASH
-$env:PIN_CONF_C++ = $PIN_CONF_C++
+$env:PIN_CONF_CPLUSPLUS = $PIN_CONF_CPLUSPLUS
 $env:PIN_CONF_DKML_SYS_OPAM = $PIN_CONF_DKML_SYS_OPAM
 $env:PIN_CONF_LIBX11 = $PIN_CONF_LIBX11
 $env:PIN_CONF_PKG_CONFIG = $PIN_CONF_PKG_CONFIG
