@@ -224,7 +224,7 @@ let required_msys2_packages =
          "xz";
        ])
 
-let bootstrap_opam_version = Jg_types.Tstr "2.2.0-alpha-20221228"
+let bootstrap_opam_version = Jg_types.Tstr "2.2.0-beta2-20240409"
 
 let matrix =
   [
@@ -512,7 +512,7 @@ end
         { name: "msys2_system", value: 'MINGW32' },
         { name: "msys2_packages", value: 'mingw-w64-i686-pkg-config' },
         { name: "exe_ext", value: '.exe' },
-        { name: "bootstrap_opam_version", value: '2.2.0-alpha-20221228' },
+        { name: "bootstrap_opam_version", value: '2.2.0-beta2-20240409' },
         { name: "opam_abi", value: 'windows_x86' },
         { name: "dkml_host_abi", value: 'windows_x86' },
         { name: "opam_root", value: '${CI_PROJECT_DIR}/.ci/o' },
@@ -577,7 +577,7 @@ let full_matrix_as_list ?must_support_gl ?must_support_gh ~allow_dkml_host_abi
       msys2_system: 'MINGW32',
       msys2_packages: 'mingw-w64-i686-pkg-config',
       exe_ext: '.exe',
-      bootstrap_opam_version: '2.2.0-alpha-20221228',
+      bootstrap_opam_version: '2.2.0-beta2-20240409',
       opam_abi: 'windows_x86',
       dkml_host_abi: 'windows_x86',
       opam_root: '${CI_PROJECT_DIR}/.ci/o',
