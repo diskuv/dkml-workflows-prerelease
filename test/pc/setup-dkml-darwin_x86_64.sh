@@ -1272,9 +1272,9 @@ do_bootstrap() {
         if [ ! -e version ] || [ "$(cat version)" != "$bootstrap_opam_version" ]; then
             echo 'Bootstrap opam from historical release (non-Windows; Windows non-fdopen) ...'
             if command -v curl > /dev/null 2> /dev/null; then
-                curl -s -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
+                curl -s -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
             else
-                wget -q -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/v${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
+                wget -q -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
             fi
             tar tfz opam.tar.gz
             tar xfz opam.tar.gz "./staging-files/${dkml_host_abi}/"
