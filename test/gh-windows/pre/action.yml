@@ -1217,7 +1217,7 @@ runs:
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version chrome-trace "${PIN_CHROME_TRACE}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version cmdliner "${PIN_CMDLINER}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-bash "${PIN_CONF_BASH}"
-            opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-c++ "${PIN_CONF_C++}"
+            opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-c++ "${PIN_CONF_CPLUSPLUS}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-dkml-sys-opam "${PIN_CONF_DKML_SYS_OPAM}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-libX11 "${PIN_CONF_LIBX11}"
             opamrun pin add --switch "$do_pins_NAME"  --yes --no-action -k version conf-pkg-config "${PIN_CONF_PKG_CONFIG}"
