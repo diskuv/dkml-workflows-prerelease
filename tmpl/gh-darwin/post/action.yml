@@ -31,7 +31,6 @@ runs:
         add opam_root "$opam_root"
         add opam_root_cacheable "$opam_root_cacheable"
         add exe_ext "${exe_ext:-}"
-        add bootstrap_opam_version "${bootstrap_opam_version:-}"
         add ocaml_options "${ocaml_options:-}"
 
     - name: Teardown DkML build apparatus
