@@ -6,7 +6,6 @@ if(NOT DKML_BUMP_VERSION_PARTICIPANT_MODULE)
 endif()
 include(${DKML_BUMP_VERSION_PARTICIPANT_MODULE})
 
-DkMLBumpVersionParticipant_SetupDkmlReplace(src/scripts/setup-dkml.sh)
 DkMLBumpVersionParticipant_ModelReplace(src/logic/model.ml)
 DkMLBumpVersionParticipant_DuneProjectReplace(dune-project)
 DkMLReleaseParticipant_DuneBuildOpamFiles()
