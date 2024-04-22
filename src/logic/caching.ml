@@ -36,10 +36,8 @@ let cachekey_opambin ~read_script ~input ~matrix =
         (* The DEFAULT_DISKUV_OPAM_REPOSITORY_TAG is inside setup-dkml.sh. We just take the
            md5 of it so we implicitly have a dependency on DEFAULT_DISKUV_OPAM_REPOSITORY_TAG *)
         Digest.string script |> Digest.to_hex |> String.with_range ~len:6;
-        input "FDOPEN_OPAMEXE_BOOTSTRAP";
         matrix "dkml_host_abi";
         matrix "opam_abi";
-        matrix "bootstrap_opam_version";
       ]
 
 let cachekey_vsstudio ~input:_ ~matrix =

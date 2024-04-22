@@ -22,11 +22,9 @@ Table of Contents:
       - [SECONDARY\_SWITCH](#secondary_switch)
       - [CACHE\_PREFIX](#cache_prefix)
       - [PRIMARY\_SWITCH\_SKIP\_INSTALL](#primary_switch_skip_install)
-      - [FDOPEN\_OPAMEXE\_BOOTSTRAP](#fdopen_opamexe_bootstrap)
     - [Matrix Variables](#matrix-variables)
       - [gl\_image](#gl_image)
       - [gh\_os](#gh_os)
-      - [bootstrap\_opam\_version](#bootstrap_opam_version)
       - [opam\_root](#opam_root)
       - [vsstudio\_hostarch](#vsstudio_hostarch)
       - [vsstudio\_arch](#vsstudio_arch)
@@ -353,12 +351,6 @@ The prefix of the cache keys.
 
 When set to `true` no dkml-base-compiler will be installed in the `dkml` switch.
 
-#### FDOPEN_OPAMEXE_BOOTSTRAP
-
-Boolean. Either `true` or anything else (ex. `false`).
-
-Use opam.exe from fdopen on Windows. Typically only used when bootstrapping Opam for the first time. May be needed to solve '\"create_process\" failed on sleep: Bad file descriptor' which may need <https://github.com/ocaml/opam/commit/417b97d8cfada35682a0f4107eb2e4f9e24fba91>
-
 ### Matrix Variables
 
 #### gl_image
@@ -370,15 +362,6 @@ Linux always uses a [Docker-in-Docker image](https://docs.gitlab.com/ee/ci/docke
 #### gh_os
 
 The GitHub Actions operating system.
-
-#### bootstrap_opam_version
-
-We need an old working Opam; see BOOTSTRAPPING.md of dkml-installer repository.
-We use <https://github.com/diskuv/dkml-installer-ocaml/releases>
-to get an old one; you specify its version number here.
-
-Special value of 'os' means use the OS's package manager
-(yum/apt/brew).
 
 #### opam_root
 

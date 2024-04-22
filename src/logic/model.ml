@@ -14,6 +14,7 @@ let global_env_vars =
     ("DKML_VERSION", "2.1.1");
     ("DEFAULT_DISKUV_OPAM_REPOSITORY_TAG", "2.1.1");
     ("DEFAULT_DKML_COMPILER", "2.1.1");
+    ("BOOTSTRAP_OPAM_VERSION", "2.2.0-alpha-20221228");
 
     (* BEGIN pin-env-vars. DO NOT EDIT THE LINES IN THIS SECTION *)
     (* Managed by bump-packages.cmake *)
@@ -231,8 +232,6 @@ let required_msys2_packages =
          "xz";
        ])
 
-let bootstrap_opam_version = Jg_types.Tstr "2.2.0-beta2-20240409"
-
 let matrix =
   [
     (*
@@ -258,7 +257,6 @@ let matrix =
       ("msys2_system", Jg_types.Tstr {|MINGW32|});
       ("msys2_packages", Jg_types.Tstr {|mingw-w64-i686-pkg-config|});
       ("exe_ext", Jg_types.Tstr {|.exe|});
-      ("bootstrap_opam_version", bootstrap_opam_version);
       ("opam_abi", Jg_types.Tstr {|windows_x86|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
@@ -276,7 +274,6 @@ let matrix =
       ("msys2_system", Jg_types.Tstr {|CLANG64|});
       ("msys2_packages", Jg_types.Tstr {|mingw-w64-clang-x86_64-pkg-config|});
       ("exe_ext", Jg_types.Tstr {|.exe|});
-      ("bootstrap_opam_version", bootstrap_opam_version);
       ("opam_abi", Jg_types.Tstr {|windows_x86_64|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
@@ -328,7 +325,6 @@ let matrix =
       ("gh_os", Jg_types.Tstr "macos-latest");
       (* macos-13-xlarge is Apple Silicon. BUT NOT FREE: https://github.blog/2023-10-02-introducing-the-new-apple-silicon-powered-m1-macos-larger-runner-for-github-actions/ *)
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
-      ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|darwin_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|/Users/runner/.opam|});
       ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.ci/o|});
@@ -339,7 +335,6 @@ let matrix =
       ("no_gh", Jg_types.Tstr "true");
       ("gl_image", Jg_types.Tstr "macos-13-xcode-14");
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
-      ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|darwin_arm64|});
       ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.ci/o|});
@@ -389,7 +384,6 @@ let matrix =
       ("abi_pattern", Jg_types.Tstr {|manylinux2014-linux_x86|});
       ("gh_os", Jg_types.Tstr "ubuntu-latest");
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
-      ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86|});
       ("gh_opam_root", Jg_types.Tstr {|.ci/o|});
       ("gl_opam_root", Jg_types.Tstr {|.ci/o|});
@@ -402,7 +396,6 @@ let matrix =
     (* ("gh_os", ubuntu-latest
         ; ("abi_pattern", Jg_types.Tstr {|manylinux_2_24-linux_x86|})
         ; ("gh_unix_shell", Jg_types.Tstr {|sh|})
-        ; ("bootstrap_opam_version", bootstrap_opam_version)
         ; ("dkml_host_abi", Jg_types.Tstr {|linux_x86|})
         ; ("gh_opam_root", Jg_types.Tstr {|.ci/o|})
         ; ("gl_opam_root", Jg_types.Tstr {|.ci/o|})
@@ -414,7 +407,6 @@ let matrix =
       ("abi_pattern", Jg_types.Tstr {|manylinux2014-linux_x86_64|});
       ("gh_os", Jg_types.Tstr "ubuntu-latest");
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
-      ("bootstrap_opam_version", bootstrap_opam_version);
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|.ci/o|});
       ("gl_opam_root", Jg_types.Tstr {|.ci/o|});
@@ -519,7 +511,6 @@ end
         { name: "msys2_system", value: 'MINGW32' },
         { name: "msys2_packages", value: 'mingw-w64-i686-pkg-config' },
         { name: "exe_ext", value: '.exe' },
-        { name: "bootstrap_opam_version", value: '2.2.0-beta2-20240409' },
         { name: "opam_abi", value: 'windows_x86' },
         { name: "dkml_host_abi", value: 'windows_x86' },
         { name: "opam_root", value: '${CI_PROJECT_DIR}/.ci/o' },
@@ -584,7 +575,6 @@ let full_matrix_as_list ?must_support_gl ?must_support_gh ~allow_dkml_host_abi
       msys2_system: 'MINGW32',
       msys2_packages: 'mingw-w64-i686-pkg-config',
       exe_ext: '.exe',
-      bootstrap_opam_version: '2.2.0-beta2-20240409',
       opam_abi: 'windows_x86',
       dkml_host_abi: 'windows_x86',
       opam_root: '${CI_PROJECT_DIR}/.ci/o',

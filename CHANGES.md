@@ -1,7 +1,8 @@
 # Changes
 
-## Pending
+## 2.1.1
 
+- `bootstrap_opam_version` and `FDOPEN_OPAMEXE_BOOTSTRAP` are no longer part of CI matrix. The bootstrap opam version is now tied to the DkML release and always comes from dkml-component-opam's release assets.
 - Docfixes: Using PC backends uses new `.ci/dkml-compilers` folder, and is self-contained with an initial `CI Desktop` step.
 - Change GitLab Desktop script temporary directory to `.ci/sd4/tmp` so part of .gitignore created by `./dk dkml.workflow.compilers CI Desktop`.
 - Change GitLab macOS tags to `saas-macos-medium-m1` from `shared-macos-amd64`
