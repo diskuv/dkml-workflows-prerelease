@@ -24,6 +24,7 @@ export DKML_HOME=
 export DKML_VERSION='2.1.1'
 export DEFAULT_DISKUV_OPAM_REPOSITORY_TAG='2.1.1'
 export DEFAULT_DKML_COMPILER='2.1.1'
+export BOOTSTRAP_OPAM_VERSION='2.2.0-alpha-20221228'
 export PIN_ASTRING='0.8.5'
 export PIN_BASE='v0.16.1'
 export PIN_BASE64='3.5.1'
@@ -212,7 +213,6 @@ export dkml_host_os="darwin"
 export opam_root_cacheable="${PC_PROJECT_DIR}/.ci/o"
 export abi_pattern="macos-darwin_all-silicon"
 export no_gh="true"
-export bootstrap_opam_version="2.2.0-beta2-20240409"
 export dkml_host_abi="darwin_arm64"
 export opam_root="${PC_PROJECT_DIR}/.ci/o"
 
@@ -244,6 +244,7 @@ usage() {
   echo "  --DKML_VERSION=<value>. Defaults to: ${DKML_VERSION}" >&2
   echo "  --DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=<value>. Defaults to: ${DEFAULT_DISKUV_OPAM_REPOSITORY_TAG}" >&2
   echo "  --DEFAULT_DKML_COMPILER=<value>. Defaults to: ${DEFAULT_DKML_COMPILER}" >&2
+  echo "  --BOOTSTRAP_OPAM_VERSION=<value>. Defaults to: ${BOOTSTRAP_OPAM_VERSION}" >&2
   echo "  --PIN_ASTRING=<value>. Defaults to: ${PIN_ASTRING}" >&2
   echo "  --PIN_BASE=<value>. Defaults to: ${PIN_BASE}" >&2
   echo "  --PIN_BASE64=<value>. Defaults to: ${PIN_BASE64}" >&2
@@ -473,6 +474,8 @@ while getopts :h-: option; do
     DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=*) DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=${OPTARG#*=} ;;
     DEFAULT_DKML_COMPILER) fail "Option \"$OPTARG\" missing argument" ;;
     DEFAULT_DKML_COMPILER=*) DEFAULT_DKML_COMPILER=${OPTARG#*=} ;;
+    BOOTSTRAP_OPAM_VERSION) fail "Option \"$OPTARG\" missing argument" ;;
+    BOOTSTRAP_OPAM_VERSION=*) BOOTSTRAP_OPAM_VERSION=${OPTARG#*=} ;;
     PIN_ASTRING) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_ASTRING=*) PIN_ASTRING=${OPTARG#*=} ;;
     PIN_BASE) fail "Option \"$OPTARG\" missing argument" ;;
@@ -1093,9 +1096,6 @@ cat > .ci/sd4/run-setup-dkml.sh <<'end_of_script'
 #!/bin/sh
 set -euf
 
-# Constants
-SHA512_DEVNULL='cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e'
-
 setup_WORKSPACE_VARNAME=$1
 shift
 setup_WORKSPACE=$1
@@ -1193,7 +1193,6 @@ WORKSPACE=$setup_WORKSPACE
 ------
 Inputs
 ------
-FDOPEN_OPAMEXE_BOOTSTRAP=${FDOPEN_OPAMEXE_BOOTSTRAP:-}
 DISKUV_OPAM_REPOSITORY=${DISKUV_OPAM_REPOSITORY:-}
 DKML_COMPILER=${DKML_COMPILER:-}
 OCAML_COMPILER=${OCAML_COMPILER:-}
@@ -1205,18 +1204,18 @@ MANYLINUX=${MANYLINUX:-}
 DKML_HOME=${DKML_HOME:-}
 VERBOSE=${VERBOSE:-}
 .
--------------------
-Generated Constants
--------------------
+----------------------
+DkML Release Constants
+----------------------
 DKML_VERSION=$DKML_VERSION
 DEFAULT_DISKUV_OPAM_REPOSITORY_TAG=$DEFAULT_DISKUV_OPAM_REPOSITORY_TAG
 DEFAULT_DKML_COMPILER=$DEFAULT_DKML_COMPILER
+BOOTSTRAP_OPAM_VERSION=$BOOTSTRAP_OPAM_VERSION
 .
 ------
 Matrix
 ------
 dkml_host_abi=$dkml_host_abi
-bootstrap_opam_version=$bootstrap_opam_version
 abi_pattern=$abi_pattern
 opam_root=${opam_root}
 opam_root_cacheable=${opam_root_cacheable}
@@ -1257,122 +1256,26 @@ esac
 section_end setup-info
 
 do_bootstrap() {
-    # Bootstrap from historical release
-    runit_BOOTSTRAPPED=0
+    install -d .ci/sd4/bs
+    cd .ci/sd4/bs
 
-    #   Bootstrap opam from fdopen (Windows)
-    if [ "$runit_BOOTSTRAPPED" = 0 ] && [ "${FDOPEN_OPAMEXE_BOOTSTRAP:-}" = "true" ]; then
-        if [ -e .ci/sd4/opam64/bin/opam.exe ] && [ -e .ci/sd4/opam64/bin/opam-installer.exe ]; then
-            runit_BOOTSTRAPPED=1
+    if [ ! -e version ] || [ "$(cat version)" != "$BOOTSTRAP_OPAM_VERSION" ]; then
+        echo 'Bootstrap opam from dkml-component-opam release ...'
+        if command -v curl > /dev/null 2> /dev/null; then
+            curl -s -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/${BOOTSTRAP_OPAM_VERSION}/dkml-component-staging-opam.tar.gz"
         else
-            case "$dkml_host_abi" in
-            windows_*)
-                echo 'Bootstrap opam from fdopen (Windows) ...'
-                install -d .ci/sd4/bs/bin
-                wget -q -O "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz https://github.com/fdopen/opam-repository-mingw/releases/download/0.0.0.2/opam64.tar.xz
-
-                # this stalls: tar xCfJ "$setup_WORKSPACE"/.ci/sd4 "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz
-                xz -d "$setup_WORKSPACE"/.ci/sd4/opam64.tar.xz
-                tar xCf .ci/sd4 .ci/sd4/opam64.tar
-
-                rm -rf "$setup_WORKSPACE"/.ci/sd4/bs/bin/Opam.Runtime.amd64
-                mv "$setup_WORKSPACE"/.ci/sd4/opam64/bin/Opam.Runtime.amd64/ "$setup_WORKSPACE"/.ci/sd4/bs/bin/
-                mv "$setup_WORKSPACE"/.ci/sd4/opam64/bin/opam.exe "$setup_WORKSPACE"/.ci/sd4/bs/bin/
-                mv "$setup_WORKSPACE"/.ci/sd4/opam64/bin/opam-installer.exe "$setup_WORKSPACE"/.ci/sd4/bs/bin/
-
-                # diagnostics
-                ldd "$setup_WORKSPACE"/.ci/sd4/bs/bin/opam.exe
-                ldd "$setup_WORKSPACE"/.ci/sd4/bs/bin/opam-installer.exe
-
-                runit_BOOTSTRAPPED=1
-                ;;
-            esac
+            wget -q -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/${BOOTSTRAP_OPAM_VERSION}/dkml-component-staging-opam.tar.gz"
         fi
+        tar tfz opam.tar.gz
+        tar xfz opam.tar.gz "./staging-files/${dkml_host_abi}/"
+        rm -rf bin/
+        mv "staging-files/${dkml_host_abi}/bin" .
+        rm -rf "${abi_pattern}"
+        printf "%s" "${BOOTSTRAP_OPAM_VERSION}" >version
     fi
 
-    #   Bootstrap from historical release
-    if [ "$runit_BOOTSTRAPPED" = 0 ] && [ "$bootstrap_opam_version" != "os" ]; then
-        install -d .ci/sd4/bs
-        cd .ci/sd4/bs
-
-        if [ ! -e version ] || [ "$(cat version)" != "$bootstrap_opam_version" ]; then
-            echo 'Bootstrap opam from historical release (non-Windows; Windows non-fdopen) ...'
-            if command -v curl > /dev/null 2> /dev/null; then
-                curl -s -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
-            else
-                wget -q -O opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/${bootstrap_opam_version}/dkml-component-staging-opam.tar.gz"
-            fi
-            tar tfz opam.tar.gz
-            tar xfz opam.tar.gz "./staging-files/${dkml_host_abi}/"
-            rm -rf bin/
-            mv "staging-files/${dkml_host_abi}/bin" .
-            rm -rf "${abi_pattern}"
-            printf "%s" "${bootstrap_opam_version}" >version
-        fi
-
-        rm -f opam.tar.gz
-        cd ../../..
-
-        runit_BOOTSTRAPPED=1
-    fi
-
-    #   Bootstrap from package manager or GitHub ocaml/opam release
-    case "$runit_BOOTSTRAPPED,$bootstrap_opam_version,$dkml_host_abi" in
-    0,os,darwin_*)
-        if ! command -v opam > /dev/null 2> /dev/null; then
-            echo 'Bootstrap opam from package manager (macOS) ...'
-            brew install gpatch
-            brew install opam
-        fi
-        runit_BOOTSTRAPPED=1
-        ;;
-    0,os,linux_x86)
-        if [ ! -x .ci/sd4/bs/bin/opam ]; then
-            echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86) ...'
-            install -d .ci/sd4/bs/bin
-            if command -v curl > /dev/null 2> /dev/null; then
-                curl -s -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
-            else
-                wget -q -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-i686-linux
-            fi
-            sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
-            if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
-                sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
-                check="85a480d60e09a7d37fa0d0434ed97a3187434772ceb4e7e8faa5b06bc18423d004af3ad5849c7d35e72dca155103257fd6b1178872df8291583929eb8f884b6a"
-                test "$sha512" = "$check"
-                chmod +x .ci/sd4/bs/bin/opam.tmp
-                mv .ci/sd4/bs/bin/opam.tmp .ci/sd4/bs/bin/opam
-            else
-                echo "openssl 512 option unsupported."
-                exit 61
-            fi
-        fi
-        runit_BOOTSTRAPPED=1
-        ;;
-    0,os,linux_x86_64)
-        if [ ! -x .ci/sd4/bs/bin/opam ]; then
-            echo 'Bootstrap opam from GitHub ocaml/opam release (Linux x86_64) ...'
-            install -d .ci/sd4/bs/bin
-            if command -v curl > /dev/null 2> /dev/null; then
-                curl -s -L -o .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
-            else
-                wget -q -O .ci/sd4/bs/bin/opam.tmp https://github.com/ocaml/opam/releases/download/2.1.2/opam-2.1.2-x86_64-linux
-            fi
-            sha512_check=$(openssl sha512 2>&1 </dev/null | cut -f 2 -d ' ')
-            if [ "$SHA512_DEVNULL" = "$sha512_check" ]; then
-                sha512=$(openssl sha512 ".ci/sd4/bs/bin/opam.tmp" 2>/dev/null | cut -f 2 -d ' ')
-                check="c0657ecbd4dc212587a4da70c5ff0402df95d148867be0e1eb1be8863a2851015f191437c3c99b7c2b153fcaa56cac99169c76ec94c5787750d7a59cd1fbb68b"
-                test "$sha512" = "$check"
-                chmod +x .ci/sd4/bs/bin/opam.tmp
-                mv .ci/sd4/bs/bin/opam.tmp .ci/sd4/bs/bin/opam
-            else
-                echo "openssl 512 option unsupported."
-                exit 61
-            fi
-        fi
-        runit_BOOTSTRAPPED=1
-        ;;
-    esac
+    rm -f opam.tar.gz
+    cd ../../..
 }
 section_begin bootstrap-opam 'Bootstrap opam'
 do_bootstrap
@@ -1549,23 +1452,6 @@ do_get_opam_cache
 # Setup Opam
 
 do_write_opam_scripts() {
-    case "${FDOPEN_OPAMEXE_BOOTSTRAP:-},$dkml_host_abi" in
-    true,windows_*)
-        # With fdopen's opam.exe, 'os-distribution = "cygwinports"'. But native Windows opam.exe has 'os-distribution = "win32"'.
-        # But on Windows we always want MSYS2 or native Windows libraries, not Cygwin. If cygwinports then
-        # code like https://github.com/ocaml/opam-repository/blob/08cbb8258bd4bf30cd6f307c958911a29d537b54/packages/conf-pkg-config/conf-pkg-config.2/opam#L36
-        # will fail. So always set 'os-distribution = "win32"' on Windows.
-        PATCH_OS_DISTRIBUTION_WIN32=true
-        # With fdopen's opam.exe, no 'exe = ".exe"' is set because Cygwin does not need file extensions.
-        # Native Windows requires a .exe extension.
-        PATCH_EXE_WIN32=true
-        ;;
-    *)
-        PATCH_OS_DISTRIBUTION_WIN32=false
-        PATCH_EXE_WIN32=false
-        ;;
-    esac
-
     # ---------------------
     # Empty opam repository
     # ---------------------
@@ -1631,8 +1517,6 @@ set -euf
 export PATH="/work/.ci/local/bin:/work/.ci/sd4/bs/bin:\$PATH"
 export OPAMROOT=/work/${opam_root}
 export OPAMROOTISOK=1
-if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
-if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
 
 # Reset environment so no conflicts with a parent Opam or OCaml system
 unset OPAM_SWITCH_PREFIX
@@ -1752,8 +1636,6 @@ PROJECT_DIR=\$(cd "\$HERE"/../.. && pwd)
 export PATH="\${PROJECT_DIR}/.ci/local/bin:\${PROJECT_DIR}/.ci/sd4/bs/bin:\$PATH"
 export OPAMROOT='${opam_root}'
 export OPAMROOTISOK=1
-if [ "${PATCH_OS_DISTRIBUTION_WIN32}" = true ]; then export OPAMVAR_os_distribution=win32; fi
-if [ "${PATCH_EXE_WIN32}" = true ]; then export OPAMVAR_exe=.exe; fi
 
 # Reset environment so no conflicts with a parent Opam or OCaml system
 unset OPAM_SWITCH_PREFIX
