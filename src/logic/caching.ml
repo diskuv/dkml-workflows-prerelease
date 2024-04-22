@@ -28,7 +28,7 @@ let sanitize_key =
 let cachekey_compact ~input:_ ~matrix ~commitref =
   [ sanitize_key Version.dune_project_version; matrix "abi_pattern"; commitref ]
 
-let cachekey_opambin ~read_script ~input ~matrix =
+let cachekey_opambin ~read_script ~input:_ ~matrix =
   match read_script "setup-dkml.sh" with
   | None -> failwith "The script setup-dkml.sh was not found"
   | Some script ->
