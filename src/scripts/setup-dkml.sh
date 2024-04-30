@@ -164,7 +164,7 @@ do_bootstrap() {
     install -d .ci/sd4/bs
     cd .ci/sd4/bs
 
-    if [ ! -e version ] || [ "$(cat version)" != "$BOOTSTRAP_OPAM_VERSION" ]; then
+    if [ ! -e stamp ] || [ "$(cat stamp)" != "${BOOTSTRAP_OPAM_VERSION}${dkml_host_abi}" ]; then
         echo 'Bootstrap opam from dkml-component-opam release ...'
         if command -v curl > /dev/null 2> /dev/null; then
             curl -s -L -o opam.tar.gz "https://github.com/diskuv/dkml-component-opam/releases/download/${BOOTSTRAP_OPAM_VERSION}/dkml-component-staging-opam.tar.gz"
@@ -176,7 +176,7 @@ do_bootstrap() {
         rm -rf bin/
         mv "staging-files/${dkml_host_abi}/bin" .
         rm -rf "${abi_pattern}"
-        printf "%s" "${BOOTSTRAP_OPAM_VERSION}" >version
+        printf "%s" "${BOOTSTRAP_OPAM_VERSION}${dkml_host_abi}" >stamp
     fi
 
     rm -f opam.tar.gz
