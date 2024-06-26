@@ -2626,7 +2626,7 @@ if (("${env:GITLAB_CI}" -eq "true") -or ("${env:PC_CI}" -eq "true")) {
 
 # Locate Visual Studio (Windows)
 if ("${env:vsstudio_dir}" -eq "" -and (!(Test-Path -Path .ci/sd4/vsenv${ExportExt}) -or !(Test-Path -Path .ci/sd4/vsenv.ps1))) {
-    $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\.ci\sd4\g\dkml-runtime-distribution\src\windows"
+    $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
     Import-Module Machine
 
     $CompatibleVisualStudios = Get-CompatibleVisualStudios -ErrorIfNotFound
@@ -2716,7 +2716,7 @@ If ( "${env:VERBOSE}" -eq "true" ) {
     Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\Extension SDKs\WindowsDesktop"
   }
 
-  $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\.ci\sd4\g\dkml-runtime-distribution\src\windows"
+  $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
   Import-Module Machine
 
   $allinstances = Get-VSSetupInstance

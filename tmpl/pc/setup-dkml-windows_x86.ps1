@@ -249,7 +249,7 @@ If ( "${env:VERBOSE}" -eq "true" ) {
     Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\Extension SDKs\WindowsDesktop"
   }
 
-  $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\.ci\sd4\g\dkml-runtime-distribution\src\windows"
+  $env:PSModulePath += "$([System.IO.Path]::PathSeparator).ci\sd4\g\dkml-runtime-distribution\src\windows"
   Import-Module Machine
 
   $allinstances = Get-VSSetupInstance
