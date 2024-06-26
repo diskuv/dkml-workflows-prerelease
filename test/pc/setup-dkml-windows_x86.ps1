@@ -1291,6 +1291,9 @@ git_checkout() {
 
 section_begin checkout-info "Summary: code checkout"
 
+TAG_DKML_RUNTIME_DISTRIBUTION=${PIN_DKML_RUNTIME_DISTRIBUTION:-}
+TAG_DKML_RUNTIME_DISTRIBUTION=${TAG_DKML_RUNTIME_DISTRIBUTION:-$TAG_DKML_RUNTIME_DISTRIBUTION}
+
 # shellcheck disable=SC2154
 echo "
 ================
@@ -1317,6 +1320,7 @@ dkml_host_abi=$dkml_host_abi
 Constants
 ---------
 PIN_DKML_RUNTIME_DISTRIBUTION=${PIN_DKML_RUNTIME_DISTRIBUTION:-}
+TAG_DKML_RUNTIME_DISTRIBUTION=${TAG_DKML_RUNTIME_DISTRIBUTION}
 .
 "
 
@@ -1333,7 +1337,7 @@ install -d .ci/sd4/g
 case "$dkml_host_abi" in
 windows_*)
     section_begin checkout-dkml-runtime-distribution 'Checkout dkml-runtime-distribution'
-    git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "$PIN_DKML_RUNTIME_DISTRIBUTION"
+    git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "$TAG_DKML_RUNTIME_DISTRIBUTION"
     section_end checkout-dkml-runtime-distribution
     ;;
 esac

@@ -580,6 +580,9 @@ variables:
 
       section_begin checkout-info "Summary: code checkout"
 
+      TAG_DKML_RUNTIME_DISTRIBUTION=${PIN_DKML_RUNTIME_DISTRIBUTION:-}
+      TAG_DKML_RUNTIME_DISTRIBUTION=${TAG_DKML_RUNTIME_DISTRIBUTION:-$TAG_DKML_RUNTIME_DISTRIBUTION}
+
       # shellcheck disable=SC2154
       echo "
       ================
@@ -606,6 +609,7 @@ variables:
       Constants
       ---------
       PIN_DKML_RUNTIME_DISTRIBUTION=${PIN_DKML_RUNTIME_DISTRIBUTION:-}
+      TAG_DKML_RUNTIME_DISTRIBUTION=${TAG_DKML_RUNTIME_DISTRIBUTION}
       .
       "
 
@@ -622,7 +626,7 @@ variables:
       case "$dkml_host_abi" in
       windows_*)
           section_begin checkout-dkml-runtime-distribution 'Checkout dkml-runtime-distribution'
-          git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "$PIN_DKML_RUNTIME_DISTRIBUTION"
+          git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "$TAG_DKML_RUNTIME_DISTRIBUTION"
           section_end checkout-dkml-runtime-distribution
           ;;
       esac
@@ -2494,6 +2498,9 @@ variables:
 
       section_begin checkout-info "Summary: code checkout"
 
+      TAG_DKML_RUNTIME_DISTRIBUTION=${PIN_DKML_RUNTIME_DISTRIBUTION:-}
+      TAG_DKML_RUNTIME_DISTRIBUTION=${TAG_DKML_RUNTIME_DISTRIBUTION:-$TAG_DKML_RUNTIME_DISTRIBUTION}
+
       # shellcheck disable=SC2154
       echo "
       ================
@@ -2520,6 +2527,7 @@ variables:
       Constants
       ---------
       PIN_DKML_RUNTIME_DISTRIBUTION=${PIN_DKML_RUNTIME_DISTRIBUTION:-}
+      TAG_DKML_RUNTIME_DISTRIBUTION=${TAG_DKML_RUNTIME_DISTRIBUTION}
       .
       "
 
@@ -2536,7 +2544,7 @@ variables:
       case "$dkml_host_abi" in
       windows_*)
           section_begin checkout-dkml-runtime-distribution 'Checkout dkml-runtime-distribution'
-          git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "$PIN_DKML_RUNTIME_DISTRIBUTION"
+          git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "$TAG_DKML_RUNTIME_DISTRIBUTION"
           section_end checkout-dkml-runtime-distribution
           ;;
       esac
@@ -4123,6 +4131,9 @@ variables:
 
       section_begin checkout-info "Summary: code checkout"
 
+      TAG_DKML_RUNTIME_DISTRIBUTION=${PIN_DKML_RUNTIME_DISTRIBUTION:-}
+      TAG_DKML_RUNTIME_DISTRIBUTION=${TAG_DKML_RUNTIME_DISTRIBUTION:-$TAG_DKML_RUNTIME_DISTRIBUTION}
+
       # shellcheck disable=SC2154
       echo "
       ================
@@ -4149,6 +4160,7 @@ variables:
       Constants
       ---------
       PIN_DKML_RUNTIME_DISTRIBUTION=${PIN_DKML_RUNTIME_DISTRIBUTION:-}
+      TAG_DKML_RUNTIME_DISTRIBUTION=${TAG_DKML_RUNTIME_DISTRIBUTION}
       .
       "
 
@@ -4165,7 +4177,7 @@ variables:
       case "$dkml_host_abi" in
       windows_*)
           section_begin checkout-dkml-runtime-distribution 'Checkout dkml-runtime-distribution'
-          git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "$PIN_DKML_RUNTIME_DISTRIBUTION"
+          git_checkout dkml-runtime-distribution https://github.com/diskuv/dkml-runtime-distribution.git "$TAG_DKML_RUNTIME_DISTRIBUTION"
           section_end checkout-dkml-runtime-distribution
           ;;
       esac
