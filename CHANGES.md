@@ -7,6 +7,7 @@
 - Remove `FDOPEN_OPAMEXE_BOOTSTRAP` from GitHub and GitLab input variables to make room for `OCAML_OPAM_REPOSITORY` (GitHub only allows 10)
 - Switch from `shared-windows, window, windows-1809` GitLab CI runner to `saas-windows-medium-amd64` (Windows 2022).
   Confer: <https://about.gitlab.com/blog/2024/01/22/windows-2022-support-for-gitlab-saas-runners/>
+- Use OCaml 4.14.2 from DkML 2.1.1; allow non-DkML 4.14.2 compiler
 
 ## 2.1.1
 
