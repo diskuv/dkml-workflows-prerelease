@@ -1,5 +1,15 @@
 # Changes
 
+## 2.1.4
+
+- Add `dockcross_assemble_command` environment variable to inject a shell command into the Docker container during its build assembly.
+- bugfix: Update apt and yum while building dockcross container
+- Batch all opam pin operations. Fixes <https://gitlab.com/dkml/distributions/dkml/-/issues/29>
+
+## 2.1.3
+
+- Upgrade `actions/cache` and `actions/checkout` from v3 to v4
+
 ## 2.1.2
 
 - Use a fixed commit of [ocaml/opam-repository.git](https://github.com/ocaml/opam-repository.git) by default.
