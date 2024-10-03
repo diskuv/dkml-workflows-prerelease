@@ -5,6 +5,7 @@
 - Add `dockcross_assemble_command` environment variable to inject a shell command into the Docker container during its build assembly.
 - bugfix: Update apt and yum while building dockcross container
 - Batch all opam pin operations. Fixes <https://gitlab.com/dkml/distributions/dkml/-/issues/29>
+- Remove the first argument (`/work/.ci/sd4/deescalate`) when `docker_runner` is set in the environment. This is a breaking change for undocumented functionality.
 
 ## 2.1.3
 

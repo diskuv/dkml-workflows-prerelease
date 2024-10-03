@@ -522,7 +522,7 @@ EOF
         cat >.ci/sd4/run-with-env <<EOF
 #!/bin/sh
 set -euf
-exec ${docker_runner:-} /work/.ci/sd4/deescalate /work/.ci/sd4/run-in-docker "\$@"
+exec ${docker_runner:-} /work/.ci/sd4/run-in-docker "\$@"
 EOF
         chmod +x .ci/sd4/run-with-env
 
