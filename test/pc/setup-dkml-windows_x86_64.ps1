@@ -1975,7 +1975,7 @@ EOF
         cat >.ci/sd4/run-with-env <<EOF
 #!/bin/sh
 set -euf
-exec ${docker_runner:-docker run --rm --workdir /work} -v '\$PWD:/work' '$docker_image_id' /work/.ci/sd4/run-in-docker "\$@"
+exec ${docker_runner:-docker run --rm --workdir /work} -v "\$PWD:/work" '$docker_image_id' /work/.ci/sd4/run-in-docker "\$@"
 EOF
         chmod +x .ci/sd4/run-with-env
 
