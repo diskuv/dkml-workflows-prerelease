@@ -1204,17 +1204,17 @@ fi
 
 # -------------------------------------------------------------------
 
+docker_image_id=
 docker_fqin_preusername= # fully qualified image name (hostname[:port]/username/reponame[:tag]), the parts before the username (hostname[:port]/)
 if [ -n "${docker_registry:-}" ]; then
     docker_fqin_preusername="$docker_registry/"
 fi
 
 # Extend dockcross. https://github.com/dockcross/dockcross#how-to-extend-dockcross-images
-dockcross_image_id=
 dockcross_cli_image_args=
 if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     echo "Doing docker build"
-    section_begin docker-build "Summary: docker build --quiet --tag ${docker_fqin_preusername}dkml-workflows/dockcross"
+    section_begin dockcross-build "Summary: docker build --quiet --tag ${docker_fqin_preusername}dkml-workflows/dockcross"
 
     install -d .ci/sd4/docker-image
     #   Since GitLab CI limits environment variables to 255 characters, if you need to exceed that there are five (5)
@@ -1223,14 +1223,31 @@ if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
         "${dockcross_image:-}" "${docker_fqin_preusername}" \
         "${dockcross_packages_apt:-}" "${dockcross_packages_apt2:-}" "${dockcross_packages_apt3:-}" "${dockcross_packages_apt4:-}" "${dockcross_packages_apt5:-}" \
         "${dockcross_packages_yum:-}" "${dockcross_packages_yum2:-}" "${dockcross_packages_yum3:-}" "${dockcross_packages_yum4:-}" "${dockcross_packages_yum5:-}" \
-        "${dockcross_assemble_command:-true}" \
+        "${docker_assemble_command:-true}" \
         >.ci/sd4/docker-image/Dockerfile
     docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/dockcross:latest" .ci/sd4/docker-image
 
-    # Save image id to re-use for all remaining dockcross invocations
+    # Save image id to re-use for all remaining invocations
     docker images --format "{{.ID}} {{.CreatedAt}}" | sort -rk 2 | awk 'NR==1{print $1}' | tee .ci/sd4/docker-image-id
-    dockcross_image_id=$(cat .ci/sd4/docker-image-id)
-    dockcross_cli_image_args="--image $dockcross_image_id"
+    docker_image_id=$(cat .ci/sd4/docker-image-id)
+    dockcross_cli_image_args="--image $docker_image_id"
+
+    section_end dockcross-build
+fi
+
+# Extend docker_image.
+if [ "${in_docker:-}" = "true" ] && [ -n "${docker_image:-}" ]; then
+    echo "Doing docker build"
+    section_begin docker-build "Summary: docker build --quiet --tag ${docker_fqin_preusername}dkml-workflows/docker"
+
+    install -d .ci/sd4/docker-image
+    printf "FROM %s\nRUN %s" "$docker_image" "${docker_assemble_command:-true}" \
+        >.ci/sd4/docker-image/Dockerfile
+    docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/docker:latest" .ci/sd4/docker-image
+
+    # Save image id to re-use for all remaining invocations
+    docker images --format "{{.ID}} {{.CreatedAt}}" | sort -rk 2 | awk 'NR==1{print $1}' | tee .ci/sd4/docker-image-id
+    docker_image_id=$(cat .ci/sd4/docker-image-id)
 
     section_end docker-build
 fi
@@ -1295,10 +1312,11 @@ original_opam_root_cacheable=${original_opam_root_cacheable}
 unix_opam_root=${unix_opam_root}
 unix_opam_root_cacheable=${unix_opam_root_cacheable}
 docker_registry=${docker_registry:-}
+in_docker=${in_docker:-}
 dockcross_image=${dockcross_image:-}
 dockcross_run_extra_args=${dockcross_run_extra_args:-}
+docker_image=${docker_image:-}
 docker_runner=${docker_runner:-}
-in_docker=${in_docker:-}
 ocaml_options=${ocaml_options:-}
 .
 ----
@@ -1364,7 +1382,7 @@ do_get_dockcross() {
         section_begin get-dockcross 'Get dockcross binary (ManyLinux)'
         install -d .ci/sd4
         #   shellcheck disable=SC2086
-        docker run ${dockcross_run_extra_args:-} --rm "${dockcross_image_id}" >.ci/sd4/dockcross.gen
+        docker run ${dockcross_run_extra_args:-} --rm "${docker_image_id}" >.ci/sd4/dockcross.gen
 
         # PROBLEM 1
         # ---------
@@ -1460,7 +1478,7 @@ if [ "\$BUILDER_UID" = 0 ] && [ "\$BUILDER_GID" = 0 ]; then
     # Handle: dockcross --args "-v X:Y --platform P" --image "..." --
     # Confer: https://github.com/dockcross/dockcross/blob/96d87416f639af0204bdd42553e4b99315ca8476/imagefiles/dockcross#L97C1-L134
     ARG_ARGS=
-    ARG_IMAGE="${dockcross_image_id}"
+    ARG_IMAGE="${docker_image_id}"
     while [[ \$# != 0 ]]; do
         case \$1 in
             --)
@@ -1674,12 +1692,12 @@ EOF
         echo '___________________'
         do_tar_rf .ci/sd4/dist/run-with-env.tar .ci/sd4/run-with-env .ci/sd4/run-in-docker .ci/sd4/edr
 
-    elif [ "${in_docker:-}" = "true" ] && [ -n "${docker_runner:-}" ]; then
+    elif [ "${in_docker:-}" = "true" ] && [ -n "${docker_image:-}" ]; then
 
         cat >.ci/sd4/run-with-env <<EOF
 #!/bin/sh
 set -euf
-exec ${docker_runner:-} /work/.ci/sd4/deescalate /work/.ci/sd4/run-in-docker "\$@"
+exec ${docker_runner:-docker run --rm --workdir /work} -v '\$PWD:/work' '$docker_image_id' /work/.ci/sd4/run-in-docker "\$@"
 EOF
         chmod +x .ci/sd4/run-with-env
 

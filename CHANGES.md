@@ -2,10 +2,16 @@
 
 ## 2.1.4
 
-- Add `dockcross_assemble_command` environment variable to inject a shell command into the Docker container during its build assembly.
 - bugfix: Update apt and yum while building dockcross container
 - Batch all opam pin operations. Fixes <https://gitlab.com/dkml/distributions/dkml/-/issues/29>
-- Remove the first argument (`/work/.ci/sd4/deescalate`) when `docker_runner` is set in the environment. This is a breaking change for undocumented functionality.
+- Remove the first argument (`/work/.ci/sd4/deescalate`) when `docker_runner` is set in the environment.
+  And `docker_runner` will not be used unless `docker_image` is set (see below).
+  This is a breaking change for undocumented functionality.
+- Add `docker_assemble_command` environment variable to inject a shell command (anything that can go into a `RUN` Docker statement) into the Docker container during its build assembly.
+  - If `dockcross_image` is set, then the tag will be `${docker_registry/}dkml-workflows/dockcross:latest`
+  - If `docker_image` is set, then the tag will be `${docker_registry/}dkml-workflows/docker:latest` and the image id will be saved at `.ci/sd4/docker-image-id`.
+    The default `docker_runner`, which you can change, is `docker run --rm --workdir /work`.
+    A `-v "$(pwd):/work"` will be the first argument for `docker_runner`, the image id will be the second argument, and the command line (which assumes `/work` is mounted) will be the remainder of the arguments.
 
 ## 2.1.3
 
