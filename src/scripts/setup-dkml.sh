@@ -147,6 +147,7 @@ GIT_LOCATION=${GIT_LOCATION:-}
 Matrix
 ------
 dkml_host_abi=$dkml_host_abi
+dkml_target_abi=$dkml_target_abi
 abi_pattern=$abi_pattern
 opam_root=${opam_root}
 opam_root_cacheable=${opam_root_cacheable}
@@ -1180,6 +1181,7 @@ do_use_vsstudio() {
             echo "  [DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\"]" >>"$OPSC"
             echo "  [DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\"]" >>"$OPSC"
             echo "  [DKML_HOST_ABI = \"${dkml_host_abi}\"]" >>"$OPSC"
+            echo "  [DKML_TARGET_ABI = \"${dkml_target_abi}\"]" >>"$OPSC"
             echo ']' >>"$OPSC"
             cat "$OPSC" # print
             ;;
@@ -1193,6 +1195,7 @@ do_use_vsstudio() {
             opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
             opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
             opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
+            opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_TARGET_ABI = \"${dkml_target_abi}\""
             opamrun option --switch "$do_use_vsstudio_NAME" setenv # print
             ;;
         esac

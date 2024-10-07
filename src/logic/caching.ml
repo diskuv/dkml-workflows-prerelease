@@ -37,6 +37,7 @@ let cachekey_opambin ~read_script ~input:_ ~matrix =
            md5 of it so we implicitly have a dependency on DEFAULT_DISKUV_OPAM_REPOSITORY_TAG *)
         Digest.string script |> Digest.to_hex |> String.with_range ~len:6;
         matrix "dkml_host_abi";
+        matrix "dkml_target_abi";
         matrix "opam_abi";
       ]
 

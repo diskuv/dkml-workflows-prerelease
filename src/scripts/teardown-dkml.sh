@@ -41,11 +41,8 @@ VERBOSE=${VERBOSE:-}
 ------
 Matrix
 ------
-dkml_host_abi=$dkml_host_abi
 opam_root=${opam_root}
-opam_root_cacheable=${opam_root_cacheable}
 original_opam_root=${original_opam_root}
-original_opam_root_cacheable=${original_opam_root_cacheable}
 unix_opam_root=${unix_opam_root}
 unix_opam_root_cacheable=${unix_opam_root_cacheable}
 .

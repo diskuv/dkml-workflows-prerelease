@@ -140,6 +140,7 @@ Finished setup.
 
 To continue your testing, run:
   export dkml_host_abi='${dkml_host_abi}'
+  export dkml_target_abi='${dkml_target_abi}'
   export abi_pattern='${abi_pattern}'
   export opam_root='${opam_root}'
   export exe_ext='${exe_ext:-}'

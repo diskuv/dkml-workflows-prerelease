@@ -29,6 +29,7 @@ export DKML_HOME=
 #   nit: We use darwin_arm64 settings from gh/ and gl/, and then override to darwin_x86_64 since gh + gl only have darwin_arm64 settings.
 # autogen from pc_vars. only darwin_arm64{{ nl }}{% for (name,value) in pc_vars.darwin_arm64 %}export {{ name }}="{{ value }}"{{ nl }}{% endfor %}
 export dkml_host_abi="darwin_x86_64"
+export dkml_target_abi='darwin_x86_64'
 
 usage() {
   echo 'Setup DkML compiler on a desktop PC.' >&2

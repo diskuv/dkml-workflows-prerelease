@@ -294,6 +294,7 @@ To continue your testing, run in PowerShell:
   `$env:CHERE_INVOKING = "yes"
   `$env:MSYSTEM = "$env:msys2_system"
   `$env:dkml_host_abi = "$env:dkml_host_abi"
+  `$env:dkml_target_abi = "$env:dkml_target_abi"
   `$env:abi_pattern = "$env:abi_pattern"
   `$env:opam_root = "$env:opam_root"
   `$env:exe_ext = "$env:exe_ext"

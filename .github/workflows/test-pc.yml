@@ -15,10 +15,12 @@ jobs:
   setup-windows:
     strategy:
       fail-fast: true
-      matrix:
-        dkml_host_abi:
-          - windows_x86
-          - windows_x86_64
+      matrix:        
+        include:
+          - dkml_host_abi: windows_x86
+            dkml_target_abi: windows_x86
+          - dkml_host_abi: windows_x86_64
+            dkml_target_abi: windows_x86_64
     runs-on: windows-2019
     name: build / ${{ matrix.dkml_host_abi }}
 
@@ -33,8 +35,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        dkml_host_abi:
-          - linux_x86_64
+        include:
+        - dkml_host_abi: linux_x86_64
+          dkml_target_abi: linux_x86_64
     runs-on: ubuntu-latest
     name: build / ${{ matrix.dkml_host_abi }}
 
@@ -51,6 +54,7 @@ jobs:
       matrix:
         include:
           - dkml_host_abi: darwin_x86_64
+            dkml_target_abi: darwin_x86_64
             runs-on: macos-latest
           # macos-13-xlarge is NOT FREE even for Public projects as of 2023-11-25.
           # - dkml_host_abi: darwin_arm64

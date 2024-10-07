@@ -75,6 +75,7 @@ runs:
         }
 
         add dkml_host_abi "$dkml_host_abi"
+        add dkml_target_abi "$dkml_target_abi"
         add abi_pattern "$abi_pattern"
         add opam_root "$opam_root"
         add opam_root_cacheable "$opam_root_cacheable"

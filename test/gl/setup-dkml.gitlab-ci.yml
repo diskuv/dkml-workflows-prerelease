@@ -818,6 +818,7 @@ variables:
       Matrix
       ------
       dkml_host_abi=$dkml_host_abi
+      dkml_target_abi=$dkml_target_abi
       abi_pattern=$abi_pattern
       opam_root=${opam_root}
       opam_root_cacheable=${opam_root_cacheable}
@@ -1851,6 +1852,7 @@ variables:
                   echo "  [DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\"]" >>"$OPSC"
                   echo "  [DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\"]" >>"$OPSC"
                   echo "  [DKML_HOST_ABI = \"${dkml_host_abi}\"]" >>"$OPSC"
+                  echo "  [DKML_TARGET_ABI = \"${dkml_target_abi}\"]" >>"$OPSC"
                   echo ']' >>"$OPSC"
                   cat "$OPSC" # print
                   ;;
@@ -1864,6 +1866,7 @@ variables:
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_TARGET_ABI = \"${dkml_target_abi}\""
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv # print
                   ;;
               esac
@@ -2230,11 +2233,8 @@ variables:
       ------
       Matrix
       ------
-      dkml_host_abi=$dkml_host_abi
       opam_root=${opam_root}
-      opam_root_cacheable=${opam_root_cacheable}
       original_opam_root=${original_opam_root}
-      original_opam_root_cacheable=${original_opam_root_cacheable}
       unix_opam_root=${unix_opam_root}
       unix_opam_root_cacheable=${unix_opam_root_cacheable}
       .
@@ -2348,6 +2348,7 @@ variables:
       exe_ext: '.exe',
       opam_abi: 'windows_x86',
       dkml_host_abi: 'windows_x86',
+      dkml_target_abi: 'windows_x86',
       opam_root: 'C:/o',
       vsstudio_hostarch: 'x64',
       vsstudio_arch: 'x86',
@@ -2368,6 +2369,7 @@ variables:
       exe_ext: '.exe',
       opam_abi: 'windows_x86_64',
       dkml_host_abi: 'windows_x86_64',
+      dkml_target_abi: 'windows_x86_64',
       opam_root: 'C:/o',
       vsstudio_hostarch: 'x64',
       vsstudio_arch: 'x64' }
@@ -2389,6 +2391,7 @@ variables:
         exe_ext: '.exe',
         opam_abi: 'windows_x86',
         dkml_host_abi: 'windows_x86',
+        dkml_target_abi: 'windows_x86',
         opam_root: 'C:/o',
         vsstudio_hostarch: 'x64',
         vsstudio_arch: 'x86',
@@ -2402,6 +2405,7 @@ variables:
         exe_ext: '.exe',
         opam_abi: 'windows_x86_64',
         dkml_host_abi: 'windows_x86_64',
+        dkml_target_abi: 'windows_x86_64',
         opam_root: 'C:/o',
         vsstudio_hostarch: 'x64',
         vsstudio_arch: 'x64' },
@@ -2419,6 +2423,7 @@ variables:
         no_gh: 'true',
         gl_image: 'macos-13-xcode-14',
         dkml_host_abi: 'darwin_arm64',
+        dkml_target_abi: 'darwin_arm64',
         opam_root: '${CI_PROJECT_DIR}/.ci/o' },
         
     ]
@@ -2847,6 +2852,7 @@ variables:
       Matrix
       ------
       dkml_host_abi=$dkml_host_abi
+      dkml_target_abi=$dkml_target_abi
       abi_pattern=$abi_pattern
       opam_root=${opam_root}
       opam_root_cacheable=${opam_root_cacheable}
@@ -3880,6 +3886,7 @@ variables:
                   echo "  [DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\"]" >>"$OPSC"
                   echo "  [DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\"]" >>"$OPSC"
                   echo "  [DKML_HOST_ABI = \"${dkml_host_abi}\"]" >>"$OPSC"
+                  echo "  [DKML_TARGET_ABI = \"${dkml_target_abi}\"]" >>"$OPSC"
                   echo ']' >>"$OPSC"
                   cat "$OPSC" # print
                   ;;
@@ -3893,6 +3900,7 @@ variables:
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_TARGET_ABI = \"${dkml_target_abi}\""
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv # print
                   ;;
               esac
@@ -4058,11 +4066,8 @@ variables:
       ------
       Matrix
       ------
-      dkml_host_abi=$dkml_host_abi
       opam_root=${opam_root}
-      opam_root_cacheable=${opam_root_cacheable}
       original_opam_root=${original_opam_root}
-      original_opam_root_cacheable=${original_opam_root_cacheable}
       unix_opam_root=${unix_opam_root}
       unix_opam_root_cacheable=${unix_opam_root_cacheable}
       .
@@ -4594,6 +4599,7 @@ variables:
       Matrix
       ------
       dkml_host_abi=$dkml_host_abi
+      dkml_target_abi=$dkml_target_abi
       abi_pattern=$abi_pattern
       opam_root=${opam_root}
       opam_root_cacheable=${opam_root_cacheable}
@@ -5627,6 +5633,7 @@ variables:
                   echo "  [DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\"]" >>"$OPSC"
                   echo "  [DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\"]" >>"$OPSC"
                   echo "  [DKML_HOST_ABI = \"${dkml_host_abi}\"]" >>"$OPSC"
+                  echo "  [DKML_TARGET_ABI = \"${dkml_target_abi}\"]" >>"$OPSC"
                   echo ']' >>"$OPSC"
                   cat "$OPSC" # print
                   ;;
@@ -5640,6 +5647,7 @@ variables:
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
+                  opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_TARGET_ABI = \"${dkml_target_abi}\""
                   opamrun option --switch "$do_use_vsstudio_NAME" setenv # print
                   ;;
               esac
@@ -5805,11 +5813,8 @@ variables:
       ------
       Matrix
       ------
-      dkml_host_abi=$dkml_host_abi
       opam_root=${opam_root}
-      opam_root_cacheable=${opam_root_cacheable}
       original_opam_root=${original_opam_root}
-      original_opam_root_cacheable=${original_opam_root_cacheable}
       unix_opam_root=${unix_opam_root}
       unix_opam_root_cacheable=${unix_opam_root_cacheable}
       .
@@ -5906,6 +5911,7 @@ variables:
         opam_root_cacheable: '.ci/o',
         abi_pattern: 'manylinux2014-linux_x86',
         dkml_host_abi: 'linux_x86',
+        dkml_target_abi: 'linux_x86',
         opam_root: '.ci/o',
         in_docker: 'true',
         dockcross_image: 'dockcross/manylinux2014-x86',
@@ -5915,6 +5921,7 @@ variables:
         opam_root_cacheable: '.ci/o',
         abi_pattern: 'manylinux2014-linux_x86_64',
         dkml_host_abi: 'linux_x86_64',
+        dkml_target_abi: 'linux_x86_64',
         opam_root: '.ci/o',
         dockcross_image: 'dockcross/manylinux2014-x64',
         dockcross_run_extra_args: '--platform linux/amd64',

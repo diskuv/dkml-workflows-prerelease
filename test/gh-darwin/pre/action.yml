@@ -67,6 +67,7 @@ runs:
         gh_os='macos-latest'
         gh_unix_shell='sh'
         dkml_host_abi='darwin_x86_64'
+        dkml_target_abi='darwin_x86_64'
         opam_root='/Users/runner/.opam'
         #
         #   note: All Darwin machines can cross-compile so they are equal except [dkml_host_abi].
@@ -77,6 +78,7 @@ runs:
         }
 
         add dkml_host_abi "$dkml_host_abi"
+        add dkml_target_abi "$dkml_target_abi"
         add abi_pattern "$abi_pattern"
         add opam_root "$opam_root"
         add opam_root_cacheable "$opam_root_cacheable"
@@ -506,6 +508,7 @@ runs:
         Matrix
         ------
         dkml_host_abi=$dkml_host_abi
+        dkml_target_abi=$dkml_target_abi
         abi_pattern=$abi_pattern
         opam_root=${opam_root}
         opam_root_cacheable=${opam_root_cacheable}
@@ -1539,6 +1542,7 @@ runs:
                     echo "  [DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\"]" >>"$OPSC"
                     echo "  [DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\"]" >>"$OPSC"
                     echo "  [DKML_HOST_ABI = \"${dkml_host_abi}\"]" >>"$OPSC"
+                    echo "  [DKML_TARGET_ABI = \"${dkml_target_abi}\"]" >>"$OPSC"
                     echo ']' >>"$OPSC"
                     cat "$OPSC" # print
                     ;;
@@ -1552,6 +1556,7 @@ runs:
                     opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
                     opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
                     opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
+                    opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_TARGET_ABI = \"${dkml_target_abi}\""
                     opamrun option --switch "$do_use_vsstudio_NAME" setenv # print
                     ;;
                 esac
@@ -1708,11 +1713,8 @@ runs:
         ------
         Matrix
         ------
-        dkml_host_abi=$dkml_host_abi
         opam_root=${opam_root}
-        opam_root_cacheable=${opam_root_cacheable}
         original_opam_root=${original_opam_root}
-        original_opam_root_cacheable=${original_opam_root_cacheable}
         unix_opam_root=${unix_opam_root}
         unix_opam_root_cacheable=${unix_opam_root_cacheable}
         .
@@ -1805,7 +1807,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo 'ba41bf-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}' > .ci/sd4/cachekey.opam.binaries
+        echo '72fb2c-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.dkml_target_abi }}-${{ steps.full_matrix_vars.outputs.opam_abi }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 

@@ -267,6 +267,7 @@ let matrix =
       ("exe_ext", Jg_types.Tstr {|.exe|});
       ("opam_abi", Jg_types.Tstr {|windows_x86|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86|});
+      ("dkml_target_abi", Jg_types.Tstr {|windows_x86|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
       ("gl_opam_root", Jg_types.Tstr {|C:/o|});
       ("gl_opam_root_cacheable", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
@@ -284,6 +285,7 @@ let matrix =
       ("exe_ext", Jg_types.Tstr {|.exe|});
       ("opam_abi", Jg_types.Tstr {|windows_x86_64|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|});
+      ("dkml_target_abi", Jg_types.Tstr {|windows_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
       ("gl_opam_root", Jg_types.Tstr {|C:/o|});
       ("gl_opam_root_cacheable", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
@@ -334,6 +336,7 @@ let matrix =
       (* macos-13-xlarge is Apple Silicon. BUT NOT FREE: https://github.blog/2023-10-02-introducing-the-new-apple-silicon-powered-m1-macos-larger-runner-for-github-actions/ *)
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("dkml_host_abi", Jg_types.Tstr {|darwin_x86_64|});
+      ("dkml_target_abi", Jg_types.Tstr {|darwin_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|/Users/runner/.opam|});
       ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.ci/o|});
     ];
@@ -344,6 +347,7 @@ let matrix =
       ("gl_image", Jg_types.Tstr "macos-13-xcode-14");
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("dkml_host_abi", Jg_types.Tstr {|darwin_arm64|});
+      ("dkml_target_abi", Jg_types.Tstr {|darwin_arm64|});
       ("gl_opam_root", Jg_types.Tstr {|${CI_PROJECT_DIR}/.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|${PC_PROJECT_DIR}/.ci/o|});
     ]
@@ -393,6 +397,7 @@ let matrix =
       ("gh_os", Jg_types.Tstr "ubuntu-latest");
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86|});
+      ("dkml_target_abi", Jg_types.Tstr {|linux_x86|});
       ("gh_opam_root", Jg_types.Tstr {|.ci/o|});
       ("gl_opam_root", Jg_types.Tstr {|.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|.ci/o|});
@@ -416,6 +421,7 @@ let matrix =
       ("gh_os", Jg_types.Tstr "ubuntu-latest");
       ("gh_unix_shell", Jg_types.Tstr {|sh|});
       ("dkml_host_abi", Jg_types.Tstr {|linux_x86_64|});
+      ("dkml_target_abi", Jg_types.Tstr {|linux_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|.ci/o|});
       ("gl_opam_root", Jg_types.Tstr {|.ci/o|});
       ("pc_opam_root", Jg_types.Tstr {|.ci/o|});
@@ -431,6 +437,7 @@ module Aggregate = struct
   type t = {
     mutable dkml_host_os_opt : Jg_types.tvalue option;
     mutable dkml_host_abi_opt : string option;
+    mutable dkml_target_abi_opt : string option;
     mutable opam_root_opt : string option;
     mutable opam_root_cacheable_opt : string option;
     mutable supports_gh : bool;
@@ -441,6 +448,7 @@ module Aggregate = struct
     {
       dkml_host_os_opt = None;
       dkml_host_abi_opt = None;
+      dkml_target_abi_opt = None;
       opam_root_opt = None;
       opam_root_cacheable_opt = None;
       supports_gh = true;
@@ -457,6 +465,7 @@ module Aggregate = struct
     (* Capture scalar values *)
     (match name with
     | "dkml_host_abi" -> t.dkml_host_abi_opt <- value_as_string
+    | "dkml_target_abi" -> t.dkml_target_abi_opt <- value_as_string
     | "opam_root" -> t.opam_root_opt <- value_as_string
     | "opam_root_cacheable" -> t.opam_root_cacheable_opt <- value_as_string
     | "no_gh" -> t.supports_gh <- false
@@ -469,6 +478,7 @@ module Aggregate = struct
     | _ -> ()
 
   let dkml_host_abi_opt t = t.dkml_host_abi_opt
+  let dkml_target_abi_opt t = t.dkml_target_abi_opt
   let opam_root_opt t = t.opam_root_opt
   let opam_root_cacheable_opt t = t.opam_root_cacheable_opt
   let supports_gl t = t.supports_gl
@@ -478,11 +488,13 @@ module Aggregate = struct
     match
       ( t.dkml_host_os_opt,
         t.dkml_host_abi_opt,
+        t.dkml_target_abi_opt,
         t.opam_root_opt,
         t.opam_root_cacheable_opt )
     with
     | ( Some dkml_host_os,
         Some dkml_host_abi,
+        Some dkml_target_abi,
         Some opam_root,
         opam_root_cacheable_opt ) ->
         let opam_root_cacheable =
@@ -492,19 +504,23 @@ module Aggregate = struct
         in
         [
           ("dkml_host_abi", Jg_types.Tstr dkml_host_abi);
+          ("dkml_target_abi", Jg_types.Tstr dkml_target_abi);
           ("dkml_host_os", dkml_host_os);
           ("opam_root", Jg_types.Tstr opam_root);
           ("opam_root_cacheable", Jg_types.Tstr opam_root_cacheable);
         ]
-    | Some _, None, Some _, _ ->
+    | Some _, None, _, Some _, _ ->
         failwith "Expected dkml_host_abi would be found"
-    | Some _, Some _, None, _ -> failwith "Expected opam_root would be found"
-    | None, Some _, Some _, _ ->
+    | Some _, Some _, None, Some _, _ ->
+        failwith "Expected dkml_target_abi would be found"
+    | Some _, Some _, Some _, None, _ ->
+        failwith "Expected opam_root would be found"
+    | None, Some _, Some _, Some _, _ ->
         failwith "Expected dkml_host_os would be derived"
     | _ ->
         failwith
-          "Expected dkml_host_abi and opam_root would be found and \
-           dkml_host_os would be derived"
+          "Expected dkml_host_abi, dkml_target_abi and opam_root would be \
+           found and dkml_host_os would be derived"
 end
 
 (**
@@ -521,6 +537,7 @@ end
         { name: "exe_ext", value: '.exe' },
         { name: "opam_abi", value: 'windows_x86' },
         { name: "dkml_host_abi", value: 'windows_x86' },
+        { name: "dkml_target_abi", value: 'windows_x86' },
         { name: "opam_root", value: '${CI_PROJECT_DIR}/.ci/o' },
         { name: "vsstudio_hostarch", value: 'x64' },
         { name: "vsstudio_arch", value: 'x86' },
@@ -528,6 +545,7 @@ end
         ...
       ],
       dkml_host_abi: "windows_x86",
+      dkml_target_abi: "windows_x86",
       dkml_host_os: "windows",
       opam_root: "${CI_PROJECT_DIR}/.ci/o",
       opam_root_cacheable: "${CI_PROJECT_DIR}/.ci/o",
@@ -585,6 +603,7 @@ let full_matrix_as_list ?must_support_gl ?must_support_gh ~allow_dkml_host_abi
       exe_ext: '.exe',
       opam_abi: 'windows_x86',
       dkml_host_abi: 'windows_x86',
+      dkml_target_abi: 'windows_x86',
       opam_root: '${CI_PROJECT_DIR}/.ci/o',
       vsstudio_hostarch: 'x64',
       vsstudio_arch: 'x86',
@@ -611,8 +630,10 @@ let vars_as_object ?must_support_gl ?must_support_gh ~allow_dkml_host_abi
       (function
         | Jg_types.Tobj
             [
+              (* We are using brittle pattern matching ... the order must be the same as the original. *)
               ("vars", Jg_types.Tlist vars);
               ("dkml_host_abi", Jg_types.Tstr dkml_host_abi);
+              ("dkml_target_abi", Jg_types.Tstr _dkml_target_abi);
               ("dkml_host_os", Jg_types.Tstr dkml_host_os);
               ("opam_root", Jg_types.Tstr _opam_root);
               ("opam_root_cacheable", Jg_types.Tstr opam_root_cacheable);
@@ -635,8 +656,9 @@ let vars_as_object ?must_support_gl ?must_support_gh ~allow_dkml_host_abi
         | _ ->
             failwith
               "Expecting [('vars', Tlist varlist); ('dkml_host_abi', ...); \
-               ('dkml_host_os', ...); ('opam_root', ...); \
-               ('opam_root_cacheable', ...); ...] where vars is the first item")
+               ('dkml_target_abi', ...); ('dkml_host_os', ...); ('opam_root', \
+               ...); ('opam_root_cacheable', ...); ...] where vars is the \
+               first item")
       matrix
   in
   let f_vars_to_obj = function

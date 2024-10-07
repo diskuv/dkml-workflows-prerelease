@@ -12,6 +12,7 @@
   - If `docker_image` is set, then the tag will be `${docker_registry/}dkml-workflows/docker:latest` and the image id will be saved at `.ci/sd4/docker-image-id`.
     The default `docker_runner`, which you can change, is `docker run --rm --workdir /work`.
     A `-v "$(pwd):/work"` will be the first argument for `docker_runner`, the image id will be the second argument, and the command line (which assumes `/work` is mounted) will be the remainder of the arguments.
+- Add `dkml_target_abi` to the test matrix
 
 ## 2.1.3
 

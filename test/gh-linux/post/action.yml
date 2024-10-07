@@ -27,6 +27,7 @@ runs:
           gh_os='ubuntu-latest';
           gh_unix_shell='sh';
           dkml_host_abi='linux_x86';
+          dkml_target_abi='linux_x86';
           opam_root='.ci/o';
           in_docker='true';
           dockcross_image='dockcross/manylinux2014-x86';
@@ -39,6 +40,7 @@ runs:
           gh_os='ubuntu-latest';
           gh_unix_shell='sh';
           dkml_host_abi='linux_x86_64';
+          dkml_target_abi='linux_x86_64';
           opam_root='.ci/o';
           dockcross_image='dockcross/manylinux2014-x64';
           dockcross_run_extra_args='--platform linux/amd64';
@@ -52,6 +54,7 @@ runs:
         }
 
         add dkml_host_abi "$dkml_host_abi"
+        add dkml_target_abi "$dkml_target_abi"
         add abi_pattern "$abi_pattern"
         add opam_root "$opam_root"
         add opam_root_cacheable "$opam_root_cacheable"

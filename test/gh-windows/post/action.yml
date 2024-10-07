@@ -37,6 +37,7 @@ runs:
           exe_ext='.exe';
           opam_abi='windows_x86';
           dkml_host_abi='windows_x86';
+          dkml_target_abi='windows_x86';
           opam_root='D:/.opam';
           vsstudio_hostarch='x64';
           vsstudio_arch='x86';
@@ -53,6 +54,7 @@ runs:
           exe_ext='.exe';
           opam_abi='windows_x86_64';
           dkml_host_abi='windows_x86_64';
+          dkml_target_abi='windows_x86_64';
           opam_root='D:/.opam';
           vsstudio_hostarch='x64';
           vsstudio_arch='x64' ;;
@@ -65,6 +67,7 @@ runs:
         }
 
         add dkml_host_abi "$dkml_host_abi"
+        add dkml_target_abi "$dkml_target_abi"
         add abi_pattern "$abi_pattern"
         add opam_root "$opam_root"
         add opam_root_cacheable "$opam_root_cacheable"

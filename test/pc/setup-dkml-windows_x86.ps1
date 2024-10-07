@@ -900,6 +900,7 @@ $env:msys2_packages = "mingw-w64-i686-pkg-config"
 $env:exe_ext = ".exe"
 $env:opam_abi = "windows_x86"
 $env:dkml_host_abi = "windows_x86"
+$env:dkml_target_abi = "windows_x86"
 $env:opam_root = "${env:PC_PROJECT_DIR}/.ci/o"
 $env:vsstudio_hostarch = "x64"
 $env:vsstudio_arch = "x86"
@@ -1583,6 +1584,7 @@ GIT_LOCATION=${GIT_LOCATION:-}
 Matrix
 ------
 dkml_host_abi=$dkml_host_abi
+dkml_target_abi=$dkml_target_abi
 abi_pattern=$abi_pattern
 opam_root=${opam_root}
 opam_root_cacheable=${opam_root_cacheable}
@@ -2616,6 +2618,7 @@ do_use_vsstudio() {
             echo "  [DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\"]" >>"$OPSC"
             echo "  [DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\"]" >>"$OPSC"
             echo "  [DKML_HOST_ABI = \"${dkml_host_abi}\"]" >>"$OPSC"
+            echo "  [DKML_TARGET_ABI = \"${dkml_target_abi}\"]" >>"$OPSC"
             echo ']' >>"$OPSC"
             cat "$OPSC" # print
             ;;
@@ -2629,6 +2632,7 @@ do_use_vsstudio() {
             opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_MSVSPREFERENCE = \"$E_VS_MSVSPREFERENCE\""
             opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_COMPILE_VS_CMAKEGENERATOR = \"$E_VS_CMAKEGENERATOR\""
             opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_HOST_ABI = \"${dkml_host_abi}\""
+            opamrun option --switch "$do_use_vsstudio_NAME" setenv+="DKML_TARGET_ABI = \"${dkml_target_abi}\""
             opamrun option --switch "$do_use_vsstudio_NAME" setenv # print
             ;;
         esac
@@ -2929,6 +2933,7 @@ To continue your testing, run in PowerShell:
   `$env:CHERE_INVOKING = "yes"
   `$env:MSYSTEM = "$env:msys2_system"
   `$env:dkml_host_abi = "$env:dkml_host_abi"
+  `$env:dkml_target_abi = "$env:dkml_target_abi"
   `$env:abi_pattern = "$env:abi_pattern"
   `$env:opam_root = "$env:opam_root"
   `$env:exe_ext = "$env:exe_ext"
