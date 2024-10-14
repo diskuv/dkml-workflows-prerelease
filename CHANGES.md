@@ -13,6 +13,7 @@
     The default `docker_runner`, which you can change, is `docker run --rm --workdir /work`.
     A `-v "$(pwd):/work"` will be the first argument for `docker_runner`, the image id will be the second argument, and the command line (which assumes `/work` is mounted) will be the remainder of the arguments.
 - Add `dkml_target_abi` to the test matrix
+- Add `dkml-target-abi-<TARGET>` and `dkml-host-abi-<HOST>` when installing `dkml-base-compiler`. Related: Remove `ocaml_options = "ocaml-option-32bit"` for `windows_x86` matrix item that was now unused in dkml-base-compiler.
 
 ## 2.1.3
 

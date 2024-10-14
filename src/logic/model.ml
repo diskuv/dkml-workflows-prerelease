@@ -274,7 +274,6 @@ let matrix =
       ("pc_opam_root", Jg_types.Tstr {|${env:PC_PROJECT_DIR}/.ci/o|});
       ("vsstudio_hostarch", Jg_types.Tstr {|x64|});
       ("vsstudio_arch", Jg_types.Tstr {|x86|});
-      ("ocaml_options", Jg_types.Tstr {|ocaml-option-32bit|});
     ];
     [
       ("abi_pattern", Jg_types.Tstr {|win32-windows_x86_64|});

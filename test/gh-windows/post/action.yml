@@ -40,8 +40,7 @@ runs:
           dkml_target_abi='windows_x86';
           opam_root='D:/.opam';
           vsstudio_hostarch='x64';
-          vsstudio_arch='x86';
-          ocaml_options='ocaml-option-32bit' ;;
+          vsstudio_arch='x86' ;;
           
         windows_x86_64)
           dkml_host_os='windows';

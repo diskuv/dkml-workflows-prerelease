@@ -904,7 +904,6 @@ $env:dkml_target_abi = "windows_x86"
 $env:opam_root = "${env:PC_PROJECT_DIR}/.ci/o"
 $env:vsstudio_hostarch = "x64"
 $env:vsstudio_arch = "x86"
-$env:ocaml_options = "ocaml-option-32bit"
 
 
 # Set environment variables
@@ -2717,7 +2716,7 @@ do_install_compiler() {
     section_begin "install-compiler-$do_install_compiler_NAME" "Install OCaml compiler for $do_install_compiler_NAME switch"
     opamrun pin list --switch "$do_install_compiler_NAME"
     # shellcheck disable=SC2086
-    opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain ${ocaml_options:-}
+    opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain "dkml-host-abi-${dkml_host_abi}" "dkml-target-abi-${dkml_target_abi}" ${ocaml_options:-}
     section_end "install-compiler-$do_install_compiler_NAME"
 }
 do_summary() {
