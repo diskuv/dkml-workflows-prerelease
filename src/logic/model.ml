@@ -265,7 +265,6 @@ let matrix =
       ("msys2_system", Jg_types.Tstr {|MINGW32|});
       ("msys2_packages", Jg_types.Tstr {|mingw-w64-i686-pkg-config|});
       ("exe_ext", Jg_types.Tstr {|.exe|});
-      ("opam_abi", Jg_types.Tstr {|windows_x86|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86|});
       ("dkml_target_abi", Jg_types.Tstr {|windows_x86|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
@@ -282,7 +281,6 @@ let matrix =
       ("msys2_system", Jg_types.Tstr {|CLANG64|});
       ("msys2_packages", Jg_types.Tstr {|mingw-w64-clang-x86_64-pkg-config|});
       ("exe_ext", Jg_types.Tstr {|.exe|});
-      ("opam_abi", Jg_types.Tstr {|windows_x86_64|});
       ("dkml_host_abi", Jg_types.Tstr {|windows_x86_64|});
       ("dkml_target_abi", Jg_types.Tstr {|windows_x86_64|});
       ("gh_opam_root", Jg_types.Tstr {|D:/.opam|});
@@ -534,13 +532,11 @@ end
         { name: "msys2_system", value: 'MINGW32' },
         { name: "msys2_packages", value: 'mingw-w64-i686-pkg-config' },
         { name: "exe_ext", value: '.exe' },
-        { name: "opam_abi", value: 'windows_x86' },
         { name: "dkml_host_abi", value: 'windows_x86' },
         { name: "dkml_target_abi", value: 'windows_x86' },
         { name: "opam_root", value: '${CI_PROJECT_DIR}/.ci/o' },
         { name: "vsstudio_hostarch", value: 'x64' },
         { name: "vsstudio_arch", value: 'x86' },
-        { name: "ocaml_options", value: 'ocaml-option-32bit' },
         ...
       ],
       dkml_host_abi: "windows_x86",
@@ -600,13 +596,11 @@ let full_matrix_as_list ?must_support_gl ?must_support_gh ~allow_dkml_host_abi
       msys2_system: 'MINGW32',
       msys2_packages: 'mingw-w64-i686-pkg-config',
       exe_ext: '.exe',
-      opam_abi: 'windows_x86',
       dkml_host_abi: 'windows_x86',
       dkml_target_abi: 'windows_x86',
       opam_root: '${CI_PROJECT_DIR}/.ci/o',
       vsstudio_hostarch: 'x64',
-      vsstudio_arch: 'x86',
-      ocaml_options: 'ocaml-option-32bit' }
+      vsstudio_arch: 'x86' }
   v}
 *)
 let vars_as_object ?must_support_gl ?must_support_gh ~allow_dkml_host_abi

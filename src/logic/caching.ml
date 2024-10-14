@@ -38,7 +38,6 @@ let cachekey_opambin ~read_script ~input:_ ~matrix =
         Digest.string script |> Digest.to_hex |> String.with_range ~len:6;
         matrix "dkml_host_abi";
         matrix "dkml_target_abi";
-        matrix "opam_abi";
       ]
 
 let cachekey_vsstudio ~input:_ ~matrix =
