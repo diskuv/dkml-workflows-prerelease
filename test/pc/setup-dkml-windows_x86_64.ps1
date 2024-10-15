@@ -2714,8 +2714,9 @@ do_install_compiler() {
     shift
     section_begin "install-compiler-$do_install_compiler_NAME" "Install OCaml compiler for $do_install_compiler_NAME switch"
     opamrun pin list --switch "$do_install_compiler_NAME"
-    # shellcheck disable=SC2086
-    opamrun upgrade --switch "$do_install_compiler_NAME" --yes dkml-base-compiler conf-dkml-cross-toolchain "dkml-host-abi-${dkml_host_abi}" "dkml-target-abi-${dkml_target_abi}" ${ocaml_options:-}
+    # --assume-depexts: CI needs system packages? For reproducibility do it explicitly elsewhere. Example: g++-multilib gcc-multilib for linux_x86.
+    #   shellcheck disable=SC2086
+    opamrun upgrade --switch "$do_install_compiler_NAME" --assume-depexts --yes dkml-base-compiler conf-dkml-cross-toolchain "dkml-host-abi-${dkml_host_abi}" "dkml-target-abi-${dkml_target_abi}" ${ocaml_options:-}
     section_end "install-compiler-$do_install_compiler_NAME"
 }
 do_summary() {
