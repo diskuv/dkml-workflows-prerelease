@@ -738,7 +738,7 @@ variables:
               "${dockcross_packages_apt:-}" "${dockcross_packages_apt2:-}" "${dockcross_packages_apt3:-}" "${dockcross_packages_apt4:-}" "${dockcross_packages_apt5:-}" \
               "${dockcross_packages_yum:-}" "${dockcross_packages_yum2:-}" "${dockcross_packages_yum3:-}" "${dockcross_packages_yum4:-}" "${dockcross_packages_yum5:-}" \
               "${docker_assemble_command:-true}" \
-              >.ci/sd4/docker-image/Dockerfile
+              |tee .ci/sd4/docker-image/Dockerfile
           docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/dockcross:latest" .ci/sd4/docker-image
 
           # Save image id to re-use for all remaining invocations
@@ -756,7 +756,7 @@ variables:
 
           install -d .ci/sd4/docker-image
           printf "FROM %s\nRUN %s" "$docker_image" "${docker_assemble_command:-true}" \
-              >.ci/sd4/docker-image/Dockerfile
+              |tee .ci/sd4/docker-image/Dockerfile
           docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/docker:latest" .ci/sd4/docker-image
 
           # Save image id to re-use for all remaining invocations
@@ -2767,7 +2767,7 @@ variables:
               "${dockcross_packages_apt:-}" "${dockcross_packages_apt2:-}" "${dockcross_packages_apt3:-}" "${dockcross_packages_apt4:-}" "${dockcross_packages_apt5:-}" \
               "${dockcross_packages_yum:-}" "${dockcross_packages_yum2:-}" "${dockcross_packages_yum3:-}" "${dockcross_packages_yum4:-}" "${dockcross_packages_yum5:-}" \
               "${docker_assemble_command:-true}" \
-              >.ci/sd4/docker-image/Dockerfile
+              |tee .ci/sd4/docker-image/Dockerfile
           docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/dockcross:latest" .ci/sd4/docker-image
 
           # Save image id to re-use for all remaining invocations
@@ -2785,7 +2785,7 @@ variables:
 
           install -d .ci/sd4/docker-image
           printf "FROM %s\nRUN %s" "$docker_image" "${docker_assemble_command:-true}" \
-              >.ci/sd4/docker-image/Dockerfile
+              |tee .ci/sd4/docker-image/Dockerfile
           docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/docker:latest" .ci/sd4/docker-image
 
           # Save image id to re-use for all remaining invocations
@@ -4515,7 +4515,7 @@ variables:
               "${dockcross_packages_apt:-}" "${dockcross_packages_apt2:-}" "${dockcross_packages_apt3:-}" "${dockcross_packages_apt4:-}" "${dockcross_packages_apt5:-}" \
               "${dockcross_packages_yum:-}" "${dockcross_packages_yum2:-}" "${dockcross_packages_yum3:-}" "${dockcross_packages_yum4:-}" "${dockcross_packages_yum5:-}" \
               "${docker_assemble_command:-true}" \
-              >.ci/sd4/docker-image/Dockerfile
+              |tee .ci/sd4/docker-image/Dockerfile
           docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/dockcross:latest" .ci/sd4/docker-image
 
           # Save image id to re-use for all remaining invocations
@@ -4533,7 +4533,7 @@ variables:
 
           install -d .ci/sd4/docker-image
           printf "FROM %s\nRUN %s" "$docker_image" "${docker_assemble_command:-true}" \
-              >.ci/sd4/docker-image/Dockerfile
+              |tee .ci/sd4/docker-image/Dockerfile
           docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/docker:latest" .ci/sd4/docker-image
 
           # Save image id to re-use for all remaining invocations

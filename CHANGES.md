@@ -16,6 +16,7 @@
 - Add `dkml-target-abi-<TARGET>` and `dkml-host-abi-<HOST>` when installing `dkml-base-compiler`. Related: Remove `ocaml_options = "ocaml-option-32bit"` for `windows_x86` matrix item that was now unused in dkml-base-compiler.
 - Remove unused `opam_abi` from the test matrix.
 - Add `--assume-depexts` during install of OCaml compiler. That means system packages are not auto-installed and your CI system will need to explicitly add any requirements like `g++-multilib gcc-multilib` for linux_x86.
+- Show Dockerfile when a Docker container or dockcross is selected.
 
 ## 2.1.3
 
