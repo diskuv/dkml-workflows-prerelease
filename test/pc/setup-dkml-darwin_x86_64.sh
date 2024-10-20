@@ -1223,7 +1223,7 @@ if [ "${in_docker:-}" = "true" ] && [ -n "${dockcross_image:-}" ]; then
     install -d .ci/sd4/docker-image
     #   Since GitLab CI limits environment variables to 255 characters, if you need to exceed that there are five (5)
     #   variations of `dockcross_packages_apt` and `dockcross_packages_yum` to spread the packages over.
-    printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE %sdkml-workflows/dockcross:latest\nRUN if command -v apt-get; then apt-get update -y && apt-get install -y rsync %s %s %s %s %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum update -y && yum install -y rsync %s %s %s %s %s && yum clean all && rm -rf /var/cache/yum; fi; %s" \
+    printf "FROM %s\nENV DEFAULT_DOCKCROSS_IMAGE %sdkml-workflows/dockcross:latest\nRUN if command -v apt-get; then apt-get update -y && apt-get install -y rsync %s %s %s %s %s && rm -rf /var/lib/apt/lists/*; fi\nRUN if command -v yum; then yum update -y && yum install -y rsync %s %s %s %s %s && yum clean all && rm -rf /var/cache/yum; fi; %s\n" \
         "${dockcross_image:-}" "${docker_fqin_preusername}" \
         "${dockcross_packages_apt:-}" "${dockcross_packages_apt2:-}" "${dockcross_packages_apt3:-}" "${dockcross_packages_apt4:-}" "${dockcross_packages_apt5:-}" \
         "${dockcross_packages_yum:-}" "${dockcross_packages_yum2:-}" "${dockcross_packages_yum3:-}" "${dockcross_packages_yum4:-}" "${dockcross_packages_yum5:-}" \
@@ -1245,7 +1245,7 @@ if [ "${in_docker:-}" = "true" ] && [ -n "${docker_image:-}" ]; then
     section_begin docker-build "Summary: docker build --quiet --tag ${docker_fqin_preusername}dkml-workflows/docker"
 
     install -d .ci/sd4/docker-image
-    printf "FROM %s\nRUN %s" "$docker_image" "${docker_assemble_command:-true}" \
+    printf "FROM %s\nRUN %s\n" "$docker_image" "${docker_assemble_command:-true}" \
         |tee .ci/sd4/docker-image/Dockerfile
     docker build --quiet --tag "${docker_fqin_preusername}dkml-workflows/docker:latest" .ci/sd4/docker-image
 
