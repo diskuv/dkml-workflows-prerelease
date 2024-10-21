@@ -521,6 +521,13 @@ runs:
 
         SKIP_OPAM_MODIFICATIONS=${SKIP_OPAM_MODIFICATIONS:-false} # default is false
 
+        if [ "$SKIP_OPAM_MODIFICATIONS" = "false" ]; then
+            if [ -z "${dkml_target_abi:-}" ]; then
+                echo "dkml_target_abi environment variable is required unless SKIP_OPAM_MODIFICATIONS=true" >&2
+                exit 2
+            fi
+        fi
+
         # shellcheck disable=SC2154
         echo "
         =============
@@ -567,7 +574,7 @@ runs:
         Matrix
         ------
         dkml_host_abi=$dkml_host_abi
-        dkml_target_abi=$dkml_target_abi
+        dkml_target_abi=${dkml_target_abi:-}
         abi_pattern=$abi_pattern
         opam_root=${opam_root}
         opam_root_cacheable=${opam_root_cacheable}
@@ -2005,7 +2012,7 @@ runs:
       shell: bash
       run: |
         set -x
-        echo '7b3d80-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.dkml_target_abi }}' > .ci/sd4/cachekey.opam.binaries
+        echo '7a34d1-${{ steps.full_matrix_vars.outputs.dkml_host_abi }}-${{ steps.full_matrix_vars.outputs.dkml_target_abi }}' > .ci/sd4/cachekey.opam.binaries
         echo '${{ steps.full_matrix_vars.outputs.abi_pattern }}-${{ steps.full_matrix_vars.outputs.vsstudio_arch }}-${{ steps.full_matrix_vars.outputs.vsstudio_hostarch }}-${{ steps.full_matrix_vars.outputs.vsstudio_dir }}-${{ steps.full_matrix_vars.outputs.vsstudio_vcvarsver }}-${{ steps.full_matrix_vars.outputs.vsstudio_winsdkver }}-${{ steps.full_matrix_vars.outputs.vsstudio_msvspreference }}-${{ steps.full_matrix_vars.outputs.vsstudio_cmakegenerator }}' > .ci/sd4/cachekey.vsstudio
         echo '${{ inputs.OCAML_COMPILER }}-${{ inputs.DISKUV_OPAM_REPOSITORY }}-${{ inputs.DKML_COMPILER }}-${{ inputs.CONF_DKML_CROSS_TOOLCHAIN }}' > .ci/sd4/cachekey.ci.inputs
 

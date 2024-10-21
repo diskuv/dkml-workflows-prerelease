@@ -324,7 +324,7 @@ variable will also be available to use as
 #### SKIP_OPAM_MODIFICATIONS
 
 When set to `true` (the default is `false`) the opam root will not be
-created or modified.
+created or modified. Setting `dkml_target_abi` is no longer required.
 
 The `cmdrun` script will be available for you to create your
 own opam root and switches. The commands you run will have access to

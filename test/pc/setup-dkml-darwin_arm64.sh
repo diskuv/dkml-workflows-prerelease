@@ -1259,6 +1259,13 @@ section_begin setup-info "Summary: setup-dkml"
 
 SKIP_OPAM_MODIFICATIONS=${SKIP_OPAM_MODIFICATIONS:-false} # default is false
 
+if [ "$SKIP_OPAM_MODIFICATIONS" = "false" ]; then
+    if [ -z "${dkml_target_abi:-}" ]; then
+        echo "dkml_target_abi environment variable is required unless SKIP_OPAM_MODIFICATIONS=true" >&2
+        exit 2
+    fi
+fi
+
 # shellcheck disable=SC2154
 echo "
 =============
@@ -1305,7 +1312,7 @@ GIT_LOCATION=${GIT_LOCATION:-}
 Matrix
 ------
 dkml_host_abi=$dkml_host_abi
-dkml_target_abi=$dkml_target_abi
+dkml_target_abi=${dkml_target_abi:-}
 abi_pattern=$abi_pattern
 opam_root=${opam_root}
 opam_root_cacheable=${opam_root_cacheable}
