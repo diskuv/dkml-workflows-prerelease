@@ -138,6 +138,7 @@ $env:DKML_HOME = $DKML_HOME
 
 # https://patchwork.kernel.org/project/qemu-devel/patch/20211215073402.144286-17-thuth@redhat.com/
 $env:CHERE_INVOKING = "yes" # Preserve the current working directory
+$env:MSYS2_PATH_TYPE = "inherit" # Keep the existing environment when sh -l, especially MSVC environment
 $env:MSYSTEM = $env:msys2_system # Start a 64 bit environment if CLANG64, etc.
 
 ########################### before_script ###############################

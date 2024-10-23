@@ -17,6 +17,7 @@
 - Remove unused `opam_abi` from the test matrix.
 - Add `--assume-depexts` during install of OCaml compiler. That means system packages are not auto-installed and your CI system will need to explicitly add any requirements like `g++-multilib gcc-multilib` for linux_x86.
 - Show Dockerfile when a Docker container or dockcross is selected.
+- Set `MSYS2_PATH_TYPE=inherit` on Windows so that `bash -l` keeps the environment, especially any MSVC environment
 
 ## 2.1.3
 
