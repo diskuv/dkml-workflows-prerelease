@@ -243,6 +243,9 @@ Environment variable.
 .PARAMETER PIN_DKML_INSTALLER_OCAML_COMMON
 Environment variable.
 
+.PARAMETER PIN_DKML_INSTALLER_OCAML_NETWORK
+Environment variable.
+
 .PARAMETER PIN_DKML_OPTION_BX32
 Environment variable.
 
@@ -771,6 +774,7 @@ param (
   ,[Parameter()] [string] $PIN_DKML_INSTALL_RUNNER = "0.5.3"
   ,[Parameter()] [string] $PIN_DKML_INSTALL = "0.5.3"
   ,[Parameter()] [string] $PIN_DKML_INSTALLER_OCAML_COMMON = "2.1.4"
+  ,[Parameter()] [string] $PIN_DKML_INSTALLER_OCAML_NETWORK = "2.1.4"
   ,[Parameter()] [string] $PIN_DKML_OPTION_BX32 = "1"
   ,[Parameter()] [string] $PIN_DKML_PACKAGE_CONSOLE = "0.5.3"
   ,[Parameter()] [string] $PIN_DKML_RUNTIME_COMMON_NATIVE = "2.1.1"
@@ -1022,6 +1026,7 @@ $env:PIN_DKML_INSTALL_INSTALLER = $PIN_DKML_INSTALL_INSTALLER
 $env:PIN_DKML_INSTALL_RUNNER = $PIN_DKML_INSTALL_RUNNER
 $env:PIN_DKML_INSTALL = $PIN_DKML_INSTALL
 $env:PIN_DKML_INSTALLER_OCAML_COMMON = $PIN_DKML_INSTALLER_OCAML_COMMON
+$env:PIN_DKML_INSTALLER_OCAML_NETWORK = $PIN_DKML_INSTALLER_OCAML_NETWORK
 $env:PIN_DKML_OPTION_BX32 = $PIN_DKML_OPTION_BX32
 $env:PIN_DKML_PACKAGE_CONSOLE = $PIN_DKML_PACKAGE_CONSOLE
 $env:PIN_DKML_RUNTIME_COMMON_NATIVE = $PIN_DKML_RUNTIME_COMMON_NATIVE
@@ -2463,6 +2468,7 @@ do_pins() {
     do_pin_add dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
     do_pin_add dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
     do_pin_add dkml-installer-ocaml-common "${PIN_DKML_INSTALLER_OCAML_COMMON}"
+    do_pin_add dkml-installer-ocaml-network "${PIN_DKML_INSTALLER_OCAML_NETWORK}"
     do_pin_add dkml-option-bx32 "${PIN_DKML_OPTION_BX32}"
     do_pin_add dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
     do_pin_add dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"

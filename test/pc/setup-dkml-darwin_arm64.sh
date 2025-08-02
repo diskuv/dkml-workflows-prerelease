@@ -87,6 +87,7 @@ export PIN_DKML_INSTALL_INSTALLER='0.5.3'
 export PIN_DKML_INSTALL_RUNNER='0.5.3'
 export PIN_DKML_INSTALL='0.5.3'
 export PIN_DKML_INSTALLER_OCAML_COMMON='2.1.4'
+export PIN_DKML_INSTALLER_OCAML_NETWORK='2.1.4'
 export PIN_DKML_OPTION_BX32='1'
 export PIN_DKML_PACKAGE_CONSOLE='0.5.3'
 export PIN_DKML_RUNTIME_COMMON_NATIVE='2.1.1'
@@ -329,6 +330,7 @@ usage() {
   echo "  --PIN_DKML_INSTALL_RUNNER=<value>. Defaults to: ${PIN_DKML_INSTALL_RUNNER}" >&2
   echo "  --PIN_DKML_INSTALL=<value>. Defaults to: ${PIN_DKML_INSTALL}" >&2
   echo "  --PIN_DKML_INSTALLER_OCAML_COMMON=<value>. Defaults to: ${PIN_DKML_INSTALLER_OCAML_COMMON}" >&2
+  echo "  --PIN_DKML_INSTALLER_OCAML_NETWORK=<value>. Defaults to: ${PIN_DKML_INSTALLER_OCAML_NETWORK}" >&2
   echo "  --PIN_DKML_OPTION_BX32=<value>. Defaults to: ${PIN_DKML_OPTION_BX32}" >&2
   echo "  --PIN_DKML_PACKAGE_CONSOLE=<value>. Defaults to: ${PIN_DKML_PACKAGE_CONSOLE}" >&2
   echo "  --PIN_DKML_RUNTIME_COMMON_NATIVE=<value>. Defaults to: ${PIN_DKML_RUNTIME_COMMON_NATIVE}" >&2
@@ -643,6 +645,8 @@ while getopts :h-: option; do
     PIN_DKML_INSTALL=*) PIN_DKML_INSTALL=${OPTARG#*=} ;;
     PIN_DKML_INSTALLER_OCAML_COMMON) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_INSTALLER_OCAML_COMMON=*) PIN_DKML_INSTALLER_OCAML_COMMON=${OPTARG#*=} ;;
+    PIN_DKML_INSTALLER_OCAML_NETWORK) fail "Option \"$OPTARG\" missing argument" ;;
+    PIN_DKML_INSTALLER_OCAML_NETWORK=*) PIN_DKML_INSTALLER_OCAML_NETWORK=${OPTARG#*=} ;;
     PIN_DKML_OPTION_BX32) fail "Option \"$OPTARG\" missing argument" ;;
     PIN_DKML_OPTION_BX32=*) PIN_DKML_OPTION_BX32=${OPTARG#*=} ;;
     PIN_DKML_PACKAGE_CONSOLE) fail "Option \"$OPTARG\" missing argument" ;;
@@ -2172,6 +2176,7 @@ do_pins() {
     do_pin_add dkml-install-installer "${PIN_DKML_INSTALL_INSTALLER}"
     do_pin_add dkml-install-runner "${PIN_DKML_INSTALL_RUNNER}"
     do_pin_add dkml-installer-ocaml-common "${PIN_DKML_INSTALLER_OCAML_COMMON}"
+    do_pin_add dkml-installer-ocaml-network "${PIN_DKML_INSTALLER_OCAML_NETWORK}"
     do_pin_add dkml-option-bx32 "${PIN_DKML_OPTION_BX32}"
     do_pin_add dkml-package-console "${PIN_DKML_PACKAGE_CONSOLE}"
     do_pin_add dkml-runtime-common "${PIN_DKML_RUNTIME_COMMON}"
