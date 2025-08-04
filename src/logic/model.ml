@@ -76,6 +76,7 @@ let global_env_vars =
     ("PIN_DKML_INSTALL_RUNNER", "0.5.3");
     ("PIN_DKML_INSTALL", "0.5.3");
     ("PIN_DKML_INSTALLER_OCAML_COMMON", "2.1.5");
+    ("PIN_DKML_INSTALLER_OCAML_NETWORK", "2.1.5");
     ("PIN_DKML_OPTION_BX32", "1");
     ("PIN_DKML_PACKAGE_CONSOLE", "0.5.3");
     ("PIN_DKML_RUNTIME_COMMON", "2.1.5");
