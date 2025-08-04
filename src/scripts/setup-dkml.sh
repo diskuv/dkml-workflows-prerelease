@@ -904,7 +904,6 @@ do_pins() {
     }
     ### BEGIN pin-adds. DO NOT EDIT THE LINES IN THIS SECTION
     # Managed by bump-packages.cmake
-    do_pin_add MlFront_Unpack "${PIN_MLFRONT_UNPACK}"
     do_pin_add angstrom "${PIN_ANGSTROM}"
     do_pin_add angstrom-lwt-unix "${PIN_ANGSTROM_LWT_UNIX}"
     do_pin_add astring "${PIN_ASTRING}"
