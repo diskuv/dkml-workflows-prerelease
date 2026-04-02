@@ -26,16 +26,22 @@ variables:
     paths:
       - dist
     expire_in: "1 days"
+  variables:
+    CACHE_POLICY: pull-push # default policy in GitLab. can be overridden with inheritance or by `rules:`
   # Only 4 caches allowed in GitLab CI
   cache:
     - key: "a2_{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
+      policy: $CACHE_POLICY
       paths:
         - ${opam_root_cacheable}/download-cache
 
 .common:setup-dkml-cache:
+  variables:
+    CACHE_POLICY: pull-push # default policy in GitLab. can be overridden with inheritance or by `rules:`
   # Only 4 caches allowed in GitLab CI
   cache:
     - key: "b2_{{ cachebust }}_${CACHE_PREFIX}-{{ gl_cachekey_compact }}"
+      policy: $CACHE_POLICY
       paths:
         - .ci/sd4/bs
         - ${opam_root_cacheable}/config
