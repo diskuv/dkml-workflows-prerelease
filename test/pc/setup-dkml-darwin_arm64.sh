@@ -2072,12 +2072,28 @@ fi
 
 do_opam_repositories_update() {
     section_begin "opam-repo-update" "Update opam repositories"
+    do_opam_repositories_update_HAS_UPDATE=0
     # The default repository may be the initial 'eor' (empty) repository
-    opamrun repository set-url default "git+https://github.com/ocaml/opam-repository.git#${OCAML_OPAM_REPOSITORY:-$DEFAULT_OCAML_OPAM_REPOSITORY_TAG}" --yes
+    do_opam_repositories_update_DEFAULT_URL="git+https://github.com/ocaml/opam-repository.git#${OCAML_OPAM_REPOSITORY:-$DEFAULT_OCAML_OPAM_REPOSITORY_TAG}"
+    if opamrun repository list | awk -v R=default -v U="$do_opam_repositories_update_DEFAULT_URL" 'BEGIN{code=1} $2==R && $3==U {print; code=0} END{exit code}'; then
+        echo "repository 'default' has the expected URL: $do_opam_repositories_update_DEFAULT_URL"
+    else
+        opamrun repository set-url default "$do_opam_repositories_update_DEFAULT_URL" --yes
+        do_opam_repositories_update_HAS_UPDATE=1
+    fi
     # Always set the `diskuv` repository url since it can change
-    opamrun repository set-url diskuv "${DISKUV_OPAM_REPOSITORY_URI}" --yes --dont-select
-    # Update both `default` and `diskuv` Opam repositories
-    opamrun update default diskuv
+    if opamrun repository list | awk -v R=diskuv -v U="${DISKUV_OPAM_REPOSITORY_URI}" 'BEGIN{code=1} $2==R && $3==U {print; code=0} END{exit code}'; then
+        echo "repository 'diskuv' has the expected URL: ${DISKUV_OPAM_REPOSITORY_URI}"
+    else
+        opamrun repository set-url diskuv "${DISKUV_OPAM_REPOSITORY_URI}" --yes --dont-select
+        do_opam_repositories_update_HAS_UPDATE=1
+    fi
+    # Update both `default` and `diskuv` opam repositories
+    if [ $do_opam_repositories_update_HAS_UPDATE -ne 0 ]; then
+        opamrun update default diskuv
+    else
+        echo "Skipping opam repository update"
+    fi
     section_end "opam-repo-update"
 }
 if [ "${SKIP_OPAM_MODIFICATIONS:-}" = "false" ]; then
